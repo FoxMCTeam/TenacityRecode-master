@@ -35,8 +35,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static net.minecraft.client.renderer.OpenGlHelper.glUniform1;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL20.glUniform1;
 
 public class GlowESP extends Module {
 

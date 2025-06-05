@@ -1,6 +1,6 @@
 package org.lwjglx.opengl;
 
-import lol.nightmaple.utils.objects.ScrollUtils;
+import dev.tenacity.utils.objects.ScrollUtils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
@@ -203,8 +203,6 @@ public class Display {
         Window.scrollCallback = new GLFWScrollCallback() {
             @Override
             public void invoke(long window, double xoffset, double yoffset) {
-                //This bullshit is custom scroll speed
-                //but it too shit
                 ScrollUtils.yOffset = (float) yoffset;
                 ScrollUtils.run();
             }

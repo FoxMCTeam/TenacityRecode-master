@@ -11,7 +11,7 @@ import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
 
-import static org.lwjgl.opengl.GL20.glUniform1;
+import static org.lwjglx.opengl.GL20.glUniform1;
 
 /**
  * @author cedo

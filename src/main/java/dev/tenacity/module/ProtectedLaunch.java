@@ -26,9 +26,6 @@ import dev.tenacity.utils.render.Theme;
 import dev.tenacity.utils.server.PingerUtils;
 import dev.tenacity.utils.client.addons.viamcp.ViaMCP;
 import net.minecraft.client.Minecraft;
-import store.intent.intentguard.annotation.Bootstrap;
-import store.intent.intentguard.annotation.Native;
-
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -37,9 +34,7 @@ import java.util.HashMap;
 public class ProtectedLaunch {
 
     private static final HashMap<Object, Module> modules = new HashMap<>();
-
     
-    @Bootstrap
     public static void start() {
         // Setup Intent API access
         Tenacity.INSTANCE.setModuleCollection(new ModuleCollection());

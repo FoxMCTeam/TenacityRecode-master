@@ -235,23 +235,6 @@ public class GuiChat extends GuiScreen {
 
         FontUtil.tenacityBoldFont20.drawCenteredString("Reset Draggables", width / 2f, 20 + FontUtil.tenacityBoldFont20.getMiddleOfBox(20), -1);
 
-
-        if (spotifyMod.isEnabled()) {
-            float spacing = 0;
-            Dragging spotifyDrag = DragManager.draggables.get("spotify");
-            for (String button : spotifyMod.buttons) {
-                CustomFont iconFont = FontUtil.FontType.ICON.size(20);
-                boolean hover = HoveringUtil.isHovering(spotifyDrag.getX() + spotifyMod.albumCoverSize + 6 + spacing, spotifyDrag.getY() + spotifyMod.height - (19),
-                        (float) iconFont.getStringWidth(button), iconFont.getHeight(), mouseX, mouseY);
-
-                spotifyMod.buttonAnimations.get(button).setDirection(hover ? Direction.FORWARDS : Direction.BACKWARDS);
-                spacing += 15;
-            }
-
-            spotifyMod.hoveringPause = HoveringUtil.isHovering(spotifyDrag.getX(), spotifyDrag.getY(), spotifyMod.albumCoverSize, spotifyMod.height, mouseX, mouseY);
-        }
-
-
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
@@ -269,45 +252,6 @@ public class GuiChat extends GuiScreen {
         }
 
         this.inputField.mouseClicked(mouseX, mouseY, mouseButton);
-
-        if (spotifyMod.isEnabled()) {
-            float spacing = 0;
-            for (String button : spotifyMod.buttons) {
-                Dragging spotifyDrag = DragManager.draggables.get("spotify");
-                CustomFont iconFont = FontUtil.FontType.ICON.size(20);
-                if (HoveringUtil.isHovering(spotifyDrag.getX() + spotifyMod.albumCoverSize + 6 + spacing, spotifyDrag.getY() + spotifyMod.height - (19),
-                        (float) iconFont.getStringWidth(button), iconFont.getHeight(), mouseX, mouseY)) {
-                    if (mouseButton == 0) {
-                        Multithreading.runAsync(() -> {
-                            switch (button) {
-                                case FontUtil.SKIP_LEFT:
-                                    spotifyMod.api.skipToPreviousTrack();
-                                    break;
-                                case FontUtil.SKIP_RIGHT:
-                                    spotifyMod.api.skipTrack();
-                                    break;
-                                case FontUtil.SHUFFLE:
-                                    spotifyMod.api.toggleShuffleState();
-                                    break;
-                            }
-                        });
-                        return;
-                    }
-                }
-                spacing += 15;
-            }
-
-            if (spotifyMod.hoveringPause) {
-                Multithreading.runAsync(() -> {
-                    if (spotifyMod.api.isPlaying()) {
-                        spotifyMod.api.pausePlayback();
-                    } else {
-                        spotifyMod.api.resumePlayback();
-                    }
-                });
-            }
-        }
-
 
         boolean hoveringResetButton = HoveringUtil.isHovering(width / 2f - 100, 20, 200, 20, mouseX, mouseY);
         if (hoveringResetButton && mouseButton == 0) {
