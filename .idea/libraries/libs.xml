@@ -1,0 +1,73 @@
+<component name="libraryTable">
+  <library name="libs">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/authlib-1.5.21.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/codecjorbis-20101023.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/codecwav-20101023.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/commons-codec-1.15.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/commons-compress-1.21.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/commons-io-2.11.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/commons-lang3-3.12.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/commons-logging-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/discord-game-sdk4j-0.5.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/failureaccess-1.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/fuzzywuzzy-1.4.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/gson-2.9.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/guava-30.1.1-jre.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/httpclient-4.5.13.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/httpclient5-5.0.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/httpclient5-cache-5.0.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/httpcore-4.4.14.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/httpcore5-5.0.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jackson-annotations-2.11.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jackson-core-2.11.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jackson-databind-2.11.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jackson-dataformat-xml-2.13.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/Java-WebSocket-1.5.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jinput-2.0.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jinput-platform-2.0.5-natives-linux.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jinput-platform-2.0.5-natives-windows.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jopt-simple-5.0.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jutils-1.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/libraryjavasound-20101123.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/librarylwjglopenal-20100824.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/log4j-api-2.18.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/log4j-core-2.18.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/lwjgl-2.9.2-nightly-20140822.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/lwjgl-2.9.4-nightly-20150209.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/lwjgl-platform-2.9.2-nightly-20140822-natives-linux.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/lwjgl-platform-2.9.2-nightly-20140822-natives-osx.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/lwjgl-platform-2.9.2-nightly-20140822-natives-windows.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/lwjgl-platform-2.9.4-nightly-20150209-natives-linux.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/lwjgl-platform-2.9.4-nightly-20150209-natives-osx.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/lwjgl-platform-2.9.4-nightly-20150209-natives-windows.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/lwjgl_util-2.9.2-nightly-20140822.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/lwjgl_util-2.9.4-nightly-20150209.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/netty-all-4.1.67.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/nv-i18n-1.27.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/oshi-core-1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/slf4j-api-1.7.30.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/slf4j-nop-2.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/snakeyaml-1.32.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/soundsystem-20120107.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/spotify-web-api-java-6.5.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/twitch-6.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/twitch-external-platform-4.5-natives-windows-32.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/twitch-external-platform-4.5-natives-windows-64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/twitch-platform-6.5-natives-osx.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/twitch-platform-6.5-natives-windows-32.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/twitch-platform-6.5-natives-windows-64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/viabackwards-4.4.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/viarewind-core-2.0.3-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/viaversion-4.4.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/IntentGuard-Annotations-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/lombok.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/fastjson-1.2.83.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/slf4j-simple-1.7.25.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/libs/IntentGuard-Annotations-1.0.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Start" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="Start" />
+    <module name="Tenacity" />
+    <option name="VM_PARAMETERS" value="-Djava.library.path=&quot;$ProjectFileDir$/src/main/resources/natives&quot;" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/run" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

@@ -1,0 +1,42 @@
+[
+  {
+    "x": 5.0,
+    "y": 40.0,
+    "name": "radar"
+  },
+  {
+    "x": 5.0,
+    "y": 200.0,
+    "name": "motionGraph"
+  },
+  {
+    "x": 300.0,
+    "y": 300.0,
+    "name": "targetHud"
+  },
+  {
+    "x": 10.0,
+    "y": 300.0,
+    "name": "keystrokes"
+  },
+  {
+    "x": 5.0,
+    "y": 150.0,
+    "name": "spotify"
+  },
+  {
+    "x": 4.0,
+    "y": 30.0,
+    "name": "playerList"
+  },
+  {
+    "x": 2.0,
+    "y": 1.0,
+    "name": "arraylist"
+  },
+  {
+    "x": 5.0,
+    "y": 150.0,
+    "name": "sessionstats"
+  }
+]
