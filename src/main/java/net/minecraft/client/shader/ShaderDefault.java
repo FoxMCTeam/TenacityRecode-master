@@ -1,6 +1,6 @@
 package net.minecraft.client.shader;
 
-import org.lwjgl.util.vector.Matrix4f;
+import org.lwjglx.util.vector.Matrix4f;
 
 public class ShaderDefault extends ShaderUniform
 {

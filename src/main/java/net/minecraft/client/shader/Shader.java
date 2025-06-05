@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.util.JsonException;
-import org.lwjgl.util.vector.Matrix4f;
+import org.lwjglx.util.vector.Matrix4f;
 
 import java.io.IOException;
 import java.util.List;

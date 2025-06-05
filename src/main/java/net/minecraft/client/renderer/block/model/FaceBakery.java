@@ -10,7 +10,7 @@ import net.minecraft.util.Vec3i;
 import net.minecraftforge.client.model.ITransformation;
 import net.optifine.model.BlockModelUtils;
 import net.optifine.shaders.Shaders;
-import org.lwjgl.util.vector.Matrix4f;
+import org.lwjglx.util.vector.Matrix4f;
 import org.lwjglx.util.vector.Vector3f;
 import org.lwjglx.util.vector.Vector4f;
 

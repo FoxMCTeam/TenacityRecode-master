@@ -13,7 +13,7 @@ import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Matrix4f;
+import org.lwjglx.util.vector.Matrix4f;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

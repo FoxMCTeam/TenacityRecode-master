@@ -8,7 +8,7 @@ import net.minecraftforge.client.model.IModelPart;
 import net.minecraftforge.client.model.IModelState;
 import net.minecraftforge.client.model.ITransformation;
 import net.optifine.reflect.Reflector;
-import org.lwjgl.util.vector.Matrix4f;
+import org.lwjglx.util.vector.Matrix4f;
 import org.lwjglx.util.vector.Vector3f;
 
 import java.util.Map;

@@ -1,7 +1,7 @@
 package net.minecraftforge.client.model;
 
 import org.apache.commons.lang3.NotImplementedException;
-import org.lwjgl.util.vector.Matrix4f;
+import org.lwjglx.util.vector.Matrix4f;
 
 public class TRSRTransformation
 {
