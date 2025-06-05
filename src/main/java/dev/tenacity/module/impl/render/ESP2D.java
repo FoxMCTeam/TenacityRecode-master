@@ -22,7 +22,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.StringUtils;
-import org.lwjgl.util.vector.Vector4f;
+import org.lwjglx.util.vector.Vector4f;
 
 import java.awt.*;
 import java.text.DecimalFormat;

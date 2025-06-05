@@ -2,7 +2,7 @@ package net.optifine.shaders.config;
 
 import net.minecraft.src.Config;
 import net.optifine.util.StrUtils;
-import org.lwjgl.util.vector.Vector4f;
+import org.lwjglx.util.vector.Vector4f;
 
 public class ShaderLine
 {

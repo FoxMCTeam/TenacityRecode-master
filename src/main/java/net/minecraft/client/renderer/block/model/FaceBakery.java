@@ -11,8 +11,8 @@ import net.minecraftforge.client.model.ITransformation;
 import net.optifine.model.BlockModelUtils;
 import net.optifine.shaders.Shaders;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
+import org.lwjglx.util.vector.Vector3f;
+import org.lwjglx.util.vector.Vector4f;
 
 public class FaceBakery
 {

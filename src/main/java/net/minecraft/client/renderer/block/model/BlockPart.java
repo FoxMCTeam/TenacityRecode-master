@@ -5,7 +5,7 @@ import com.google.gson.*;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.MathHelper;
-import org.lwjgl.util.vector.Vector3f;
+import org.lwjglx.util.vector.Vector3f;
 
 import java.lang.reflect.Type;
 import java.util.Map;
