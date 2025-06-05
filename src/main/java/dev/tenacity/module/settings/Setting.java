@@ -2,7 +2,7 @@ package dev.tenacity.module.settings;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import jdk.nashorn.api.scripting.JSObject;
+import netscape.javascript.JSObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;

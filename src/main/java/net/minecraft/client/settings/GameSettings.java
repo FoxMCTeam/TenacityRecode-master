@@ -27,7 +27,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjglx.input.Keyboard;
 import org.lwjglx.input.Mouse;
-import org.lwjgl.opengl.Display;
+import org.lwjglx.opengl.Display;
 import org.lwjglx.opengl.DisplayMode;
 
 import java.io.*;

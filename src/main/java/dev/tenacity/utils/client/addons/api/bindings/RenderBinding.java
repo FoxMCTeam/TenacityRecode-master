@@ -10,7 +10,6 @@ import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.GradientUtil;
 import dev.tenacity.utils.render.RenderUtil;
 import dev.tenacity.utils.render.RoundedUtil;
-import jdk.nashorn.api.scripting.JSObject;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
@@ -18,6 +17,7 @@ import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import netscape.javascript.JSObject;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;

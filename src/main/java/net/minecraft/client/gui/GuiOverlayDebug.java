@@ -22,7 +22,7 @@ import net.optifine.SmartAnimations;
 import net.optifine.TextureAnimations;
 import net.optifine.util.MemoryMonitor;
 import net.optifine.util.NativeMemory;
-import org.lwjgl.opengl.Display;
+import org.lwjglx.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;

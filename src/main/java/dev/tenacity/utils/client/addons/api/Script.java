@@ -8,7 +8,7 @@ import dev.tenacity.utils.client.addons.api.bindings.*;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.misc.FileUtils;
 import dev.tenacity.utils.objects.Dragging;
-import jdk.nashorn.api.scripting.JSObject;
+import netscape.javascript.JSObject;
 import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
 import lombok.Getter;
 import lombok.Setter;
