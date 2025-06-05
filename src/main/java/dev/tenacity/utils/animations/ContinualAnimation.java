@@ -2,8 +2,6 @@ package dev.tenacity.utils.animations;
 
 import dev.tenacity.utils.animations.impl.SmoothStepAnimation;
 import lombok.Getter;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
 
 public class ContinualAnimation {
 
@@ -13,7 +11,7 @@ public class ContinualAnimation {
     private Animation animation = new SmoothStepAnimation(0, 0, Direction.BACKWARDS);
 
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void animate(float destination, int ms) {
         output = endpoint - animation.getOutput().floatValue();
         endpoint = destination;
@@ -27,7 +25,7 @@ public class ContinualAnimation {
         return output == endpoint || animation.isDone();
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public float getOutput() {
         output = endpoint - animation.getOutput().floatValue();
         return output;

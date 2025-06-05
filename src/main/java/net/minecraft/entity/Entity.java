@@ -33,8 +33,6 @@ import net.minecraft.util.*;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
 
 import java.util.List;
 import java.util.Random;
@@ -71,55 +69,55 @@ public abstract class Entity implements ICommandSender {
     public double prevPosY;
     public double prevPosZ;
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public double getPrevPosX() {
         return prevPosX;
     }
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public double getPrevPosY() {
         return prevPosY;
     }
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public double getPrevPosZ() {
         return prevPosZ;
     }
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public double getPosX() {
         return posX;
     }
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public double getPosY() {
         return posY;
     }
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public double getPosZ() {
         return posZ;
     }
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public double getMotionX() {
         return motionX;
     }
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public double getMotionY() {
         return motionY;
     }
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public double getMotionZ() {
         return motionZ;
     }
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public boolean isOnGround() {
         return onGround;
     }
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public boolean isCollidedHorizontally() {
         return isCollidedHorizontally;
     }
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public boolean isCollidedVertically() {
         return isCollidedVertically;
     }
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public boolean isCollided() {
         return isCollided;
     }
@@ -2117,7 +2115,7 @@ public abstract class Entity implements ICommandSender {
     /**
      * Get the name of this object. For players this returns their username
      */
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public String getName() {
         if (this.hasCustomName()) {
             return this.getCustomNameTag();

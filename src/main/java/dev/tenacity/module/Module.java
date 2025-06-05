@@ -18,9 +18,7 @@ import dev.tenacity.utils.animations.impl.DecelerateAnimation;
 import dev.tenacity.utils.misc.Multithreading;
 import lombok.Getter;
 import lombok.Setter;
-import org.lwjgl.input.Keyboard;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
+import org.lwjglx.input.Keyboard;
 
 import java.util.Arrays;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -69,7 +67,7 @@ public class Module extends ListenerAdapter implements Utils {
         settingsList.addAll(Arrays.asList(settings));
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void setToggled(boolean toggled) {
         this.enabled = toggled;
         if (toggled) {
@@ -79,7 +77,7 @@ public class Module extends ListenerAdapter implements Utils {
         }
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void toggleSilent() {
         this.enabled = !this.enabled;
         if (this.enabled) {
@@ -89,7 +87,7 @@ public class Module extends ListenerAdapter implements Utils {
         }
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void toggleSilent(boolean toggled) {
         this.enabled = toggled;
         if (this.enabled) {
@@ -100,7 +98,7 @@ public class Module extends ListenerAdapter implements Utils {
     }
 
     //TODO: wtf is this code.
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void toggle() {
         toggleSilent();
         if (NotificationsMod.toggleNotifications.isEnabled()) {
@@ -148,34 +146,34 @@ public class Module extends ListenerAdapter implements Utils {
         }
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void setKey(int code) {
         this.keybind.setCode(code);
     }
 
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public String getName() {
         return name;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public String getDescription() {
         return description;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public boolean isEnabled() {
         return enabled;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public int getKeybindCode() {
         return keybind.getCode();
     }
 
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public NumberSetting getNumberSetting(String name) {
         for (Setting setting : settingsList) {
             if (setting instanceof NumberSetting && setting.getName().equalsIgnoreCase(name)) {
@@ -185,7 +183,7 @@ public class Module extends ListenerAdapter implements Utils {
         return null;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public BooleanSetting getBooleanSetting(String name) {
         for (Setting setting : settingsList) {
             if (setting instanceof BooleanSetting && setting.getName().equalsIgnoreCase(name)) {
@@ -195,7 +193,7 @@ public class Module extends ListenerAdapter implements Utils {
         return null;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public ModeSetting getModeSetting(String name) {
         for (Setting setting : settingsList) {
             if (setting instanceof ModeSetting && setting.getName().equalsIgnoreCase(name)) {
@@ -205,7 +203,7 @@ public class Module extends ListenerAdapter implements Utils {
         return null;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public StringSetting getStringSetting(String name) {
         for (Setting setting : settingsList) {
             if (setting instanceof StringSetting && setting.getName().equalsIgnoreCase(name)) {
@@ -215,7 +213,7 @@ public class Module extends ListenerAdapter implements Utils {
         return null;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public MultipleBoolSetting getMultiBoolSetting(String name) {
         for (Setting setting : settingsList) {
             if (setting instanceof MultipleBoolSetting && setting.getName().equalsIgnoreCase(name)) {
@@ -226,7 +224,7 @@ public class Module extends ListenerAdapter implements Utils {
     }
 
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public ColorSetting getColorSetting(String name) {
         for (Setting setting : settingsList) {
             if (setting instanceof ColorSetting && setting.getName().equalsIgnoreCase(name)) {

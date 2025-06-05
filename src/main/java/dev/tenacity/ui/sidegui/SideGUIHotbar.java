@@ -20,7 +20,7 @@ import dev.tenacity.utils.time.TimerUtil;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.Gui;
-import org.lwjgl.input.Keyboard;
+import org.lwjglx.input.Keyboard;
 
 import java.awt.*;
 

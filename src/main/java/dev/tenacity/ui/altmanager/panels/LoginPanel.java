@@ -17,7 +17,7 @@ import dev.tenacity.utils.render.RenderUtil;
 import dev.tenacity.utils.render.RoundedUtil;
 import dev.tenacity.utils.text.RandomStringGenerator;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.input.Keyboard;
+import org.lwjglx.input.Keyboard;
 
 import java.awt.*;
 import java.io.File;

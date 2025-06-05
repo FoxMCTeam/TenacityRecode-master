@@ -68,10 +68,10 @@ import net.optifine.util.ChunkUtils;
 import net.optifine.util.RenderChunkUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.input.Keyboard;
+import org.lwjglx.input.Keyboard;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
+import org.lwjglx.util.vector.Vector3f;
+import org.lwjglx.util.vector.Vector4f;
 
 import java.io.IOException;
 import java.util.*;
@@ -94,7 +94,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
     private final RenderManager renderManager;
     private WorldClient theWorld;
     private Set<RenderChunk> chunksToUpdate = Sets.<RenderChunk>newLinkedHashSet();
-    private List<RenderGlobal.ContainerLocalRenderInformation> renderInfos = Lists.<RenderGlobal.ContainerLocalRenderInformation>newArrayListWithCapacity(69696);
+    private List<ContainerLocalRenderInformation> renderInfos = Lists.<ContainerLocalRenderInformation>newArrayListWithCapacity(69696);
     private final Set<TileEntity> setTileEntities = Sets.<TileEntity>newHashSet();
     private ViewFrustum viewFrustum;
 
@@ -721,7 +721,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
 
             for (Object renderglobal$containerlocalrenderinformation0 : this.renderInfosEntities)
             {
-                RenderGlobal.ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation = (RenderGlobal.ContainerLocalRenderInformation) renderglobal$containerlocalrenderinformation0;
+                ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation = (ContainerLocalRenderInformation) renderglobal$containerlocalrenderinformation0;
                 Chunk chunk = renderglobal$containerlocalrenderinformation.renderChunk.getChunk();
                 ClassInheritanceMultiMap<Entity> classinheritancemultimap = chunk.getEntityLists()[renderglobal$containerlocalrenderinformation.renderChunk.getPosition().getY() / 16];
 
@@ -800,7 +800,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
 
             for (Object renderglobal$containerlocalrenderinformation10 : this.renderInfosTileEntities)
             {
-                RenderGlobal.ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation1 = (RenderGlobal.ContainerLocalRenderInformation) renderglobal$containerlocalrenderinformation10;
+                ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation1 = (ContainerLocalRenderInformation) renderglobal$containerlocalrenderinformation10;
                 List<TileEntity> list1 = renderglobal$containerlocalrenderinformation1.renderChunk.getCompiledChunk().getTileEntities();
 
                 if (!list1.isEmpty())
@@ -909,7 +909,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
         int i = this.viewFrustum.renderChunks.length;
         int j = 0;
 
-        for (RenderGlobal.ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation : this.renderInfos)
+        for (ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation : this.renderInfos)
         {
             CompiledChunk compiledchunk = renderglobal$containerlocalrenderinformation.renderChunk.compiledChunk;
 
@@ -1030,7 +1030,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
 
                     if (renderchunk2 != null && renderchunk2.getPosition().getY() <= j)
                     {
-                        RenderGlobal.ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation = renderchunk2.getRenderInfo();
+                        ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation = renderchunk2.getRenderInfo();
 
                         if (!renderchunk2.compiledChunk.isEmpty() || renderchunk2.isNeedsUpdate())
                         {
@@ -1068,7 +1068,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
             if (renderchunk != null && renderchunk.getPosition().getY() <= j)
             {
                 boolean flag2 = false;
-                RenderGlobal.ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation4 = new RenderGlobal.ContainerLocalRenderInformation(renderchunk, (EnumFacing)null, 0);
+                ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation4 = new ContainerLocalRenderInformation(renderchunk, (EnumFacing)null, 0);
                 Set set1 = SET_ALL_FACINGS;
 
                 if (set1.size() == 1)
@@ -1116,7 +1116,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                         if (renderchunk3 != null && renderchunk3.isBoundingBoxInFrustum((ICamera)camera, frameCount))
                         {
                             renderchunk3.setFrameIndex(frameCount);
-                            RenderGlobal.ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation1 = renderchunk3.getRenderInfo();
+                            ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation1 = renderchunk3.getRenderInfo();
                             renderglobal$containerlocalrenderinformation1.initialize((EnumFacing)null, 0);
                             deque.add(renderglobal$containerlocalrenderinformation1);
                         }
@@ -1129,7 +1129,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
 
             while (!deque.isEmpty())
             {
-                RenderGlobal.ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation5 = (RenderGlobal.ContainerLocalRenderInformation)deque.poll();
+                ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation5 = (ContainerLocalRenderInformation)deque.poll();
                 RenderChunk renderchunk6 = renderglobal$containerlocalrenderinformation5.renderChunk;
                 EnumFacing enumfacing1 = renderglobal$containerlocalrenderinformation5.facing;
                 CompiledChunk compiledchunk = renderchunk6.compiledChunk;
@@ -1158,7 +1158,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                         if (renderchunk4 != null && renderchunk4.setFrameIndex(frameCount) && renderchunk4.isBoundingBoxInFrustum((ICamera)camera, frameCount))
                         {
                             int i1 = renderglobal$containerlocalrenderinformation5.setFacing | 1 << enumfacing.ordinal();
-                            RenderGlobal.ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation2 = renderchunk4.getRenderInfo();
+                            ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation2 = renderchunk4.getRenderInfo();
                             renderglobal$containerlocalrenderinformation2.initialize(enumfacing, i1);
                             deque.add(renderglobal$containerlocalrenderinformation2);
                         }
@@ -1191,7 +1191,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
             this.chunksToUpdate = Sets.<RenderChunk>newLinkedHashSet();
             Lagometer.timerChunkUpdate.start();
 
-            for (RenderGlobal.ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation3 : this.renderInfos)
+            for (ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation3 : this.renderInfos)
             {
                 RenderChunk renderchunk5 = renderglobal$containerlocalrenderinformation3.renderChunk;
 
@@ -1347,7 +1347,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                 int k = 0;
                 this.chunksToResortTransparency.clear();
 
-                for (RenderGlobal.ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation : this.renderInfos)
+                for (ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation : this.renderInfos)
                 {
                     if (renderglobal$containerlocalrenderinformation.renderChunk.compiledChunk.isLayerStarted(blockLayerIn) && k++ < 15)
                     {
@@ -1368,7 +1368,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
 
         for (int j = i1; j != i; j += j1)
         {
-            RenderChunk renderchunk = ((RenderGlobal.ContainerLocalRenderInformation)this.renderInfos.get(j)).renderChunk;
+            RenderChunk renderchunk = ((ContainerLocalRenderInformation)this.renderInfos.get(j)).renderChunk;
 
             if (!renderchunk.getCompiledChunk().isLayerEmpty(blockLayerIn))
             {
@@ -3115,11 +3115,11 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
             case 2001:
                 Block block = Block.getBlockById(data & 4095);
 
-                    if (block.getMaterial() != Material.air) {
-                        this.mc.getSoundHandler().playSound(new PositionedSoundRecord(new ResourceLocation(block.stepSound.getBreakSound()), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getFrequency() * 0.8F, (float)blockPosIn.getX() + 0.5F, (float)blockPosIn.getY() + 0.5F, (float)blockPosIn.getZ() + 0.5F));
-                    }
+                if (block.getMaterial() != Material.air) {
+                    this.mc.getSoundHandler().playSound(new PositionedSoundRecord(new ResourceLocation(block.stepSound.getBreakSound()), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getFrequency() * 0.8F, (float)blockPosIn.getX() + 0.5F, (float)blockPosIn.getY() + 0.5F, (float)blockPosIn.getZ() + 0.5F));
+                }
 
-                    this.mc.effectRenderer.addBlockDestroyEffects(blockPosIn, block.getStateFromMeta(data >> 12 & 255));
+                this.mc.effectRenderer.addBlockDestroyEffects(blockPosIn, block.getStateFromMeta(data >> 12 & 255));
                 break;
 
             case 2002:

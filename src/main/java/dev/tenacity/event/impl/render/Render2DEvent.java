@@ -2,8 +2,6 @@ package dev.tenacity.event.impl.render;
 
 import dev.tenacity.event.Event;
 import net.minecraft.client.gui.ScaledResolution;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
 
 public class Render2DEvent extends Event {
 
@@ -19,7 +17,7 @@ public class Render2DEvent extends Event {
         this.sr = sr;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public float getHeight() {
         return height;
     }
@@ -28,7 +26,7 @@ public class Render2DEvent extends Event {
         this.height = height;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public float getWidth() {
         return width;
     }

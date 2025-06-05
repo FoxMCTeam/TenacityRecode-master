@@ -19,12 +19,10 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
 
 import java.awt.*;
 
-@Exclude(Strategy.NAME_REMAPPING)
+
 public class RenderBinding implements Utils {
 
     private AbstractFontRenderer getFont() {

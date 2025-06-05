@@ -1,7 +1,7 @@
 package dev.tenacity.module.settings.impl;
 
 import dev.tenacity.module.settings.Setting;
-import org.lwjgl.input.Keyboard;
+import org.lwjglx.input.Keyboard;
 
 public class KeybindSetting extends Setting {
 

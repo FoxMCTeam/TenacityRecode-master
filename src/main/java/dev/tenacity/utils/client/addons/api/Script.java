@@ -13,8 +13,6 @@ import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.GuiChat;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
 
 import javax.script.*;
 import java.awt.*;
@@ -74,7 +72,7 @@ public class Script implements Utils {
         scriptEngine.eval(scriptContent);
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void overrideReload() {
         reloadable = false;
         scriptModule.setReloadable(false);
@@ -87,7 +85,7 @@ public class Script implements Utils {
         initializedSettings = true;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public BooleanSetting booleanSetting(String name, boolean initialValue) {
         if (initializedSettings) {
             return scriptModule.getSettingsList().stream().filter(setting -> setting instanceof BooleanSetting).map(setting -> (BooleanSetting) setting)
@@ -98,7 +96,7 @@ public class Script implements Utils {
         return booleanSetting;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public ModeSetting modeSetting(String name, String startMode, String... modes) {
         if (initializedSettings) {
             return scriptModule.getSettingsList().stream().filter(setting -> setting instanceof ModeSetting).map(setting -> (ModeSetting) setting)
@@ -110,7 +108,7 @@ public class Script implements Utils {
 
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public NumberSetting numberSetting(String name, float defaultValue, float minValue, float maxValue, float increment) {
         if (initializedSettings) {
             return scriptModule.getSettingsList().stream().filter(setting -> setting instanceof NumberSetting).map(setting -> (NumberSetting) setting)
@@ -121,7 +119,7 @@ public class Script implements Utils {
         return numberSetting;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public ColorSetting colorSetting(String name, Color color) {
         if (initializedSettings) {
             return scriptModule.getSettingsList().stream().filter(setting -> setting instanceof ColorSetting).map(setting -> (ColorSetting) setting)
@@ -132,7 +130,7 @@ public class Script implements Utils {
         return colorSetting;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public StringSetting stringSetting(String name, String string) {
         if (initializedSettings) {
             return scriptModule.getSettingsList().stream().filter(setting -> setting instanceof StringSetting).map(setting -> (StringSetting) setting)
@@ -143,7 +141,7 @@ public class Script implements Utils {
         return stringSetting;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public MultipleBoolSetting multiBoolSetting(String name, String... options) {
         if (initializedSettings) {
             return scriptModule.getSettingsList().stream().filter(setting -> setting instanceof MultipleBoolSetting).map(setting -> (MultipleBoolSetting) setting)
@@ -155,87 +153,87 @@ public class Script implements Utils {
         return multiBoolSetting;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void onAttack(JSObject handle) {
         eventHashMap.put("attack", handle);
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void onRenderModel(JSObject handle) {
         eventHashMap.put("renderModel", handle);
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void onRender2D(JSObject handle) {
         eventHashMap.put("render", handle);
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void onRender3D(JSObject handle) {
         eventHashMap.put("render3D", handle);
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void onMotion(JSObject handle) {
         eventHashMap.put("motion", handle);
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void onTick(JSObject handle) {
         eventHashMap.put("tick", handle);
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void onMove(JSObject handle) {
         eventHashMap.put("move", handle);
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void onPacketSend(JSObject handle) {
         eventHashMap.put("packetSend", handle);
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void onPacketReceive(JSObject handle) {
         eventHashMap.put("packetReceive", handle);
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void onShader(JSObject handle) {
         eventHashMap.put("shader", handle);
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void onChatReceived(JSObject handle) {
         eventHashMap.put("chat", handle);
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void onPlayerSendMessage(JSObject handle) {
         eventHashMap.put("playerMessage", handle);
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void onWorldLoad(JSObject handle) {
         eventHashMap.put("worldLoad", handle);
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void onSafeWalk(JSObject handle) {
         eventHashMap.put("safewalk", handle);
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void onCustomBlockRender(JSObject handle) {
         eventHashMap.put("customBlockRender", handle);
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void onEnable(JSObject handle) {
         eventHashMap.put("enable", handle);
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void onDisable(JSObject handle) {
         eventHashMap.put("disable", handle);
     }

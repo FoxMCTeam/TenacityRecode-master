@@ -11,7 +11,7 @@ import dev.tenacity.utils.misc.HoveringUtil;
 import dev.tenacity.utils.misc.MathUtils;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.RoundedUtil;
-import org.lwjgl.input.Keyboard;
+import org.lwjglx.input.Keyboard;
 
 public class NumberComponent extends SettingComponent<NumberSetting> {
 

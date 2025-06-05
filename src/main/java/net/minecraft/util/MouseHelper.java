@@ -1,6 +1,6 @@
 package net.minecraft.util;
 
-import org.lwjgl.input.Mouse;
+import org.lwjglx.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 public class MouseHelper

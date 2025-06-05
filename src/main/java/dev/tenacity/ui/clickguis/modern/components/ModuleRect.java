@@ -17,7 +17,7 @@ import dev.tenacity.utils.render.RoundedUtil;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.renderer.GlStateManager;
-import org.lwjgl.input.Keyboard;
+import org.lwjglx.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;

@@ -8,7 +8,7 @@ import net.minecraft.network.play.client.C17PacketCustomPayload;
 import net.minecraft.util.IChatComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.input.Keyboard;
+import org.lwjglx.input.Keyboard;
 
 import java.io.IOException;
 

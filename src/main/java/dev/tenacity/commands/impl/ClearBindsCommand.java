@@ -4,7 +4,7 @@ import dev.tenacity.Tenacity;
 import dev.tenacity.commands.Command;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.KeybindSetting;
-import org.lwjgl.input.Keyboard;
+import org.lwjglx.input.Keyboard;
 
 public class ClearBindsCommand extends Command {
 

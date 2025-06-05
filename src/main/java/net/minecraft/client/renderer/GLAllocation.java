@@ -1,7 +1,7 @@
 package net.minecraft.client.renderer;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.glu.GLU;
+import org.lwjglx.util.glu.GLU;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

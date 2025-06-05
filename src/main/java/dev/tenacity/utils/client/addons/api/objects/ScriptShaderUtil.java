@@ -1,10 +1,8 @@
 package dev.tenacity.utils.client.addons.api.objects;
 
 import dev.tenacity.utils.render.ShaderUtil;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
 
-@Exclude(Strategy.NAME_REMAPPING)
+
 public class ScriptShaderUtil {
     private final ShaderUtil shaderUtil;
 

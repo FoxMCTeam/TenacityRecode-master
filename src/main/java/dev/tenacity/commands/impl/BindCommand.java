@@ -3,7 +3,7 @@ package dev.tenacity.commands.impl;
 import dev.tenacity.Tenacity;
 import dev.tenacity.commands.Command;
 import dev.tenacity.module.Module;
-import org.lwjgl.input.Keyboard;
+import org.lwjglx.input.Keyboard;
 
 public class BindCommand extends Command {
 

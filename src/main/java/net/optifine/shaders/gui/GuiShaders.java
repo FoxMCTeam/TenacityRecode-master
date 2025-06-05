@@ -13,7 +13,7 @@ import net.optifine.gui.TooltipProviderEnumShaderOptions;
 import net.optifine.shaders.Shaders;
 import net.optifine.shaders.ShadersTex;
 import net.optifine.shaders.config.EnumShaderOption;
-import org.lwjgl.Sys;
+import org.lwjglx.Sys;
 
 import java.io.File;
 import java.io.IOException;

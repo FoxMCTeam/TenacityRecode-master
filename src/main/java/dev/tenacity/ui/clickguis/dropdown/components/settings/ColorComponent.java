@@ -16,7 +16,7 @@ import dev.tenacity.utils.render.GLUtil;
 import dev.tenacity.utils.render.RenderUtil;
 import dev.tenacity.utils.render.RoundedUtil;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.input.Keyboard;
+import org.lwjglx.input.Keyboard;
 
 import java.awt.*;
 import java.util.ArrayList;

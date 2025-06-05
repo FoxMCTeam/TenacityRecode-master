@@ -44,8 +44,6 @@ import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
 
 import java.util.Collection;
 import java.util.List;
@@ -1257,7 +1255,7 @@ public abstract class EntityPlayer extends EntityLivingBase {
         return false;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public UUID getUUID() {
         return this.getGameProfile().getId();
     }
@@ -1805,7 +1803,7 @@ public abstract class EntityPlayer extends EntityLivingBase {
     /**
      * Only use is to identify if class is an instance of player for experience dropping
      */
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     @Override
     public boolean isPlayer() {
         return true;

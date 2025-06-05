@@ -1,8 +1,6 @@
 package dev.tenacity.event.impl.game;
 
 import dev.tenacity.event.Event;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
 
 public class TickEvent extends Event.StateEvent {
 
@@ -12,7 +10,7 @@ public class TickEvent extends Event.StateEvent {
         this.ticks = ticks;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public int getTicks() {
         return ticks;
     }

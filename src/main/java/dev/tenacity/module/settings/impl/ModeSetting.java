@@ -3,8 +3,6 @@ package dev.tenacity.module.settings.impl;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import dev.tenacity.module.settings.Setting;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,12 +27,12 @@ public class ModeSetting extends Setting {
         if (currentMode == null) currentMode = defaultMode;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public String getMode() {
         return currentMode;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public boolean is(String mode) {
         return currentMode.equalsIgnoreCase(mode);
     }
@@ -51,7 +49,7 @@ public class ModeSetting extends Setting {
         currentMode = modes.get(modeIndex);
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void setCurrentMode(String currentMode) {
         this.currentMode = currentMode;
     }

@@ -10,8 +10,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.util.*;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
 
 import java.util.List;
 
@@ -20,7 +18,7 @@ public class RotationUtils implements Utils {
     /*
      * Sets the player's head rotations to the given yaw and pitch (visual-only).
      */
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public static void setVisualRotations(float yaw, float pitch) {
         mc.thePlayer.rotationYawHead = mc.thePlayer.renderYawOffset = yaw;
         mc.thePlayer.rotationPitchHead = pitch;

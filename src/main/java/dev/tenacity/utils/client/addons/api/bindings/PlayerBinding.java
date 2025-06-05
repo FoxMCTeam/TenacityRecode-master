@@ -10,14 +10,12 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.*;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
 
 import java.util.Arrays;
 import java.util.UUID;
 
 // please dont touch this class, everything is organized a very specific way for documentation purposes
-@Exclude(Strategy.NAME_REMAPPING)
+
 public class PlayerBinding implements Utils {
 
     //

@@ -25,10 +25,10 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
+import org.lwjglx.input.Keyboard;
+import org.lwjglx.input.Mouse;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
+import org.lwjglx.opengl.DisplayMode;
 
 import java.io.*;
 import java.lang.reflect.ParameterizedType;

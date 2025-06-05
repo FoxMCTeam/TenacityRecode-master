@@ -1,10 +1,8 @@
 package dev.tenacity.utils.client.addons.api.objects;
 
 import net.minecraft.entity.player.PlayerCapabilities;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
 
-@Exclude(Strategy.NAME_REMAPPING)
+
 public class ScriptPlayerCapabilites {
 
     public PlayerCapabilities getActualAbilites() {

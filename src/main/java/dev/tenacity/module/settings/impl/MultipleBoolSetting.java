@@ -1,8 +1,6 @@
 package dev.tenacity.module.settings.impl;
 
 import dev.tenacity.module.settings.Setting;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -26,12 +24,12 @@ public class MultipleBoolSetting extends Setting {
         Arrays.stream(booleanSettings).forEach(booleanSetting -> boolSettings.put(booleanSetting.name.toLowerCase(), booleanSetting));
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public BooleanSetting getSetting(String settingName) {
         return boolSettings.computeIfAbsent(settingName.toLowerCase(), k -> null);
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public boolean isEnabled(String settingName) {
         return boolSettings.get(settingName.toLowerCase()).isEnabled();
     }

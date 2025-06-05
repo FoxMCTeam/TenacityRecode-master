@@ -1174,14 +1174,6 @@ public abstract class MinecraftServer implements Runnable, ICommandSender, IThre
         playerSnooper.addClientStat("worlds", Integer.valueOf(i));
     }
 
-    public void addServerTypeToSnooper(PlayerUsageSnooper playerSnooper)
-    {
-        playerSnooper.addStatToSnooper("singleplayer", Boolean.valueOf(this.isSinglePlayer()));
-        playerSnooper.addStatToSnooper("server_brand", this.getServerModName());
-        playerSnooper.addStatToSnooper("gui_supported", GraphicsEnvironment.isHeadless() ? "headless" : "supported");
-        playerSnooper.addStatToSnooper("dedicated", Boolean.valueOf(this.isDedicatedServer()));
-    }
-
     /**
      * Returns whether snooping is enabled or not.
      */

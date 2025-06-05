@@ -2,8 +2,6 @@ package dev.tenacity.event.impl.player;
 
 import dev.tenacity.event.Event;
 import net.minecraft.util.IChatComponent;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
 
 public class ChatReceivedEvent extends Event {
 
@@ -23,7 +21,7 @@ public class ChatReceivedEvent extends Event {
         this.rawMessage = message.getUnformattedText();
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public String getRawMessage() {
         return rawMessage;
     }

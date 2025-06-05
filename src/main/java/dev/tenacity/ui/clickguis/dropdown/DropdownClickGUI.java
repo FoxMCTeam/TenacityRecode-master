@@ -14,7 +14,7 @@ import dev.tenacity.utils.render.RenderUtil;
 import dev.tenacity.utils.render.Theme;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
-import org.lwjgl.input.Keyboard;
+import org.lwjglx.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.List;

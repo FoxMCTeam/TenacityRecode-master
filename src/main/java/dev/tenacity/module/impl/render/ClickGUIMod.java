@@ -9,7 +9,7 @@ import dev.tenacity.ui.clickguis.compact.CompactClickgui;
 import dev.tenacity.ui.clickguis.dropdown.DropdownClickGUI;
 import dev.tenacity.ui.clickguis.modern.ModernClickGui;
 import dev.tenacity.utils.render.Theme;
-import org.lwjgl.input.Keyboard;
+import org.lwjglx.input.Keyboard;
 
 public class ClickGUIMod extends Module {
 

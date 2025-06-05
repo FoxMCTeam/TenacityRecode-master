@@ -33,12 +33,12 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 
-@Native
+
 public class ProtectedLaunch {
 
     private static final HashMap<Object, Module> modules = new HashMap<>();
 
-    @Native
+    
     @Bootstrap
     public static void start() {
         // Setup Intent API access

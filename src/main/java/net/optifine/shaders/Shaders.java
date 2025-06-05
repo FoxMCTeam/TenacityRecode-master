@@ -42,7 +42,7 @@ import net.optifine.util.TimedEvent;
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.*;
-import org.lwjgl.util.glu.GLU;
+import org.lwjglx.util.glu.GLU;
 import org.lwjgl.util.vector.Vector4f;
 
 import java.io.*;

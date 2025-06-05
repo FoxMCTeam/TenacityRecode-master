@@ -22,8 +22,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -491,7 +489,7 @@ public final class ItemStack {
     /**
      * returns the display name of the itemstack
      */
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public String getDisplayName() {
         String s = this.getItem().getItemStackDisplayName(this);
 
@@ -712,7 +710,7 @@ public final class ItemStack {
         return list;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public boolean hasEffect() {
         return this.getItem().hasEffect(this);
     }
@@ -728,7 +726,7 @@ public final class ItemStack {
         return !this.getItem().isItemTool(this) ? false : !this.isItemEnchanted();
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public boolean isItemTool() {
         return this.getItem().isItemTool(this);
     }

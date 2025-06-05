@@ -5,7 +5,7 @@ import dev.tenacity.utils.animations.Direction;
 import dev.tenacity.utils.animations.impl.SmoothStepAnimation;
 import lombok.Getter;
 import lombok.Setter;
-import org.lwjgl.input.Mouse;
+import org.lwjglx.input.Mouse;
 
 /**
  * @author cedo

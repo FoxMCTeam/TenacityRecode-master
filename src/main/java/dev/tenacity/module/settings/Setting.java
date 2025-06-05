@@ -3,8 +3,6 @@ package dev.tenacity.module.settings;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import jdk.nashorn.api.scripting.JSObject;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,13 +46,13 @@ public abstract class Setting {
         return getParents().stream().noneMatch(ParentAttribute::isValid);
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public String getName(){
         return name;
     }
 
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public <T extends Setting> void addJSParent(T parent, JSObject scriptFunction) {
         Predicate<T> predicate;
         try {

@@ -4,8 +4,6 @@ import net.minecraft.network.EnumConnectionState;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.handshake.INetHandlerHandshakeServer;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
 
 import java.io.IOException;
 
@@ -60,7 +58,7 @@ public class C00Handshake implements Packet<INetHandlerHandshakeServer> {
         return this.protocolVersion;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     @Override
     public int getID() {
         return 0;

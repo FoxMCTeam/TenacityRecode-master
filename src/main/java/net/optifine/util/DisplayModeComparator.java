@@ -1,6 +1,6 @@
 package net.optifine.util;
 
-import org.lwjgl.opengl.DisplayMode;
+import org.lwjglx.opengl.DisplayMode;
 
 import java.util.Comparator;
 

@@ -3,8 +3,6 @@ package dev.tenacity.module.settings.impl;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import dev.tenacity.module.settings.Setting;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
 
 public class NumberSetting extends Setting {
 
@@ -29,27 +27,27 @@ public class NumberSetting extends Setting {
         return value;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public double getMaxValue() {
         return maxValue;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public double getMinValue() {
         return minValue;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public double getDefaultValue() {
         return defaultValue;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public Double getValue() {
         return value;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void setValue(double value) {
         value = clamp(value, this.minValue, this.maxValue);
         value = Math.round(value * (1.0 / this.increment)) / (1.0 / this.increment);

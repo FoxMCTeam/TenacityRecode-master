@@ -3,8 +3,6 @@ package dev.tenacity.module.settings.impl;
 import com.google.gson.JsonObject;
 import dev.tenacity.module.settings.Setting;
 import dev.tenacity.utils.render.ColorUtil;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
 
 import java.awt.*;
 
@@ -19,7 +17,7 @@ public class ColorSetting extends Setting {
         this.setColor(defaultColor);
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public Color getColor() {
         return isRainbow() ? getRainbow().getColor() : Color.getHSBColor(hue, saturation, brightness);
     }
@@ -42,7 +40,7 @@ public class ColorSetting extends Setting {
         this.brightness = brightness;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public double getHue() {
         return hue;
     }
@@ -51,7 +49,7 @@ public class ColorSetting extends Setting {
         this.hue = hue;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public double getSaturation() {
         return saturation;
     }
@@ -60,7 +58,7 @@ public class ColorSetting extends Setting {
         this.saturation = saturation;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public double getBrightness() {
         return brightness;
     }
@@ -74,12 +72,12 @@ public class ColorSetting extends Setting {
         return String.format("%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public Rainbow getRainbow() {
         return rainbow;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void setRainbow(boolean rainbow) {
         if (rainbow) {
             this.rainbow = new Rainbow();
@@ -88,7 +86,7 @@ public class ColorSetting extends Setting {
         }
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public boolean isRainbow() {
         return rainbow != null;
     }
@@ -102,12 +100,12 @@ public class ColorSetting extends Setting {
         private float saturation = 1;
         private int speed = 15;
 
-        @Exclude(Strategy.NAME_REMAPPING)
+        
         public Color getColor() {
             return getColor(0);
         }
 
-        @Exclude(Strategy.NAME_REMAPPING)
+        
         public Color getColor(int index) {
             return ColorUtil.rainbow(speed, index, saturation, 1, 1);
         }
@@ -119,18 +117,18 @@ public class ColorSetting extends Setting {
             return jsonObject;
         }
 
-        @Exclude(Strategy.NAME_REMAPPING)
+        
         public float getSaturation() {
             return Math.max(0, Math.min(1, saturation));
         }
 
-        @Exclude(Strategy.NAME_REMAPPING)
+        
         public void setSaturation(float saturation) { this.saturation = saturation; }
 
-        @Exclude(Strategy.NAME_REMAPPING)
+        
         public int getSpeed() { return speed; }
 
-        @Exclude(Strategy.NAME_REMAPPING)
+        
         public void setSpeed(int speed) { this.speed = speed; }
     }
 

@@ -13,7 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
-import org.lwjgl.input.Keyboard;
+import org.lwjglx.input.Keyboard;
 
 import java.awt.*;
 

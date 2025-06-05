@@ -9,14 +9,12 @@ import dev.tenacity.utils.player.ChatUtil;
 import dev.tenacity.utils.time.TimerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
+import org.lwjglx.input.Keyboard;
+import org.lwjglx.input.Mouse;
 
 import java.awt.*;
 
-@Exclude(Strategy.NAME_REMAPPING)
+
 public class ClientBinding {
 
     public String getClientVersion() {

@@ -2,13 +2,11 @@ package dev.tenacity.utils.client.addons.api.bindings;
 
 import dev.tenacity.utils.Utils;
 import net.minecraft.entity.EntityLivingBase;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Exclude(Strategy.NAME_REMAPPING)
+
 public class WorldBinding implements Utils {
 
     public void setTimer(float speed) {

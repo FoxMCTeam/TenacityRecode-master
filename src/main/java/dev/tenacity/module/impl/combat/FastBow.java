@@ -9,7 +9,7 @@ import dev.tenacity.utils.server.PacketUtils;
 import dev.tenacity.utils.time.TimerUtil;
 import net.minecraft.item.ItemBow;
 import net.minecraft.network.play.client.C03PacketPlayer;
-import org.lwjgl.input.Mouse;
+import org.lwjglx.input.Mouse;
 
 public final class FastBow extends Module {
 

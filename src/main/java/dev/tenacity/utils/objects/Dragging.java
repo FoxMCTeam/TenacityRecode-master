@@ -14,8 +14,6 @@ import dev.tenacity.utils.misc.MathUtils;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.RoundedUtil;
 import net.minecraft.client.gui.ScaledResolution;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
 
 import java.awt.*;
 import java.util.List;
@@ -61,27 +59,27 @@ public class Dragging implements Utils {
         return name;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public float getWidth() {
         return width;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void setWidth(float width) {
         this.width = width;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public float getHeight() {
         return height;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public void setHeight(float height) {
         this.height = height;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public float getX() {
         return xPos;
     }
@@ -90,7 +88,7 @@ public class Dragging implements Utils {
         this.xPos = x;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
 
     public float getY() {
         return yPos;

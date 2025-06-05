@@ -72,13 +72,13 @@ import net.optifine.util.TimedEvent;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
+import org.lwjglx.input.Keyboard;
+import org.lwjglx.input.Mouse;
+import org.lwjglx.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GLContext;
-import org.lwjgl.util.glu.Project;
+import org.lwjglx.opengl.GLContext;
+import org.lwjglx.util.glu.Project;
 
 import java.io.File;
 import java.io.IOException;

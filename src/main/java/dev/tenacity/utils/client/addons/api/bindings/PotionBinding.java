@@ -1,9 +1,7 @@
 package dev.tenacity.utils.client.addons.api.bindings;
 
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
 
-@Exclude(Strategy.NAME_REMAPPING)
+
 public class PotionBinding {
     public final int moveSpeed = 1;
     public final int moveSlowdown = 2;

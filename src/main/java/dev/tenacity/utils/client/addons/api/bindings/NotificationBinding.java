@@ -2,10 +2,8 @@ package dev.tenacity.utils.client.addons.api.bindings;
 
 import dev.tenacity.ui.notifications.NotificationManager;
 import dev.tenacity.ui.notifications.NotificationType;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
 
-@Exclude(Strategy.NAME_REMAPPING)
+
 public class NotificationBinding {
 
     public NotificationType success = NotificationType.SUCCESS;

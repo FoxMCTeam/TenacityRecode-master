@@ -3,12 +3,10 @@ package dev.tenacity.utils.client.addons.api.bindings;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.font.AbstractFontRenderer;
 import dev.tenacity.utils.font.FontUtil;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
 
 import java.util.Arrays;
 
-@Exclude(Strategy.NAME_REMAPPING)
+
 public class FontBinding implements Utils {
 
     public AbstractFontRenderer getCustomFont(String fontName, int fontSize) {

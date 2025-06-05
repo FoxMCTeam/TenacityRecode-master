@@ -39,8 +39,6 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import store.intent.intentguard.annotation.Exclude;
-import store.intent.intentguard.annotation.Strategy;
 
 import java.util.*;
 
@@ -63,7 +61,7 @@ public abstract class EntityLivingBase extends Entity {
     public int swingProgressInt;
     public int arrowHitTimer;
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public int getHurtTime() {
         return hurtTime;
     }
@@ -119,29 +117,29 @@ public abstract class EntityLivingBase extends Entity {
      */
     public float rotationPitchHead;
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public float getRotationPitchHead() {
         return rotationPitchHead;
     }
 
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public boolean isThePlayer() {
         return this == Minecraft.getMinecraft().thePlayer;
     }
 
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public boolean isMob() {
         return this instanceof EntityMob;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public boolean isAnimal() {
         return this instanceof EntityAnimal;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public boolean isVillager() {
         return this instanceof EntityVillager;
     }
@@ -480,7 +478,7 @@ public abstract class EntityLivingBase extends Entity {
     /**
      * Only use is to identify if class is an instance of player for experience dropping
      */
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public boolean isPlayer() {
         return false;
     }
@@ -795,7 +793,7 @@ public abstract class EntityLivingBase extends Entity {
         }
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public final float getHealth() {
         return this.dataWatcher.getWatchableObjectFloat(6);
     }
@@ -1031,7 +1029,7 @@ public abstract class EntityLivingBase extends Entity {
     /**
      * returns true if this entity is by a ladder, false otherwise
      */
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public boolean isOnLadder() {
         int i = MathHelper.floor_double(this.posX);
         int j = MathHelper.floor_double(this.getEntityBoundingBox().minY);
@@ -1083,7 +1081,7 @@ public abstract class EntityLivingBase extends Entity {
     /**
      * Returns the current armor value as determined by a call to InventoryPlayer.getTotalArmorValue
      */
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public int getTotalArmorValue() {
         int i = 0;
 
@@ -1180,7 +1178,7 @@ public abstract class EntityLivingBase extends Entity {
         return (EntityLivingBase) (this._combatTracker.func_94550_c() != null ? this._combatTracker.func_94550_c() : (this.attackingPlayer != null ? this.attackingPlayer : (this.entityLivingToAttack != null ? this.entityLivingToAttack : null)));
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public final float getMaxHealth() {
         return (float) this.getEntityAttribute(SharedMonsterAttributes.maxHealth).getAttributeValue();
     }
@@ -1300,13 +1298,13 @@ public abstract class EntityLivingBase extends Entity {
     /**
      * Returns the item that this EntityLiving is holding, if any.
      */
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public abstract ItemStack getHeldItem();
 
     /**
      * 0: Tool in Hand; 1-4: Armor
      */
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public abstract ItemStack getEquipmentInSlot(int slotIn);
 
     public abstract ItemStack getCurrentArmor(int slotIn);
@@ -1958,7 +1956,7 @@ public abstract class EntityLivingBase extends Entity {
         this.velocityChanged = this.rand.nextDouble() >= this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getAttributeValue();
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public float getRotationYawHead() {
         return this.rotationYawHead;
     }
@@ -1979,7 +1977,7 @@ public abstract class EntityLivingBase extends Entity {
         this.renderYawOffset = offset;
     }
 
-    @Exclude(Strategy.NAME_REMAPPING)
+    
     public float getAbsorptionAmount() {
         return this.absorptionAmount;
     }
