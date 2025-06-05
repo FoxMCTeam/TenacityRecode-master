@@ -18,7 +18,7 @@ import net.optifine.shaders.Shaders;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GLContext;
+import org.lwjglx.opengl.GLContext;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;

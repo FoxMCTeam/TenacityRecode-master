@@ -30,7 +30,7 @@ import net.minecraft.util.AxisAlignedBB;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL33;
-import org.lwjgl.opengl.GLContext;
+import org.lwjglx.opengl.GLContext;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;

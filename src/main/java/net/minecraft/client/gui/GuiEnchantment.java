@@ -17,7 +17,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IWorldNameable;
 import net.minecraft.world.World;
-import org.lwjgl.util.glu.Project;
+import org.lwjglx.util.glu.Project;
 
 import java.io.IOException;
 import java.util.List;
