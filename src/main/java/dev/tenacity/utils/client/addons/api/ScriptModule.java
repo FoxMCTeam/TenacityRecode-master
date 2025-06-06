@@ -11,9 +11,9 @@ import dev.tenacity.module.Module;
 import dev.tenacity.ui.notifications.NotificationManager;
 import dev.tenacity.ui.notifications.NotificationType;
 import dev.tenacity.utils.player.ChatUtil;
-import netscape.javascript.JSObject;
 import lombok.Getter;
 import lombok.Setter;
+import org.openjdk.nashorn.api.scripting.JSObject;
 
 import java.io.File;
 import java.util.HashMap;

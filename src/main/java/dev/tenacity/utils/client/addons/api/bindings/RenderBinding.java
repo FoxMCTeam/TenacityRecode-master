@@ -17,7 +17,7 @@ import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import netscape.javascript.JSObject;
+import org.openjdk.nashorn.api.scripting.JSObject;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
