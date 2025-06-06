@@ -125,14 +125,7 @@ public class SplashScreen implements Utils {
 
         CustomFont fr = duckSansBoldFont80;
 
-        StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < count; i++){
-            sb.append(".");
-        }
-
-        fr.drawCenteredString("Authenticating" + sb, width / 2f, fr.getMiddleOfBox(height),
-                ColorUtil.applyOpacity(-1, 1 - fadeAnim.getOutput().floatValue()));
-
+        fr.drawCenteredString("Authenticating" + ".".repeat(Math.max(0, count)), width / 2f, fr.getMiddleOfBox(height), ColorUtil.applyOpacity(-1, 1 - fadeAnim.getOutput().floatValue()));
 
         float yMovement = progressAnim != null && progressAnim.getDirection().backwards() ? 1 - progressAnim.getOutput().floatValue() : 0;
         float actualY = (fr.getMiddleOfBox(height) - 40) - (48 * yMovement);
