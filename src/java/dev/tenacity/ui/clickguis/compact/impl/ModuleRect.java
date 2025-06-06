@@ -1,7 +1,7 @@
 package dev.tenacity.ui.clickguis.compact.impl;
 
 import dev.tenacity.utils.tuples.Pair;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.render.HUDMod;
 import dev.tenacity.module.settings.impl.KeybindSetting;
@@ -66,7 +66,7 @@ public class ModuleRect implements Screen {
         typing = false;
         Gui.drawRect2(x, y, rectWidth, 20, new Color(39, 39, 39).getRGB());
 
-        HUDMod hudMod = Tenacity.INSTANCE.getModuleCollection().getModule(HUDMod.class);
+        HUDMod hudMod = Client.INSTANCE.getModuleCollection().getModule(HUDMod.class);
         Pair<Color, Color> colors = HUDMod.getClientColors();
         Color actualColor = colors.getFirst();
 

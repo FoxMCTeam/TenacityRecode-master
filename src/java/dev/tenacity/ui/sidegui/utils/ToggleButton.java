@@ -1,6 +1,6 @@
 package dev.tenacity.ui.sidegui.utils;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.ui.Screen;
 import dev.tenacity.ui.sidegui.SideGUI;
 import dev.tenacity.utils.animations.Animation;
@@ -51,7 +51,7 @@ public class ToggleButton implements Screen {
         toggleAnimation.setDirection(enabled ? Direction.FORWARDS : Direction.BACKWARDS);
 
         float toggleAnim = toggleAnimation.getOutput().floatValue();
-        Color roundColor = ColorUtil.interpolateColorC(ColorUtil.tripleColor(64), Tenacity.INSTANCE.getSideGui().getGreenEnabledColor(), toggleAnim);
+        Color roundColor = ColorUtil.interpolateColorC(ColorUtil.tripleColor(64), Client.INSTANCE.getSideGui().getGreenEnabledColor(), toggleAnim);
         RoundedUtil.drawRound(x, y, WH, WH, WH / 2f - .25f, roundColor);
 
         if (enabled || !toggleAnimation.isDone()) {

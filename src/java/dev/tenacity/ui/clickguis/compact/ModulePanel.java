@@ -1,6 +1,6 @@
 package dev.tenacity.ui.clickguis.compact;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.ModuleCollection;
 import dev.tenacity.ui.Screen;
@@ -55,7 +55,7 @@ public class ModulePanel implements Screen {
 
         float maxScrollbarHeight = rectHeight - 10;
         Scroll scroll = scrollHashMap.get(currentCat);
-        if (!Tenacity.INSTANCE.getSideGui().isFocused()) {
+        if (!Client.INSTANCE.getSideGui().isFocused()) {
             scroll.onScroll(35);
         }
 

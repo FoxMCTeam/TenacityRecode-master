@@ -1,8 +1,6 @@
 package dev.tenacity.event.impl.game;
 
-import dev.tenacity.Tenacity;
 import dev.tenacity.event.Event;
-import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
 
 /**

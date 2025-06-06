@@ -1,7 +1,7 @@
 package dev.tenacity.ui.sidegui;
 
 import dev.tenacity.utils.tuples.Pair;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.impl.render.HUDMod;
 import dev.tenacity.ui.Screen;
 import dev.tenacity.ui.sidegui.forms.Form;
@@ -117,7 +117,7 @@ public class SideGUI implements Screen {
     @Override
     public void drawScreen(int mouseX, int mouseY) {
         ScaledResolution sr = new ScaledResolution(mc);
-        HUDMod hudMod = (HUDMod) Tenacity.INSTANCE.getModuleCollection().get(HUDMod.class);
+        HUDMod hudMod = (HUDMod) Client.INSTANCE.getModuleCollection().get(HUDMod.class);
         Pair<Color, Color> colors = HUDMod.getClientColors();
 
         //This is for moving the side gui to the middle of the screen when it's clicked

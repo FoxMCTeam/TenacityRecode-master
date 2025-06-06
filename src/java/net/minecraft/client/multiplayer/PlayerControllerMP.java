@@ -1,6 +1,6 @@
 package net.minecraft.client.multiplayer;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.impl.combat.KillAura;
 import dev.tenacity.module.impl.movement.Flight;
 import dev.tenacity.event.impl.player.AttackEvent;
@@ -416,7 +416,7 @@ public class PlayerControllerMP {
         boolean cancelled = false;
         if (targetEntity instanceof EntityLivingBase) {
             AttackEvent attackEvent = new AttackEvent((EntityLivingBase) targetEntity);
-            Tenacity.INSTANCE.getEventProtocol().handleEvent(attackEvent);
+            Client.INSTANCE.getEventProtocol().handleEvent(attackEvent);
             cancelled = attackEvent.isCancelled();
         }
         if (!cancelled) {
@@ -492,7 +492,7 @@ public class PlayerControllerMP {
     }
 
     public void onStoppedUsingItem(EntityPlayer playerIn) {
-        if (Tenacity.INSTANCE.isEnabled(KillAura.class)) {
+        if (Client.INSTANCE.isEnabled(KillAura.class)) {
             if (KillAura.blocking) {
                 return;
             }

@@ -1,6 +1,6 @@
 package dev.tenacity.ui.altmanager;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.impl.render.NotificationsMod;
 import dev.tenacity.ui.Screen;
 import dev.tenacity.ui.altmanager.helpers.Alt;
@@ -56,8 +56,8 @@ public class GuiAltManager extends GuiScreen {
     @Override
     public void initGui() {
         if (mc.gameSettings.guiScale != 2) {
-            Tenacity.prevGuiScale = mc.gameSettings.guiScale;
-            Tenacity.updateGuiScale = true;
+            Client.prevGuiScale = mc.gameSettings.guiScale;
+            Client.updateGuiScale = true;
             mc.gameSettings.guiScale = 2;
             mc.resize(mc.displayWidth - 1, mc.displayHeight);
             mc.resize(mc.displayWidth + 1, mc.displayHeight);
@@ -136,7 +136,7 @@ public class GuiAltManager extends GuiScreen {
         filterBanned.drawScreen(mouseX, mouseY);
         /* End filter banned button */
 
-        Tenacity.INSTANCE.getModuleCollection().getModule(NotificationsMod.class).render();
+        Client.INSTANCE.getModuleCollection().getModule(NotificationsMod.class).render();
         if (Alt.stage != 0) {
             AltPanel.loadingAltRect = null;
         }
@@ -169,9 +169,9 @@ public class GuiAltManager extends GuiScreen {
 
     @Override
     public void onGuiClosed() {
-        if (Tenacity.updateGuiScale) {
-            mc.gameSettings.guiScale = Tenacity.prevGuiScale;
-            Tenacity.updateGuiScale = false;
+        if (Client.updateGuiScale) {
+            mc.gameSettings.guiScale = Client.prevGuiScale;
+            Client.updateGuiScale = false;
         }
     }
 

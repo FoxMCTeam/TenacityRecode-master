@@ -1,6 +1,6 @@
 package dev.tenacity.ui.sidegui.panels.scriptpanel;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.utils.client.addons.api.Script;
 import dev.tenacity.ui.Screen;
 import dev.tenacity.ui.sidegui.SideGUI;
@@ -47,7 +47,7 @@ public class LocalScriptRect implements Screen {
 
     public LocalScriptRect(Script script) {
         this.script = script;
-        Tenacity.INSTANCE.getSideGui().addTooltip(hoverInformation);
+        Client.INSTANCE.getSideGui().addTooltip(hoverInformation);
         buttons.add(new IconButton(FontUtil.UPLOAD, "Upload this script"));
         buttons.add(new IconButton(FontUtil.TRASH, "Delete this script"));
 
@@ -111,10 +111,10 @@ public class LocalScriptRect implements Screen {
 
                 switch (button.getIcon()) {
                     case FontUtil.UPLOAD:
-                        Form uploadForm = Tenacity.INSTANCE.getSideGui().displayForm("Upload Script");
+                        Form uploadForm = Client.INSTANCE.getSideGui().displayForm("Upload Script");
                         uploadForm.setUploadAction((name, description) -> {
                             Multithreading.runAsync(() -> {
-                                boolean validScript = Tenacity.INSTANCE.getScriptManager().processScriptData(script.getFile());
+                                boolean validScript = Client.INSTANCE.getScriptManager().processScriptData(script.getFile());
                                 if (validScript) {
                                     String fileData = FileUtils.readFile(script.getFile());
                                     System.out.println(fileData);
@@ -124,8 +124,8 @@ public class LocalScriptRect implements Screen {
                         break;
                     case FontUtil.TRASH:
                         IOUtils.deleteFile(script.getFile());
-                        Tenacity.INSTANCE.getSideGui().getTooltips().clear();
-                        Tenacity.INSTANCE.getSideGui().getScriptPanel().setRefresh(true);
+                        Client.INSTANCE.getSideGui().getTooltips().clear();
+                        Client.INSTANCE.getSideGui().getScriptPanel().setRefresh(true);
                         break;
                 }
 

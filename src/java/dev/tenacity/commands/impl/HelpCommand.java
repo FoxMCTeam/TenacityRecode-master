@@ -1,6 +1,6 @@
 package dev.tenacity.commands.impl;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.commands.Command;
 import net.minecraft.event.HoverEvent;
 import net.minecraft.util.ChatComponentText;
@@ -15,10 +15,10 @@ public class HelpCommand extends Command {
 
     @Override
     public void execute(String[] args) {
-        ChatComponentText response = new ChatComponentText("\n§l§dTenacity §r§d" + Tenacity.VERSION + "§l " + Tenacity.RELEASE.getName() + " §7- §r§6Hover to see command usages.");
+        ChatComponentText response = new ChatComponentText("\n§l§dTenacity §r§d" + Client.VERSION + "§l " + Client.RELEASE.getName() + " §7- §r§6Hover to see command usages.");
         ChatComponentText temp = new ChatComponentText("");
         float maxLength = 0;
-        for (Command cmd : Tenacity.INSTANCE.getCommandHandler().getCommands()) {
+        for (Command cmd : Client.INSTANCE.getCommandHandler().getCommands()) {
             String info = String.format("\n§r§b.%s • \2477%s", cmd.getName().toLowerCase(), cmd.getDescription());
             temp.appendSibling(
                     new ChatComponentText(info)

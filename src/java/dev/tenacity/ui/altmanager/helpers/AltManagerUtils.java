@@ -2,7 +2,7 @@ package dev.tenacity.ui.altmanager.helpers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.utils.client.addons.microsoft.MicrosoftLogin;
 import dev.tenacity.ui.notifications.NotificationManager;
 import dev.tenacity.ui.notifications.NotificationType;
@@ -31,7 +31,7 @@ public class AltManagerUtils implements Utils {
     @Getter
     private static List<Alt> alts = new ArrayList<>();
     private final TimerUtil timerUtil = new TimerUtil();
-    public static File altsFile = new File(Tenacity.DIRECTORY, "Alts.json");
+    public static File altsFile = new File(Client.DIRECTORY, "Alts.json");
 
     public AltManagerUtils() {
         if (!altsFile.exists()) {
@@ -139,8 +139,8 @@ public class AltManagerUtils implements Utils {
                 finalAlt.altState = Alt.AltState.LOGIN_SUCCESS;
                 AltManagerUtils.getAlts().add(finalAlt);
                 writeAlts();
-                Tenacity.INSTANCE.getAltManager().currentSessionAlt = finalAlt;
-                Tenacity.INSTANCE.getAltManager().getAltPanel().refreshAlts();
+                Client.INSTANCE.getAltManager().currentSessionAlt = finalAlt;
+                Client.INSTANCE.getAltManager().getAltPanel().refreshAlts();
             } else {
                 Alt.stage = 1;
                 finalAlt.altState = Alt.AltState.LOGIN_FAIL;

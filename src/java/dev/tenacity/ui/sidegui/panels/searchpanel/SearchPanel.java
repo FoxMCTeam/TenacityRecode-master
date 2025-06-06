@@ -1,6 +1,6 @@
 package dev.tenacity.ui.sidegui.panels.searchpanel;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.ui.sidegui.panels.Panel;
 import dev.tenacity.ui.sidegui.utils.ToggleButton;
 import dev.tenacity.utils.objects.Scroll;
@@ -42,7 +42,7 @@ public class SearchPanel extends Panel {
         compactMode.setAlpha(getAlpha());
         compactMode.drawScreen(mouseX, mouseY);
 
-        String search = Tenacity.INSTANCE.getSideGui().getHotbar().searchField.getText();
+        String search = Client.INSTANCE.getSideGui().getHotbar().searchField.getText();
 
         if (check(search)) return;
 

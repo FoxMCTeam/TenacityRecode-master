@@ -1,6 +1,6 @@
 package dev.tenacity.module.impl.render;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.render.ShaderEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -62,8 +62,8 @@ public class PostProcessing extends Module {
             ClickGUIMod.dropdownClickGui.renderEffects();
         }
         if (mc.currentScreen == ClickGUIMod.dropdownClickGui || mc.currentScreen == ClickGUIMod.modernClickGui || mc.currentScreen == ClickGUIMod.compactClickgui) {
-            Tenacity.INSTANCE.getSideGui().drawForEffects(bloom);
-            Tenacity.INSTANCE.getSearchBar().drawEffects();
+            Client.INSTANCE.getSideGui().drawForEffects(bloom);
+            Client.INSTANCE.getSearchBar().drawEffects();
         }
 
 
@@ -72,7 +72,7 @@ public class PostProcessing extends Module {
         RenderUtil.resetColor();
         mc.ingameGUI.renderScoreboardBlur(sr);
         RenderUtil.resetColor();
-        NotificationsMod notificationsMod = Tenacity.INSTANCE.getModuleCollection().getModule(NotificationsMod.class);
+        NotificationsMod notificationsMod = Client.INSTANCE.getModuleCollection().getModule(NotificationsMod.class);
         if (notificationsMod.isEnabled()) {
             notificationsMod.renderEffects(glowOptions.getSetting("Notifications").isEnabled());
         }
@@ -94,7 +94,7 @@ public class PostProcessing extends Module {
 
             stencilFramebuffer.framebufferClear();
             stencilFramebuffer.bindFramebuffer(false);
-            Tenacity.INSTANCE.getEventProtocol().handleEvent(new ShaderEvent(false, glowOptions));
+            Client.INSTANCE.getEventProtocol().handleEvent(new ShaderEvent(false, glowOptions));
             stuffToBlur(false);
             stencilFramebuffer.unbindFramebuffer();
 
@@ -109,7 +109,7 @@ public class PostProcessing extends Module {
             stencilFramebuffer.framebufferClear();
             stencilFramebuffer.bindFramebuffer(false);
 
-            Tenacity.INSTANCE.getEventProtocol().handleEvent(new ShaderEvent(true, glowOptions));
+            Client.INSTANCE.getEventProtocol().handleEvent(new ShaderEvent(true, glowOptions));
             stuffToBlur(true);
 
             stencilFramebuffer.unbindFramebuffer();

@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.render;
 
 import dev.tenacity.utils.tuples.Pair;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.render.Render3DEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -73,7 +73,7 @@ public class ChinaHat extends Module {
             double height = (lowerHeight ? -CustomModel.getYOffset() : 0) + bb.maxY - bb.minY + 0.02, radius = bb.maxX - bb.minX;
 
             float yaw = MathUtils.interpolate(player.prevRotationYawHead, player.rotationYawHead, partialTicks).floatValue();
-            if (Tenacity.INSTANCE.isEnabled(KillAura.class) || Tenacity.INSTANCE.isEnabled(Scaffold.class)) {
+            if (Client.INSTANCE.isEnabled(KillAura.class) || Client.INSTANCE.isEnabled(Scaffold.class)) {
                 yaw = MathUtils.interpolate(MathHelper.wrapAngleTo180_float(player.prevRotationYawHead),
                         MathHelper.wrapAngleTo180_float(player.rotationYawHead), partialTicks).floatValue();
             }

@@ -1,7 +1,7 @@
 package net.minecraft.client.gui;
 
 import com.google.common.collect.Lists;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.ui.mainmenu.CustomMainMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -301,7 +301,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
 
         if (button.id == 3)
         {
-            this.mc.displayGuiScreen(Tenacity.INSTANCE.getAltManager());
+            this.mc.displayGuiScreen(Client.INSTANCE.getAltManager());
         }
 
         if (button.id == 4)

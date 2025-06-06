@@ -1,7 +1,7 @@
 package dev.tenacity.ui.sidegui.forms;
 
 import dev.tenacity.utils.tuples.Triplet;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.impl.render.HUDMod;
 import dev.tenacity.ui.Screen;
 import dev.tenacity.utils.misc.HoveringUtil;
@@ -33,7 +33,7 @@ public abstract class Form implements Screen {
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
         if(!HoveringUtil.isHovering(x, y, width, height, mouseX, mouseY)){
-            Tenacity.INSTANCE.getSideGui().displayForm(null);
+            Client.INSTANCE.getSideGui().displayForm(null);
         }
 
     }

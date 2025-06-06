@@ -5,11 +5,10 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.mojang.authlib.GameProfile;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.impl.movement.Flight;
 import dev.tenacity.event.impl.player.ChatReceivedEvent;
 import dev.tenacity.utils.misc.Enhancements;
-import dev.tenacity.utils.player.ChatUtil;
 import io.netty.buffer.Unpooled;
 import net.minecraft.block.Block;
 import net.minecraft.client.ClientBrandRetriever;
@@ -633,7 +632,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
 
         ChatReceivedEvent e = new ChatReceivedEvent(packetIn.getType(), packetIn.getChatComponent());
 
-        Tenacity.INSTANCE.getEventProtocol().handleEvent(e);
+        Client.INSTANCE.getEventProtocol().handleEvent(e);
         if (e.isCancelled() || e.message == null) return;
 
         if (packetIn.getType() == 2) {

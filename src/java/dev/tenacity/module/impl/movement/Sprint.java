@@ -1,6 +1,6 @@
 package dev.tenacity.module.impl.movement;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -18,7 +18,7 @@ public class Sprint extends Module {
 
     @Override
     public void onMotionEvent(MotionEvent event) {
-        if (Tenacity.INSTANCE.getModuleCollection().get(Scaffold.class).isEnabled() && (!Scaffold.sprint.isEnabled() || Scaffold.isDownwards())) {
+        if (Client.INSTANCE.getModuleCollection().get(Scaffold.class).isEnabled() && (!Scaffold.sprint.isEnabled() || Scaffold.isDownwards())) {
             mc.gameSettings.keyBindSprint.pressed = false;
             mc.thePlayer.setSprinting(false);
             return;
@@ -27,7 +27,7 @@ public class Sprint extends Module {
             mc.thePlayer.setSprinting(true);
         } else {
             if (mc.thePlayer.isUsingItem()) {
-                if (mc.thePlayer.moveForward > 0 && (Tenacity.INSTANCE.isEnabled(NoSlow.class) || !mc.thePlayer.isUsingItem()) && !mc.thePlayer.isSneaking() && !mc.thePlayer.isCollidedHorizontally && mc.thePlayer.getFoodStats().getFoodLevel() > 6) {
+                if (mc.thePlayer.moveForward > 0 && (Client.INSTANCE.isEnabled(NoSlow.class) || !mc.thePlayer.isUsingItem()) && !mc.thePlayer.isSneaking() && !mc.thePlayer.isCollidedHorizontally && mc.thePlayer.getFoodStats().getFoodLevel() > 6) {
                     mc.thePlayer.setSprinting(true);
                 }
             } else {

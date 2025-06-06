@@ -1,6 +1,6 @@
 package dev.tenacity.ui.clickguis.modern;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.ModuleCollection;
@@ -76,7 +76,7 @@ public class ModernClickGui extends GuiScreen {
         }
 
         drag.onDraw(mouseX, mouseY);
-        Tenacity.INSTANCE.getSideGui().onDrag(mouseX, mouseY);
+        Client.INSTANCE.getSideGui().onDrag(mouseX, mouseY);
     }
 
     @Override
@@ -90,9 +90,9 @@ public class ModernClickGui extends GuiScreen {
             modpanel = new ModulesPanel();
         }
 
-        Tenacity.INSTANCE.getSideGui().initGui();
-        Tenacity.INSTANCE.getSearchBar().initGui();
-        ClickGUIMod clickMod = Tenacity.INSTANCE.getModuleCollection().getModule(ClickGUIMod.class);
+        Client.INSTANCE.getSideGui().initGui();
+        Client.INSTANCE.getSearchBar().initGui();
+        ClickGUIMod clickMod = Client.INSTANCE.getModuleCollection().getModule(ClickGUIMod.class);
         currentCategory = clickMod.getActiveCategory();
         categories.forEach(Component::initGui);
         openingAnimation = new DecelerateAnimation(300, 1);
@@ -108,25 +108,25 @@ public class ModernClickGui extends GuiScreen {
     protected void keyTyped(char typedChar, int keyCode) {
         if (keyCode == 1 && !typing) {
 
-            if (Tenacity.INSTANCE.getSearchBar().isFocused()) {
-                Tenacity.INSTANCE.getSearchBar().getSearchField().setText("");
-                Tenacity.INSTANCE.getSearchBar().getSearchField().setFocused(false);
+            if (Client.INSTANCE.getSearchBar().isFocused()) {
+                Client.INSTANCE.getSearchBar().getSearchField().setText("");
+                Client.INSTANCE.getSearchBar().getSearchField().setFocused(false);
                 return;
             }
 
-            if (Tenacity.INSTANCE.getSideGui().isFocused()) {
-                Tenacity.INSTANCE.getSideGui().setFocused(false);
+            if (Client.INSTANCE.getSideGui().isFocused()) {
+                Client.INSTANCE.getSideGui().setFocused(false);
                 return;
             }
 
-            Tenacity.INSTANCE.getSearchBar().getOpenAnimation().setDirection(Direction.BACKWARDS);
+            Client.INSTANCE.getSearchBar().getOpenAnimation().setDirection(Direction.BACKWARDS);
             openingAnimation.setDirection(Direction.BACKWARDS);
-            ClickGUIMod clickMod = Tenacity.INSTANCE.getModuleCollection().getModule(ClickGUIMod.class);
+            ClickGUIMod clickMod = Client.INSTANCE.getModuleCollection().getModule(ClickGUIMod.class);
             clickMod.setActiveCategory(currentCategory);
         }
 
-        Tenacity.INSTANCE.getSideGui().keyTyped(typedChar, keyCode);
-        Tenacity.INSTANCE.getSearchBar().keyTyped(typedChar, keyCode);
+        Client.INSTANCE.getSideGui().keyTyped(typedChar, keyCode);
+        Client.INSTANCE.getSearchBar().keyTyped(typedChar, keyCode);
         modpanel.keyTyped(typedChar, keyCode);
     }
 
@@ -141,7 +141,7 @@ public class ModernClickGui extends GuiScreen {
             } else moduleRects.clear();
             for (Category category : Category.values()) {
                 ArrayList<ModuleRect> modules = new ArrayList<>();
-                for (Module module : Tenacity.INSTANCE.getModuleCollection().getModulesInCategory(category)) {
+                for (Module module : Client.INSTANCE.getModuleCollection().getModulesInCategory(category)) {
                     modules.add(new ModuleRect(module));
                 }
 
@@ -153,13 +153,13 @@ public class ModernClickGui extends GuiScreen {
             return;
         }
 
-        typing = modpanel.isTyping() || (Tenacity.INSTANCE.getSideGui().isFocused() && Tenacity.INSTANCE.getSideGui().isTyping()) || Tenacity.INSTANCE.getSearchBar().isTyping();
+        typing = modpanel.isTyping() || (Client.INSTANCE.getSideGui().isFocused() && Client.INSTANCE.getSideGui().isTyping()) || Client.INSTANCE.getSearchBar().isTyping();
 
         if (ClickGUIMod.walk.isEnabled() && !typing) {
             InventoryMove.updateStates();
         }
 
-        boolean focusedConfigGui = Tenacity.INSTANCE.getSideGui().isFocused();
+        boolean focusedConfigGui = Client.INSTANCE.getSideGui().isFocused();
         int fakeMouseX = focusedConfigGui ? 0 : mouseX, fakeMouseY = focusedConfigGui ? 0 : mouseY;
 
         adjustment = 0;
@@ -181,7 +181,7 @@ public class ModernClickGui extends GuiScreen {
 
         float catWidth = (100 - (55 * expandedAnimation.getOutput().floatValue()));
         boolean hoveringCat = HoveringUtil.isHovering(x, y, catWidth, rectHeight, fakeMouseX, fakeMouseY);
-        boolean searching = Tenacity.INSTANCE.getSearchBar().isFocused();
+        boolean searching = Client.INSTANCE.getSearchBar().isFocused();
         if (expandedAnimation.isDone()) {
             expandedAnimation.setDirection(hoveringCat && !searching ? Direction.BACKWARDS : Direction.FORWARDS);
         }
@@ -209,7 +209,7 @@ public class ModernClickGui extends GuiScreen {
         float xAdjust = 10 * expandedAnimation.getOutput().floatValue();
         FontUtil.tenacityFont20.drawString("Tenacity", x + 35 + xAdjust, y + 13, -1);
 
-        FontUtil.tenacityFont14.drawString(Tenacity.VERSION, x + 41 + FontUtil.tenacityFont18.getStringWidth("Tenacity") + xAdjust, y + 15.5f,
+        FontUtil.tenacityFont14.drawString(Client.VERSION, x + 41 + FontUtil.tenacityFont18.getStringWidth("Tenacity") + xAdjust, y + 15.5f,
                 new Color(98, 98, 98));
 
 
@@ -244,11 +244,11 @@ public class ModernClickGui extends GuiScreen {
         StencilUtil.uninitStencilBuffer();
 
 
-        SideGUI sideGUI = Tenacity.INSTANCE.getSideGui();
+        SideGUI sideGUI = Client.INSTANCE.getSideGui();
         sideGUI.getOpenAnimation().setDirection(openingAnimation.getDirection());
         sideGUI.drawScreen(mouseX, mouseY);
 
-        SearchBar searchBar = Tenacity.INSTANCE.getSearchBar();
+        SearchBar searchBar = Client.INSTANCE.getSearchBar();
         searchBar.setAlpha(openingAnimation.getOutput().floatValue() * (1 - sideGUI.getClickAnimation().getOutput().floatValue()));
         searchBar.drawScreen(fakeMouseX, fakeMouseY);
 
@@ -265,7 +265,7 @@ public class ModernClickGui extends GuiScreen {
         double x = drag.getX(), y = drag.getY();
         final boolean canDrag = HoveringUtil.isHovering((float) x, (float) y, rectWidth, 20f, mouseX, mouseY);
 
-        if (!Tenacity.INSTANCE.getSideGui().isFocused()) {
+        if (!Client.INSTANCE.getSideGui().isFocused()) {
             drag.onClick(mouseX, mouseY, mouseButton, canDrag);
 
 
@@ -285,18 +285,18 @@ public class ModernClickGui extends GuiScreen {
             }
             modpanel.mouseClicked(mouseX, mouseY, mouseButton);
         }
-        Tenacity.INSTANCE.getSideGui().mouseClicked(mouseX, mouseY, mouseButton);
-        Tenacity.INSTANCE.getSearchBar().mouseClicked(mouseX, mouseY, mouseButton);
+        Client.INSTANCE.getSideGui().mouseClicked(mouseX, mouseY, mouseButton);
+        Client.INSTANCE.getSearchBar().mouseClicked(mouseX, mouseY, mouseButton);
     }
 
     @Override
     protected void mouseReleased(int mouseX, int mouseY, int state) {
-        if (!Tenacity.INSTANCE.getSideGui().isFocused()) {
+        if (!Client.INSTANCE.getSideGui().isFocused()) {
             drag.onRelease(state);
             modpanel.mouseReleased(mouseX, mouseY, state);
         }
-        Tenacity.INSTANCE.getSideGui().mouseReleased(mouseX, mouseY, state);
-        Tenacity.INSTANCE.getSearchBar().mouseReleased(mouseX, mouseY, state);
+        Client.INSTANCE.getSideGui().mouseReleased(mouseX, mouseY, state);
+        Client.INSTANCE.getSearchBar().mouseReleased(mouseX, mouseY, state);
     }
 
     @Override
@@ -313,11 +313,11 @@ public class ModernClickGui extends GuiScreen {
     private String searchText;
 
     public List<ModuleRect> getModuleRects(Category category) {
-        if (!Tenacity.INSTANCE.getSearchBar().isFocused()) {
+        if (!Client.INSTANCE.getSearchBar().isFocused()) {
             return moduleRects.get(category);
         }
 
-        String search = Tenacity.INSTANCE.getSearchBar().getSearchField().getText();
+        String search = Client.INSTANCE.getSearchBar().getSearchField().getText();
 
         if (search.equals(searchText)) {
             return searchResults;

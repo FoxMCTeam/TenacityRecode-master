@@ -1,6 +1,6 @@
 package dev.tenacity.module.impl.player;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.network.PacketSendEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -33,7 +33,7 @@ public class AntiVoid extends Module {
 
     @Override
     public void onPacketSendEvent(PacketSendEvent event) {
-        if(mode.is("Watchdog") && !Tenacity.INSTANCE.getModuleCollection().getModule(Speed.class).isEnabled()) {
+        if(mode.is("Watchdog") && !Client.INSTANCE.getModuleCollection().getModule(Speed.class).isEnabled()) {
             if(event.getPacket() instanceof C03PacketPlayer) {
                 if(!isBlockUnder()) {
                     if(mc.thePlayer.fallDistance < fallDist.getValue()) {

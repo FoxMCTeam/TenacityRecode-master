@@ -1,6 +1,6 @@
 package dev.tenacity.ui.notifications;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.impl.render.PostProcessing;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.animations.Animation;
@@ -70,7 +70,7 @@ public class Notification implements Utils {
 
 
     public void drawExhi(float x, float y, float width, float height) {
-        boolean lowerAlpha = Tenacity.INSTANCE.getModuleCollection().getModule(PostProcessing.class).isEnabled();
+        boolean lowerAlpha = Client.INSTANCE.getModuleCollection().getModule(PostProcessing.class).isEnabled();
         Gui.drawRect2(x, y, width, height, new Color(0.1F, 0.1F, 0.1F, lowerAlpha ? 0.4F : .75f).getRGB());
         float percentage = Math.min((timerUtil.getTime() / getTime()), 1);
         Gui.drawRect2(x + (width * percentage), y + height - 1, width - (width * percentage), 1, getNotificationType().getColor().getRGB());

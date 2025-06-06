@@ -1,6 +1,6 @@
 package dev.tenacity.commands.impl;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.commands.Command;
 import dev.tenacity.module.Module;
 import org.lwjglx.input.Keyboard;
@@ -18,7 +18,7 @@ public class BindCommand extends Command {
         } else {
             String stringModule = args[0];
             try {
-                Module module = Tenacity.INSTANCE.getModuleCollection().getModuleByName(stringModule);
+                Module module = Client.INSTANCE.getModuleCollection().getModuleByName(stringModule);
                 module.getKeybind().setCode(Keyboard.getKeyIndex(args[1].toUpperCase()));
                 sendChatWithPrefix("Set keybind for " + module.getName() + " to " + args[1].toUpperCase());
             } catch (Exception e) {

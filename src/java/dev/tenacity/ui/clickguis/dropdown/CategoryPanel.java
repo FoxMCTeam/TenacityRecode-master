@@ -1,7 +1,7 @@
 package dev.tenacity.ui.clickguis.dropdown;
 
 import dev.tenacity.utils.tuples.Pair;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.ModuleCollection;
@@ -49,7 +49,7 @@ public class CategoryPanel implements Screen {
     public void initGui() {
         if (moduleRects == null) {
             moduleRects = new ArrayList<>();
-            for (Module module : Tenacity.INSTANCE.getModuleCollection().getModulesInCategory(category).stream().sorted(Comparator.comparing(Module::getName)).collect(Collectors.toList())) {
+            for (Module module : Client.INSTANCE.getModuleCollection().getModulesInCategory(category).stream().sorted(Comparator.comparing(Module::getName)).collect(Collectors.toList())) {
                 moduleRects.add(new ModuleRect(module));
             }
         }
@@ -81,7 +81,7 @@ public class CategoryPanel implements Screen {
         
         if (category.equals(Category.SCRIPTS) && ModuleCollection.reloadModules) {
             moduleRects.clear();
-            for (Module module : Tenacity.INSTANCE.getModuleCollection().getModulesInCategory(category).stream().sorted(Comparator.comparing(Module::getName)).collect(Collectors.toList())) {
+            for (Module module : Client.INSTANCE.getModuleCollection().getModulesInCategory(category).stream().sorted(Comparator.comparing(Module::getName)).collect(Collectors.toList())) {
                 moduleRects.add(new ModuleRect(module));
             }
             ModuleCollection.reloadModules = false;
@@ -282,11 +282,11 @@ public class CategoryPanel implements Screen {
     private final List<ModuleRect> moduleRectFilter = new ArrayList<>();
 
     public List<ModuleRect> getModuleRects() {
-        if (!Tenacity.INSTANCE.getSearchBar().isFocused()) {
+        if (!Client.INSTANCE.getSearchBar().isFocused()) {
             return moduleRects;
         }
 
-        String search = Tenacity.INSTANCE.getSearchBar().getSearchField().getText();
+        String search = Client.INSTANCE.getSearchBar().getSearchField().getText();
 
         if (search.equals(searchText)) {
             return moduleRectFilter;

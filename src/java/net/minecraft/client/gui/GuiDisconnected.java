@@ -1,6 +1,6 @@
 package net.minecraft.client.gui;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.impl.render.NotificationsMod;
 import dev.tenacity.module.impl.render.Statistics;
 import dev.tenacity.ui.altmanager.helpers.Alt;
@@ -25,7 +25,7 @@ public class GuiDisconnected extends GuiScreen {
         this.parentScreen = screen;
         this.reason = I18n.format(reasonLocalizationKey);
         this.message = chatComp;
-        Alt activeAlt = Tenacity.INSTANCE.getAltManager().currentSessionAlt;
+        Alt activeAlt = Client.INSTANCE.getAltManager().currentSessionAlt;
         if (activeAlt != null) {
             BanUtils.processDisconnect(activeAlt, chatComp);
         }
@@ -58,7 +58,7 @@ public class GuiDisconnected extends GuiScreen {
         if (button.id == 0) {
             mc2.displayGuiScreen(this.parentScreen);
         } else if (button.id == 1) {
-            mc2.displayGuiScreen(Tenacity.INSTANCE.getAltManager());
+            mc2.displayGuiScreen(Client.INSTANCE.getAltManager());
         } else if (button.id == 2) {
             if (ServerUtils.lastServer != null) {
                 mc2.displayGuiScreen(new GuiConnecting(new GuiMultiplayer(new CustomMainMenu()), mc2, ServerUtils.lastServer));
@@ -102,7 +102,7 @@ public class GuiDisconnected extends GuiScreen {
             this.drawCenteredString(this.fontRendererObj, "Play time: §7" + str, this.width / 2, i + offset, 0xFFE3E3E3);
         }
 
-        Tenacity.INSTANCE.getModuleCollection().getModule(NotificationsMod.class).render();
+        Client.INSTANCE.getModuleCollection().getModule(NotificationsMod.class).render();
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 }

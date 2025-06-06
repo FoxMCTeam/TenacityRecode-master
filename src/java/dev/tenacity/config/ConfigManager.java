@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.internal.LinkedTreeMap;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.Setting;
@@ -88,7 +88,7 @@ public class ConfigManager {
     }
 
     public String serialize() {
-        for (Module module : Tenacity.INSTANCE.getModuleCollection().getModules()) {
+        for (Module module : Client.INSTANCE.getModuleCollection().getModules()) {
             if (module.getCategory().equals(Category.SCRIPTS)) continue;
             List<ConfigSetting> settings = new ArrayList<>();
             for (Setting setting : module.getSettingsList()) {
@@ -99,7 +99,7 @@ public class ConfigManager {
             }
             module.cfgSettings = settings.toArray(new ConfigSetting[0]);
         }
-        return gson.toJson(Tenacity.INSTANCE.getModuleCollection().getModules());
+        return gson.toJson(Client.INSTANCE.getModuleCollection().getModules());
     }
 
     public String readConfigData(Path configPath) {
@@ -118,7 +118,7 @@ public class ConfigManager {
     public boolean loadConfig(String data, boolean keybinds) {
         Module[] modules = gson.fromJson(data, Module[].class);
 
-        for (Module module : Tenacity.INSTANCE.getModuleCollection().getModules()) {
+        for (Module module : Client.INSTANCE.getModuleCollection().getModules()) {
             if (!keybinds) {
                 if (!loadVisuals && module.getCategory().equals(Category.RENDER)) continue;
             }
@@ -149,7 +149,7 @@ public class ConfigManager {
                                             ms.setCurrentMode(value);
                                         } else {
                                             ms.setCurrentMode(ms.modes.get(0));
-                                            Tenacity.LOGGER.info(String.format("The value of setting %s in module %s was reset", ms.name, module.getName()));
+                                            Client.LOGGER.info(String.format("The value of setting %s in module %s was reset", ms.name, module.getName()));
                                         }
                                     }
                                     if (setting instanceof NumberSetting) {
@@ -159,7 +159,7 @@ public class ConfigManager {
                                             value = Double.parseDouble(String.valueOf(cfgSetting.value));
                                         } catch (NumberFormatException e) {
                                             value = ss.getDefaultValue();
-                                            Tenacity.LOGGER.info(String.format("The value of setting %s in module %s was reset", ss.name, module.getName()));
+                                            Client.LOGGER.info(String.format("The value of setting %s in module %s was reset", ss.name, module.getName()));
                                         }
                                         ss.setValue(value);
                                     }

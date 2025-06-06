@@ -5,7 +5,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.utils.client.addons.viamcp.vialoadingbase.ViaLoadingBase;
 import dev.tenacity.utils.client.addons.viamcp.vialoadingbase.netty.event.CompressionReorderEvent;
 import dev.tenacity.utils.client.addons.viamcp.viamcp.MCPVLBPipeline;
@@ -133,7 +133,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         if (this.channel.isOpen()) {
             try {
                 PacketReceiveEvent e = new PacketReceiveEvent(p_channelRead0_2_);
-                Tenacity.INSTANCE.getEventProtocol().handleEvent(e);
+                Client.INSTANCE.getEventProtocol().handleEvent(e);
                 if (e.isCancelled()) return;
                 p_channelRead0_2_.processPacket(this.packetListener);
             } catch (ThreadQuickExitException ignored) {
@@ -159,7 +159,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         if (this.isChannelOpen()) {
             if (!silent) {
                 PacketSendEvent e = new PacketSendEvent(packetIn);
-                Tenacity.INSTANCE.getEventProtocol().handleEvent(e);
+                Client.INSTANCE.getEventProtocol().handleEvent(e);
                 if (e.isCancelled()) return;
                 packetIn = e.getPacket();
             }

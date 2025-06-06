@@ -8,12 +8,10 @@ import dev.tenacity.module.Module;
 import dev.tenacity.module.ModuleCollection;
 import dev.tenacity.utils.client.addons.api.ScriptManager;
 import dev.tenacity.ui.altmanager.GuiAltManager;
-import dev.tenacity.ui.altmanager.helpers.KingGenApi;
 import dev.tenacity.ui.searchbar.SearchBar;
 import dev.tenacity.ui.sidegui.SideGUI;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.client.ReleaseType;
-import dev.tenacity.utils.objects.DiscordAccount;
 import dev.tenacity.utils.objects.Dragging;
 import dev.tenacity.utils.server.PingerUtils;
 import lombok.Getter;
@@ -28,9 +26,9 @@ import java.util.concurrent.Executors;
 
 @Getter
 @Setter
-public class Tenacity implements Utils {
+public class Client implements Utils {
 
-    public static final Tenacity INSTANCE = new Tenacity();
+    public static final Client INSTANCE = new Client();
 
     public static final String NAME = "Tenacity";
     public static final String VERSION = "5.1";

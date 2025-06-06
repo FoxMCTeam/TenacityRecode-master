@@ -1,6 +1,6 @@
 package dev.tenacity.commands.impl;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.commands.Command;
 
 public final class ScriptCommand extends Command {
@@ -11,7 +11,7 @@ public final class ScriptCommand extends Command {
 
     @Override
     public void execute(String[] args) {
-        Tenacity.INSTANCE.getScriptManager().reloadScripts();
+        Client.INSTANCE.getScriptManager().reloadScripts();
     }
 
 }

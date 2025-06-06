@@ -1,6 +1,6 @@
 package dev.tenacity.utils.server;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.ListenerAdapter;
 import dev.tenacity.event.impl.game.TickEvent;
 import dev.tenacity.utils.Utils;
@@ -35,7 +35,7 @@ public class PingerUtils extends ListenerAdapter implements Utils {
         this.serverUpdateTime = new HashMap<>();
         this.serverUpdateStatus = new HashMap<>();
         this.serverPing = null;
-        Tenacity.INSTANCE.getEventProtocol().register(this);
+        Client.INSTANCE.getEventProtocol().register(this);
     }
 
     public static String getPing() {
@@ -45,7 +45,7 @@ public class PingerUtils extends ListenerAdapter implements Utils {
             if (info != null) latency = info.getResponseTime();
 
             if (ServerUtils.isOnHypixel() && latency == 1) {
-                int temp = Tenacity.INSTANCE.getPingerUtils().getServerPing().intValue();
+                int temp = Client.INSTANCE.getPingerUtils().getServerPing().intValue();
                 if (temp != -1) {
                     latency = temp;
                 }

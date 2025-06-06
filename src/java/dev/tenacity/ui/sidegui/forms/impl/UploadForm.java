@@ -1,6 +1,6 @@
 package dev.tenacity.ui.sidegui.forms.impl;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.ui.sidegui.forms.Form;
 import dev.tenacity.ui.sidegui.utils.ActionButton;
 import dev.tenacity.utils.misc.HoveringUtil;
@@ -136,7 +136,7 @@ public class UploadForm extends Form {
             } else {
                 getUploadAction().accept(nameField.getText(), descriptionField.getText());
             }
-            Tenacity.INSTANCE.getSideGui().displayForm(null);
+            Client.INSTANCE.getSideGui().displayForm(null);
         });
         uploadButton.drawScreen(mouseX, mouseY);
 
@@ -144,7 +144,7 @@ public class UploadForm extends Form {
         if (error) {
             tenacityFont16.drawCenteredStringWithShadow("Error please fill out the required fields",
                     uploadButton.getX() + uploadButton.getWidth() / 2f, uploadButton.getY() - (tenacityFont16.getHeight() + 5),
-                    Tenacity.INSTANCE.getSideGui().getRedBadColor().getRGB());
+                    Client.INSTANCE.getSideGui().getRedBadColor().getRGB());
         }
 
     }

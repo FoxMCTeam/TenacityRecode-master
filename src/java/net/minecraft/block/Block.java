@@ -1,6 +1,6 @@
 package net.minecraft.block;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.impl.movement.Flight;
 import dev.tenacity.module.impl.render.XRay;
 import dev.tenacity.utils.player.BlockUtils;
@@ -508,7 +508,7 @@ public class Block
 
         if(collidingEntity == Minecraft.getMinecraft().thePlayer) {
             BoundingBoxEvent boundingBoxEvent = new BoundingBoxEvent(this,pos,axisalignedbb);
-            Tenacity.INSTANCE.getEventProtocol().handleEvent(boundingBoxEvent);
+            Client.INSTANCE.getEventProtocol().handleEvent(boundingBoxEvent);
             axisalignedbb = boundingBoxEvent.getBoundingBox();
         }
 

@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.render;
 
 import dev.tenacity.utils.tuples.Pair;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.render.PreRenderEvent;
 import dev.tenacity.event.impl.render.Render2DEvent;
 import dev.tenacity.event.impl.render.Render3DEvent;
@@ -50,7 +50,7 @@ public class TargetHUDMod extends Module {
     }
 
     private EntityLivingBase target;
-    private final Dragging drag = Tenacity.INSTANCE.createDrag(this, "targetHud", 300, 300);
+    private final Dragging drag = Client.INSTANCE.createDrag(this, "targetHud", 300, 300);
 
     private final Animation openAnimation = new DecelerateAnimation(175, .5);
 
@@ -81,7 +81,7 @@ public class TargetHUDMod extends Module {
 
 
         if (killAura == null) {
-            killAura = (KillAura) Tenacity.INSTANCE.getModuleCollection().get(KillAura.class);
+            killAura = (KillAura) Client.INSTANCE.getModuleCollection().get(KillAura.class);
         }
 
         AutoDoxTargetHUD autoDoxTargetHud = TargetHUD.get(AutoDoxTargetHUD.class);

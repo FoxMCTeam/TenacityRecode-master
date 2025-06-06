@@ -2,16 +2,12 @@ package net.minecraft.client.gui;
 
 import com.google.common.collect.Lists;
 import dev.tenacity.utils.tuples.Pair;
-import dev.tenacity.utils.tuples.mutable.MutablePair;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.config.DragManager;
 import dev.tenacity.module.impl.render.ArrayListMod;
 import dev.tenacity.module.impl.render.HUDMod;
 import dev.tenacity.module.impl.render.SpotifyMod;
-import dev.tenacity.ui.Screen;
 import dev.tenacity.utils.misc.HoveringUtil;
-import dev.tenacity.utils.misc.MathUtils;
-import dev.tenacity.utils.misc.Multithreading;
 import dev.tenacity.utils.objects.Dragging;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.RoundedUtil;
@@ -19,10 +15,7 @@ import dev.tenacity.utils.animations.Animation;
 import dev.tenacity.utils.animations.Direction;
 import dev.tenacity.utils.animations.impl.DecelerateAnimation;
 import dev.tenacity.utils.font.AbstractFontRenderer;
-import dev.tenacity.utils.font.CustomFont;
 import dev.tenacity.utils.font.FontUtil;
-import lombok.Getter;
-import lombok.Setter;
 import net.minecraft.network.play.client.C14PacketTabComplete;
 import net.minecraft.util.*;
 import org.apache.commons.lang3.StringUtils;
@@ -159,8 +152,8 @@ public class GuiChat extends GuiScreen {
     public void initGui() {
 
         if (spotifyMod == null) {
-            spotifyMod = (SpotifyMod) Tenacity.INSTANCE.getModuleCollection().get(SpotifyMod.class);
-            arraylistMod = (ArrayListMod) Tenacity.INSTANCE.getModuleCollection().get(ArrayListMod.class);
+            spotifyMod = (SpotifyMod) Client.INSTANCE.getModuleCollection().get(SpotifyMod.class);
+            arraylistMod = (ArrayListMod) Client.INSTANCE.getModuleCollection().get(ArrayListMod.class);
         }
 
         for (Dragging dragging : DragManager.draggables.values()) {
@@ -220,7 +213,7 @@ public class GuiChat extends GuiScreen {
             }
         });
 
-        HUDMod hudMod = (HUDMod) Tenacity.INSTANCE.getModuleCollection().get(HUDMod.class);
+        HUDMod hudMod = (HUDMod) Client.INSTANCE.getModuleCollection().get(HUDMod.class);
 
         Pair<Color, Color> colors = HUDMod.getClientColors();
 

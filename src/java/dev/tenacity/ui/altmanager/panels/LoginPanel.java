@@ -1,6 +1,6 @@
 package dev.tenacity.ui.altmanager.panels;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.ui.altmanager.Panel;
 import dev.tenacity.ui.altmanager.helpers.Alt;
 import dev.tenacity.ui.altmanager.helpers.AltManagerUtils;
@@ -9,8 +9,6 @@ import dev.tenacity.utils.animations.Animation;
 import dev.tenacity.utils.animations.Direction;
 import dev.tenacity.utils.animations.impl.DecelerateAnimation;
 import dev.tenacity.utils.misc.HoveringUtil;
-import dev.tenacity.utils.misc.IOUtils;
-import dev.tenacity.utils.misc.Multithreading;
 import dev.tenacity.utils.objects.TextField;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.RenderUtil;
@@ -20,7 +18,6 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjglx.input.Keyboard;
 
 import java.awt.*;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,9 +112,9 @@ public class LoginPanel extends Panel {
             actionButton.setClickAction(() -> {
                 switch (actionButton.getName()) {
                     case "Login":
-                        Tenacity.INSTANCE.getAltManager().getUtils().login(textFields.get(0), textFields.get(1));
+                        Client.INSTANCE.getAltManager().getUtils().login(textFields.get(0), textFields.get(1));
                         resetTextFields();
-                        Tenacity.INSTANCE.getAltManager().getAltPanel().refreshAlts();
+                        Client.INSTANCE.getAltManager().getAltPanel().refreshAlts();
                         break;
                     case "Add":
                         TextField username = textFields.get(0);
@@ -134,11 +131,11 @@ public class LoginPanel extends Panel {
                         Alt alt = new Alt(email, password);
                         resetTextFields();
                         AltManagerUtils.getAlts().add(alt);
-                        Tenacity.INSTANCE.getAltManager().getAltPanel().refreshAlts();
+                        Client.INSTANCE.getAltManager().getAltPanel().refreshAlts();
                         break;
                     case "Gen Cracked":
-                        Tenacity.INSTANCE.getAltManager().getUtils().loginWithString(generator.generate(8), "", false);
-                        Tenacity.INSTANCE.getAltManager().getAltPanel().refreshAlts();
+                        Client.INSTANCE.getAltManager().getUtils().loginWithString(generator.generate(8), "", false);
+                        Client.INSTANCE.getAltManager().getAltPanel().refreshAlts();
                         break;
                 }
             });
@@ -187,7 +184,7 @@ public class LoginPanel extends Panel {
                 password = split[1];
             }
 
-            Tenacity.INSTANCE.getAltManager().getUtils().microsoftLoginAsync(email, password);
+            Client.INSTANCE.getAltManager().getUtils().microsoftLoginAsync(email, password);
             resetTextFields();
         }
 

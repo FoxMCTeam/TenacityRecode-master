@@ -1,6 +1,6 @@
 package dev.tenacity.module.impl.combat;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.network.PacketSendEvent;
 import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
@@ -53,7 +53,7 @@ public final class Criticals extends Module {
                         }
                     }
                 }
-                if (e.isPre() && watchdogMode.is("Edit") && !Tenacity.INSTANCE.isEnabled(Flight.class) && !Step.isStepping && KillAura.attacking) {
+                if (e.isPre() && watchdogMode.is("Edit") && !Client.INSTANCE.isEnabled(Flight.class) && !Step.isStepping && KillAura.attacking) {
                     if (e.isOnGround()) {
                         groundTicks++;
                         if(groundTicks > 2) {

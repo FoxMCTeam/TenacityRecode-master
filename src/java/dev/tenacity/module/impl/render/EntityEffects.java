@@ -1,6 +1,6 @@
 package dev.tenacity.module.impl.render;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.render.Render2DEvent;
 import dev.tenacity.event.impl.render.Render3DEvent;
 import dev.tenacity.event.impl.render.RenderModelEvent;
@@ -49,7 +49,7 @@ public class EntityEffects extends Module {
 
     @Override
     public void onEnable() {
-        if (Tenacity.INSTANCE.isEnabled(PostProcessing.class)) {
+        if (Client.INSTANCE.isEnabled(PostProcessing.class)) {
             super.onEnable();
         } else {
             NotificationManager.post(NotificationType.WARNING, "Error", "Post Processing is not enabled");

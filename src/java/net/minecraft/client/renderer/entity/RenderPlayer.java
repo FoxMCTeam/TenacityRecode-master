@@ -1,10 +1,9 @@
 package net.minecraft.client.renderer.entity;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.impl.combat.KillAura;
 import dev.tenacity.module.impl.render.BrightPlayers;
 import dev.tenacity.module.impl.render.CustomModel;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelPlayer;
@@ -51,7 +50,7 @@ public class RenderPlayer extends RendererLivingEntity<AbstractClientPlayer> {
         if (!entity.isUser() || this.renderManager.livingPlayer == entity) {
             double d0 = y;
 
-            if(Tenacity.INSTANCE.isEnabled(BrightPlayers.class)){
+            if(Client.INSTANCE.isEnabled(BrightPlayers.class)){
                 GlStateManager.disableLighting();
             }
 

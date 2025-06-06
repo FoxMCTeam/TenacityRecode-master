@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.utils.misc.NetworkingUtils;
 
 import java.io.*;
@@ -12,7 +12,7 @@ import java.io.*;
 public class KingGenApi {
 
     private final Gson gson = new GsonBuilder().setPrettyPrinting().setLenient().create();
-    private final File kingAltData = new File(Tenacity.DIRECTORY, "KingGen.json");
+    private final File kingAltData = new File(Client.DIRECTORY, "KingGen.json");
     public String generated = "0";
     public String generatedToday = "0";
     public String username = "";

@@ -1,6 +1,6 @@
 package dev.tenacity.module.impl.render;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.render.Render2DEvent;
 import dev.tenacity.event.impl.render.ShaderEvent;
 import dev.tenacity.module.Category;
@@ -40,7 +40,7 @@ public class Radar extends Module {
             new BooleanSetting("Items", true));
 
 
-    public final Dragging drag = Tenacity.INSTANCE.createDrag(this, "radar", 5, 40);
+    public final Dragging drag = Client.INSTANCE.createDrag(this, "radar", 5, 40);
     private final List<Entity> entities = new ArrayList<>();
     private final GradientColorWheel colorWheel = new GradientColorWheel();
 

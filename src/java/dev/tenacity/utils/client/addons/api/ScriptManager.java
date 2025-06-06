@@ -1,6 +1,6 @@
 package dev.tenacity.utils.client.addons.api;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.ModuleCollection;
@@ -28,7 +28,7 @@ public class ScriptManager implements Utils {
     }
 
     public void reloadScripts() {
-        HashMap<Object, Module> moduleList = Tenacity.INSTANCE.getModuleCollection().getModuleMap();
+        HashMap<Object, Module> moduleList = Client.INSTANCE.getModuleCollection().getModuleMap();
 
         scripts.removeIf(Script::isReloadable);
 

@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.render;
 
 import dev.tenacity.utils.tuples.Pair;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.render.Render2DEvent;
 import dev.tenacity.event.impl.render.ShaderEvent;
 import dev.tenacity.module.Category;
@@ -84,7 +84,7 @@ public class HUDMod extends Module {
     @Override
     public void onShaderEvent(ShaderEvent e) {
         Pair<Color, Color> clientColors = getClientColors();
-        String name = Tenacity.NAME;
+        String name = Client.NAME;
 
 
         if (e.isBloom()) {
@@ -120,7 +120,7 @@ public class HUDMod extends Module {
                 case "Tenacity":
                     float xVal = 6f;
                     float yVal = 6f;
-                    float versionWidth = tenacityFont16.getStringWidth(Tenacity.INSTANCE.getVersion());
+                    float versionWidth = tenacityFont16.getStringWidth(Client.INSTANCE.getVersion());
                     float versionX = xVal + tenacityBoldFont40.getStringWidth(finalName);
                     float width = version ? (versionX + versionWidth) - xVal : tenacityBoldFont40.getStringWidth(finalName);
 
@@ -130,7 +130,7 @@ public class HUDMod extends Module {
                         RenderUtil.setAlphaLimit(0);
                         tenacityBoldFont40.drawString(finalName, xVal, yVal, 0);
                         if (version) {
-                            tenacityFont16.drawString(Tenacity.INSTANCE.getVersion(), versionX, yVal, 0);
+                            tenacityFont16.drawString(Client.INSTANCE.getVersion(), versionX, yVal, 0);
                         }
                     });
 
@@ -173,8 +173,8 @@ public class HUDMod extends Module {
     public void onRender2DEvent(Render2DEvent e) {
         ScaledResolution sr = new ScaledResolution(mc);
         Pair<Color, Color> clientColors = getClientColors();
-        String name = Tenacity.NAME;
-        PostProcessing postProcessing = Tenacity.INSTANCE.getModuleCollection().getModule(PostProcessing.class);
+        String name = Client.NAME;
+        PostProcessing postProcessing = Client.INSTANCE.getModuleCollection().getModule(PostProcessing.class);
         if (!postProcessing.isEnabled()) {
             version = false;
         }
@@ -183,7 +183,7 @@ public class HUDMod extends Module {
             name = clientName.getString().replace("%time%", getCurrentTimeStamp());
         }
 
-        version = name.equalsIgnoreCase(Tenacity.NAME);
+        version = name.equalsIgnoreCase(Client.NAME);
 
         String finalName = get(name);
         String intentInfo = "USERNAME";
@@ -226,7 +226,7 @@ public class HUDMod extends Module {
                 float xVal = 5;
                 float yVal = 5;
                 float spacing = 1;
-                float versionWidth = tenacityFont16.getStringWidth(Tenacity.INSTANCE.getVersion());
+                float versionWidth = tenacityFont16.getStringWidth(Client.INSTANCE.getVersion());
                 float versionX = xVal + tenacityBoldFont40.getStringWidth(finalName);
                 float width = version ? (versionX + versionWidth) - xVal : tenacityBoldFont40.getStringWidth(finalName);
                 String finalName1 = finalName;
@@ -238,7 +238,7 @@ public class HUDMod extends Module {
                             RenderUtil.setAlphaLimit(0);
                             tenacityBoldFont40.drawString(finalName1, xVal + spacing, yVal + spacing, 0);
                             if (version) {
-                                tenacityFont16.drawString(Tenacity.INSTANCE.getVersion(), versionX + (spacing / 2f), yVal + (spacing / 2f), 0);
+                                tenacityFont16.drawString(Client.INSTANCE.getVersion(), versionX + (spacing / 2f), yVal + (spacing / 2f), 0);
                             }
                         });
 
@@ -248,7 +248,7 @@ public class HUDMod extends Module {
                     RenderUtil.setAlphaLimit(0);
                     tenacityBoldFont40.drawString(finalName1, xVal, yVal, 0);
                     if (version) {
-                        tenacityFont16.drawString(Tenacity.INSTANCE.getVersion(), versionX, yVal, 0);
+                        tenacityFont16.drawString(Client.INSTANCE.getVersion(), versionX, yVal, 0);
                     }
                 });
                 break;
@@ -355,7 +355,7 @@ public class HUDMod extends Module {
             offsetValue = count * fr.getHeight();
         }
 
-        String text = Tenacity.VERSION + " - " + (customFont.isEnabled() ? "" : "§l") + Tenacity.RELEASE.getName() + "§r";
+        String text = Client.VERSION + " - " + (customFont.isEnabled() ? "" : "§l") + Client.RELEASE.getName() + "§r";
 
         text += " | " + "USERNAME";
 
@@ -533,14 +533,14 @@ public class HUDMod extends Module {
 
     public static void updateButtonStatus() {
         for (ModuleButton mb : ModuleButton.values()) {
-            mb.getButton().enabled = Tenacity.INSTANCE.getModuleCollection().getModule(mb.getModule()).isEnabled();
+            mb.getButton().enabled = Client.INSTANCE.getModuleCollection().getModule(mb.getModule()).isEnabled();
         }
     }
 
     public static void handleActionPerformed(GuiButton button) {
         for (ModuleButton mb : ModuleButton.values()) {
             if (mb.getButton() == button) {
-                Module m = Tenacity.INSTANCE.getModuleCollection().getModule(mb.getModule());
+                Module m = Client.INSTANCE.getModuleCollection().getModule(mb.getModule());
                 if (m.isEnabled()) {
                     m.toggle();
                 }

@@ -1,6 +1,6 @@
 package dev.tenacity.module.impl.combat;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.commands.impl.FriendCommand;
 import dev.tenacity.event.impl.player.*;
 import dev.tenacity.event.impl.render.Render3DEvent;
@@ -30,11 +30,9 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 
 import java.awt.*;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public final class KillAura extends Module {
 
@@ -123,7 +121,7 @@ public final class KillAura extends Module {
         sortTargets();
 
         if (event.isPre()) {
-            attacking = !targets.isEmpty() && (addons.getSetting("Allow Scaffold").isEnabled() || !Tenacity.INSTANCE.isEnabled(Scaffold.class));
+            attacking = !targets.isEmpty() && (addons.getSetting("Allow Scaffold").isEnabled() || !Client.INSTANCE.isEnabled(Scaffold.class));
             blocking = autoblock.isEnabled() && attacking && InventoryUtils.isHoldingSword();
             if (attacking) {
                 target = targets.get(0);
@@ -153,7 +151,7 @@ public final class KillAura extends Module {
                     if(mode.is("Multi")) {
                         for(EntityLivingBase entityLivingBase : targets) {
                             AttackEvent attackEvent = new AttackEvent(entityLivingBase);
-                            Tenacity.INSTANCE.getEventProtocol().handleEvent(attackEvent);
+                            Client.INSTANCE.getEventProtocol().handleEvent(attackEvent);
 
                             if (!attackEvent.isCancelled()) {
                                 AttackOrder.sendFixedAttack(mc.thePlayer, entityLivingBase);
@@ -161,7 +159,7 @@ public final class KillAura extends Module {
                         }
                     } else {
                         AttackEvent attackEvent = new AttackEvent(target);
-                        Tenacity.INSTANCE.getEventProtocol().handleEvent(attackEvent);
+                        Client.INSTANCE.getEventProtocol().handleEvent(attackEvent);
 
                         if (!attackEvent.isCancelled()) {
                             AttackOrder.sendFixedAttack(mc.thePlayer, target);

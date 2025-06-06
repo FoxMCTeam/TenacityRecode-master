@@ -1,7 +1,7 @@
 package dev.tenacity.utils.render;
 
 import dev.tenacity.utils.tuples.Pair;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.impl.render.HUDMod;
 import dev.tenacity.module.settings.impl.ModeSetting;
 import lombok.Getter;
@@ -33,7 +33,7 @@ public enum Theme {
     MINT_BLUE("Mint Blue", new Color(66, 158, 157), new Color(40, 94, 93)),
     PACIFIC_BLUE("Pacific Blue", new Color(5, 169, 199), new Color(4, 115, 135)),
     TROPICAL_ICE("Tropical Ice", new Color(102, 255, 209), new Color(6, 149, 255), true),
-    TENACITY("Tenacity", Tenacity.INSTANCE.getClientColor(), Tenacity.INSTANCE.getAlternateClientColor(), true),
+    TENACITY("Tenacity", Client.INSTANCE.getClientColor(), Client.INSTANCE.getAlternateClientColor(), true),
     CUSTOM_THEME("Custom Theme", HUDMod.color1.getColor(), HUDMod.color2.getColor());
 
     private static final Map<String, Theme> themeMap = new HashMap<>();

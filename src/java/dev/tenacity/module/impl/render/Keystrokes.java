@@ -1,6 +1,6 @@
 package dev.tenacity.module.impl.render;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.render.Render2DEvent;
 import dev.tenacity.event.impl.render.ShaderEvent;
 import dev.tenacity.module.Category;
@@ -36,7 +36,7 @@ public class Keystrokes extends Module {
         addSettings(sizeValue, offsetValue, opacity, radius);
     }
 
-    private final Dragging dragging = Tenacity.INSTANCE.createDrag(this, "keystrokes", 10, 300);
+    private final Dragging dragging = Client.INSTANCE.createDrag(this, "keystrokes", 10, 300);
 
     private Button keyBindForward;
     private Button keyBindLeft;

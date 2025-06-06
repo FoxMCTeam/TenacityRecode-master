@@ -1,8 +1,7 @@
 package dev.tenacity.ui.mainmenu;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.ui.Screen;
-import dev.tenacity.ui.altmanager.panels.LoginPanel;
 import dev.tenacity.ui.mainmenu.particles.ParticleEngine;
 import dev.tenacity.utils.animations.Animation;
 import dev.tenacity.utils.animations.Direction;
@@ -16,12 +15,10 @@ import dev.tenacity.utils.render.blur.GaussianBlur;
 import lombok.Getter;
 import net.minecraft.client.gui.*;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Util;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 public class CustomMainMenu extends GuiScreen {
@@ -56,8 +53,8 @@ public class CustomMainMenu extends GuiScreen {
 
         if (particleEngine == null) particleEngine = new ParticleEngine();
         if (mc.gameSettings.guiScale != 2) {
-            Tenacity.prevGuiScale = mc.gameSettings.guiScale;
-            Tenacity.updateGuiScale = true;
+            Client.prevGuiScale = mc.gameSettings.guiScale;
+            Client.updateGuiScale = true;
             mc.gameSettings.guiScale = 2;
             mc.resize(mc.displayWidth - 1, mc.displayHeight);
             mc.resize(mc.displayWidth + 1, mc.displayHeight);
@@ -139,7 +136,7 @@ public class CustomMainMenu extends GuiScreen {
                         mc.displayGuiScreen(new GuiMultiplayer(this));
                         break;
                     case "Alt Manager":
-                        mc.displayGuiScreen(Tenacity.INSTANCE.getAltManager());
+                        mc.displayGuiScreen(Client.INSTANCE.getAltManager());
                         break;
                     case "Settings":
                         mc.displayGuiScreen(new GuiOptions(this, mc.gameSettings));
@@ -186,7 +183,7 @@ public class CustomMainMenu extends GuiScreen {
         }
 
         tenacityBoldFont80.drawCenteredString("Tenacity", width / 2f, height / 2f - 110, Color.WHITE.getRGB());
-        tenacityFont32.drawString(Tenacity.VERSION, width / 2f + tenacityBoldFont80.getStringWidth("Tenacity") / 2f - (tenacityFont32.getStringWidth(Tenacity.VERSION) / 2f), height / 2f - 113, Color.WHITE.getRGB());
+        tenacityFont32.drawString(Client.VERSION, width / 2f + tenacityBoldFont80.getStringWidth("Tenacity") / 2f - (tenacityFont32.getStringWidth(Client.VERSION) / 2f), height / 2f - 113, Color.WHITE.getRGB());
         tenacityFont18.drawCenteredString("by cedo, senoe, and tear", width / 2f, height / 2f - 68, Color.WHITE.getRGB());
 
     }
@@ -199,9 +196,9 @@ public class CustomMainMenu extends GuiScreen {
 
     @Override
     public void onGuiClosed() {
-        if (Tenacity.updateGuiScale) {
-            mc.gameSettings.guiScale = Tenacity.prevGuiScale;
-            Tenacity.updateGuiScale = false;
+        if (Client.updateGuiScale) {
+            mc.gameSettings.guiScale = Client.prevGuiScale;
+            Client.updateGuiScale = false;
         }
     }
 

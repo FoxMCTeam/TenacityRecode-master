@@ -1,6 +1,6 @@
 package dev.tenacity.ui.clickguis.modern;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.render.ClickGUIMod;
 import dev.tenacity.ui.clickguis.modern.components.ModuleRect;
@@ -44,10 +44,10 @@ public class SearchPanel extends Panel {
         expandAnim2 = new DecelerateAnimation(300, 1, Direction.FORWARDS);
         expandAnim2.setDirection(Direction.BACKWARDS);
         moduleRects = new ArrayList<>();
-        modules = Tenacity.INSTANCE.getModuleCollection().getModules();
+        modules = Client.INSTANCE.getModuleCollection().getModules();
         if (settingsPanelHashMap == null) {
             settingsPanelHashMap = new HashMap<>();
-            for (Module module : Tenacity.INSTANCE.getModuleCollection().getModules()) {
+            for (Module module : Client.INSTANCE.getModuleCollection().getModules()) {
                 settingsPanelHashMap.put(module, new SettingsPanel(module));
             }
         }
@@ -66,7 +66,7 @@ public class SearchPanel extends Panel {
     public void drawScreen(int mouseX, int mouseY) {
         if (ModernClickGui.searching) {
             expandAnim2.setDirection(rightClicked ? Direction.FORWARDS : Direction.BACKWARDS);
-            List<Module> possibleMods = Tenacity.INSTANCE.getModuleCollection().getModulesThatContainText(text);
+            List<Module> possibleMods = Client.INSTANCE.getModuleCollection().getModulesThatContainText(text);
             if (!text.equals(searchBar.getText())) {
                 moduleRects.clear();
                 scroll = new Scroll();

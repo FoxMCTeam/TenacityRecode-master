@@ -1,6 +1,6 @@
 package dev.tenacity.module.impl.player;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.network.PacketSendEvent;
 import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.event.impl.render.Render3DEvent;
@@ -78,7 +78,7 @@ public final class Blink extends Module {
 
     @Override
     public void onRender3DEvent(Render3DEvent event) {
-        Tenacity.INSTANCE.getModuleCollection().getModule(Breadcrumbs.class).renderLine(path);
+        Client.INSTANCE.getModuleCollection().getModule(Breadcrumbs.class).renderLine(path);
     }
 
     @Override

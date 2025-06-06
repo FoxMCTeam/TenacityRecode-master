@@ -1,6 +1,6 @@
 package dev.tenacity.ui.sidegui.utils;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.ui.Screen;
 import dev.tenacity.ui.sidegui.SideGUI;
 import dev.tenacity.utils.animations.Animation;
@@ -62,7 +62,7 @@ public class IconButton implements Screen {
         iconFont.drawString(icon, x, y, ColorUtil.applyOpacity(iconColor, alpha));
 
         if (tooltip != null) {
-            Tenacity.INSTANCE.getSideGui().addTooltip(tooltip);
+            Client.INSTANCE.getSideGui().addTooltip(tooltip);
             tooltip.setHovering(hovering);
         }
 

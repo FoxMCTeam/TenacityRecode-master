@@ -10,7 +10,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.GameProfileRepository;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.game.GameCloseEvent;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
@@ -41,7 +41,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -452,7 +451,7 @@ public abstract class MinecraftServer implements Runnable, ICommandSender, IThre
         if (!this.worldIsBeingDeleted)
         {
             logger.info("Stopping server");
-            Tenacity.INSTANCE.getEventProtocol().handleEvent(new GameCloseEvent());
+            Client.INSTANCE.getEventProtocol().handleEvent(new GameCloseEvent());
 
             if (this.getNetworkSystem() != null)
             {

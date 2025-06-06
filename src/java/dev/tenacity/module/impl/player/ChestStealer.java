@@ -1,6 +1,6 @@
 package dev.tenacity.module.impl.player;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.game.WorldEvent;
 import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.event.impl.render.Render2DEvent;
@@ -60,7 +60,7 @@ public class ChestStealer extends Module {
     public void onMotionEvent(MotionEvent e) {
         if (e.isPre()) {
             setSuffix(smart.isEnabled() ? "Smart" : null);
-            if (invManager == null) invManager = Tenacity.INSTANCE.getModuleCollection().getModule(InvManager.class);
+            if (invManager == null) invManager = Client.INSTANCE.getModuleCollection().getModule(InvManager.class);
             if (aura.isEnabled()) {
                 final int radius = auraRange.getValue().intValue();
                 for (int x = -radius; x < radius; x++) {
@@ -148,7 +148,7 @@ public class ChestStealer extends Module {
     }
 
     public static boolean canSteal() {
-        if (Tenacity.INSTANCE.isEnabled(ChestStealer.class) && mc.currentScreen instanceof GuiChest) {
+        if (Client.INSTANCE.isEnabled(ChestStealer.class) && mc.currentScreen instanceof GuiChest) {
             ContainerChest chest = (ContainerChest) mc.thePlayer.openContainer;
             IInventory chestInv = chest.getLowerChestInventory();
             return !titleCheck.isEnabled() || (chestInv instanceof ContainerLocalMenu && ((ContainerLocalMenu) chestInv).realChest);

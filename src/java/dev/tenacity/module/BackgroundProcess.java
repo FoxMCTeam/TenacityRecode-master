@@ -1,6 +1,6 @@
 package dev.tenacity.module;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.config.DragManager;
 import dev.tenacity.event.ListenerAdapter;
 import dev.tenacity.event.impl.game.GameCloseEvent;
@@ -23,13 +23,13 @@ import java.util.Arrays;
 
 public class BackgroundProcess extends ListenerAdapter implements Utils {
 
-    private final Scaffold scaffold = (Scaffold) Tenacity.INSTANCE.getModuleCollection().get(Scaffold.class);
+    private final Scaffold scaffold = (Scaffold) Client.INSTANCE.getModuleCollection().get(Scaffold.class);
 
     @Override
     public void onKeyPressEvent(KeyPressEvent event) {
 
         // We should probably have a static arraylist of all the modules instead of creating a new on in getModules()
-        for (Module module : Tenacity.INSTANCE.getModuleCollection().getModules()) {
+        for (Module module : Client.INSTANCE.getModuleCollection().getModules()) {
             if (module.getKeybind().getCode() == event.getKey()) {
                 module.toggle();
             }
@@ -38,7 +38,7 @@ public class BackgroundProcess extends ListenerAdapter implements Utils {
 
     @Override
     public void onGameCloseEvent(GameCloseEvent event) {
-        Tenacity.INSTANCE.getConfigManager().saveDefaultConfig();
+        Client.INSTANCE.getConfigManager().saveDefaultConfig();
         DragManager.saveDragData();
     }
 

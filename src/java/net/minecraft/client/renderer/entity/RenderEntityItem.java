@@ -1,6 +1,6 @@
 package net.minecraft.client.renderer.entity;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.impl.render.ItemPhysics;
 import dev.tenacity.utils.render.EntityCulling;
 import net.minecraft.block.BlockTrapDoor;
@@ -32,7 +32,7 @@ public class RenderEntityItem extends Render<EntityItem> {
     private int func_177077_a(EntityItem itemIn, double p_177077_2_, double p_177077_4_, double p_177077_6_, float p_177077_8_, IBakedModel p_177077_9_) {
         Minecraft mc = Minecraft.getMinecraft();
 
-        boolean itemPhysics = Tenacity.INSTANCE.isEnabled(ItemPhysics.class);
+        boolean itemPhysics = Client.INSTANCE.isEnabled(ItemPhysics.class);
 
         ItemStack itemstack = itemIn.getEntityItem();
         Item item = itemstack.getItem();

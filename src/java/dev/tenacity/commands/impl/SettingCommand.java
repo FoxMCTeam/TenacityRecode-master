@@ -1,6 +1,6 @@
 package dev.tenacity.commands.impl;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.commands.Command;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.Setting;
@@ -22,7 +22,7 @@ public class SettingCommand extends Command {
         } else {
 
             String moduleName = args[0].replace("_", " ");
-            Module module = Tenacity.INSTANCE.getModuleCollection().getModuleByName(moduleName);
+            Module module = Client.INSTANCE.getModuleCollection().getModuleByName(moduleName);
             if (module == null) {
                 sendChatError("Module not found");
                 usage();

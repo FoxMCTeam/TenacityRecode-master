@@ -1,6 +1,6 @@
 package dev.tenacity.module.impl.misc;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.player.ChatReceivedEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -23,7 +23,7 @@ import java.util.Scanner;
  */
 public class Killsults extends Module {
 
-    public final static File INSULT_DIR = new File(Tenacity.DIRECTORY, "Killsults.txt");
+    public final static File INSULT_DIR = new File(Client.DIRECTORY, "Killsults.txt");
     private final List<String> messages = new ArrayList<>();
     private int index;
 

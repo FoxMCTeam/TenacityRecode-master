@@ -1,6 +1,6 @@
 package dev.tenacity.ui.sidegui.forms.impl;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.ui.sidegui.forms.Form;
 import dev.tenacity.ui.sidegui.utils.ActionButton;
 import dev.tenacity.utils.objects.TextField;
@@ -81,7 +81,7 @@ public class SaveForm extends Form {
         save.setBold(true);
         save.setClickAction(() -> {
             getUploadAction().accept(nameField.getText(), null);
-            Tenacity.INSTANCE.getSideGui().displayForm(null);
+            Client.INSTANCE.getSideGui().displayForm(null);
         });
         save.drawScreen(mouseX, mouseY);
 

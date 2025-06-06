@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.render;
 
 import dev.tenacity.utils.tuples.Pair;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.render.Render2DEvent;
 import dev.tenacity.event.impl.render.ShaderEvent;
 import dev.tenacity.module.Category;
@@ -59,8 +59,8 @@ public class ArrayListMod extends Module {
 
     public void getModulesAndSort() {
         if (modules == null || ModuleCollection.reloadModules) {
-            List<Class<? extends Module>> hiddenModules = Tenacity.INSTANCE.getModuleCollection().getHiddenModules();
-            List<Module> moduleList = Tenacity.INSTANCE.getModuleCollection().getModules();
+            List<Class<? extends Module>> hiddenModules = Client.INSTANCE.getModuleCollection().getHiddenModules();
+            List<Module> moduleList = Client.INSTANCE.getModuleCollection().getModules();
             moduleList.removeIf(module -> hiddenModules.stream().anyMatch(moduleClass -> moduleClass == module.getClass()));
             modules = moduleList;
         }
@@ -70,7 +70,7 @@ public class ArrayListMod extends Module {
         }).reversed());
     }
 
-    public Dragging arraylistDrag = Tenacity.INSTANCE.createDrag(this, "arraylist", 2, 1);
+    public Dragging arraylistDrag = Client.INSTANCE.createDrag(this, "arraylist", 2, 1);
 
     public String longest = "";
 

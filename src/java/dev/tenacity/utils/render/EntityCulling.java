@@ -1,6 +1,6 @@
 package dev.tenacity.utils.render;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.game.RenderTickEvent;
 import dev.tenacity.event.impl.game.TickEvent;
 import dev.tenacity.event.impl.render.RendererLivingEntityEvent;
@@ -66,7 +66,7 @@ public class EntityCulling extends Module {
 
 
     public static boolean renderItem(Entity stack) {
-        if (!Tenacity.INSTANCE.isEnabled(EntityCulling.class)) return false;
+        if (!Client.INSTANCE.isEnabled(EntityCulling.class)) return false;
         //needs to be called from RenderEntityItem#doRender and RenderItemFrame#doRender. Returning true means it should cancel the render event
         return shouldPerformCulling && stack.worldObj == mc.thePlayer.worldObj && checkEntity(stack);
     }

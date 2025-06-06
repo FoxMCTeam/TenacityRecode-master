@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.commands.Command;
 import dev.tenacity.utils.player.ChatUtil;
 
@@ -19,7 +19,7 @@ import java.util.List;
 public class FriendCommand extends Command {
 
     private static final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
-    private static final File file = new File(Tenacity.DIRECTORY, "Friends.json");
+    private static final File file = new File(Client.DIRECTORY, "Friends.json");
     public static final List<String> friends = new ArrayList<>();
 
     public FriendCommand() {
@@ -76,7 +76,7 @@ public class FriendCommand extends Command {
             JsonObject object = gson.fromJson(new String(Files.readAllBytes(file.toPath())), JsonObject.class);
             object.get("friends").getAsJsonArray().forEach(f -> friends.add(f.getAsString()));
         } catch (Exception e) {
-            Tenacity.LOGGER.error("Failed to load " + file, e);
+            Client.LOGGER.error("Failed to load " + file, e);
         }
     }
 

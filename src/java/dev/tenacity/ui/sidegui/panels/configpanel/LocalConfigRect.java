@@ -1,11 +1,10 @@
 package dev.tenacity.ui.sidegui.panels.configpanel;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.config.LocalConfig;
 import dev.tenacity.ui.Screen;
 import dev.tenacity.ui.notifications.NotificationManager;
 import dev.tenacity.ui.notifications.NotificationType;
-import dev.tenacity.ui.sidegui.forms.Form;
 import dev.tenacity.ui.sidegui.utils.CloudDataUtils;
 import dev.tenacity.ui.sidegui.utils.IconButton;
 import dev.tenacity.utils.font.FontUtil;
@@ -94,14 +93,14 @@ public class LocalConfigRect implements Screen {
                 switch (button.getIcon()) {
                     case FontUtil.TRASH:
                         IOUtils.deleteFile(config.getFile());
-                        Tenacity.INSTANCE.getSideGui().getTooltips().clear();
-                        Tenacity.INSTANCE.getSideGui().getConfigPanel().setRefresh(true);
+                        Client.INSTANCE.getSideGui().getTooltips().clear();
+                        Client.INSTANCE.getSideGui().getConfigPanel().setRefresh(true);
                         break;
                     case FontUtil.LOAD:
                         Multithreading.runAsync(() -> {
                             String loadData = FileUtils.readFile(config.getFile());
 
-                            if (Tenacity.INSTANCE.getConfigManager().loadConfig(loadData, false)) {
+                            if (Client.INSTANCE.getConfigManager().loadConfig(loadData, false)) {
                                 NotificationManager.post(NotificationType.SUCCESS, "Success", "Config loaded successfully!");
                             } else {
                                 NotificationManager.post(NotificationType.WARNING, "Error", "The online config did not load successfully!");
@@ -110,16 +109,16 @@ public class LocalConfigRect implements Screen {
                         break;
                     case FontUtil.SAVE:
                         Multithreading.runAsync(() -> {
-                            String saveData = Tenacity.INSTANCE.getConfigManager().serialize();
+                            String saveData = Client.INSTANCE.getConfigManager().serialize();
 
-                            if (Tenacity.INSTANCE.getConfigManager().saveConfig(config.getName(), saveData)) {
+                            if (Client.INSTANCE.getConfigManager().saveConfig(config.getName(), saveData)) {
                                 NotificationManager.post(NotificationType.SUCCESS, "Success", "Config update successfully!");
                             } else {
                                 NotificationManager.post(NotificationType.WARNING, "Error", "The config did not update successfully!");
                             }
 
-                            Tenacity.INSTANCE.getSideGui().getTooltips().clear();
-                            Tenacity.INSTANCE.getSideGui().getConfigPanel().setRefresh(true);
+                            Client.INSTANCE.getSideGui().getTooltips().clear();
+                            Client.INSTANCE.getSideGui().getConfigPanel().setRefresh(true);
                         });
                         break;
                 }

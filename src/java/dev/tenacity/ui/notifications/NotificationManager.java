@@ -1,6 +1,6 @@
 package dev.tenacity.ui.notifications;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.impl.render.NotificationsMod;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,7 +24,7 @@ public class NotificationManager {
     }
 
     private static void post(Notification notification) {
-        if (Tenacity.INSTANCE.isEnabled(NotificationsMod.class)) {
+        if (Client.INSTANCE.isEnabled(NotificationsMod.class)) {
             notifications.add(notification);
         }
     }

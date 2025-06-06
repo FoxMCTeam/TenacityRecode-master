@@ -1,20 +1,16 @@
 package dev.tenacity.ui.sidegui;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.impl.render.HUDMod;
 import dev.tenacity.ui.Screen;
 import dev.tenacity.ui.sidegui.utils.CarouselButtons;
 import dev.tenacity.ui.sidegui.utils.DropdownObject;
-import dev.tenacity.ui.sidegui.utils.IconButton;
 import dev.tenacity.utils.animations.Animation;
 import dev.tenacity.utils.animations.Direction;
 import dev.tenacity.utils.animations.impl.DecelerateAnimation;
-import dev.tenacity.utils.font.FontUtil;
 import dev.tenacity.utils.misc.MathUtils;
-import dev.tenacity.utils.misc.Multithreading;
 import dev.tenacity.utils.objects.TextField;
 import dev.tenacity.utils.render.ColorUtil;
-import dev.tenacity.utils.render.RenderUtil;
 import dev.tenacity.utils.render.RoundedUtil;
 import dev.tenacity.utils.time.TimerUtil;
 import lombok.Getter;
@@ -63,7 +59,7 @@ public class SideGUIHotbar implements Screen {
 
 
         tenacityBoldFont32.drawString("Tenacity", x + 9.5f, y + tenacityBoldFont32.getMiddleOfBox(height), textColor);
-        tenacityFont18.drawString(Tenacity.VERSION, x + 9.5f + tenacityBoldFont32.getStringWidth("Tenacity") - 2,
+        tenacityFont18.drawString(Client.VERSION, x + 9.5f + tenacityBoldFont32.getStringWidth("Tenacity") - 2,
                 y + tenacityBoldFont32.getMiddleOfBox(height) - 2.5f, ColorUtil.applyOpacity(textColor, .5f));
 
         searchAnimation.setDirection(searchField.isFocused() || !searchField.getText().equals("") ? Direction.FORWARDS : Direction.BACKWARDS);

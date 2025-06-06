@@ -1,7 +1,7 @@
 package net.minecraft.client.renderer.entity.layers;
 
 import com.google.common.collect.Maps;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.impl.render.Animations;
 import dev.tenacity.module.impl.render.CustomModel;
 import dev.tenacity.module.impl.render.Glint;
@@ -47,7 +47,7 @@ public abstract class LayerArmorBase<T extends ModelBase> implements LayerRender
     }
 
     public boolean shouldCombineTextures() {
-        return (Tenacity.INSTANCE.isEnabled(Animations.class) && Animations.oldDamage.isEnabled());
+        return (Client.INSTANCE.isEnabled(Animations.class) && Animations.oldDamage.isEnabled());
     }
 
     private void renderLayer(EntityLivingBase entitylivingbaseIn, float p_177182_2_, float p_177182_3_, float partialTicks, float p_177182_5_, float p_177182_6_, float p_177182_7_, float scale, int armorSlot) {
@@ -127,7 +127,7 @@ public abstract class LayerArmorBase<T extends ModelBase> implements LayerRender
                 GlStateManager.blendFunc(768, 1);
                 float f2 = 0.76F;
 
-                Glint glint = (Glint) Tenacity.INSTANCE.getModuleCollection().get(Glint.class);
+                Glint glint = (Glint) Client.INSTANCE.getModuleCollection().get(Glint.class);
                 if(glint.isEnabled()){
                     int color = glint.getColor().getRGB();
                     RenderUtil.color(color, 1);

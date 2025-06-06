@@ -1,9 +1,8 @@
 package dev.tenacity.ui.sidegui.panels.configpanel;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.config.ConfigManager;
 import dev.tenacity.config.LocalConfig;
-import dev.tenacity.module.impl.render.HUDMod;
 import dev.tenacity.ui.sidegui.SideGUI;
 import dev.tenacity.ui.sidegui.forms.Form;
 import dev.tenacity.ui.sidegui.panels.Panel;
@@ -16,8 +15,6 @@ import dev.tenacity.utils.objects.Scroll;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.RoundedUtil;
 import dev.tenacity.utils.render.StencilUtil;
-import dev.tenacity.utils.time.TimerUtil;
-import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -92,9 +89,9 @@ public class ConfigPanel extends Panel {
 
             button.setClickAction(() -> {
                 if (button.getName().equals("Save current config")) {
-                    Form saveForm = Tenacity.INSTANCE.getSideGui().displayForm("Save Config");
+                    Form saveForm = Client.INSTANCE.getSideGui().displayForm("Save Config");
                     saveForm.setUploadAction((name, description) -> Multithreading.runAsync(() -> {
-                        Tenacity.INSTANCE.getConfigManager().saveConfig(name);
+                        Client.INSTANCE.getConfigManager().saveConfig(name);
                     }));
                 }
             });
@@ -198,7 +195,7 @@ public class ConfigPanel extends Panel {
 
 
     public void refresh() {
-        Tenacity.INSTANCE.getConfigManager().collectConfigs();
+        Client.INSTANCE.getConfigManager().collectConfigs();
 
         localConfigRects.clear();
         for (LocalConfig localConfig : ConfigManager.localConfigs) {

@@ -1,6 +1,6 @@
 package net.minecraft.client.renderer;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.render.CustomBlockRenderEvent;
 import dev.tenacity.module.impl.combat.KillAura;
 import dev.tenacity.module.impl.render.Animations;
@@ -287,7 +287,7 @@ public class ItemRenderer {
      * Performs transformations prior to the rendering of a held item in first person.
      */
     private void transformFirstPersonItem(float equipProgress, float swingProgress) {
-        boolean animations = Tenacity.INSTANCE.isEnabled(Animations.class);
+        boolean animations = Client.INSTANCE.isEnabled(Animations.class);
         double x = animations ? .56 + (Animations.x.getValue() * .01) : .56;
         double y = animations ? .52 - (Animations.y.getValue() * .01) : .52;
         double size = animations ? .40 + (Animations.size.getValue() * .01) : .40;
@@ -378,7 +378,7 @@ public class ItemRenderer {
                             break;
 
                         case BLOCK:
-                            if (Tenacity.INSTANCE.isEnabled(Animations.class)) {
+                            if (Client.INSTANCE.isEnabled(Animations.class)) {
                                 switch (Animations.mode.getMode()) {
                                     case "Stella":
                                         this.transformFirstPersonItem(-0.1F, swingProgress);
@@ -461,7 +461,7 @@ public class ItemRenderer {
                                                 (equipProg, swingProg) -> transformFirstPersonItem(equipProg, swingProgress),
                                                 this::doBlockTransformations, swingProgress, f);
 
-                                        Tenacity.INSTANCE.getEventProtocol().handleEvent(blockRenderEvent);
+                                        Client.INSTANCE.getEventProtocol().handleEvent(blockRenderEvent);
                                         break;
                                 }
                             } else {

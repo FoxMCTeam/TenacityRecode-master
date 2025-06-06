@@ -1,6 +1,6 @@
 package dev.tenacity.commands.impl;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.commands.Command;
 import dev.tenacity.module.Module;
 
@@ -19,7 +19,7 @@ public class ToggleCommand extends Command {
             usage();
         } else {
             String moduleName = Arrays.stream(args).skip(0).collect(Collectors.joining(" "));
-            Module module = Tenacity.INSTANCE.getModuleCollection().getModuleByName(moduleName);
+            Module module = Client.INSTANCE.getModuleCollection().getModuleByName(moduleName);
             if (module != null) {
                 module.toggle();
                 sendChatWithPrefix("Toggled " + module.getName() + "!");

@@ -1,7 +1,7 @@
 package dev.tenacity.ui.altmanager.panels;
 
 import dev.tenacity.utils.tuples.Pair;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.ui.Screen;
 import dev.tenacity.ui.altmanager.Panel;
 import dev.tenacity.ui.altmanager.helpers.Alt;
@@ -58,7 +58,7 @@ public class AltPanel extends Panel {
 
     @Override
     public void keyTyped(char typedChar, int keyCode) {
-        if (Tenacity.INSTANCE.getAltManager().isTyping()) return;
+        if (Client.INSTANCE.getAltManager().isTyping()) return;
         if (GuiScreen.isKeyComboCtrlA(keyCode)) {
             altsSelected = !altsSelected;
             visibleAltRects.forEach(altRect -> altRect.setSelected(altsSelected));
@@ -128,8 +128,8 @@ public class AltPanel extends Panel {
 
         performShiftClick();
 
-        TextField searchField = Tenacity.INSTANCE.getAltManager().searchField;
-        boolean filterBanned = Tenacity.INSTANCE.getAltManager().filterBanned.isEnabled();
+        TextField searchField = Client.INSTANCE.getAltManager().searchField;
+        boolean filterBanned = Client.INSTANCE.getAltManager().filterBanned.isEnabled();
         boolean searching = searchField.isFocused() || !searchField.getText().trim().isEmpty();
         String text = searchField.getText().toLowerCase();
 
@@ -363,7 +363,7 @@ public class AltPanel extends Panel {
                     RenderUtil.resetColor();
                     break;
                 case "Cracked":
-                    Color red = Tenacity.INSTANCE.getSideGui().getRedBadColor();
+                    Color red = Client.INSTANCE.getSideGui().getRedBadColor();
                     tenacityBoldFont14.drawString(" Cracked", typeX, usernameY + 1, ColorUtil.applyOpacity(red, 1 - credsAnim));
                     break;
                 case "Not logged in":
@@ -407,8 +407,8 @@ public class AltPanel extends Panel {
 
 
             if (removeShit) return;
-            if (Tenacity.INSTANCE.getAltManager().currentSessionAlt == alt) {
-                Color green = Tenacity.INSTANCE.getSideGui().getGreenEnabledColor();
+            if (Client.INSTANCE.getAltManager().currentSessionAlt == alt) {
+                Color green = Client.INSTANCE.getSideGui().getGreenEnabledColor();
                 tenacityBoldFont14.drawString("Logged in", x + width - (tenacityBoldFont14.getStringWidth("Logged in") + 5),
                         y + height - (tenacityBoldFont14.getHeight() + 5), green);
             } else {
@@ -476,7 +476,7 @@ public class AltPanel extends Panel {
         }
 
         public void drawAltHead(float x, float y, float size) {
-            Tenacity.INSTANCE.getAltManager().getUtils().getHead(alt);
+            Client.INSTANCE.getAltManager().getUtils().getHead(alt);
             GLUtil.startBlend();
             RenderUtil.setAlphaLimit(0);
             mc.getTextureManager().bindTexture(alt.head != null ? alt.head : new ResourceLocation("Tenacity/X-Steve.png"));

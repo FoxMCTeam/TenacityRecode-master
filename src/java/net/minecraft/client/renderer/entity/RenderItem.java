@@ -1,10 +1,9 @@
 package net.minecraft.client.renderer.entity;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.impl.combat.KillAura;
 import dev.tenacity.module.impl.render.Glint;
 import dev.tenacity.module.impl.render.GlowESP;
-import dev.tenacity.utils.render.GLUtil;
 import net.minecraft.block.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -186,7 +185,7 @@ public class RenderItem implements IResourceManagerReloadListener {
                 GlStateManager.translate(f, 0.0F, 0.0F);
                 GlStateManager.rotate(-50.0F, 0.0F, 0.0F, 1.0F);
                 int color = -8372020;
-                Glint glint = (Glint) Tenacity.INSTANCE.getModuleCollection().get(Glint.class);
+                Glint glint = (Glint) Client.INSTANCE.getModuleCollection().get(Glint.class);
                 if (glint.isEnabled()) {
                     color = glint.getColor().getRGB();
                 }

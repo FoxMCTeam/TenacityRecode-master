@@ -1,7 +1,7 @@
 package dev.tenacity.ui.clickguis.dropdown;
 
 import dev.tenacity.utils.tuples.Pair;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.impl.movement.InventoryMove;
 import dev.tenacity.module.impl.render.ClickGUIMod;
@@ -38,7 +38,7 @@ public class DropdownClickGUI extends GuiScreen {
         for (CategoryPanel catPanels : categoryPanels) {
             catPanels.onDrag(mouseX, mouseY);
         }
-        Tenacity.INSTANCE.getSideGui().onDrag(mouseX, mouseY);
+        Client.INSTANCE.getSideGui().onDrag(mouseX, mouseY);
     }
 
     @Override
@@ -56,8 +56,8 @@ public class DropdownClickGUI extends GuiScreen {
             }
         }
 
-        Tenacity.INSTANCE.getSideGui().initGui();
-        Tenacity.INSTANCE.getSearchBar().initGui();
+        Client.INSTANCE.getSideGui().initGui();
+        Client.INSTANCE.getSearchBar().initGui();
 
 
         for (CategoryPanel catPanels : categoryPanels) {
@@ -68,25 +68,25 @@ public class DropdownClickGUI extends GuiScreen {
     @Override
     protected void keyTyped(char typedChar, int keyCode) {
         if (keyCode == Keyboard.KEY_ESCAPE && !binding) {
-            if (Tenacity.INSTANCE.getSearchBar().isFocused()) {
-                Tenacity.INSTANCE.getSearchBar().getSearchField().setText("");
-                Tenacity.INSTANCE.getSearchBar().getSearchField().setFocused(false);
+            if (Client.INSTANCE.getSearchBar().isFocused()) {
+                Client.INSTANCE.getSearchBar().getSearchField().setText("");
+                Client.INSTANCE.getSearchBar().getSearchField().setFocused(false);
                 return;
             }
 
-            if (Tenacity.INSTANCE.getSideGui().isFocused()) {
-                Tenacity.INSTANCE.getSideGui().setFocused(false);
+            if (Client.INSTANCE.getSideGui().isFocused()) {
+                Client.INSTANCE.getSideGui().setFocused(false);
                 return;
             }
 
-            Tenacity.INSTANCE.getSearchBar().getOpenAnimation().setDirection(Direction.BACKWARDS);
+            Client.INSTANCE.getSearchBar().getOpenAnimation().setDirection(Direction.BACKWARDS);
             openingAnimations.use((fade, opening) -> {
                 fade.setDirection(Direction.BACKWARDS);
                 opening.setDirection(Direction.BACKWARDS);
             });
         }
-        Tenacity.INSTANCE.getSideGui().keyTyped(typedChar, keyCode);
-        Tenacity.INSTANCE.getSearchBar().keyTyped(typedChar, keyCode);
+        Client.INSTANCE.getSideGui().keyTyped(typedChar, keyCode);
+        Client.INSTANCE.getSearchBar().keyTyped(typedChar, keyCode);
         categoryPanels.forEach(categoryPanel -> categoryPanel.keyTyped(typedChar, keyCode));
     }
 
@@ -98,7 +98,7 @@ public class DropdownClickGUI extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         binding = categoryPanels.stream().anyMatch(CategoryPanel::isTyping) ||
-                (Tenacity.INSTANCE.getSideGui().isFocused() && Tenacity.INSTANCE.getSideGui().typing) || Tenacity.INSTANCE.getSearchBar().isTyping();
+                (Client.INSTANCE.getSideGui().isFocused() && Client.INSTANCE.getSideGui().typing) || Client.INSTANCE.getSearchBar().isTyping();
 
 
      //  Gui.drawRect2(0,0, width, height, ColorUtil.applyOpacity(0, Tenacity.INSTANCE.getSearchBar().getFocusAnimation().getOutput().floatValue() * .25f));
@@ -115,7 +115,7 @@ public class DropdownClickGUI extends GuiScreen {
         gradient = Theme.getCurrentTheme().isGradient() || ClickGUIMod.gradient.isEnabled();
 
 
-        boolean focusedConfigGui = Tenacity.INSTANCE.getSideGui().isFocused() || Tenacity.INSTANCE.getSearchBar().isTyping();
+        boolean focusedConfigGui = Client.INSTANCE.getSideGui().isFocused() || Client.INSTANCE.getSearchBar().isTyping();
         int fakeMouseX = focusedConfigGui ? 0 : mouseX, fakeMouseY = focusedConfigGui ? 0 : mouseY;
         ScaledResolution sr = new ScaledResolution(mc);
 
@@ -131,11 +131,11 @@ public class DropdownClickGUI extends GuiScreen {
 
         //Draw Side GUI
 
-        SideGUI sideGUI = Tenacity.INSTANCE.getSideGui();
+        SideGUI sideGUI = Client.INSTANCE.getSideGui();
         sideGUI.getOpenAnimation().setDirection(openingAnimations.getFirst().getDirection());
         sideGUI.drawScreen(mouseX, mouseY);
 
-        SearchBar searchBar = Tenacity.INSTANCE.getSearchBar();
+        SearchBar searchBar = Client.INSTANCE.getSearchBar();
         searchBar.setAlpha(openingAnimations.getFirst().getOutput().floatValue() * (1 - sideGUI.getClickAnimation().getOutput().floatValue()));
         searchBar.drawScreen(fakeMouseX, fakeMouseY);
     }
@@ -151,9 +151,9 @@ public class DropdownClickGUI extends GuiScreen {
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
-        boolean focused = Tenacity.INSTANCE.getSideGui().isFocused();
-        Tenacity.INSTANCE.getSideGui().mouseClicked(mouseX, mouseY, mouseButton);
-        Tenacity.INSTANCE.getSearchBar().mouseClicked(mouseX, mouseY, mouseButton);
+        boolean focused = Client.INSTANCE.getSideGui().isFocused();
+        Client.INSTANCE.getSideGui().mouseClicked(mouseX, mouseY, mouseButton);
+        Client.INSTANCE.getSearchBar().mouseClicked(mouseX, mouseY, mouseButton);
         if (!focused) {
             categoryPanels.forEach(cat -> cat.mouseClicked(mouseX, mouseY, mouseButton));
         }
@@ -161,9 +161,9 @@ public class DropdownClickGUI extends GuiScreen {
 
     @Override
     protected void mouseReleased(int mouseX, int mouseY, int state) {
-        boolean focused = Tenacity.INSTANCE.getSideGui().isFocused();
-        Tenacity.INSTANCE.getSideGui().mouseReleased(mouseX, mouseY, state);
-        Tenacity.INSTANCE.getSearchBar().mouseReleased(mouseX, mouseY, state);
+        boolean focused = Client.INSTANCE.getSideGui().isFocused();
+        Client.INSTANCE.getSideGui().mouseReleased(mouseX, mouseY, state);
+        Client.INSTANCE.getSearchBar().mouseReleased(mouseX, mouseY, state);
         if (!focused) {
             categoryPanels.forEach(cat -> cat.mouseReleased(mouseX, mouseY, state));
         }

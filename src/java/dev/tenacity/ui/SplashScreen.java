@@ -1,6 +1,6 @@
 package dev.tenacity.ui;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.animations.Animation;
 import dev.tenacity.utils.animations.Direction;
@@ -146,13 +146,13 @@ public class SplashScreen implements Utils {
 
         if (versionAnim != null) {
 
-            float versionWidth = tenacityFont32.getStringWidth(Tenacity.VERSION) / 2f;
+            float versionWidth = tenacityFont32.getStringWidth(Client.VERSION) / 2f;
             float versionX = width / 2f + fr.getStringWidth("Tenacity") / 2f - (versionWidth);
             float versionY = (tenacityFont32.getMiddleOfBox(height) - 57) - (48 * yMovement);
 
             RenderUtil.scaleStart(versionX + versionWidth, versionY + tenacityFont32.getHeight() / 2f, versionAnim.getOutput().floatValue());
 
-            tenacityFont32.drawSmoothString(Tenacity.VERSION, versionX, versionY, ColorUtil.applyOpacity(-1, versionAnim.getOutput().floatValue()));
+            tenacityFont32.drawSmoothString(Client.VERSION, versionX, versionY, ColorUtil.applyOpacity(-1, versionAnim.getOutput().floatValue()));
             RenderUtil.scaleEnd();
         }
 
@@ -172,8 +172,8 @@ public class SplashScreen implements Utils {
                     (rectHeight / 2f) - .25f, ColorUtil.tripleColor(50, roundAlpha));
 
             float progress = progress2Anim.getOutput().floatValue();
-            Color color1 = ColorUtil.interpolateColorC(Tenacity.INSTANCE.getClientColor(), Tenacity.INSTANCE.getAlternateClientColor(), progress);
-            Color color2 = ColorUtil.interpolateColorC(Tenacity.INSTANCE.getAlternateClientColor(), Tenacity.INSTANCE.getClientColor(), progress);
+            Color color1 = ColorUtil.interpolateColorC(Client.INSTANCE.getClientColor(), Client.INSTANCE.getAlternateClientColor(), progress);
+            Color color2 = ColorUtil.interpolateColorC(Client.INSTANCE.getAlternateClientColor(), Client.INSTANCE.getClientColor(), progress);
             RoundedUtil.drawGradientHorizontal(roundX, roundY, rectWidth * progress, rectHeight,
                     (rectHeight / 2f) - .25f, ColorUtil.applyOpacity(color1, roundAlpha), ColorUtil.applyOpacity(color2, roundAlpha));
 

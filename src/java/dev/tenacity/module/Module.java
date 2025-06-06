@@ -2,7 +2,7 @@ package dev.tenacity.module;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.config.ConfigSetting;
 import dev.tenacity.event.ListenerAdapter;
 import dev.tenacity.module.impl.render.GlowESP;
@@ -134,15 +134,15 @@ public class Module extends ListenerAdapter implements Utils {
 
 
     public void onEnable() {
-        Tenacity.INSTANCE.getEventProtocol().register(this);
+        Client.INSTANCE.getEventProtocol().register(this);
     }
 
     public void onDisable() {
         if (this instanceof GlowESP) {
             GlowESP.fadeIn.setDirection(Direction.BACKWARDS);
-            Multithreading.schedule(() -> Tenacity.INSTANCE.getEventProtocol().unregister(this), 250, TimeUnit.MILLISECONDS);
+            Multithreading.schedule(() -> Client.INSTANCE.getEventProtocol().unregister(this), 250, TimeUnit.MILLISECONDS);
         } else {
-            Tenacity.INSTANCE.getEventProtocol().unregister(this);
+            Client.INSTANCE.getEventProtocol().unregister(this);
         }
     }
 

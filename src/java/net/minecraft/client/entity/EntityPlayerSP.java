@@ -1,6 +1,6 @@
 package net.minecraft.client.entity;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.commands.CommandHandler;
 import dev.tenacity.event.impl.player.*;
 import net.minecraft.client.Minecraft;
@@ -146,7 +146,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
      * Called to update the entity's position/logic.
      */
     public void onUpdate() {
-        Tenacity.INSTANCE.getEventProtocol().handleEvent(new UpdateEvent());
+        Client.INSTANCE.getEventProtocol().handleEvent(new UpdateEvent());
 
         if (this.worldObj.isBlockLoaded(new BlockPos(this.posX, 0.0D, this.posZ))) {
             super.onUpdate();
@@ -190,7 +190,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 
         if (this.isCurrentViewEntity()) {
             MotionEvent motionEvent = new MotionEvent(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround);
-            Tenacity.INSTANCE.getEventProtocol().handleEvent(motionEvent);
+            Client.INSTANCE.getEventProtocol().handleEvent(motionEvent);
 
             if(!motionEvent.isCancelled()) {
                 double posX = motionEvent.getX(), posY = motionEvent.getY(), posZ = motionEvent.getZ();
@@ -235,7 +235,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
                 }
             }
             motionEvent.setPost();
-            Tenacity.INSTANCE.getEventProtocol().handleEvent(motionEvent);
+            Client.INSTANCE.getEventProtocol().handleEvent(motionEvent);
             this.rotationPitchHead = motionEvent.getPitch();
         }
     }
@@ -276,12 +276,12 @@ public class EntityPlayerSP extends AbstractClientPlayer {
      * Sends a chat message from the player. Args: chatMessage
      */
     public void sendChatMessage(String message) {
-        if (Tenacity.INSTANCE.getCommandHandler().execute(message) || message.startsWith(CommandHandler.CHAT_PREFIX)) {
+        if (Client.INSTANCE.getCommandHandler().execute(message) || message.startsWith(CommandHandler.CHAT_PREFIX)) {
             return;
         }
 
         PlayerSendMessageEvent playerSendMessageEvent = new PlayerSendMessageEvent(message);
-        Tenacity.INSTANCE.getEventProtocol().handleEvent(playerSendMessageEvent);
+        Client.INSTANCE.getEventProtocol().handleEvent(playerSendMessageEvent);
         if (!playerSendMessageEvent.isCancelled()) {
             this.sendQueue.addToSendQueue(new C01PacketChatMessage(message));
         }
@@ -401,7 +401,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 
     protected boolean pushOutOfBlocks(double x, double y, double z) {
         PushOutOfBlockEvent pushOutOfBlockEvent = new PushOutOfBlockEvent();
-        Tenacity.INSTANCE.getEventProtocol().handleEvent(pushOutOfBlockEvent);
+        Client.INSTANCE.getEventProtocol().handleEvent(pushOutOfBlockEvent);
         if (!this.noClip || !pushOutOfBlockEvent.isCancelled()) {
             BlockPos blockpos = new BlockPos(x, y, z);
             double d0 = x - (double) blockpos.getX();
@@ -680,7 +680,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 
         if (this.isUsingItem() && !this.isRiding()) {
             SlowDownEvent slowDownEvent = new SlowDownEvent();
-            Tenacity.INSTANCE.getEventProtocol().handleEvent(slowDownEvent);
+            Client.INSTANCE.getEventProtocol().handleEvent(slowDownEvent);
             if (!slowDownEvent.isCancelled()) {
                 this.movementInput.moveStrafe *= 0.2F;
                 this.movementInput.moveForward *= 0.2F;
@@ -776,7 +776,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
     @Override
     public void moveEntity(double x, double y, double z) {
         MoveEvent event = new MoveEvent(x, y, z);
-        Tenacity.INSTANCE.getEventProtocol().handleEvent(event);
+        Client.INSTANCE.getEventProtocol().handleEvent(event);
         if (!event.isCancelled()) {
             x = event.getX();
             y = event.getY();
@@ -788,7 +788,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
     @Override
     public void jump() {
         JumpEvent jumpEvent = new JumpEvent();
-        Tenacity.INSTANCE.getEventProtocol().handleEvent(jumpEvent);
+        Client.INSTANCE.getEventProtocol().handleEvent(jumpEvent);
         if (!jumpEvent.isCancelled()) {
             super.jump();
         }

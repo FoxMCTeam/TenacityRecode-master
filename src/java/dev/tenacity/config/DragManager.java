@@ -2,7 +2,7 @@ package dev.tenacity.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.utils.objects.Dragging;
 
 import java.io.File;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class DragManager {
     public static HashMap<String, Dragging> draggables = new HashMap<>();
 
-    private static final File DRAG_DATA = new File(Tenacity.DIRECTORY, "Drag.json");
+    private static final File DRAG_DATA = new File(Client.DIRECTORY, "Drag.json");
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().setLenient().create();
 
     public static void saveDragData() {

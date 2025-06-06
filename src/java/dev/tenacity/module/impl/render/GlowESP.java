@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.render;
 
 import dev.tenacity.utils.tuples.Pair;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.game.WorldEvent;
 import dev.tenacity.event.impl.render.Render2DEvent;
 import dev.tenacity.event.impl.render.RenderChestEvent;
@@ -47,8 +47,8 @@ public class GlowESP extends Module {
             new BooleanSetting("Animals", true),
             new BooleanSetting("Mobs", true),
             new BooleanSetting("Chests", true));
-    private final ColorSetting playerColor = new ColorSetting("Player Color", Tenacity.INSTANCE.getClientColor());
-    private final ColorSetting animalColor = new ColorSetting("Animal Color", Tenacity.INSTANCE.getAlternateClientColor());
+    private final ColorSetting playerColor = new ColorSetting("Player Color", Client.INSTANCE.getClientColor());
+    private final ColorSetting animalColor = new ColorSetting("Animal Color", Client.INSTANCE.getAlternateClientColor());
     private final ColorSetting mobColor = new ColorSetting("Mob Color", Color.RED);
     private final ColorSetting chestColor = new ColorSetting("Chest Color", Color.GREEN);
     private final ColorSetting hurtTimeColor = new ColorSetting("Hurt Time Color", Color.RED);

@@ -2,14 +2,11 @@ package net.minecraft.client.renderer;
 
 import com.google.common.base.Predicates;
 import com.google.gson.JsonSyntaxException;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.impl.player.ChestStealer;
 import dev.tenacity.event.impl.render.HurtCamEvent;
 import dev.tenacity.event.impl.render.Render3DEvent;
 import dev.tenacity.module.impl.render.Ambience;
-import dev.tenacity.ui.altmanager.panels.LoginPanel;
-import dev.tenacity.utils.misc.IOUtils;
-import dev.tenacity.utils.misc.Multithreading;
 import dev.tenacity.utils.render.EntityCulling;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
@@ -69,7 +66,6 @@ import net.optifine.shaders.ShadersRender;
 import net.optifine.util.MemoryMonitor;
 import net.optifine.util.TextureUtils;
 import net.optifine.util.TimedEvent;
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjglx.input.Keyboard;
@@ -80,7 +76,6 @@ import org.lwjgl.opengl.GL12;
 import org.lwjglx.opengl.GLContext;
 import org.lwjglx.util.glu.Project;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.Calendar;
@@ -589,7 +584,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
     private void hurtCameraEffect(float partialTicks) {
         if (this.mc.getRenderViewEntity() instanceof EntityLivingBase) {
             HurtCamEvent hurtCamEvent = new HurtCamEvent();
-            Tenacity.INSTANCE.getEventProtocol().handleEvent(hurtCamEvent);
+            Client.INSTANCE.getEventProtocol().handleEvent(hurtCamEvent);
 
             if (!hurtCamEvent.isCancelled()) {
                 EntityLivingBase entitylivingbase = (EntityLivingBase) this.mc.getRenderViewEntity();
@@ -1542,7 +1537,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
             this.renderCloudsCheck(renderglobal, partialTicks, pass);
         }
 
-        Tenacity.INSTANCE.getEventProtocol().handleEvent(new Render3DEvent(partialTicks));
+        Client.INSTANCE.getEventProtocol().handleEvent(new Render3DEvent(partialTicks));
 
         this.mc.mcProfiler.endStartSection("hand");
 

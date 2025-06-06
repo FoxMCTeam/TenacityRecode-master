@@ -1,6 +1,6 @@
 package dev.tenacity.module.impl.combat;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -39,7 +39,7 @@ public class AutoPot extends Module {
 
     @Override
     public void onMotionEvent(MotionEvent e) {
-        if (Tenacity.INSTANCE.isEnabled(Scaffold.class) || mc.currentScreen instanceof GuiChest)
+        if (Client.INSTANCE.isEnabled(Scaffold.class) || mc.currentScreen instanceof GuiChest)
             return;
 
         int prevSlot = mc.thePlayer.inventory.currentItem;

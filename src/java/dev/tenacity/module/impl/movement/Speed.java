@@ -1,6 +1,6 @@
 package dev.tenacity.module.impl.movement;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.network.PacketReceiveEvent;
 import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.event.impl.player.MoveEvent;
@@ -13,9 +13,7 @@ import dev.tenacity.module.settings.impl.ModeSetting;
 import dev.tenacity.module.settings.impl.NumberSetting;
 import dev.tenacity.ui.notifications.NotificationManager;
 import dev.tenacity.ui.notifications.NotificationType;
-import dev.tenacity.utils.misc.MathUtils;
 import dev.tenacity.utils.player.MovementUtils;
-import dev.tenacity.utils.player.RotationUtils;
 import dev.tenacity.utils.server.PacketUtils;
 import dev.tenacity.utils.time.TimerUtil;
 import net.minecraft.init.Blocks;
@@ -320,7 +318,7 @@ public final class Speed extends Module {
     }
 
     public boolean shouldPreventJumping() {
-        return Tenacity.INSTANCE.isEnabled(Speed.class) && MovementUtils.isMoving() && !(mode.is("Watchdog") && watchdogMode.is("Ground"));
+        return Client.INSTANCE.isEnabled(Speed.class) && MovementUtils.isMoving() && !(mode.is("Watchdog") && watchdogMode.is("Ground"));
     }
 
     @Override

@@ -1,6 +1,6 @@
 package dev.tenacity.ui.clickguis.modern;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.ModuleCollection;
@@ -56,7 +56,7 @@ public class ModulesPanel extends Panel {
     public void refreshSettingMap() {
         if (settingsPanelHashMap == null || ModuleCollection.reloadModules) {
             settingsPanelHashMap = new HashMap<>();
-            for (Module module : Tenacity.INSTANCE.getModuleCollection().getModules()) {
+            for (Module module : Client.INSTANCE.getModuleCollection().getModules()) {
                 SettingsPanel settingsPanel = new SettingsPanel(module);
                 settingsPanel.initGui();
                 settingsPanelHashMap.put(module, settingsPanel);
@@ -91,7 +91,7 @@ public class ModulesPanel extends Panel {
         Scroll scroll = scrollHashMap.get(currentCategory);
 
         if (!(HoveringUtil.isHovering(x + (250 + (55 * expandAnim.getOutput().floatValue())), y, 135, 250, mouseX, mouseY) && currentlySelected != null) &&
-                !Tenacity.INSTANCE.getSideGui().isFocused()) {
+                !Client.INSTANCE.getSideGui().isFocused()) {
             scroll.onScroll(25);
         }
         double scrollVal = MathUtils.roundToHalf(scroll.getScroll());

@@ -1,6 +1,6 @@
 package dev.tenacity.module.impl.render;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.render.Render2DEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 public class PlayerList extends Module {
 
-    private final Dragging pos = Tenacity.INSTANCE.createDrag(this, "playerList", 4, 30);
+    private final Dragging pos = Client.INSTANCE.createDrag(this, "playerList", 4, 30);
 
     public PlayerList() {
         super("PlayerList", Category.RENDER, "Displays a list of players in your world");

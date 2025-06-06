@@ -1,6 +1,6 @@
 package dev.tenacity.utils.player;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.impl.movement.Scaffold;
 import dev.tenacity.module.impl.movement.Speed;
 import dev.tenacity.utils.Utils;
@@ -36,7 +36,7 @@ public class ScaffoldUtils implements Utils {
     }
 
     public static double getYLevel() {
-        if (!Scaffold.keepY.isEnabled() || Scaffold.keepYMode.is("Speed toggled") && !Tenacity.INSTANCE.isEnabled(Speed.class)) {
+        if (!Scaffold.keepY.isEnabled() || Scaffold.keepYMode.is("Speed toggled") && !Client.INSTANCE.isEnabled(Speed.class)) {
             return mc.thePlayer.posY - 1.0;
         }
         return mc.thePlayer.posY - 1.0 >= Scaffold.keepYCoord && Math.max(mc.thePlayer.posY, Scaffold.keepYCoord)

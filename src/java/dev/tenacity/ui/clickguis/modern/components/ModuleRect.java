@@ -1,7 +1,7 @@
 package dev.tenacity.ui.clickguis.modern.components;
 
 import dev.tenacity.utils.tuples.Pair;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.render.HUDMod;
@@ -82,7 +82,7 @@ public class ModuleRect extends Component {
 
         Color clickModColor = Color.WHITE;
         Color clickModColor2 = Color.WHITE;
-        HUDMod hudMod = Tenacity.INSTANCE.getModuleCollection().getModule(HUDMod.class);
+        HUDMod hudMod = Client.INSTANCE.getModuleCollection().getModule(HUDMod.class);
         Pair<Color, Color> colors = HUDMod.getClientColors();
 
 

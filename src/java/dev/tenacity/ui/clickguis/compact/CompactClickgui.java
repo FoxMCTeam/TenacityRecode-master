@@ -1,6 +1,6 @@
 package dev.tenacity.ui.clickguis.compact;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.ModuleCollection;
@@ -16,11 +16,9 @@ import dev.tenacity.utils.animations.impl.DecelerateAnimation;
 import dev.tenacity.utils.font.FontUtil;
 import dev.tenacity.utils.misc.HoveringUtil;
 import dev.tenacity.utils.misc.IOUtils;
-import dev.tenacity.utils.objects.DiscordAccount;
 import dev.tenacity.utils.objects.Drag;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.RenderUtil;
-import dev.tenacity.utils.render.RoundedUtil;
 import dev.tenacity.utils.render.StencilUtil;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 import net.minecraft.client.gui.Gui;
@@ -48,11 +46,11 @@ public class CompactClickgui extends GuiScreen {
 
     @Override
     public void onDrag(int mouseX, int mouseY) {
-        boolean focusedConfigGui = Tenacity.INSTANCE.getSideGui().isFocused();
+        boolean focusedConfigGui = Client.INSTANCE.getSideGui().isFocused();
         int fakeMouseX = focusedConfigGui ? 0 : mouseX, fakeMouseY = focusedConfigGui ? 0 : mouseY;
 
         drag.onDraw(fakeMouseX, fakeMouseY);
-        Tenacity.INSTANCE.getSideGui().onDrag(mouseX, mouseY);
+        Client.INSTANCE.getSideGui().onDrag(mouseX, mouseY);
     }
 
     @Override
@@ -64,7 +62,7 @@ public class CompactClickgui extends GuiScreen {
             moduleRects.forEach((cat, list) -> list.forEach(ModuleRect::initGui));
         }
         modulePanel.initGui();
-        Tenacity.INSTANCE.getSideGui().initGui();
+        Client.INSTANCE.getSideGui().initGui();
     }
 
     public void bloom() {
@@ -80,22 +78,22 @@ public class CompactClickgui extends GuiScreen {
     @Override
     protected void keyTyped(char typedChar, int keyCode) {
         if (keyCode == 1) {
-            if (Tenacity.INSTANCE.getSearchBar().isFocused()) {
-                Tenacity.INSTANCE.getSearchBar().getSearchField().setText("");
-                Tenacity.INSTANCE.getSearchBar().getSearchField().setFocused(false);
+            if (Client.INSTANCE.getSearchBar().isFocused()) {
+                Client.INSTANCE.getSearchBar().getSearchField().setText("");
+                Client.INSTANCE.getSearchBar().getSearchField().setFocused(false);
                 return;
             }
 
-            if (Tenacity.INSTANCE.getSideGui().isFocused()) {
-                Tenacity.INSTANCE.getSideGui().setFocused(false);
+            if (Client.INSTANCE.getSideGui().isFocused()) {
+                Client.INSTANCE.getSideGui().setFocused(false);
                 return;
             }
             
             openingAnimation.setDirection(Direction.BACKWARDS);
         }
         modulePanel.keyTyped(typedChar, keyCode);
-        Tenacity.INSTANCE.getSideGui().keyTyped(typedChar, keyCode);
-        Tenacity.INSTANCE.getSearchBar().keyTyped(typedChar, keyCode);
+        Client.INSTANCE.getSideGui().keyTyped(typedChar, keyCode);
+        Client.INSTANCE.getSearchBar().keyTyped(typedChar, keyCode);
     }
 
 
@@ -110,7 +108,7 @@ public class CompactClickgui extends GuiScreen {
             } else moduleRects.clear();
             for (Category category : Category.values()) {
                 ArrayList<ModuleRect> modules = new ArrayList<>();
-                for (Module module : Tenacity.INSTANCE.getModuleCollection().getModulesInCategory(category)) {
+                for (Module module : Client.INSTANCE.getModuleCollection().getModulesInCategory(category)) {
                     modules.add(new ModuleRect(module));
                 }
 
@@ -123,13 +121,13 @@ public class CompactClickgui extends GuiScreen {
 
 
 
-        typing = modulePanel.typing || (Tenacity.INSTANCE.getSideGui().isFocused() && Tenacity.INSTANCE.getSideGui().isTyping()) || Tenacity.INSTANCE.getSearchBar().isTyping();
+        typing = modulePanel.typing || (Client.INSTANCE.getSideGui().isFocused() && Client.INSTANCE.getSideGui().isTyping()) || Client.INSTANCE.getSearchBar().isTyping();
 
         if (ClickGUIMod.walk.isEnabled() && !typing) {
             InventoryMove.updateStates();
         }
 
-        boolean focusedConfigGui = Tenacity.INSTANCE.getSideGui().isFocused();
+        boolean focusedConfigGui = Client.INSTANCE.getSideGui().isFocused();
         int fakeMouseX = focusedConfigGui ? 0 : mouseX, fakeMouseY = focusedConfigGui ? 0 : mouseY;
 
         float x = drag.getX(), y = drag.getY();
@@ -156,11 +154,11 @@ public class CompactClickgui extends GuiScreen {
         mc.getTextureManager().bindTexture(new ResourceLocation("Tenacity/modernlogo.png"));
         Gui.drawModalRectWithCustomSizedTexture(x + 5, y + 5, 0, 0, 20.5f, 20.5f, 20.5f, 20.5f);
 
-        FontUtil.tenacityBoldFont22.drawString(Tenacity.NAME, x + 33, y + 7, -1);
-        FontUtil.tenacityFont16.drawCenteredString(Tenacity.VERSION,
-                (float) (x + 31 + FontUtil.tenacityBoldFont22.getStringWidth(Tenacity.NAME) / 2f), y + 19, -1);
+        FontUtil.tenacityBoldFont22.drawString(Client.NAME, x + 33, y + 7, -1);
+        FontUtil.tenacityFont16.drawCenteredString(Client.VERSION,
+                (float) (x + 31 + FontUtil.tenacityBoldFont22.getStringWidth(Client.NAME) / 2f), y + 19, -1);
 
-        boolean searching = Tenacity.INSTANCE.getSearchBar().isFocused();
+        boolean searching = Client.INSTANCE.getSearchBar().isFocused();
 
         float bannerHeight = 75 / 2f;
         Gui.drawRect2(x + 5, y + 31, 80, .5, new Color(110, 110, 110).getRGB());
@@ -168,7 +166,7 @@ public class CompactClickgui extends GuiScreen {
         Gui.drawRect2(x + 5, y + rectHeight - (bannerHeight + 3), 80, .5, new Color(110, 110, 110).getRGB());
 
         float minus = (bannerHeight + 3) + 33;
-        ClickGUIMod clickGUIMod = Tenacity.INSTANCE.getModuleCollection().getModule(ClickGUIMod.class);
+        ClickGUIMod clickGUIMod = Client.INSTANCE.getModuleCollection().getModule(ClickGUIMod.class);
         float catHeight = ((rectHeight - minus) / (Category.values().length));
         float seperation = 0;
         for (Category category : Category.values()) {
@@ -203,11 +201,11 @@ public class CompactClickgui extends GuiScreen {
 
         modulePanel.drawTooltips(fakeMouseX, fakeMouseY);
 
-        SideGUI sideGUI = Tenacity.INSTANCE.getSideGui();
+        SideGUI sideGUI = Client.INSTANCE.getSideGui();
         sideGUI.getOpenAnimation().setDirection(openingAnimation.getDirection());
         sideGUI.drawScreen(mouseX, mouseY);
 
-        SearchBar searchBar = Tenacity.INSTANCE.getSearchBar();
+        SearchBar searchBar = Client.INSTANCE.getSearchBar();
         searchBar.setAlpha(openingAnimation.getOutput().floatValue() * (1 - sideGUI.getClickAnimation().getOutput().floatValue()));
         searchBar.drawScreen(fakeMouseX, fakeMouseY);
 
@@ -215,12 +213,12 @@ public class CompactClickgui extends GuiScreen {
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
-        if (!Tenacity.INSTANCE.getSideGui().isFocused()) {
+        if (!Client.INSTANCE.getSideGui().isFocused()) {
             drag.onClick(mouseX, mouseY, mouseButton, HoveringUtil.isHovering(drag.getX(), drag.getY(), rectWidth, 10, mouseX, mouseY));
             float bannerWidth = 180 / 2f;
             float bannerHeight = 75 / 2f;
 
-            ClickGUIMod clickGUIMod = Tenacity.INSTANCE.getModuleCollection().getModule(ClickGUIMod.class);
+            ClickGUIMod clickGUIMod = Client.INSTANCE.getModuleCollection().getModule(ClickGUIMod.class);
 
             //If hovering the discord thing lol
             if (HoveringUtil.isHovering(drag.getX(), drag.getY() + rectHeight - bannerHeight, bannerWidth, bannerHeight, mouseX, mouseY)) {
@@ -244,18 +242,18 @@ public class CompactClickgui extends GuiScreen {
             }
 
             modulePanel.mouseClicked(mouseX, mouseY, mouseButton);
-            Tenacity.INSTANCE.getSearchBar().mouseClicked(mouseX, mouseY, mouseButton);
+            Client.INSTANCE.getSearchBar().mouseClicked(mouseX, mouseY, mouseButton);
         }
-        Tenacity.INSTANCE.getSideGui().mouseClicked(mouseX, mouseY, mouseButton);
+        Client.INSTANCE.getSideGui().mouseClicked(mouseX, mouseY, mouseButton);
     }
 
     @Override
     protected void mouseReleased(int mouseX, int mouseY, int state) {
-        if (!Tenacity.INSTANCE.getSideGui().isFocused()) {
+        if (!Client.INSTANCE.getSideGui().isFocused()) {
             drag.onRelease(state);
             modulePanel.mouseReleased(mouseX, mouseY, state);
         }
-        Tenacity.INSTANCE.getSideGui().mouseReleased(mouseX, mouseY, state);
+        Client.INSTANCE.getSideGui().mouseReleased(mouseX, mouseY, state);
     }
 
     @Override
@@ -267,11 +265,11 @@ public class CompactClickgui extends GuiScreen {
     private String searchText;
 
     public List<ModuleRect> getModuleRects(Category category) {
-        if (!Tenacity.INSTANCE.getSearchBar().isFocused()) {
+        if (!Client.INSTANCE.getSearchBar().isFocused()) {
             return moduleRects.get(category);
         }
 
-        String search = Tenacity.INSTANCE.getSearchBar().getSearchField().getText();
+        String search = Client.INSTANCE.getSearchBar().getSearchField().getText();
 
         if (search.equals(searchText)) {
             return searchResults;

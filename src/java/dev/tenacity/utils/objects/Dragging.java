@@ -2,7 +2,7 @@ package dev.tenacity.utils.objects;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.render.ArrayListMod;
 import dev.tenacity.utils.Utils;
@@ -117,7 +117,7 @@ public class Dragging implements Utils {
     public final void onDrawArraylist(ArrayListMod arraylistMod, int mouseX, int mouseY) {
         ScaledResolution sr = new ScaledResolution(mc);
 
-        List<Module> modules = Tenacity.INSTANCE.getModuleCollection().getArraylistModules(arraylistMod, arraylistMod.modules);
+        List<Module> modules = Client.INSTANCE.getModuleCollection().getArraylistModules(arraylistMod, arraylistMod.modules);
 
         String longest = getLongestModule(arraylistMod);
 

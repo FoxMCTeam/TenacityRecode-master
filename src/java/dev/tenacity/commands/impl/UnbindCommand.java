@@ -1,6 +1,6 @@
 package dev.tenacity.commands.impl;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.commands.Command;
 import dev.tenacity.module.Module;
 import org.lwjglx.input.Keyboard;
@@ -18,7 +18,7 @@ public final class UnbindCommand extends Command {
         } else {
             String stringMod = args[0];
             try {
-                Module module = Tenacity.INSTANCE.getModuleCollection().getModuleByName(stringMod);
+                Module module = Client.INSTANCE.getModuleCollection().getModuleByName(stringMod);
                 module.getKeybind().setCode(Keyboard.KEY_NONE);
                 sendChatWithPrefix("Set keybind for " + module.getName() + " to NONE");
             } catch (Exception e) {

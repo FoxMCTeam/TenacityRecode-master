@@ -1,6 +1,6 @@
 package dev.tenacity.utils.client.addons.api;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.config.DragManager;
 import dev.tenacity.module.settings.Setting;
 import dev.tenacity.module.settings.impl.*;
@@ -245,7 +245,7 @@ public class Script implements Utils {
             if (mc.currentScreen instanceof GuiChat) {
                 mc.displayGuiScreen(null);
             }
-            Dragging dragging = Tenacity.INSTANCE.createDrag(scriptModule, "script" + description, initialX, initialY);
+            Dragging dragging = Client.INSTANCE.createDrag(scriptModule, "script" + description, initialX, initialY);
             DragManager.loadDragData();
             return dragging;
         }

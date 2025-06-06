@@ -3,7 +3,7 @@ package net.minecraft.entity;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Maps;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.player.JumpFixEvent;
 import dev.tenacity.event.impl.player.LivingDeathEvent;
 import dev.tenacity.module.impl.render.Animations;
@@ -18,7 +18,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -937,7 +936,7 @@ public abstract class EntityLivingBase extends Entity {
 
         if (entity != null) {
             if (entity instanceof EntityLivingBase) {
-                Tenacity.INSTANCE.getEventProtocol().handleEvent(new LivingDeathEvent(this, cause));
+                Client.INSTANCE.getEventProtocol().handleEvent(new LivingDeathEvent(this, cause));
             }
             entity.onKillEntity(this);
         }
@@ -1202,7 +1201,7 @@ public abstract class EntityLivingBase extends Entity {
      * progress indicator. Takes dig speed enchantments into account.
      */
     private int getArmSwingAnimationEnd() {
-        return (Tenacity.INSTANCE.getModuleCollection().get(Animations.class).isEnabled() ? Animations.slowdown.getValue().intValue() : 1)
+        return (Client.INSTANCE.getModuleCollection().get(Animations.class).isEnabled() ? Animations.slowdown.getValue().intValue() : 1)
                 * (this.isPotionActive(Potion.digSpeed)
                 ? 6 - (1 + this.getActivePotionEffect(Potion.digSpeed).getAmplifier())
                 : (this.isPotionActive(Potion.digSlowdown) ? 6 + (1 + this.getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2 : 6));
@@ -1413,7 +1412,7 @@ public abstract class EntityLivingBase extends Entity {
             JumpFixEvent jumpFixEvent = new JumpFixEvent(this.rotationYaw);
 
             if (this instanceof EntityPlayerSP) {
-                Tenacity.INSTANCE.getEventProtocol().handleEvent(jumpFixEvent);
+                Client.INSTANCE.getEventProtocol().handleEvent(jumpFixEvent);
             }
 
             float f = jumpFixEvent.getYaw() * 0.017453292F;

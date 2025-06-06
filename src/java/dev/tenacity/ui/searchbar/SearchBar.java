@@ -1,6 +1,6 @@
 package dev.tenacity.ui.searchbar;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.ui.Screen;
 import dev.tenacity.utils.animations.Animation;
 import dev.tenacity.utils.animations.Direction;
@@ -43,7 +43,7 @@ public class SearchBar implements Screen {
 
         if (GuiScreen.isCtrlKeyDown() && keyCode == Keyboard.KEY_F) {
             searchField.setFocused(true);
-            Tenacity.INSTANCE.getModuleCollection().getModules().forEach(module -> module.setExpanded(false));
+            Client.INSTANCE.getModuleCollection().getModules().forEach(module -> module.setExpanded(false));
             return;
         }
 
@@ -112,7 +112,7 @@ public class SearchBar implements Screen {
         boolean focused = searchField.isFocused();
         searchField.mouseClicked(mouseX, mouseY, button);
         if (!focused && searchField.isFocused()) {
-            Tenacity.INSTANCE.getModuleCollection().getModules().forEach(module -> module.setExpanded(false));
+            Client.INSTANCE.getModuleCollection().getModules().forEach(module -> module.setExpanded(false));
         }
     }
 

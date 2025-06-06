@@ -1,7 +1,6 @@
 package dev.tenacity.ui.sidegui.panels.scriptpanel;
 
-import dev.tenacity.Tenacity;
-import dev.tenacity.module.impl.render.HUDMod;
+import dev.tenacity.Client;
 import dev.tenacity.utils.client.addons.api.Script;
 import dev.tenacity.ui.sidegui.SideGUI;
 import dev.tenacity.ui.sidegui.panels.Panel;
@@ -15,12 +14,9 @@ import dev.tenacity.utils.objects.Scroll;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.RoundedUtil;
 import dev.tenacity.utils.render.StencilUtil;
-import dev.tenacity.utils.time.TimerUtil;
-import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class ScriptPanel extends Panel {
@@ -95,7 +91,7 @@ public class ScriptPanel extends Panel {
                         IOUtils.openLink("https://scripting.tenacity.dev");
                         break;
                     case "Open folder":
-                        IOUtils.openFolder(Tenacity.INSTANCE.getScriptManager().getScriptDirectory());
+                        IOUtils.openFolder(Client.INSTANCE.getScriptManager().getScriptDirectory());
                         break;
                 }
             });
@@ -191,11 +187,11 @@ public class ScriptPanel extends Panel {
     }
 
     public void refresh() {
-        Tenacity.INSTANCE.getScriptManager().reloadScripts();
+        Client.INSTANCE.getScriptManager().reloadScripts();
 
 
         localScriptRects.clear();
-        for (Script script : Tenacity.INSTANCE.getScriptManager().getScripts()) {
+        for (Script script : Client.INSTANCE.getScriptManager().getScripts()) {
             localScriptRects.add(new LocalScriptRect(script));
         }
 

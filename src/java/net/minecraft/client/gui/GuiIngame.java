@@ -2,19 +2,15 @@ package net.minecraft.client.gui;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import dev.tenacity.Tenacity;
-import dev.tenacity.event.impl.network.PacketReceiveEvent;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.render.PreRenderEvent;
 import dev.tenacity.module.impl.render.*;
-import dev.tenacity.utils.player.ChatUtil;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.RenderUtil;
-import dev.tenacity.utils.render.ShaderUtil;
 import dev.tenacity.event.impl.render.Render2DEvent;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.font.AbstractFontRenderer;
 import dev.tenacity.utils.render.GLUtil;
-import dev.tenacity.utils.time.TimerUtil;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -26,7 +22,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -46,7 +41,6 @@ import net.minecraft.src.Config;
 import net.minecraft.util.*;
 import net.minecraft.world.border.WorldBorder;
 import net.optifine.CustomColors;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.Collection;
@@ -188,15 +182,15 @@ public class GuiIngame extends Gui implements Utils {
             }
         }
 
-        Tenacity.INSTANCE.getEventProtocol().handleEvent(new PreRenderEvent());
+        Client.INSTANCE.getEventProtocol().handleEvent(new PreRenderEvent());
 
 
-        PostProcessing postProcessing = (PostProcessing) Tenacity.INSTANCE.getModuleCollection().get(PostProcessing.class);
+        PostProcessing postProcessing = (PostProcessing) Client.INSTANCE.getModuleCollection().get(PostProcessing.class);
         postProcessing.blurScreen();
 
 
-        Tenacity.INSTANCE.getEventProtocol().handleEvent(new Render2DEvent(scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight()));
-        NotificationsMod notif = Tenacity.INSTANCE.getModuleCollection().getModule(NotificationsMod.class);
+        Client.INSTANCE.getEventProtocol().handleEvent(new Render2DEvent(scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight()));
+        NotificationsMod notif = Client.INSTANCE.getModuleCollection().getModule(NotificationsMod.class);
         if (notif.isEnabled()) {
             notif.render();
         }
@@ -364,7 +358,7 @@ public class GuiIngame extends Gui implements Utils {
 
         ScoreObjective scoreobjective1 = scoreobjective != null ? scoreobjective : scoreboard.getObjectiveInDisplaySlot(1);
 
-        if (scoreobjective1 != null && Tenacity.INSTANCE.isEnabled(ScoreboardMod.class)) {
+        if (scoreobjective1 != null && Client.INSTANCE.isEnabled(ScoreboardMod.class)) {
             this.renderScoreboard(scoreobjective1, scaledresolution);
         }
 
@@ -554,7 +548,7 @@ public class GuiIngame extends Gui implements Utils {
             }
         }
         ScoreObjective objective = scoreobjective != null ? scoreobjective : scoreboardOBJ.getObjectiveInDisplaySlot(1);
-        if (objective != null && Tenacity.INSTANCE.isEnabled(ScoreboardMod.class)) {
+        if (objective != null && Client.INSTANCE.isEnabled(ScoreboardMod.class)) {
 
             Scoreboard scoreboard = objective.getScoreboard();
             Collection<Score> collection = scoreboard.getSortedScores(objective);

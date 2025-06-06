@@ -1,6 +1,6 @@
 package dev.tenacity.module.impl.render;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.event.impl.render.Render2DEvent;
 import dev.tenacity.event.impl.render.ShaderEvent;
@@ -33,8 +33,8 @@ public class Statistics extends Module {
     private final BooleanSetting motionGraph = new BooleanSetting("Show Speed Graph", true);
     private final BooleanSetting seprateMotionGraph = new BooleanSetting("Separate Graph", true);
 
-    private final Dragging dragging = Tenacity.INSTANCE.createDrag(this, "sessionstats", 5, 150);
-    private final Dragging motionDragging = Tenacity.INSTANCE.createDrag(this, "motionGraph", 5, 200);
+    private final Dragging dragging = Client.INSTANCE.createDrag(this, "sessionstats", 5, 150);
+    private final Dragging motionDragging = Client.INSTANCE.createDrag(this, "motionGraph", 5, 200);
 
     private final GradientColorWheel colorWheel = new GradientColorWheel();
 

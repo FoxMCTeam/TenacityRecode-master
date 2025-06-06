@@ -1,7 +1,7 @@
 package net.minecraft.client.renderer.entity;
 
 import com.google.common.collect.Lists;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.module.impl.render.CustomModel;
 import dev.tenacity.module.impl.render.ESP2D;
 import dev.tenacity.module.impl.render.TargetHUDMod;
@@ -104,7 +104,7 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
      */
     public void doRender(T entity, double x, double y, double z, float entityYaw, float partialTicks) {
         RendererLivingEntityEvent event = new RendererLivingEntityEvent(entity, this, partialTicks, x, y, z);
-        Tenacity.INSTANCE.getEventProtocol().handleEvent(event);
+        Client.INSTANCE.getEventProtocol().handleEvent(event);
         if (event.isCancelled()) return;
 
 
@@ -253,7 +253,7 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
         }
 
         event.setPost();
-        Tenacity.INSTANCE.getEventProtocol().handleEvent(event);
+        Client.INSTANCE.getEventProtocol().handleEvent(event);
     }
 
     protected boolean setScoreTeamColor(T entityLivingBaseIn) {
@@ -317,14 +317,14 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
                     () -> this.renderLayers(entitylivingbaseIn, x, y, partialTicks, z, entityYaw, entityPitch, scaleFactor));
 
 
-            Tenacity.INSTANCE.getEventProtocol().handleEvent(renderModelEvent);
+            Client.INSTANCE.getEventProtocol().handleEvent(renderModelEvent);
 
             GL11.glEnable(GL11.GL_ALPHA_TEST);
 
             renderModelEvent.drawModel();
 
             renderModelEvent.setPost();
-            Tenacity.INSTANCE.getEventProtocol().handleEvent(renderModelEvent);
+            Client.INSTANCE.getEventProtocol().handleEvent(renderModelEvent);
 
 
             if (flag1) {
@@ -572,11 +572,11 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
     public void renderName(T entity, double x, double y, double z) {
         if (entity instanceof EntityPlayer) {
             NametagRenderEvent nametagRenderEvent = new NametagRenderEvent();
-            Tenacity.INSTANCE.getEventProtocol().handleEvent(nametagRenderEvent);
+            Client.INSTANCE.getEventProtocol().handleEvent(nametagRenderEvent);
             if (nametagRenderEvent.isCancelled()) return;
         }
         if (esp2D == null) {
-            esp2D = Tenacity.INSTANCE.getModuleCollection().getModule(ESP2D.class);
+            esp2D = Client.INSTANCE.getModuleCollection().getModule(ESP2D.class);
         }
 
         if (this.canRenderName(entity)) {

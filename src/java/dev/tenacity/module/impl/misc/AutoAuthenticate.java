@@ -1,6 +1,6 @@
 package dev.tenacity.module.impl.misc;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.game.WorldEvent;
 import dev.tenacity.event.impl.player.ChatReceivedEvent;
 import dev.tenacity.event.impl.player.MotionEvent;
@@ -63,7 +63,7 @@ public class AutoAuthenticate extends Module {
     public void onRender2DEvent(Render2DEvent event) {
         if ((this.runAt > System.currentTimeMillis() && this.runCommand != null) || !animation.isDone()) {
             if (hudMod == null) {
-                hudMod = Tenacity.INSTANCE.getModuleCollection().getModule(HUDMod.class);
+                hudMod = Client.INSTANCE.getModuleCollection().getModule(HUDMod.class);
             }
             ScaledResolution sr = new ScaledResolution(mc);
             float width = 120, height = 5, width2 = width / 2.0F;

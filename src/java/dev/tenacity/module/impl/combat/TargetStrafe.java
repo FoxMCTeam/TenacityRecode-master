@@ -1,6 +1,6 @@
 package dev.tenacity.module.impl.combat;
 
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.event.impl.player.MoveEvent;
 import dev.tenacity.event.impl.render.Render3DEvent;
@@ -135,12 +135,12 @@ public final class TargetStrafe extends Module {
     }
 
     public static boolean canStrafe() {
-        KillAura killAura = Tenacity.INSTANCE.getModuleCollection().getModule(KillAura.class);
-        if (!Tenacity.INSTANCE.isEnabled(TargetStrafe.class) || !killAura.isEnabled()
+        KillAura killAura = Client.INSTANCE.getModuleCollection().getModule(KillAura.class);
+        if (!Client.INSTANCE.isEnabled(TargetStrafe.class) || !killAura.isEnabled()
                 || !MovementUtils.isMoving() || (space.isEnabled() && !Keyboard.isKeyDown(Keyboard.KEY_SPACE))) {
             return false;
         }
-        if (!(Tenacity.INSTANCE.isEnabled(Speed.class) || Tenacity.INSTANCE.isEnabled(Flight.class))) {
+        if (!(Client.INSTANCE.isEnabled(Speed.class) || Client.INSTANCE.isEnabled(Flight.class))) {
             return false;
         }
         return KillAura.target != null && killAura.isValid(KillAura.target);

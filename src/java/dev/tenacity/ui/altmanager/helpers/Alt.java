@@ -10,7 +10,7 @@ import com.mojang.authlib.Agent;
 import com.mojang.authlib.exceptions.AuthenticationException;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.mojang.authlib.yggdrasil.YggdrasilUserAuthentication;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.utils.client.addons.microsoft.MicrosoftLogin;
 import dev.tenacity.ui.notifications.NotificationManager;
 import dev.tenacity.ui.notifications.NotificationType;
@@ -83,7 +83,7 @@ public class Alt {
             this.altState = AltState.LOGIN_SUCCESS;
             altType = AltType.CRACKED;
             stage = 2;
-            Tenacity.INSTANCE.getAltManager().currentSessionAlt = this;
+            Client.INSTANCE.getAltManager().currentSessionAlt = this;
             return;
         }
         Session auth = this.createSession(this.email, this.password, microsoft);
@@ -97,7 +97,7 @@ public class Alt {
             stage = 2;
             altState = AltState.LOGIN_SUCCESS;
             altType = currentLoginMethod;
-            Tenacity.INSTANCE.getAltManager().currentSessionAlt = this;
+            Client.INSTANCE.getAltManager().currentSessionAlt = this;
         }
     }
 

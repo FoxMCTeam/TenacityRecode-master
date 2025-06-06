@@ -1,9 +1,7 @@
 package dev.tenacity.module;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import dev.tenacity.Tenacity;
+import dev.tenacity.Client;
 import dev.tenacity.commands.CommandHandler;
 import dev.tenacity.commands.impl.*;
 import dev.tenacity.config.ConfigManager;
@@ -19,11 +17,8 @@ import dev.tenacity.module.impl.render.killeffects.KillEffects;
 import dev.tenacity.module.impl.render.wings.DragonWings;
 import dev.tenacity.utils.client.addons.api.ScriptManager;
 import dev.tenacity.ui.altmanager.GuiAltManager;
-import dev.tenacity.ui.altmanager.helpers.KingGenApi;
 import dev.tenacity.utils.client.addons.viamcp.vialoadingbase.ViaLoadingBase;
 import dev.tenacity.utils.client.addons.viamcp.viamcp.ViaMCP;
-import dev.tenacity.utils.misc.NetworkingUtils;
-import dev.tenacity.utils.objects.DiscordAccount;
 import dev.tenacity.utils.render.EntityCulling;
 import dev.tenacity.utils.render.Theme;
 import dev.tenacity.utils.server.PingerUtils;
@@ -39,7 +34,7 @@ public class ProtectedLaunch {
 
     public static void start() {
         // Setup Intent API access
-        Tenacity.INSTANCE.setModuleCollection(new ModuleCollection());
+        Client.INSTANCE.setModuleCollection(new ModuleCollection());
 
         // Combat
         modules.put(KillAura.class, new KillAura());
@@ -140,13 +135,13 @@ public class ProtectedLaunch {
         modules.put(Chams.class, new Chams());
         modules.put(BrightPlayers.class, new BrightPlayers());
 
-        Tenacity.INSTANCE.getModuleCollection().setModules(modules);
+        Client.INSTANCE.getModuleCollection().setModules(modules);
 
         Theme.init();
 
-        Tenacity.INSTANCE.setPingerUtils(new PingerUtils());
+        Client.INSTANCE.setPingerUtils(new PingerUtils());
 
-        Tenacity.INSTANCE.setScriptManager(new ScriptManager());
+        Client.INSTANCE.setScriptManager(new ScriptManager());
 
         CommandHandler commandHandler = new CommandHandler();
         commandHandler.commands.addAll(Arrays.asList(
@@ -155,22 +150,22 @@ public class ProtectedLaunch {
                 new VClipCommand(), new ClearBindsCommand(), new ClearConfigCommand(),
                 new ToggleCommand()
         ));
-        Tenacity.INSTANCE.setCommandHandler(commandHandler);
-        Tenacity.INSTANCE.getEventProtocol().register(new BackgroundProcess());
+        Client.INSTANCE.setCommandHandler(commandHandler);
+        Client.INSTANCE.getEventProtocol().register(new BackgroundProcess());
 
-        Tenacity.INSTANCE.setConfigManager(new ConfigManager());
+        Client.INSTANCE.setConfigManager(new ConfigManager());
         ConfigManager.defaultConfig = new File(Minecraft.getMinecraft().mcDataDir + "/Tenacity/Config.json");
-        Tenacity.INSTANCE.getConfigManager().collectConfigs();
+        Client.INSTANCE.getConfigManager().collectConfigs();
         if (ConfigManager.defaultConfig.exists()) {
-            Tenacity.INSTANCE.getConfigManager().loadConfig(Tenacity.INSTANCE.getConfigManager().readConfigData(ConfigManager.defaultConfig.toPath()), true);
+            Client.INSTANCE.getConfigManager().loadConfig(Client.INSTANCE.getConfigManager().readConfigData(ConfigManager.defaultConfig.toPath()), true);
         }
 
         DragManager.loadDragData();
 
-        Tenacity.INSTANCE.setAltManager(new GuiAltManager());
+        Client.INSTANCE.setAltManager(new GuiAltManager());
 
         try {
-            Tenacity.LOGGER.info("Starting ViaMCP...");
+            Client.LOGGER.info("Starting ViaMCP...");
             ViaMCP.create();
             ViaMCP.INSTANCE.initAsyncSlider();
             ViaLoadingBase.getInstance().reload(ProtocolVersion.v1_12_2);
