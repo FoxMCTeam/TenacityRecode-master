@@ -112,7 +112,7 @@ public class ModuleRect implements Screen {
         hoverAnimation.setDirection(hoveringModule ? Direction.FORWARDS : Direction.BACKWARDS);
         hoverAnimation.setDuration(hoveringModule ? 250 : 400);
 
-        boolean hoveringText = HoveringUtil.isHovering(x + 5, y + tenacityFont18.getMiddleOfBox(height), tenacityFont18.getStringWidth(module.getName()), tenacityFont18.getHeight(), mouseX, mouseY);
+        boolean hoveringText = HoveringUtil.isHovering(x + 5, y + duckSansFont18.getMiddleOfBox(height), duckSansFont18.getStringWidth(module.getName()), duckSansFont18.getHeight(), mouseX, mouseY);
 
         tooltipObject.setTip(module.getDescription());
         tooltipObject.setHovering(hoveringText);
@@ -149,7 +149,7 @@ public class ModuleRect implements Screen {
 
         RenderUtil.resetColor();
 
-        tenacityFont18.drawString((module.isEnabled() ? "§l" : "") + module.getName(), x + 5, y + tenacityFont18.getMiddleOfBox(height), moduleTextColor);
+        duckSansFont18.drawString((module.isEnabled() ? "§l" : "") + module.getName(), x + 5, y + duckSansFont18.getMiddleOfBox(height), moduleTextColor);
 
 
         Color settingRectColor = ColorUtil.tripleColor(32, alpha);

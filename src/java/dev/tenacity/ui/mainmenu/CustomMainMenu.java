@@ -92,8 +92,8 @@ public class CustomMainMenu extends GuiScreen {
 
 
         if (animatedOpen) {
-            //    tenacityFont80.drawCenteredString("Tenacity", width / 2f, height / 2f - 110, Color.WHITE.getRGB());
-            //    tenacityFont32.drawString(Tenacity.VERSION, width / 2f + tenacityFont80.getStringWidth("Tenacity") / 2f - (tenacityFont32.getStringWidth(Tenacity.VERSION) / 2f), height / 2f - 113, Color.WHITE.getRGB());
+            //    duckSansFont80.drawCenteredString("Tenacity", width / 2f, height / 2f - 110, Color.WHITE.getRGB());
+            //    duckSansFont32.drawString(Tenacity.VERSION, width / 2f + duckSansFont80.getStringWidth("Tenacity") / 2f - (duckSansFont32.getStringWidth(Tenacity.VERSION) / 2f), height / 2f - 113, Color.WHITE.getRGB());
         }
 
         GL11.glEnable(GL11.GL_BLEND);
@@ -154,7 +154,7 @@ public class CustomMainMenu extends GuiScreen {
         float buttonCount = 0;
         float buttonsWidth = (float) textButtons.stream().mapToDouble(TextButton::getWidth).sum();
         int buttonsSize = textButtons.size();
-        buttonsWidth += tenacityFont16.getStringWidth(" | ") * (buttonsSize - 1);
+        buttonsWidth += duckSansFont16.getStringWidth(" | ") * (buttonsSize - 1);
 
         int buttonIncrement = 0;
         for (TextButton button : textButtons) {
@@ -178,13 +178,13 @@ public class CustomMainMenu extends GuiScreen {
             button.drawScreen(mouseX, mouseY);
 
 
-            buttonCount += button.getWidth() + tenacityFont14.getStringWidth(" | ");
+            buttonCount += button.getWidth() + duckSansFont14.getStringWidth(" | ");
             buttonIncrement++;
         }
 
-        tenacityBoldFont80.drawCenteredString("Tenacity", width / 2f, height / 2f - 110, Color.WHITE.getRGB());
-        tenacityFont32.drawString(Client.VERSION, width / 2f + tenacityBoldFont80.getStringWidth("Tenacity") / 2f - (tenacityFont32.getStringWidth(Client.VERSION) / 2f), height / 2f - 113, Color.WHITE.getRGB());
-        tenacityFont18.drawCenteredString("by cedo, senoe, and tear", width / 2f, height / 2f - 68, Color.WHITE.getRGB());
+        duckSansBoldFont80.drawCenteredString("Tenacity", width / 2f, height / 2f - 110, Color.WHITE.getRGB());
+        duckSansFont32.drawString(Client.VERSION, width / 2f + duckSansBoldFont80.getStringWidth("Tenacity") / 2f - (duckSansFont32.getStringWidth(Client.VERSION) / 2f), height / 2f - 113, Color.WHITE.getRGB());
+        duckSansFont18.drawCenteredString("by cedo, senoe, and tear", width / 2f, height / 2f - 68, Color.WHITE.getRGB());
 
     }
 
@@ -215,8 +215,8 @@ public class CustomMainMenu extends GuiScreen {
 
         public TextButton(String text) {
             this.text = text;
-            width = tenacityFont16.getStringWidth(text);
-            height = tenacityFont16.getHeight();
+            width = duckSansFont16.getStringWidth(text);
+            height = duckSansFont16.getHeight();
         }
 
         @Override
@@ -233,9 +233,9 @@ public class CustomMainMenu extends GuiScreen {
         public void drawScreen(int mouseX, int mouseY) {
             boolean hovered = HoveringUtil.isHovering(x, y, width, height, mouseX, mouseY);
             hoverAnimation.setDirection(hovered ? Direction.FORWARDS : Direction.BACKWARDS);
-            tenacityFont16.drawString(text, x, y - (height / 2f * hoverAnimation.getOutput().floatValue()), Color.WHITE.getRGB());
+            duckSansFont16.drawString(text, x, y - (height / 2f * hoverAnimation.getOutput().floatValue()), Color.WHITE.getRGB());
             if (addToEnd) {
-                tenacityFont16.drawString(" | ", x + width, y, Color.WHITE.getRGB());
+                duckSansFont16.drawString(" | ", x + width, y, Color.WHITE.getRGB());
             }
         }
 

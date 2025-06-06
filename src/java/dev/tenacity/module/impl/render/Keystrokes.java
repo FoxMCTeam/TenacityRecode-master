@@ -75,7 +75,7 @@ public class Keystrokes extends Module {
         float x = dragging.getX(), y = dragging.getY(), width = dragging.getWidth(), height = dragging.getHeight(), size = sizeValue.getValue().floatValue();
 
         if (HUDMod.customFont.isEnabled()) {
-            Button.font = tenacityFont22;
+            Button.font = duckSansFont22;
         } else {
             Button.font = mc.fontRendererObj;
         }

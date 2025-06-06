@@ -34,8 +34,8 @@ public class LoginPanel extends Panel {
         actionButtons.add(new ActionButton("Login"));
         actionButtons.add(new ActionButton("Add"));
         actionButtons.add(new ActionButton("Gen Cracked"));
-        textFields.add(new TextField(tenacityFont20));
-        textFields.add(new TextField(tenacityFont20));
+        textFields.add(new TextField(duckSansFont20));
+        textFields.add(new TextField(duckSansFont20));
     }
 
 
@@ -73,7 +73,7 @@ public class LoginPanel extends Panel {
     public void drawScreen(int mouseX, int mouseY) {
         super.drawScreen(mouseX, mouseY);
         setHeight(180);
-        tenacityBoldFont32.drawCenteredString("Login", getX() + getWidth() / 2f, getY() + 3, ColorUtil.applyOpacity(-1, .75f));
+        duckSansBoldFont32.drawCenteredString("Login", getX() + getWidth() / 2f, getY() + 3, ColorUtil.applyOpacity(-1, .75f));
         Color noColor = ColorUtil.applyOpacity(Color.WHITE, 0);
 
         int count = 0;
@@ -107,7 +107,7 @@ public class LoginPanel extends Panel {
             actionButton.setY(actionY);
             actionButton.setWidth(actionWidth);
             actionButton.setHeight(20);
-            actionButton.setFont(tenacityBoldFont22);
+            actionButton.setFont(duckSansBoldFont22);
 
             actionButton.setClickAction(() -> {
                 switch (actionButton.getName()) {
@@ -159,9 +159,9 @@ public class LoginPanel extends Panel {
                 ColorUtil.applyOpacity(Color.BLACK, .2f + (.25f * hoverMicrosoftAnim.getOutput().floatValue())));
 
 
-        tenacityBoldFont26.drawString("Microsoft Login", microX + 10, microsoftY + 4, -1);
+        duckSansBoldFont26.drawString("Microsoft Login", microX + 10, microsoftY + 4, -1);
 
-        tenacityFont16.drawString("Login to your migrated account", microX + 10, microsoftY + 23, -1);
+        duckSansFont16.drawString("Login to your migrated account", microX + 10, microsoftY + 23, -1);
 
         float logoSize = 22;
         RenderUtil.drawMicrosoftLogo(microX + microWidth - (10 + logoSize), microsoftY + (microHeight / 2f) - (logoSize / 2f), logoSize, 1.5f);

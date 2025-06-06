@@ -62,7 +62,7 @@ public class ConfigPanel extends Panel {
 
     @Override
     public void drawScreen(int mouseX, int mouseY) {
-        tenacityBoldFont40.drawString("Configs", getX() + 8, getY() + 8, getTextColor());
+        duckSansBoldFont40.drawString("Configs", getX() + 8, getY() + 8, getTextColor());
 
         boolean filterVersion = toggleButtons.get(1).isEnabled();
         boolean filterAuthor = toggleButtons.get(2).isEnabled();

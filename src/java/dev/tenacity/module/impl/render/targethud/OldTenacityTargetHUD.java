@@ -25,7 +25,7 @@ public class OldTenacityTargetHUD extends TargetHUD {
 
     @Override
     public void render(float x, float y, float alpha, EntityLivingBase target) {
-        setWidth(Math.max(145, FontUtil.tenacityBoldFont26.getStringWidth(target.getName()) + 40));
+        setWidth(Math.max(145, FontUtil.duckSansBoldFont26.getStringWidth(target.getName()) + 40));
         setHeight(37);
 
         Color c1 = ColorUtil.applyOpacity(HUDMod.getClientColors().getFirst(), alpha);
@@ -45,11 +45,11 @@ public class OldTenacityTargetHUD extends TargetHUD {
             StencilUtil.uninitStencilBuffer();
             GlStateManager.disableBlend();
         } else {
-            FontUtil.tenacityBoldFont32.drawCenteredStringWithShadow("?", x + 20, y + 17 - FontUtil.tenacityBoldFont32.getHeight() / 2f, textColor);
+            FontUtil.duckSansBoldFont32.drawCenteredStringWithShadow("?", x + 20, y + 17 - FontUtil.duckSansBoldFont32.getHeight() / 2f, textColor);
         }
 
 
-        FontUtil.tenacityBoldFont26.drawStringWithShadow(target.getName(), x + 39, y + 5, textColor);
+        FontUtil.duckSansBoldFont26.drawStringWithShadow(target.getName(), x + 39, y + 5, textColor);
 
         float healthPercent = MathHelper.clamp_float((target.getHealth() + target.getAbsorptionAmount()) / (target.getMaxHealth() + target.getAbsorptionAmount()), 0, 1);
 
@@ -64,7 +64,7 @@ public class OldTenacityTargetHUD extends TargetHUD {
         RoundedUtil.drawGradientHorizontal(x + 39, (y + getHeight() - 12), healthWidth, realHealthHeight, 1.5f, c1, c2);
 
         String healthText = (int) MathUtils.round(healthPercent * 100, .01) + "%";
-        FontUtil.tenacityFont16.drawStringWithShadow(healthText, x + 34 + Math.min(Math.max(1, healthWidth), realHealthWidth - 11), y + getHeight() - (14 + FontUtil.tenacityFont16.getHeight()), textColor);
+        FontUtil.duckSansFont16.drawStringWithShadow(healthText, x + 34 + Math.min(Math.max(1, healthWidth), realHealthWidth - 11), y + getHeight() - (14 + FontUtil.duckSansFont16.getHeight()), textColor);
     }
 
 

@@ -38,28 +38,28 @@ public class MicrosoftInfoPanel extends Panel {
     public void drawScreen(int mouseX, int mouseY) {
         setHeight(119);
         super.drawScreen(mouseX, mouseY);
-        tenacityBoldFont26.drawCenteredString("How to use Microsoft Login", getX() + getWidth() / 2f, getY() + 4, ColorUtil.applyOpacity(-1, .75f));
+        duckSansBoldFont26.drawCenteredString("How to use Microsoft Login", getX() + getWidth() / 2f, getY() + 4, ColorUtil.applyOpacity(-1, .75f));
 
-        float controlY = getY() + tenacityBoldFont32.getHeight() + 8;
+        float controlY = getY() + duckSansBoldFont32.getHeight() + 8;
         for (Pair<String, String> control : steps) {
             if (control.getFirst().equals("INFO")) {
-                tenacityFont16.drawCenteredString("Make sure that you are logged out of all microsoft accounts so that you are",
+                duckSansFont16.drawCenteredString("Make sure that you are logged out of all microsoft accounts so that you are",
                         getX() + getWidth() /2f, controlY, ColorUtil.applyOpacity(-1, .75f));
 
-                controlY += tenacityBoldFont16.getHeight() + 4;
+                controlY += duckSansBoldFont16.getHeight() + 4;
 
-                tenacityFont16.drawCenteredString("prompted with a new login panel",
+                duckSansFont16.drawCenteredString("prompted with a new login panel",
                         getX() + getWidth() /2f, controlY, ColorUtil.applyOpacity(-1, .75f));
 
-                controlY += tenacityBoldFont16.getHeight() + 6;
+                controlY += duckSansBoldFont16.getHeight() + 6;
                 continue;
             }
 
-            tenacityBoldFont16.drawString(control.getFirst() + ". ", getX() + 12, controlY, ColorUtil.applyOpacity(-1, .5f));
-            tenacityFont16.drawString(control.getSecond(), getX() +
-                    tenacityBoldFont16.getStringWidth(control.getFirst() + ". ") + 14, controlY, ColorUtil.applyOpacity(-1, .35f));
+            duckSansBoldFont16.drawString(control.getFirst() + ". ", getX() + 12, controlY, ColorUtil.applyOpacity(-1, .5f));
+            duckSansFont16.drawString(control.getSecond(), getX() +
+                    duckSansBoldFont16.getStringWidth(control.getFirst() + ". ") + 14, controlY, ColorUtil.applyOpacity(-1, .35f));
 
-            controlY += tenacityBoldFont16.getHeight() + 6;
+            controlY += duckSansBoldFont16.getHeight() + 6;
         }
 
     }

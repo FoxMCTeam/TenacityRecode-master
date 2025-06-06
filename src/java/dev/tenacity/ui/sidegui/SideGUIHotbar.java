@@ -24,7 +24,7 @@ public class SideGUIHotbar implements Screen {
 
     public float x, y, width, height, alpha;
 
-    public final TextField searchField = new TextField(tenacityFont20);
+    public final TextField searchField = new TextField(duckSansFont20);
     private final Animation searchAnimation = new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
 
     public final DropdownObject searchType = new DropdownObject("Type", "Configs", "Scripts");
@@ -58,9 +58,9 @@ public class SideGUIHotbar implements Screen {
         Color textColor = ColorUtil.applyOpacity(Color.WHITE, alpha);
 
 
-        tenacityBoldFont32.drawString("Tenacity", x + 9.5f, y + tenacityBoldFont32.getMiddleOfBox(height), textColor);
-        tenacityFont18.drawString(Client.VERSION, x + 9.5f + tenacityBoldFont32.getStringWidth("Tenacity") - 2,
-                y + tenacityBoldFont32.getMiddleOfBox(height) - 2.5f, ColorUtil.applyOpacity(textColor, .5f));
+        duckSansBoldFont32.drawString("Tenacity", x + 9.5f, y + duckSansBoldFont32.getMiddleOfBox(height), textColor);
+        duckSansFont18.drawString(Client.VERSION, x + 9.5f + duckSansBoldFont32.getStringWidth("Tenacity") - 2,
+                y + duckSansBoldFont32.getMiddleOfBox(height) - 2.5f, ColorUtil.applyOpacity(textColor, .5f));
 
         searchAnimation.setDirection(searchField.isFocused() || !searchField.getText().equals("") ? Direction.FORWARDS : Direction.BACKWARDS);
         float searchAnim = searchAnimation.getOutput().floatValue();

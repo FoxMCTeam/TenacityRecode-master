@@ -46,7 +46,7 @@ public class ToggleButton implements Screen {
     @Override
     public void drawScreen(int mouseX, int mouseY) {
         int textColor = ColorUtil.applyOpacity(-1, alpha);
-        tenacityFont16.drawString(name, x - (tenacityFont16.getStringWidth(name) + 5), y + tenacityFont16.getMiddleOfBox(WH), textColor);
+        duckSansFont16.drawString(name, x - (duckSansFont16.getStringWidth(name) + 5), y + duckSansFont16.getMiddleOfBox(WH), textColor);
 
         toggleAnimation.setDirection(enabled ? Direction.FORWARDS : Direction.BACKWARDS);
 
@@ -79,7 +79,7 @@ public class ToggleButton implements Screen {
     }
 
     public float getActualX() {
-        return x - ((tenacityFont16.getStringWidth(name) + 5));
+        return x - ((duckSansFont16.getStringWidth(name) + 5));
     }
 
 }

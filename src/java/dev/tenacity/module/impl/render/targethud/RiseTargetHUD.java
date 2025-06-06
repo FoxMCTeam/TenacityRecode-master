@@ -26,7 +26,7 @@ public class RiseTargetHUD extends TargetHUD {
 
     @Override
     public void render(float x, float y, float alpha, EntityLivingBase target) {
-        setWidth(Math.max(128, tenacityFont20.getStringWidth("Name: " + target.getName()) + 60));
+        setWidth(Math.max(128, duckSansFont20.getStringWidth("Name: " + target.getName()) + 60));
         setHeight(50);
 
         int textColor = ColorUtil.applyOpacity(-1, alpha);
@@ -70,11 +70,11 @@ public class RiseTargetHUD extends TargetHUD {
 
         double healthNum = MathUtils.round(target.getHealth() + target.getAbsorptionAmount(), 1);
         GlStateManager.color(1, 1, 1, 1);
-        tenacityFont18.drawString(String.valueOf(healthNum), x + animatedHealthBar.getOutput() + 8, y + 38, textColor);
+        duckSansFont18.drawString(String.valueOf(healthNum), x + animatedHealthBar.getOutput() + 8, y + 38, textColor);
         GlStateManager.color(1, 1, 1, 1);
-        tenacityFont20.drawString("Name: " + target.getName(), x + 40, y + 10, textColor);
+        duckSansFont20.drawString("Name: " + target.getName(), x + 40, y + 10, textColor);
         GlStateManager.color(1, 1, 1, 1);
-        tenacityFont20.drawString("Distance: " + MathUtils.round(mc.thePlayer.getDistanceToEntity(target), 1) + " Hurt: " + target.hurtTime,
+        duckSansFont20.drawString("Distance: " + MathUtils.round(mc.thePlayer.getDistanceToEntity(target), 1) + " Hurt: " + target.hurtTime,
                 x + 40, y + 22, textColor);
 
         if (target.hurtTime == 9 && !sentParticles) {

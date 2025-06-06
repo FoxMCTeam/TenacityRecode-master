@@ -58,7 +58,7 @@ public class ScriptPanel extends Panel {
 
     @Override
     public void drawScreen(int mouseX, int mouseY) {
-        tenacityBoldFont40.drawString("Scripts", getX() + 8, getY() + 8, getTextColor());
+        duckSansBoldFont40.drawString("Scripts", getX() + 8, getY() + 8, getTextColor());
 
 
         carouselButtons.setAlpha(getAlpha());

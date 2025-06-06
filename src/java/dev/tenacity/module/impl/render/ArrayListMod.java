@@ -44,7 +44,7 @@ public class ArrayListMod extends Module {
     private final BooleanSetting backgroundColor = new BooleanSetting("Background Color", false);
     private final NumberSetting backgroundAlpha = new NumberSetting("Background Alpha", .35, 1, 0, .01);
 
-    public AbstractFontRenderer font = tenacityFont.size(20);
+    public AbstractFontRenderer font = duckSansFont.size(20);
     public List<Module> modules;
 
     public ArrayListMod() {
@@ -357,12 +357,12 @@ public class ArrayListMod extends Module {
 
         if (fontSettings.getSetting("Bold").isEnabled()) {
             if (smallFont) {
-                return tenacityBoldFont18;
+                return duckSansBoldFont18;
             }
-            return tenacityBoldFont20;
+            return duckSansBoldFont20;
         }
 
-        return smallFont ? tenacityFont18 : tenacityFont20;
+        return smallFont ? duckSansFont18 : duckSansFont20;
     }
 
 }

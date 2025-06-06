@@ -30,7 +30,7 @@ public class PlayerList extends Module {
         if (mc.thePlayer == null || mc.theWorld == null) return;
         List<EntityPlayer> players = mc.theWorld.playerEntities.stream().filter(p -> p != null && !p.isDead).collect(Collectors.toList());
 
-        float height = 35 + (players.size() - 1) * (tenacityFont16.getHeight() + 8);
+        float height = 35 + (players.size() - 1) * (duckSansFont16.getHeight() + 8);
         float width = 175;
         float x = pos.getX(), y = pos.getY();
         pos.setWidth(width - 6);
@@ -42,10 +42,10 @@ public class PlayerList extends Module {
         Gui.drawRect2(x, y, width - 6, 1, HUDMod.getClientColors().getFirst().getRGB());
         Gui.drawRect2(x + 4, y + 17, width - 14, 0.5, 0xFFAAAAAA);
 
-        tenacityBoldFont22.drawString("Player List", x + 4, y + 5, -1, true);
+        duckSansBoldFont22.drawString("Player List", x + 4, y + 5, -1, true);
 
-        tenacityFont18.drawString(String.valueOf(players.size() + 1),
-                x + width - tenacityFont18.getStringWidth(String.valueOf(players.size() + 1)) - 10,
+        duckSansFont18.drawString(String.valueOf(players.size() + 1),
+                x + width - duckSansFont18.getStringWidth(String.valueOf(players.size() + 1)) - 10,
                 y + 6, -1, true
         );
 
@@ -58,12 +58,12 @@ public class PlayerList extends Module {
     }
 
     private void renderPlayer(EntityPlayer player, int i, float x, float y) {
-        float height = tenacityFont16.getHeight() + 8;
+        float height = duckSansFont16.getHeight() + 8;
         float offset = i * (height);
         float healthPercent = MathHelper.clamp_float((player.getHealth() + player.getAbsorptionAmount()) / (player.getMaxHealth() + player.getAbsorptionAmount()), 0, 1);
         Color healthColor = healthPercent > .75 ? new Color(66, 246, 123) : healthPercent > .5 ? new Color(228, 255, 105) : healthPercent > .35 ? new Color(236, 100, 64) : new Color(255, 65, 68);
         String healthText = (int) MathUtils.round(healthPercent * 100, .01) + "%";
-        tenacityFont16.drawStringWithShadow("§f§l" + player.getName() + "§r " + healthText, x + 18, y + offset + tenacityFont16.getMiddleOfBox(height), healthColor);
+        duckSansFont16.drawStringWithShadow("§f§l" + player.getName() + "§r " + healthText, x + 18, y + offset + duckSansFont16.getMiddleOfBox(height), healthColor);
 
         float headX = x + 4;
         float headWH = 32;
@@ -76,7 +76,7 @@ public class PlayerList extends Module {
         RenderUtil.scaleEnd();
 
         if (player == mc.thePlayer) {
-            tenacityFont18.drawStringWithShadow("*", x + 139 - tenacityFont18.getStringWidth("*"), y + offset + 6.75F, HUDMod.getClientColors().getFirst().getRGB());
+            duckSansFont18.drawStringWithShadow("*", x + 139 - duckSansFont18.getStringWidth("*"), y + offset + 6.75F, HUDMod.getClientColors().getFirst().getRGB());
         }
 
 

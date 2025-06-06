@@ -50,7 +50,7 @@ public class SettingComponents implements Screen {
             }
             if (setting instanceof StringSetting) {
                 StringSetting stringSetting = (StringSetting) setting;
-                TextField textField = new TextField(tenacityFont14);
+                TextField textField = new TextField(duckSansFont14);
                 textField.setText(stringSetting.getString());
                 textField.setCursorPositionZero();
                 textFieldMap.put(stringSetting, textField);
@@ -99,11 +99,11 @@ public class SettingComponents implements Screen {
             if (setting.cannotBeShown()) continue;
             if (setting instanceof KeybindSetting) continue;
             float settingY = y + (count * settingHeight);
-            float middleSettingY = (float) (MathUtils.roundToHalf(y + tenacityFont16.getMiddleOfBox(settingHeight) + (count * settingHeight)));
+            float middleSettingY = (float) (MathUtils.roundToHalf(y + duckSansFont16.getMiddleOfBox(settingHeight) + (count * settingHeight)));
 
             if (setting instanceof NumberSetting) {
                 NumberSetting numberSetting = (NumberSetting) setting;
-                tenacityFont16.drawString(setting.name, x + 5, middleSettingY, -1);
+                duckSansFont16.drawString(setting.name, x + 5, middleSettingY, -1);
 
                 String value = String.valueOf(MathUtils.round(numberSetting.getValue(), 2));
 
@@ -111,10 +111,10 @@ public class SettingComponents implements Screen {
 
                 //TODO account for min value being a larger string width than max
                 String maxValue = Double.toString(MathUtils.round(numberSetting.getMaxValue(), 2));
-                float valueWidth = tenacityFont14.getStringWidth(maxValue);
+                float valueWidth = duckSansFont14.getStringWidth(maxValue);
                 Gui.drawRect2(x + rectWidth - (valueWidth + 7), settingY + 4, valueWidth + 4, 8, disabledColor.getRGB());
 
-                tenacityFont14.drawCenteredString(value, x + rectWidth - (valueWidth + 5) + valueWidth / 2f, settingY + 6, -1);
+                duckSansFont14.drawCenteredString(value, x + rectWidth - (valueWidth + 5) + valueWidth / 2f, settingY + 6, -1);
                 GlStateManager.color(1, 1, 1, 1);
 
                 float sliderWidth = 50;
@@ -170,7 +170,7 @@ public class SettingComponents implements Screen {
             }
             if (setting instanceof BooleanSetting) {
                 BooleanSetting booleanSetting = (BooleanSetting) setting;
-                tenacityFont16.drawString(setting.name, x + 5, middleSettingY, -1);
+                duckSansFont16.drawString(setting.name, x + 5, middleSettingY, -1);
 
 
                 boolean enabled = booleanSetting.isEnabled();
@@ -203,7 +203,7 @@ public class SettingComponents implements Screen {
                 Animation clickAnimation = colorSettingMap.get(colorSetting);
 
 
-                tenacityFont16.drawString(setting.name, x + 5, middleSettingY, -1);
+                duckSansFont16.drawString(setting.name, x + 5, middleSettingY, -1);
 
                 float colorWidth = 20;
 
@@ -281,7 +281,7 @@ public class SettingComponents implements Screen {
 
                     int rectColor = ColorUtil.applyOpacity(disabledColor.getRGB(), (float) clickAnimation.getOutput().floatValue());
                     int textColor = ColorUtil.applyOpacity(-1, (float) clickAnimation.getOutput().floatValue());
-                    float colorInfoWidth = (float) tenacityFont14.getStringWidth("R: 255") + 6;
+                    float colorInfoWidth = (float) duckSansFont14.getStringWidth("R: 255") + 6;
 
 
                     Gui.drawRect2(gradientX, gradientY + gradientHeight + 4, colorInfoWidth, 8, rectColor);
@@ -292,30 +292,30 @@ public class SettingComponents implements Screen {
                     int greenColor = new Color(0, 255, 0, (int) (255 * clickAnimation.getOutput().floatValue())).getRGB();
                     int blueColor = new Color(0, 0, 255, (int) (255 * clickAnimation.getOutput().floatValue())).getRGB();
                     GlStateManager.color(1, 1, 1, 1);
-                    tenacityFont14.drawCenteredString("R§f: " + colorSetting.getColor().getRed(), gradientX + 2.5f + colorWidth / 2f, gradientY + gradientHeight + 6, redColor);
+                    duckSansFont14.drawCenteredString("R§f: " + colorSetting.getColor().getRed(), gradientX + 2.5f + colorWidth / 2f, gradientY + gradientHeight + 6, redColor);
                     GlStateManager.color(1, 1, 1, 1);
 
-                    tenacityFont14.drawCenteredString("G§f: " + colorSetting.getColor().getGreen(), gradientX + colorInfoWidth + 5 + colorInfoWidth / 2f,
+                    duckSansFont14.drawCenteredString("G§f: " + colorSetting.getColor().getGreen(), gradientX + colorInfoWidth + 5 + colorInfoWidth / 2f,
                             gradientY + gradientHeight + 6, greenColor);
 
                     GlStateManager.color(1, 1, 1, 1);
 
-                    tenacityFont14.drawCenteredString("B§f: " + colorSetting.getColor().getBlue(), gradientX + (colorInfoWidth * 2) + 12.5f + colorWidth / 2f,
+                    duckSansFont14.drawCenteredString("B§f: " + colorSetting.getColor().getBlue(), gradientX + (colorInfoWidth * 2) + 12.5f + colorWidth / 2f,
                             gradientY + gradientHeight + 6, blueColor);
 
 
                     float rainbowX = gradientX + (colorInfoWidth * 2) + 10 + colorInfoWidth + 3;
 
 
-                    tenacityFont14.drawString("Rainbow: ", rainbowX, gradientY + gradientHeight + 6, textColor);
+                    duckSansFont14.drawString("Rainbow: ", rainbowX, gradientY + gradientHeight + 6, textColor);
 
                     float clickAnim = clickAnimation.getOutput().floatValue();
 
-                    RoundedUtil.drawRound(rainbowX + tenacityFont14.getStringWidth("Rainbow: ") + 4, gradientY + gradientHeight + 5.5f,
+                    RoundedUtil.drawRound(rainbowX + duckSansFont14.getStringWidth("Rainbow: ") + 4, gradientY + gradientHeight + 5.5f,
                             6, 6, 2.5f, ColorUtil.applyOpacity(colorSetting.isRainbow() ? actualColor : disabledColor, clickAnim));
 
                     if (type == GuiEvents.CLICK && button == 0) {
-                        if (HoveringUtil.isHovering(rainbowX + tenacityFont14.getStringWidth("Rainbow: ") + 3,
+                        if (HoveringUtil.isHovering(rainbowX + duckSansFont14.getStringWidth("Rainbow: ") + 3,
                                 gradientY + gradientHeight + 5, 7, 7, mouseX, mouseY)) {
                             colorSetting.setRainbow(!colorSetting.isRainbow());
                         }
@@ -378,7 +378,7 @@ public class SettingComponents implements Screen {
             if (setting instanceof StringSetting) {
                 StringSetting stringSetting = (StringSetting) setting;
                 RenderUtil.resetColor();
-                tenacityFont16.drawString(setting.name, x + 5, middleSettingY, -1);
+                duckSansFont16.drawString(setting.name, x + 5, middleSettingY, -1);
 
 
                 TextField textField = textFieldMap.get(stringSetting);
@@ -404,9 +404,9 @@ public class SettingComponents implements Screen {
             }
             if (setting instanceof ModeSetting) {
                 ModeSetting modeSetting = (ModeSetting) setting;
-                tenacityFont16.drawString(setting.name, x + 5, middleSettingY, -1);
+                duckSansFont16.drawString(setting.name, x + 5, middleSettingY, -1);
 
-                float modeRectWidth = (float) tenacityFont14.getStringWidth(StringUtils.getLongestModeName(modeSetting.modes)) + 10;
+                float modeRectWidth = (float) duckSansFont14.getStringWidth(StringUtils.getLongestModeName(modeSetting.modes)) + 10;
 
                 float modeSize = 10;
                 float realY = settingY + settingHeight / 2f - modeSize / 2f;
@@ -425,10 +425,10 @@ public class SettingComponents implements Screen {
                     for (String mode : modeSetting.modes) {
                         if (mode.equals(modeSetting.getMode())) continue;
 
-                        float modeY = (realY + 3.5f) + (6 * openAnimation.getOutput().floatValue()) + tenacityFont14.getMiddleOfBox(modeSize) + seperation;
+                        float modeY = (realY + 3.5f) + (6 * openAnimation.getOutput().floatValue()) + duckSansFont14.getMiddleOfBox(modeSize) + seperation;
 
                         boolean hoveringMode = HoveringUtil.isHovering(x + rectWidth - (modeRectWidth + 5),
-                                modeY - tenacityFont14.getMiddleOfBox(modeSize), modeRectWidth, modeSize, mouseX, mouseY) && openAnimation.isDone();
+                                modeY - duckSansFont14.getMiddleOfBox(modeSize), modeRectWidth, modeSize, mouseX, mouseY) && openAnimation.isDone();
 
                         if (hoveringMode && button == 0 && type == GuiEvents.CLICK) {
                             modeSetting.setCurrentMode(mode);
@@ -437,11 +437,11 @@ public class SettingComponents implements Screen {
                         }
 
                         GlStateManager.color(1, 1, 1, 1);
-                        Gui.drawRect2(x + rectWidth - (modeRectWidth + 5), modeY - tenacityFont14.getMiddleOfBox(modeSize), modeRectWidth, modeSize,
+                        Gui.drawRect2(x + rectWidth - (modeRectWidth + 5), modeY - duckSansFont14.getMiddleOfBox(modeSize), modeRectWidth, modeSize,
                                 ColorUtil.applyOpacity(hoveringMode ? accentColor : dropdownColor, openAnimation.getOutput().floatValue()).getRGB());
 
                         GlStateManager.color(1, 1, 1, 1);
-                        tenacityFont14.drawString(mode, x + rectWidth - (modeRectWidth + 3), modeY, ColorUtil.applyOpacity(-1, openAnimation.getOutput().floatValue()));
+                        duckSansFont14.drawString(mode, x + rectWidth - (modeRectWidth + 3), modeY, ColorUtil.applyOpacity(-1, openAnimation.getOutput().floatValue()));
 
 
                         seperation += modeSize * openAnimation.getOutput().floatValue();
@@ -453,7 +453,7 @@ public class SettingComponents implements Screen {
 
                 Gui.drawRect2(x + rectWidth - (modeRectWidth + 5), realY, modeRectWidth, modeSize, disabledColor.getRGB());
 
-                tenacityFont14.drawString(modeSetting.getMode(), (x + rectWidth - (modeRectWidth + 5)) + 2, realY + tenacityFont14.getMiddleOfBox(modeSize), -1);
+                duckSansFont14.drawString(modeSetting.getMode(), (x + rectWidth - (modeRectWidth + 5)) + 2, realY + duckSansFont14.getMiddleOfBox(modeSize), -1);
 
                 if (hovered && button == 1 && type == GuiEvents.CLICK) {
                     openAnimation.changeDirection();
@@ -469,7 +469,7 @@ public class SettingComponents implements Screen {
                 MultipleBoolSetting multipleBoolSetting = (MultipleBoolSetting) setting;
 
                 Animation openingAnimation = multiBoolMap.get(multipleBoolSetting);
-                tenacityFont16.drawString(setting.name, x + 5, middleSettingY, -1);
+                duckSansFont16.drawString(setting.name, x + 5, middleSettingY, -1);
 
                 float width = 65;
                 float boolRectSize = 10;
@@ -491,10 +491,10 @@ public class SettingComponents implements Screen {
                     for (BooleanSetting booleanSetting : booleanSettings) {
                         boolean enabled = booleanSetting.isEnabled();
 
-                        float boolSettingY = (realY + 4) + (7 * openingAnimation.getOutput().floatValue()) + tenacityFont14.getMiddleOfBox(boolRectSize) + seperation;
+                        float boolSettingY = (realY + 4) + (7 * openingAnimation.getOutput().floatValue()) + duckSansFont14.getMiddleOfBox(boolRectSize) + seperation;
 
                         boolean hovered = HoveringUtil.isHovering(x + rectWidth - (width + 5),
-                                boolSettingY - tenacityFont14.getMiddleOfBox(boolRectSize), width, boolRectSize, mouseX, mouseY);
+                                boolSettingY - duckSansFont14.getMiddleOfBox(boolRectSize), width, boolRectSize, mouseX, mouseY);
 
                         if (hovered && button == 0 && type == GuiEvents.CLICK) {
                             booleanSetting.toggle();
@@ -503,11 +503,11 @@ public class SettingComponents implements Screen {
                         Color toggleColor = enabled ? accentColor : dropdownColor;
                         int hoverColor = hovered ? ColorUtil.darker(toggleColor, .8f).getRGB() : toggleColor.getRGB();
                         RenderUtil.resetColor();
-                        Gui.drawRect2(x + rectWidth - (width + 5), boolSettingY - tenacityFont14.getMiddleOfBox(boolRectSize),
+                        Gui.drawRect2(x + rectWidth - (width + 5), boolSettingY - duckSansFont14.getMiddleOfBox(boolRectSize),
                                 width, boolRectSize, ColorUtil.applyOpacity(hoverColor, (float) openingAnimation.getOutput().floatValue()));
 
                         RenderUtil.resetColor();
-                        tenacityFont14.drawString(booleanSetting.name, x + rectWidth - (width + 2), boolSettingY, ColorUtil.applyOpacity(-1, (float) openingAnimation.getOutput().floatValue()));
+                        duckSansFont14.drawString(booleanSetting.name, x + rectWidth - (width + 2), boolSettingY, ColorUtil.applyOpacity(-1, (float) openingAnimation.getOutput().floatValue()));
 
                         seperation += boolRectSize * openingAnimation.getOutput().floatValue();
                     }
@@ -515,8 +515,8 @@ public class SettingComponents implements Screen {
 
                 Gui.drawRect2(x + rectWidth - (width + 5), realY, width, boolRectSize, disabledColor.getRGB());
 
-                tenacityFont14.drawCenteredString(enabledCount + "/" + settingsCount + " enabled", (x + rectWidth - (width + 5)) + (width / 2f),
-                        realY + tenacityFont14.getMiddleOfBox(boolRectSize), -1);
+                duckSansFont14.drawCenteredString(enabledCount + "/" + settingsCount + " enabled", (x + rectWidth - (width + 5)) + (width / 2f),
+                        realY + duckSansFont14.getMiddleOfBox(boolRectSize), -1);
 
                 boolean hovering = HoveringUtil.isHovering(x + rectWidth - (width + 5), realY, width, boolRectSize, mouseX, mouseY);
 

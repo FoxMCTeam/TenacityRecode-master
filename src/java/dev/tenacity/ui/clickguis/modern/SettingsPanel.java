@@ -93,7 +93,7 @@ public class SettingsPanel extends Panel {
 
             if (setting instanceof StringSetting) {
                 StringSetting stringSetting = (StringSetting) setting;
-                TextField textField = new TextField(tenacityFont18);
+                TextField textField = new TextField(duckSansFont18);
                 textField.setText(stringSetting.getString());
                 textField.setCursorPositionZero();
                 textFieldMap.put(stringSetting, textField);
@@ -166,7 +166,7 @@ public class SettingsPanel extends Panel {
                 }
 
                 int color = ColorUtil.interpolateColor(new Color(30, 31, 35), colors.getFirst(), (float) animation.getOutput().floatValue());
-                tenacityFont16.drawString(setting.name, x + 13, settingY + tenacityFont16.getMiddleOfBox(8), -1);
+                duckSansFont16.drawString(setting.name, x + 13, settingY + duckSansFont16.getMiddleOfBox(8), -1);
                 //  RenderUtil.renderRoundedRect(x + 95, settingY, 20, 10, 4,
                 //color);
 
@@ -185,7 +185,7 @@ public class SettingsPanel extends Panel {
                     modeSettingClick.put(setting, !modeSettingClick.get(setting));
                 }
 
-                float stringWidth = (float) tenacityFont16.getStringWidth(StringUtils.getLongestModeName(modeSetting.modes));
+                float stringWidth = (float) duckSansFont16.getStringWidth(StringUtils.getLongestModeName(modeSetting.modes));
 
                 animation.setDirection(modeSettingClick.get(setting) ? Direction.FORWARDS : Direction.BACKWARDS);
 
@@ -195,13 +195,13 @@ public class SettingsPanel extends Panel {
 
 
                 float boxX = (x + 114 - stringWidth) - 1;
-                float nameWidth = tenacityFont16.getStringWidth(modeSetting.name);
+                float nameWidth = duckSansFont16.getStringWidth(modeSetting.name);
                 float stringX = x + 13;
                 if (nameWidth > (boxX - stringX)) {
-                    tenacityFont16.drawWrappedText(modeSetting.name, stringX, settingY - (tenacityFont16.getMiddleOfBox(12) / 2), -1, boxX - stringX, 2);
-                    //    tenacityFont16.drawString(modeSetting.name, stringX + (boxX - stringX) / 2f, settingY + tenacityFont16.getMiddleOfBox(8), -1);
+                    duckSansFont16.drawWrappedText(modeSetting.name, stringX, settingY - (duckSansFont16.getMiddleOfBox(12) / 2), -1, boxX - stringX, 2);
+                    //    duckSansFont16.drawString(modeSetting.name, stringX + (boxX - stringX) / 2f, settingY + duckSansFont16.getMiddleOfBox(8), -1);
                 } else {
-                    tenacityFont16.drawString(modeSetting.name, x + 13, settingY + 2, -1);
+                    duckSansFont16.drawString(modeSetting.name, x + 13, settingY + 2, -1);
                 }
 
 
@@ -214,7 +214,7 @@ public class SettingsPanel extends Panel {
 
                 float modeX = x + 114 - stringWidth + modeWidth / 2f;
                 RenderUtil.resetColor();
-                tenacityFont16.drawCenteredString(modeSetting.getMode(), modeX, settingY + tenacityFont16.getMiddleOfBox(10), -1);
+                duckSansFont16.drawCenteredString(modeSetting.getMode(), modeX, settingY + duckSansFont16.getMiddleOfBox(10), -1);
 
                 int modeCount = 1;
                 for (String mode : modeSetting.modes) {
@@ -235,7 +235,7 @@ public class SettingsPanel extends Panel {
                         int colorInterpolate = ColorUtil.interpolateColor(new Color(128, 134, 141), colors.getSecond(), (float) modeAnimation.getOutput().floatValue());
 
                         GlStateManager.color(1, 1, 1, 1);
-                        tenacityFont16.drawCenteredString(mode, modeX, (float) (settingY + 2 + ((modeCount * 15) * animation.getOutput().floatValue())),
+                        duckSansFont16.drawCenteredString(mode, modeX, (float) (settingY + 2 + ((modeCount * 15) * animation.getOutput().floatValue())),
                                 ColorUtil.interpolateColor(new Color(40, 40, 40, 10), new Color(colorInterpolate), (float) animation.getOutput().floatValue()));
                         modeCount++;
                     }
@@ -252,7 +252,7 @@ public class SettingsPanel extends Panel {
                 RoundedUtil.drawRound(x + 13, settingY, 115, height - 2, 3, new Color(30, 31, 35));
                 //   RenderUtil.renderRoundedRect(x + 8.5f, settingY - 4.5f, 118, 85, 4, new Color(68, 71, 78).getRGB());
                 //  RenderUtil.renderRoundedRect(x + 10, settingY - 3, 115, 82, 3, new Color(30, 31, 35).getRGB());
-                tenacityFont16.drawCenteredString(colorSetting.name, (x + 13) + 115 / 2f, settingY + 3, -1);
+                duckSansFont16.drawCenteredString(colorSetting.name, (x + 13) + 115 / 2f, settingY + 3, -1);
 
                 if (colorSetting.isRainbow()) {
                     Color color = colorSetting.getColor();
@@ -332,23 +332,23 @@ public class SettingsPanel extends Panel {
                 Gui.drawRect2(gradientX + ((gradientWidth + 10) * hsb[0]), gradientY + gradientHeight + 3.5, 1, 6, -1);
 
 
-                tenacityFont14.drawString("Rainbow: ", gradientX, gradientY + gradientHeight + 14, -1);
+                duckSansFont14.drawString("Rainbow: ", gradientX, gradientY + gradientHeight + 14, -1);
 
                 String text = colorSetting.isRainbow() ? "Enabled" : "Disabled";
-                float textX = gradientX + tenacityFont14.getStringWidth("Rainbow: ") + 4;
+                float textX = gradientX + duckSansFont14.getStringWidth("Rainbow: ") + 4;
                 float textY = gradientY + gradientHeight + 13;
 
-                boolean hoveringRound = HoveringUtil.isHovering(textX, textY, tenacityFont14.getStringWidth(text) + 4, tenacityFont14.getHeight() + 2, mouseX, mouseY);
+                boolean hoveringRound = HoveringUtil.isHovering(textX, textY, duckSansFont14.getStringWidth(text) + 4, duckSansFont14.getHeight() + 2, mouseX, mouseY);
 
                 if (type == GuiEvents.CLICK && hoveringRound && button == 0) {
                     colorSetting.setRainbow(!colorSetting.isRainbow());
                 }
                 Color roundColor = colorSetting.isRainbow() ? new Color(0, 203, 33) : new Color(203, 0, 33);
-                RoundedUtil.drawRound(textX, textY, tenacityFont14.getStringWidth(text) + 4, tenacityFont14.getHeight() + 2, 3,
+                RoundedUtil.drawRound(textX, textY, duckSansFont14.getStringWidth(text) + 4, duckSansFont14.getHeight() + 2, 3,
                         hoveringRound ? roundColor.brighter() : roundColor);
 
-                tenacityFont14.drawCenteredString(text, textX + (tenacityFont14.getStringWidth(text) + 4) / 2f,
-                        textY + tenacityFont14.getMiddleOfBox(tenacityFont14.getHeight() + 2), -1);
+                duckSansFont14.drawCenteredString(text, textX + (duckSansFont14.getStringWidth(text) + 4) / 2f,
+                        textY + duckSansFont14.getMiddleOfBox(duckSansFont14.getHeight() + 2), -1);
 
 
                 if (colorSetting.isRainbow()) {
@@ -379,7 +379,7 @@ public class SettingsPanel extends Panel {
             }
             if (setting instanceof NumberSetting) {
                 NumberSetting numberSetting = (NumberSetting) setting;
-                tenacityFont16.drawString(setting.name, x + 13, settingY + 2, -1);
+                duckSansFont16.drawString(setting.name, x + 13, settingY + 2, -1);
 
                 if (type == GuiEvents.CLICK && isHoveringSetting && button == 0) {
                     draggingNumber = numberSetting;
@@ -395,7 +395,7 @@ public class SettingsPanel extends Panel {
                 }
 
                 String value = Double.toString(MathUtils.round(currentValue, 2));
-                tenacityFont16.drawString(value, x + 120 - tenacityFont16.getStringWidth(value), settingY + 2, -1);
+                duckSansFont16.drawString(value, x + 120 - duckSansFont16.getStringWidth(value), settingY + 2, -1);
 
                 float sliderMath = (float) (((currentValue) - numberSetting.getMinValue())
                         / (numberSetting.getMaxValue() - numberSetting.getMinValue()));
@@ -421,7 +421,7 @@ public class SettingsPanel extends Panel {
                 StringSetting stringSetting = (StringSetting) setting;
 
                 // RenderUtil.renderRoundedRect(x + 13, settingY - 3, 115, 40, 3, new Color(30, 31, 35).getRGB());
-                tenacityFont16.drawString(setting.name, x + 16, settingY + 1, -1);
+                duckSansFont16.drawString(setting.name, x + 16, settingY + 1, -1);
 
                 TextField textField = textFieldMap.get(stringSetting);
 
@@ -462,14 +462,14 @@ public class SettingsPanel extends Panel {
                 float adjustment = (float) (math * animation.getOutput().floatValue());
                 RenderUtil.renderRoundedRect(x + 11.5f, settingY - 4.5f, 118, 19 + adjustment, 4, new Color(68, 71, 78).getRGB());
                 RenderUtil.renderRoundedRect(x + 13, settingY - 3, 115, 16 + adjustment, 3, new Color(30, 31, 35).getRGB());
-                tenacityFont16.drawCenteredString(multiBoolSetting.name, x + 70.5f, settingY - 3 + 16 / 2f - tenacityFont16.getHeight() / 2f, -1);
+                duckSansFont16.drawCenteredString(multiBoolSetting.name, x + 70.5f, settingY - 3 + 16 / 2f - duckSansFont16.getHeight() / 2f, -1);
 
                 int boolCount = 1;
                 for (BooleanSetting booleanSetting : multiBoolSetting.getBoolSettings()) {
                     Animation boolAnimation = boolHoverAnimation.get(multiBoolSetting).get(booleanSetting);
                     boolean isHoveringBool = animation.getDirection().equals(Direction.FORWARDS) &&
                             HoveringUtil.isHovering(x + 17, settingY + (boolCount * 15),
-                                    (float) tenacityFont16.getStringWidth(booleanSetting.name) + 13, 11, mouseX, mouseY);
+                                    (float) duckSansFont16.getStringWidth(booleanSetting.name) + 13, 11, mouseX, mouseY);
 
                     if (type == GuiEvents.CLICK && button == 0 && isHoveringBool) {
                         multiBoolSetting.getSetting(booleanSetting.name).toggle();
@@ -487,7 +487,7 @@ public class SettingsPanel extends Panel {
                             ColorUtil.interpolateColor(new Color(40, 40, 40, 10), new Color(colorInterpolate), (float) animation.getOutput().floatValue()));
 
                     GlStateManager.color(1, 1, 1, 1);
-                    tenacityFont16.drawString(booleanSetting.name, x + 28, (float) (settingY + 2 + ((boolCount * 15) * animation.getOutput().floatValue())),
+                    duckSansFont16.drawString(booleanSetting.name, x + 28, (float) (settingY + 2 + ((boolCount * 15) * animation.getOutput().floatValue())),
                             ColorUtil.interpolateColor(new Color(40, 40, 40, 10), new Color(colorInterpolate), (float) animation.getOutput().floatValue()));
                     boolCount++;
 

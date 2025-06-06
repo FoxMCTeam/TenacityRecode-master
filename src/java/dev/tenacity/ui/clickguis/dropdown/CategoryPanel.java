@@ -213,13 +213,13 @@ public class CategoryPanel implements Screen {
 
 
         RenderUtil.resetColor();
-        float textWidth = tenacityBoldFont22.getStringWidth(category.name + " ") / 2f;
+        float textWidth = duckSansBoldFont22.getStringWidth(category.name + " ") / 2f;
         iconFont20.drawCenteredString(category.icon, x + rectWidth / 2f + textWidth,
                 y + iconFont20.getMiddleOfBox(categoryRectHeight) + yMovement, textColor);
 
         RenderUtil.resetColor();
-        tenacityBoldFont22.drawString(category.name, x + ((rectWidth / 2f - textWidth) - (iconFont20.getStringWidth(category.icon) / 2f)),
-                y + tenacityBoldFont22.getMiddleOfBox(categoryRectHeight), textColor);
+        duckSansBoldFont22.drawString(category.name, x + ((rectWidth / 2f - textWidth) - (iconFont20.getStringWidth(category.icon) / 2f)),
+                y + duckSansBoldFont22.getMiddleOfBox(categoryRectHeight), textColor);
 
     }
 

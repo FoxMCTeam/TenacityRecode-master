@@ -22,7 +22,7 @@ public class TenacityTargetHUD extends TargetHUD {
     @Override
     public void render(float x, float y, float alpha, EntityLivingBase target) {
         int textColor = ColorUtil.applyOpacity(-1, alpha);
-        setWidth(Math.max(155, tenacityBoldFont22.getStringWidth(target.getName()) + 75));
+        setWidth(Math.max(155, duckSansBoldFont22.getStringWidth(target.getName()) + 75));
         setHeight(50);
         RenderUtil.setAlphaLimit(0);
 
@@ -46,10 +46,10 @@ public class TenacityTargetHUD extends TargetHUD {
             renderPlayer2D(x + 10, y + (getHeight() / 2f) - (size / 2f), size, size, (AbstractClientPlayer) target);
             StencilUtil.uninitStencilBuffer();
         } else {
-            tenacityBoldFont32.drawCenteredStringWithShadow("?", x + 30, y + 25 - tenacityBoldFont32.getHeight() / 2f, textColor);
+            duckSansBoldFont32.drawCenteredStringWithShadow("?", x + 30, y + 25 - duckSansBoldFont32.getHeight() / 2f, textColor);
         }
 
-        tenacityBoldFont22.drawCenteredString(target.getName(), x + 10 + size + ((getWidth() - (10 + size)) / 2f), y + 10, textColor);
+        duckSansBoldFont22.drawCenteredString(target.getName(), x + 10 + size + ((getWidth() - (10 + size)) / 2f), y + 10, textColor);
 
         float healthPercentage = (target.getHealth() + target.getAbsorptionAmount()) / (target.getMaxHealth() + target.getAbsorptionAmount());
 
@@ -64,7 +64,7 @@ public class TenacityTargetHUD extends TargetHUD {
 
         String healthText = MathUtils.DF_0.format(healthPercentage * 100) + "%";
 
-        tenacityFont18.drawCenteredString(healthText + " - " + Math.round(target.getDistanceToEntity(mc.thePlayer)) + "m",
+        duckSansFont18.drawCenteredString(healthText + " - " + Math.round(target.getDistanceToEntity(mc.thePlayer)) + "m",
                 x + 10 + size + ((getWidth() - (10 + size)) / 2f), y + 35, textColor);
     }
 

@@ -25,7 +25,7 @@ public class SearchBar implements Screen {
     private final Animation focusAnimation = new DecelerateAnimation(175, 1).setDirection(Direction.BACKWARDS),
             hoverAnimation = new DecelerateAnimation(175, 1).setDirection(Direction.BACKWARDS),
             openAnimation = new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
-    private final TextField searchField = new TextField(tenacityFont18);
+    private final TextField searchField = new TextField(duckSansFont18);
     private float alpha;
 
     @Override
@@ -70,13 +70,13 @@ public class SearchBar implements Screen {
 
         float openAnim = Math.min(1, alpha);
         float searchAlpha = Math.min(1, hover + focusAnim);
-        tenacityFont26.drawCenteredString("Do §lCTRL§r+§lF§r to open the search bar", sr.getScaledWidth() / 2f, sr.getScaledHeight() - 75,
+        duckSansFont26.drawCenteredString("Do §lCTRL§r+§lF§r to open the search bar", sr.getScaledWidth() / 2f, sr.getScaledHeight() - 75,
                 ColorUtil.applyOpacity(-1, (.3f * (1 - searchAlpha)) * openAnim));
 
 
         searchField.setWidth(200);
         searchField.setHeight(25);
-        searchField.setFont(tenacityFont24);
+        searchField.setFont(duckSansFont24);
         searchField.setXPosition(sr.getScaledWidth() / 2f - 100);
 
         searchField.setYPosition(sr.getScaledHeight() - (70 + (25 * hover) + (60 * focusAnim)));
@@ -99,7 +99,7 @@ public class SearchBar implements Screen {
         float openAnim = Math.min(1, alpha);
         float searchAlpha = Math.min(1, hover + focusAnim);
 
-        tenacityFont26.drawCenteredString("Do §lCTRL§r+§lF§r to open the search bar", sr.getScaledWidth() / 2f, sr.getScaledHeight() - 75,
+        duckSansFont26.drawCenteredString("Do §lCTRL§r+§lF§r to open the search bar", sr.getScaledWidth() / 2f, sr.getScaledHeight() - 75,
                 ColorUtil.applyOpacity(Color.BLACK, (1 * (1 - searchAlpha)) * openAnim));
 
 

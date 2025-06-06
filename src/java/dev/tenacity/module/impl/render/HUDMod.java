@@ -103,12 +103,12 @@ public class HUDMod extends Module {
             switch (watermarkMode.getMode()) {
                 case "Logo":
                     float WH = 110 / 2f;
-                    float textWidth = tenacityBoldFont32.getStringWidth(finalName);
+                    float textWidth = duckSansBoldFont32.getStringWidth(finalName);
 
                     GL11.glEnable(GL11.GL_SCISSOR_TEST);
                     RenderUtil.scissor(10, 7, 13 + WH + textWidth + 5, WH);
 
-                    tenacityBoldFont32.drawString(finalName, (float) (((13 + WH) - textWidth) + (textWidth * fadeInText.getOutput().floatValue())), 8 + tenacityBoldFont32.getMiddleOfBox(WH), ColorUtil.applyOpacity(glow ? -1 : 0, (float) (fadeInText.getOutput().floatValue())));
+                    duckSansBoldFont32.drawString(finalName, (float) (((13 + WH) - textWidth) + (textWidth * fadeInText.getOutput().floatValue())), 8 + duckSansBoldFont32.getMiddleOfBox(WH), ColorUtil.applyOpacity(glow ? -1 : 0, (float) (fadeInText.getOutput().floatValue())));
                     GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
 
@@ -120,17 +120,17 @@ public class HUDMod extends Module {
                 case "Tenacity":
                     float xVal = 6f;
                     float yVal = 6f;
-                    float versionWidth = tenacityFont16.getStringWidth(Client.INSTANCE.getVersion());
-                    float versionX = xVal + tenacityBoldFont40.getStringWidth(finalName);
-                    float width = version ? (versionX + versionWidth) - xVal : tenacityBoldFont40.getStringWidth(finalName);
+                    float versionWidth = duckSansFont16.getStringWidth(Client.INSTANCE.getVersion());
+                    float versionX = xVal + duckSansBoldFont40.getStringWidth(finalName);
+                    float width = version ? (versionX + versionWidth) - xVal : duckSansBoldFont40.getStringWidth(finalName);
 
 
                     RenderUtil.resetColor();
                     GradientUtil.applyGradientHorizontal(xVal, yVal, width, 20, 1, clientColors.getFirst(), clientColors.getSecond(), () -> {
                         RenderUtil.setAlphaLimit(0);
-                        tenacityBoldFont40.drawString(finalName, xVal, yVal, 0);
+                        duckSansBoldFont40.drawString(finalName, xVal, yVal, 0);
                         if (version) {
-                            tenacityFont16.drawString(Client.INSTANCE.getVersion(), versionX, yVal, 0);
+                            duckSansFont16.drawString(Client.INSTANCE.getVersion(), versionX, yVal, 0);
                         }
                     });
 
@@ -138,7 +138,7 @@ public class HUDMod extends Module {
                 case "Plain Text":
                     AbstractFontRenderer fr = mc.fontRendererObj;
                     if (customFont.isEnabled()) {
-                        fr = tenacityFont24;
+                        fr = duckSansFont24;
                     }
                     AbstractFontRenderer finalFr = fr;
 
@@ -150,7 +150,7 @@ public class HUDMod extends Module {
 
                     break;
                 case "Neverlose":
-                    CustomFont t18 = tenacityFont18;
+                    CustomFont t18 = duckSansFont18;
                     String str = String.format(" §8|§f %s fps §8|§f %s §8|§f %s",
                             Minecraft.getDebugFPS(), intentInfo,
                             mc.isSingleplayer() || mc.getCurrentServerData() == null ? "singleplayer" : mc.getCurrentServerData().serverIP);
@@ -163,7 +163,7 @@ public class HUDMod extends Module {
                             + PingerUtils.getPing() + "ms ";
                     float x = 4.5f, y = 4.5f;
 
-                    Gui.drawRect2(x, y, tenacityFont16.getStringWidth(text) + 7, 18.5, glow ? new Color(59, 57, 57).getRGB() : Color.BLACK.getRGB());
+                    Gui.drawRect2(x, y, duckSansFont16.getStringWidth(text) + 7, 18.5, glow ? new Color(59, 57, 57).getRGB() : Color.BLACK.getRGB());
                     break;
             }
         }
@@ -200,12 +200,12 @@ public class HUDMod extends Module {
                 }
 
                 fadeInText.setDirection(ticks < 300 ? Direction.BACKWARDS : Direction.FORWARDS);
-                float textWidth = tenacityBoldFont32.getStringWidth(finalName);
+                float textWidth = duckSansBoldFont32.getStringWidth(finalName);
 
                 GL11.glEnable(GL11.GL_SCISSOR_TEST);
                 RenderUtil.scissor(10, 7, 13 + WH + textWidth + 5, WH);
 
-                tenacityBoldFont32.drawString(finalName, (float) (((13 + WH) - textWidth) + (textWidth * fadeInText.getOutput().floatValue())), 8 + tenacityBoldFont32.getMiddleOfBox(WH), ColorUtil.applyOpacity(-1, (float) (.7f * fadeInText.getOutput().floatValue())));
+                duckSansBoldFont32.drawString(finalName, (float) (((13 + WH) - textWidth) + (textWidth * fadeInText.getOutput().floatValue())), 8 + duckSansBoldFont32.getMiddleOfBox(WH), ColorUtil.applyOpacity(-1, (float) (.7f * fadeInText.getOutput().floatValue())));
                 GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
                 RenderUtil.color(Color.BLUE.getRGB());
@@ -226,9 +226,9 @@ public class HUDMod extends Module {
                 float xVal = 5;
                 float yVal = 5;
                 float spacing = 1;
-                float versionWidth = tenacityFont16.getStringWidth(Client.INSTANCE.getVersion());
-                float versionX = xVal + tenacityBoldFont40.getStringWidth(finalName);
-                float width = version ? (versionX + versionWidth) - xVal : tenacityBoldFont40.getStringWidth(finalName);
+                float versionWidth = duckSansFont16.getStringWidth(Client.INSTANCE.getVersion());
+                float versionX = xVal + duckSansBoldFont40.getStringWidth(finalName);
+                float width = version ? (versionX + versionWidth) - xVal : duckSansBoldFont40.getStringWidth(finalName);
                 String finalName1 = finalName;
 
                 Pair<Color, Color> darkerColors = clientColors.apply((c1, c2) -> Pair.of(ColorUtil.darker(c1, .6f), ColorUtil.darker(c2, .6f)));
@@ -236,9 +236,9 @@ public class HUDMod extends Module {
                 GradientUtil.applyGradientHorizontal(xVal + spacing, yVal + spacing, width + spacing,
                         20, 1, darkerColors.getFirst(), darkerColors.getSecond(), () -> {
                             RenderUtil.setAlphaLimit(0);
-                            tenacityBoldFont40.drawString(finalName1, xVal + spacing, yVal + spacing, 0);
+                            duckSansBoldFont40.drawString(finalName1, xVal + spacing, yVal + spacing, 0);
                             if (version) {
-                                tenacityFont16.drawString(Client.INSTANCE.getVersion(), versionX + (spacing / 2f), yVal + (spacing / 2f), 0);
+                                duckSansFont16.drawString(Client.INSTANCE.getVersion(), versionX + (spacing / 2f), yVal + (spacing / 2f), 0);
                             }
                         });
 
@@ -246,16 +246,16 @@ public class HUDMod extends Module {
                 RenderUtil.resetColor();
                 GradientUtil.applyGradientHorizontal(xVal, yVal, width, 20, 1, clientColors.getFirst(), clientColors.getSecond(), () -> {
                     RenderUtil.setAlphaLimit(0);
-                    tenacityBoldFont40.drawString(finalName1, xVal, yVal, 0);
+                    duckSansBoldFont40.drawString(finalName1, xVal, yVal, 0);
                     if (version) {
-                        tenacityFont16.drawString(Client.INSTANCE.getVersion(), versionX, yVal, 0);
+                        duckSansFont16.drawString(Client.INSTANCE.getVersion(), versionX, yVal, 0);
                     }
                 });
                 break;
             case "Plain Text":
                 AbstractFontRenderer fr = mc.fontRendererObj;
                 if (customFont.isEnabled()) {
-                    fr = tenacityBoldFont26;
+                    fr = duckSansBoldFont26;
                 }
                 AbstractFontRenderer finalFr = fr;
                 finalName = get(name);
@@ -270,7 +270,7 @@ public class HUDMod extends Module {
                 });
                 break;
             case "Neverlose":
-                CustomFont m22 = neverloseFont.size(22), t18 = tenacityFont18;
+                CustomFont m22 = neverloseFont.size(22), t18 = duckSansFont18;
                 String str = String.format(" §8|§f %s fps §8|§f %s §8|§f %s",
                         Minecraft.getDebugFPS(), intentInfo,
                         mc.isSingleplayer() || mc.getCurrentServerData() == null ? "singleplayer" : mc.getCurrentServerData().serverIP);
@@ -288,28 +288,28 @@ public class HUDMod extends Module {
                 float x = 4.5f, y = 4.5f;
 
                 int lineColor = new Color(59, 57, 57).darker().getRGB();
-                Gui.drawRect2(x, y, tenacityFont16.getStringWidth(text) + 7, 18.5, new Color(59, 57, 57).getRGB());
+                Gui.drawRect2(x, y, duckSansFont16.getStringWidth(text) + 7, 18.5, new Color(59, 57, 57).getRGB());
 
-                Gui.drawRect2(x + 2.5, y + 2.5, tenacityFont16.getStringWidth(text) + 2, 13, new Color(23, 23, 23).getRGB());
+                Gui.drawRect2(x + 2.5, y + 2.5, duckSansFont16.getStringWidth(text) + 2, 13, new Color(23, 23, 23).getRGB());
 
                 // Top small bar
-                Gui.drawRect2(x + 1, y + 1, tenacityFont16.getStringWidth(text) + 5, .5, lineColor);
+                Gui.drawRect2(x + 1, y + 1, duckSansFont16.getStringWidth(text) + 5, .5, lineColor);
 
                 // Bottom small bar
-                Gui.drawRect2(x + 1, y + 17, tenacityFont16.getStringWidth(text) + 5, .5, lineColor);
+                Gui.drawRect2(x + 1, y + 17, duckSansFont16.getStringWidth(text) + 5, .5, lineColor);
 
                 // Left bar
                 Gui.drawRect2(x + 1, y + 1.5, .5, 16, lineColor);
 
                 // Right Bar
-                Gui.drawRect2((x + 1.5) + tenacityFont16.getStringWidth(text) + 4, y + 1.5, .5, 16, lineColor);
+                Gui.drawRect2((x + 1.5) + duckSansFont16.getStringWidth(text) + 4, y + 1.5, .5, 16, lineColor);
 
                 // Lowly saturated rainbow bar
-                GradientUtil.drawGradientLR(x + 2.5f, y + 14.5f, tenacityFont16.getStringWidth(text) + 2, 1, 1, clientColors.getFirst(), clientColors.getSecond());
+                GradientUtil.drawGradientLR(x + 2.5f, y + 14.5f, duckSansFont16.getStringWidth(text) + 2, 1, 1, clientColors.getFirst(), clientColors.getSecond());
 
                 // Bottom of the rainbow bar
-                Gui.drawRect2(x + 2.5, y + 16, tenacityFont16.getStringWidth(text) + 2, .5, lineColor);
-                tenacityFont16.drawString(text, x + 4.5f, y + 5.5f, clientColors.getSecond().getRGB());
+                Gui.drawRect2(x + 2.5, y + 16, duckSansFont16.getStringWidth(text) + 2, .5, lineColor);
+                duckSansFont16.drawString(text, x + 4.5f, y + 5.5f, clientColors.getSecond().getRGB());
                 break;
             case "Tenabition":
                 StringBuilder stringBuilder = new StringBuilder(name.replace("tenacity", "Tenabition")).insert(1, "§7");
@@ -330,7 +330,7 @@ public class HUDMod extends Module {
     }
 
     private void drawBottomRight() {
-        AbstractFontRenderer fr = customFont.isEnabled() ? tenacityFont20 : mc.fontRendererObj;
+        AbstractFontRenderer fr = customFont.isEnabled() ? duckSansFont20 : mc.fontRendererObj;
         ScaledResolution sr = new ScaledResolution(mc);
         float yOffset = (float) (14.5 * GuiChat.openingAnimation.getOutput().floatValue());
 
@@ -398,7 +398,7 @@ public class HUDMod extends Module {
         }
 
         //InfoStuff
-        AbstractFontRenderer nameInfoFr = tenacityFont20;
+        AbstractFontRenderer nameInfoFr = duckSansFont20;
         if (!customFont.isEnabled()) {
             nameInfoFr = mc.fontRendererObj;
         }

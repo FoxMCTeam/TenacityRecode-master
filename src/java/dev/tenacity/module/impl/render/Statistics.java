@@ -85,7 +85,7 @@ public class Statistics extends Module {
 
 
         width = 145;
-        float orginalHeight = statistics.size() * (tenacityBoldFont18.getHeight() + 6) + 26;
+        float orginalHeight = statistics.size() * (duckSansBoldFont18.getHeight() + 6) + 26;
         height = orginalHeight + (moreHeight ? 75 : 0);
 
         dragging.setHeight(height);
@@ -102,11 +102,11 @@ public class Statistics extends Module {
                 ColorUtil.applyOpacity(colorWheel.getColor3(), alpha));
 
 
-        tenacityBoldFont22.drawString("Statistics", x + 5, y + 2, -1);
+        duckSansBoldFont22.drawString("Statistics", x + 5, y + 2, -1);
 
-        float underlineWidth = tenacityBoldFont22.getStringWidth("Statistics");
+        float underlineWidth = duckSansBoldFont22.getStringWidth("Statistics");
 
-        RoundedUtil.drawRound(x + 5, y + 2 + tenacityBoldFont22.getHeight() + 1, underlineWidth - .5f, 1f, .5f, Color.white);
+        RoundedUtil.drawRound(x + 5, y + 2 + duckSansBoldFont22.getHeight() + 1, underlineWidth - .5f, 1f, .5f, Color.white);
 
         statistics.put("Games Played", (double) gamesPlayed);
         statistics.put("K/D", deathCount == 0 ? killCount : MathUtils.round((double) killCount / deathCount, 2));
@@ -116,10 +116,10 @@ public class Statistics extends Module {
         for (Map.Entry<String, Double> entry : statistics.entrySet()) {
             String key = entry.getKey();
             Double value = entry.getValue();
-            int offset = count * (tenacityBoldFont18.getHeight() + 7);
-            tenacityBoldFont18.drawString(key + ": ", x + 5, y + offset + 21, -1);
-            tenacityFont18.drawString(key.equals("K/D") ? String.valueOf(value.doubleValue()) : String.valueOf(value.intValue()),
-                    x + 5 + tenacityBoldFont18.getStringWidth(key + ": "), y + offset + 21, -1);
+            int offset = count * (duckSansBoldFont18.getHeight() + 7);
+            duckSansBoldFont18.drawString(key + ": ", x + 5, y + offset + 21, -1);
+            duckSansFont18.drawString(key.equals("K/D") ? String.valueOf(value.doubleValue()) : String.valueOf(value.intValue()),
+                    x + 5 + duckSansBoldFont18.getStringWidth(key + ": "), y + offset + 21, -1);
 
             count++;
         }
@@ -127,16 +127,16 @@ public class Statistics extends Module {
 
         float radius = 40;
 
-        float playtimeX = x + width - (tenacityBoldFont20.getStringWidth("Play Time") + 6);
-        tenacityBoldFont20.drawString("Play Time", x + width - (tenacityBoldFont20.getStringWidth("Play Time") + 5), y + 4, -1);
-        float playUnderlineWidth = tenacityBoldFont20.getStringWidth("Play Time");
+        float playtimeX = x + width - (duckSansBoldFont20.getStringWidth("Play Time") + 6);
+        duckSansBoldFont20.drawString("Play Time", x + width - (duckSansBoldFont20.getStringWidth("Play Time") + 5), y + 4, -1);
+        float playUnderlineWidth = duckSansBoldFont20.getStringWidth("Play Time");
 
-        RoundedUtil.drawRound(x + width - (tenacityBoldFont20.getStringWidth("Play Time") + 5),
-                y + 4 + tenacityBoldFont22.getHeight(), playUnderlineWidth - .5f, 1, .5f, Color.white);
+        RoundedUtil.drawRound(x + width - (duckSansBoldFont20.getStringWidth("Play Time") + 5),
+                y + 4 + duckSansBoldFont22.getHeight(), playUnderlineWidth - .5f, 1, .5f, Color.white);
 
         int[] playTime = getPlayTime();
 
-        float circleY = y + (4) + tenacityBoldFont22.getHeight() + 2;
+        float circleY = y + (4) + duckSansBoldFont22.getHeight() + 2;
 
         drawCircle(playtimeX - 1.5f, circleY, radius, -2f, 1,
                 ColorUtil.applyOpacity(Color.BLACK, .5f), 1);
@@ -150,7 +150,7 @@ public class Statistics extends Module {
                 Color.WHITE, .05f);
 
 
-        drawAnimatedPlaytime(playtimeX, circleY + ((radius + 10) / 2f - tenacityFont16.getHeight() / 2f), (radius + 10), playTimeActual);
+        drawAnimatedPlaytime(playtimeX, circleY + ((radius + 10) / 2f - duckSansFont16.getHeight() / 2f), (radius + 10), playTimeActual);
 
 
         if (motionGraph.isEnabled()) {
@@ -183,24 +183,24 @@ public class Statistics extends Module {
 
     private void drawMotionGraph(float x, float y, float width, float height) {
         float textX = x + 5;
-        tenacityBoldFont20.drawString("Speed", textX, y + 3, -1);
-        float underlineWidth = tenacityBoldFont20.getStringWidth("Speed");
-        //  RoundedUtil.drawRound(textX, y + 3 + tenacityBoldFont20.getHeight() + 2, underlineWidth - .5f, .9f, .25f, Color.white);
+        duckSansBoldFont20.drawString("Speed", textX, y + 3, -1);
+        float underlineWidth = duckSansBoldFont20.getStringWidth("Speed");
+        //  RoundedUtil.drawRound(textX, y + 3 + duckSansBoldFont20.getHeight() + 2, underlineWidth - .5f, .9f, .25f, Color.white);
 
         double average = speeds.stream().collect(Collectors.averagingDouble(value -> value.doubleValue() * 50));
         average = Math.round(average * 100) / 100.0;
 
         String text = "Average: " + average + " BPS";
 
-        tenacityFont18.drawString(text, x + width - (tenacityFont18.getStringWidth(text) + 5),
+        duckSansFont18.drawString(text, x + width - (duckSansFont18.getStringWidth(text) + 5),
                 y + 3.5f, -1);
 
 
-        float lineHeight = height - (tenacityBoldFont20.getHeight() + 16);
+        float lineHeight = height - (duckSansBoldFont20.getHeight() + 16);
         float lineWidth = width - 10;
         float lineX = x + 5;
         float lineY = y + height - 5;
-        float distance = 8 + tenacityBoldFont20.getHeight();
+        float distance = 8 + duckSansBoldFont20.getHeight();
 
         RoundedUtil.drawRound(lineX - 3, y + distance, lineWidth + 6, height - (distance + 2),
                 5, ColorUtil.applyOpacity(Color.BLACK, .25f));
@@ -249,7 +249,7 @@ public class Statistics extends Module {
             sb.insert(0, playTime[0] + ":");
         }
 
-        tenacityFont16.drawCenteredString(sb.toString(), (circleX - 1.5f) + (circleWidth / 2f), y, -1);
+        duckSansFont16.drawCenteredString(sb.toString(), (circleX - 1.5f) + (circleWidth / 2f), y, -1);
     }
 
     private void drawCircle(float x, float y, float radius, float progress, int change, Color color, float smoothness) {

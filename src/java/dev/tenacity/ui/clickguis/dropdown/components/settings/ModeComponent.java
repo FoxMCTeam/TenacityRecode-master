@@ -77,9 +77,9 @@ public class ModeComponent extends SettingComponent<ModeSetting> {
 
         RoundedUtil.drawRound(boxX + 1, boxY + 1, boxWidth - 2, boxHeight - 2, 3, rectColor);
 
-        tenacityFont14.drawString(modeSetting.name, boxX + 1, y + 3, textColor);
+        duckSansFont14.drawString(modeSetting.name, boxX + 1, y + 3, textColor);
 
-        tenacityFont16.drawString(modeSetting.getMode(), boxX + 5, boxY + tenacityFont16.getMiddleOfBox(boxHeight), textColor);
+        duckSansFont16.drawString(modeSetting.getMode(), boxX + 5, boxY + duckSansFont16.getMiddleOfBox(boxHeight), textColor);
 
         if(themeSetting){
             MutablePair<Color, Color> themeColors = Theme.getThemeColors(modeSetting.getMode()).apply(MutablePair::of);
@@ -91,9 +91,9 @@ public class ModeComponent extends SettingComponent<ModeSetting> {
             float width = 8;
             float middleOfRect = boxHeight /2f - height /2f;
             float spacing = 3;
-            RoundedUtil.drawRound(boxX + 7.5f + tenacityFont16.getStringWidth(modeSetting.getMode()), boxY + middleOfRect,
+            RoundedUtil.drawRound(boxX + 7.5f + duckSansFont16.getStringWidth(modeSetting.getMode()), boxY + middleOfRect,
                     width, height, 2.25f, themeColors.getFirst());
-            RoundedUtil.drawRound(boxX + 7.5f + tenacityFont16.getStringWidth(modeSetting.getMode()) + (spacing + width), boxY + middleOfRect,
+            RoundedUtil.drawRound(boxX + 7.5f + duckSansFont16.getStringWidth(modeSetting.getMode()) + (spacing + width), boxY + middleOfRect,
                     width, height, 2.25f, themeColors.getSecond());
         }
 
@@ -143,8 +143,8 @@ public class ModeComponent extends SettingComponent<ModeSetting> {
 
 
                 RenderUtil.resetColor();
-                tenacityFont16.drawString(mode, modeX + 5,
-                        modeY + ((tenacityFont16.getMiddleOfBox(rectHeight) + (rectHeight * rectCount)) * openAnimation.getOutput().floatValue()),
+                duckSansFont16.drawString(mode, modeX + 5,
+                        modeY + ((duckSansFont16.getMiddleOfBox(rectHeight) + (rectHeight * rectCount)) * openAnimation.getOutput().floatValue()),
                         ColorUtil.applyOpacity(textColor, openAnim));
 
                 if(themeSetting){

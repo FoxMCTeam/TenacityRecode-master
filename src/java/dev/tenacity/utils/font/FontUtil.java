@@ -76,7 +76,7 @@ public class FontUtil implements Utils {
 
     @Getter
     public enum FontType {
-        TENACITY("tenacity", "tenacity-bold", 12, 14, 16, 18, 20, 22, 24, 26, 28, 32, 40, 80),
+        DUCKSANS("duckSans", "duckSans-bold", "duckSans-thin", 12, 14, 16, 18, 20, 22, 24, 26, 28, 32, 40, 80),
         TAHOMA("tahoma", "tahoma-bold", 10, 12, 14, 16, 18, 27),
         RUBIK("rubik", "rubik-bold", 13, 18),
         NEVERLOSE("neverlose", 12, 18, 22),
@@ -85,6 +85,12 @@ public class FontUtil implements Utils {
         private final ResourceLocation location, boldLocation;
         private Font font, boldFont;
         private final int[] sizes;
+
+        FontType(String fontName, String boldName, String thinName, int... sizes) {
+            this.location = new ResourceLocation("Tenacity/Fonts/" + fontName + ".ttf");
+            this.boldLocation = new ResourceLocation("Tenacity/Fonts/" + boldName + ".ttf");
+            this.sizes = sizes;
+        }
 
         FontType(String fontName, String boldName, int... sizes) {
             this.location = new ResourceLocation("Tenacity/Fonts/" + fontName + ".ttf");

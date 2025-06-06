@@ -16,9 +16,9 @@ public class UploadForm extends Form {
 
     private final String type;
 
-    private final TextField nameField = new TextField(tenacityFont18);
-    private final TextField descriptionField = new TextField(tenacityFont18);
-    private final TextField serverField = new TextField(tenacityFont18);
+    private final TextField nameField = new TextField(duckSansFont18);
+    private final TextField descriptionField = new TextField(duckSansFont18);
+    private final TextField serverField = new TextField(duckSansFont18);
 
     public UploadForm(String type) {
         super("Upload " + type);
@@ -48,15 +48,15 @@ public class UploadForm extends Form {
     public void drawScreen(int mouseX, int mouseY) {
         super.drawScreen(mouseX, mouseY);
 
-        float infoX = getX() + tenacityBoldFont40.getStringWidth(getTitle()) + 20;
+        float infoX = getX() + duckSansBoldFont40.getStringWidth(getTitle()) + 20;
         float infoY = getY() + 7.5f;
 
-        tenacityFont16.drawString("To upload your " + type.toLowerCase() + " you must provide some information",
+        duckSansFont16.drawString("To upload your " + type.toLowerCase() + " you must provide some information",
                 infoX, infoY, ColorUtil.applyOpacity(getTextColor(), .5f));
 
-        infoY += tenacityFont16.getHeight() + 3;
+        infoY += duckSansFont16.getHeight() + 3;
 
-        tenacityFont16.drawString("All fields are §lrequired", infoX, infoY, ColorUtil.applyOpacity(getTextColor(), .5f));
+        duckSansFont16.drawString("All fields are §lrequired", infoX, infoY, ColorUtil.applyOpacity(getTextColor(), .5f));
 
         float insideWidth = getWidth() - (getSpacing() * 2);
         RoundedUtil.drawRound(getX() + getSpacing(), getY() + 40, getWidth() - (getSpacing() * 2),
@@ -78,12 +78,12 @@ public class UploadForm extends Form {
         nameField.setFill(darkColor);
         nameField.setTextAlpha(getAlpha());
 
-        int maxStringLength = tenacityBoldFont26.getStringWidth(nameField.getText()) >= 143 ? nameField.getText().length() : 30;
+        int maxStringLength = duckSansBoldFont26.getStringWidth(nameField.getText()) >= 143 ? nameField.getText().length() : 30;
         nameField.setMaxStringLength(maxStringLength);
         nameField.drawTextBox();
 
-        tenacityFont24.drawString(type + " name", nameField.getXPosition(),
-                nameField.getYPosition() - (tenacityFont24.getHeight() + 5), getTextColor());
+        duckSansFont24.drawString(type + " name", nameField.getXPosition(),
+                nameField.getYPosition() - (duckSansFont24.getHeight() + 5), getTextColor());
 
 
         if (type.equals("Config")) {
@@ -98,10 +98,10 @@ public class UploadForm extends Form {
             serverField.setTextAlpha(getAlpha());
             serverField.drawTextBox();
 
-            tenacityFont24.drawString("Server IP", serverField.getXPosition(),
-                    serverField.getYPosition() - (tenacityFont24.getHeight() + 5), getTextColor());
+            duckSansFont24.drawString("Server IP", serverField.getXPosition(),
+                    serverField.getYPosition() - (duckSansFont24.getHeight() + 5), getTextColor());
 
-            tenacityFont14.drawCenteredString("Input the IP of the server the config was made for",
+            duckSansFont14.drawCenteredString("Input the IP of the server the config was made for",
                     serverField.getXPosition() + serverField.getWidth() / 2f + 2,
                     serverField.getYPosition() + serverField.getHeight() + 5, getTextColor());
 
@@ -119,8 +119,8 @@ public class UploadForm extends Form {
         descriptionField.setMaxStringLength(210);
         descriptionField.drawTextBox();
 
-        tenacityFont24.drawString("Description", descriptionField.getXPosition(),
-                descriptionField.getYPosition() - (tenacityFont24.getHeight() + 5), getTextColor());
+        duckSansFont24.drawString("Description", descriptionField.getXPosition(),
+                descriptionField.getYPosition() - (duckSansFont24.getHeight() + 5), getTextColor());
 
 
         uploadButton.setWidth(70);
@@ -142,8 +142,8 @@ public class UploadForm extends Form {
 
 
         if (error) {
-            tenacityFont16.drawCenteredStringWithShadow("Error please fill out the required fields",
-                    uploadButton.getX() + uploadButton.getWidth() / 2f, uploadButton.getY() - (tenacityFont16.getHeight() + 5),
+            duckSansFont16.drawCenteredStringWithShadow("Error please fill out the required fields",
+                    uploadButton.getX() + uploadButton.getWidth() / 2f, uploadButton.getY() - (duckSansFont16.getHeight() + 5),
                     Client.INSTANCE.getSideGui().getRedBadColor().getRGB());
         }
 

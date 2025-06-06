@@ -79,17 +79,17 @@ public class NumberComponent extends SettingComponent<NumberSetting> {
 
         float firstTextAnim = textAnimations.getFirst().getOutput().floatValue();
 
-        float funnyWidth = (tenacityFont16.getStringWidth(numberSetting.name) - (tenacityFont16.getStringWidth(": " + value)));
-        tenacityFont16.drawString(": §l" + value, sliderX +
-                        funnyWidth + (tenacityFont16.getStringWidth(": " + value) * firstTextAnim),
+        float funnyWidth = (duckSansFont16.getStringWidth(numberSetting.name) - (duckSansFont16.getStringWidth(": " + value)));
+        duckSansFont16.drawString(": §l" + value, sliderX +
+                        funnyWidth + (duckSansFont16.getStringWidth(": " + value) * firstTextAnim),
                 y + 2, ColorUtil.applyOpacity(textColor, firstTextAnim));
 
 
         String text = "You can use arrow keys";
-        tenacityFont14.drawCenteredString(text, x + width /2f, sliderY + sliderHeight + 4.5f,
+        duckSansFont14.drawCenteredString(text, x + width /2f, sliderY + sliderHeight + 4.5f,
                 ColorUtil.applyOpacity(-1, textAnimations.getSecond().getOutput().floatValue() * .25f));
 
-        tenacityFont16.drawString(numberSetting.name, sliderX, y + 2, textColor);
+        duckSansFont16.drawString(numberSetting.name, sliderX, y + 2, textColor);
         RoundedUtil.drawRound(sliderX, sliderY, sliderWidth, sliderHeight, 1.5f,
                 ColorUtil.brighter(settingRectColor, .7f - (.2f * hoverAnimation.getOutput().floatValue())));
 
@@ -122,13 +122,13 @@ public class NumberComponent extends SettingComponent<NumberSetting> {
 
 
         float secondTextAnim = 1 - textAnimations.getFirst().getOutput().floatValue();
-        float rectWidth = tenacityFont14.getStringWidth("§l" + value) + 4;
+        float rectWidth = duckSansFont14.getStringWidth("§l" + value) + 4;
         float rectX = Math.max(x, 2 + (sliderX + animatedWidth - size / 2f) - rectWidth / 2f);
         float rectY = sliderY + sliderHeight + 4;
-        float rectHeight = tenacityFont14.getHeight() + 2;
+        float rectHeight = duckSansFont14.getHeight() + 2;
         RoundedUtil.drawRound(rectX, rectY, rectWidth, rectHeight, 3, ColorUtil.applyOpacity(settingRectColor.brighter(), secondTextAnim));
 
-        tenacityFont14.drawString("§l" + value, rectX + 2, rectY + tenacityFont14.getMiddleOfBox(rectHeight),
+        duckSansFont14.drawString("§l" + value, rectX + 2, rectY + duckSansFont14.getMiddleOfBox(rectHeight),
                 ColorUtil.applyOpacity(textColor, secondTextAnim));
 
         clickCountAdd = (.3f * secondTextAnim) + (.3f * textAnimations.getSecond().getOutput().floatValue());

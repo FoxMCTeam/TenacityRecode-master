@@ -19,7 +19,7 @@ public class ExhiTargetHUD extends TargetHUD {
 
     @Override
     public void render(float x, float y, float alpha, EntityLivingBase target) {
-        setWidth(Math.max(135, tenacityFont20.getStringWidth("Name: " + "bruh") + 60));
+        setWidth(Math.max(135, duckSansFont20.getStringWidth("Name: " + "bruh") + 60));
         setHeight(46);
 
         Color darkest = ColorUtil.applyOpacity(new Color(10, 10, 10), alpha);

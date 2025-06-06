@@ -13,7 +13,7 @@ public class SaveForm extends Form {
 
     private final ActionButton save = new ActionButton("Save");
 
-    private final TextField nameField = new TextField(tenacityFont20);
+    private final TextField nameField = new TextField(duckSansFont20);
 
     public SaveForm() {
         super("Save Config");
@@ -36,10 +36,10 @@ public class SaveForm extends Form {
     public void drawScreen(int mouseX, int mouseY) {
         super.drawScreen(mouseX, mouseY);
 
-        float infoX = getX() + tenacityBoldFont40.getStringWidth(getTitle()) + 20;
-        float infoY = getY() + 3 + tenacityFont16.getMiddleOfBox(tenacityBoldFont40.getHeight()) + 2;
+        float infoX = getX() + duckSansBoldFont40.getStringWidth(getTitle()) + 20;
+        float infoY = getY() + 3 + duckSansFont16.getMiddleOfBox(duckSansBoldFont40.getHeight()) + 2;
 
-        tenacityFont16.drawString("Enter a name for the local config",
+        duckSansFont16.drawString("Enter a name for the local config",
                 infoX, infoY, ColorUtil.applyOpacity(getTextColor(), .5f));
 
         float insideWidth = getWidth() - (getSpacing() * 2);
@@ -59,17 +59,17 @@ public class SaveForm extends Form {
         nameField.setYPosition(insideY + 25);
         nameField.setWidth(insideWidth - (getSpacing() * 2));
         nameField.setHeight(20);
-        nameField.setFont(tenacityFont18);
+        nameField.setFont(duckSansFont18);
         nameField.setOutline(noColor);
         nameField.setFill(darkColor);
         nameField.setTextAlpha(getAlpha());
 
-        int maxStringLength = tenacityBoldFont26.getStringWidth(nameField.getText()) >= 143 ? nameField.getText().length() : 30;
+        int maxStringLength = duckSansBoldFont26.getStringWidth(nameField.getText()) >= 143 ? nameField.getText().length() : 30;
         nameField.setMaxStringLength(maxStringLength);
         nameField.drawTextBox();
 
-        tenacityFont24.drawString("Config name", nameField.getXPosition(),
-                nameField.getYPosition() - (tenacityFont24.getHeight() + 5), getTextColor());
+        duckSansFont24.drawString("Config name", nameField.getXPosition(),
+                nameField.getYPosition() - (duckSansFont24.getHeight() + 5), getTextColor());
 
 
         save.setWidth(70);

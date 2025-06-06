@@ -42,7 +42,7 @@ public class MenuButton implements Screen {
         RenderUtil.color(-1);
         RenderUtil.drawImage(rs, x,y,width,height);
 
-        tenacityFont22.drawCenteredString(text, x + width / 2f, y + tenacityFont22.getMiddleOfBox(height), -1);
+        duckSansFont22.drawCenteredString(text, x + width / 2f, y + duckSansFont22.getMiddleOfBox(height), -1);
     }
 
     public void drawOutline() {

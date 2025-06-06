@@ -75,7 +75,7 @@ public class MultipleBoolComponent extends SettingComponent<MultipleBoolSetting>
 
         RoundedUtil.drawRound(x + 6, boxY + 1, width - 12, (boxHeight - 2) + additionalHeight, 3, rectColor);
 
-        tenacityFont14.drawString(getSetting().name, x + 6, y + 4, textColor);
+        duckSansFont14.drawString(getSetting().name, x + 6, y + 4, textColor);
 
         float addHeight = 0;
         float xOffset = 2;
@@ -90,7 +90,7 @@ public class MultipleBoolComponent extends SettingComponent<MultipleBoolSetting>
 
         for (BooleanSetting setting : sortedSettings) {
             float enabledWidth = getEnabledWidth(setting);
-            float enabledHeight = tenacityFont14.getHeight() + 4;
+            float enabledHeight = duckSansFont14.getHeight() + 4;
 
             //If the width exceeds the available space, we need to add a new line
             if (xOffset + enabledWidth > avaliableWidth) {
@@ -121,7 +121,7 @@ public class MultipleBoolComponent extends SettingComponent<MultipleBoolSetting>
 
             RoundedUtil.drawRound(enabledX, enabledY, enabledWidth, enabledHeight, 3, rectColorBool);
 
-            tenacityFont14.drawString(setting.name, enabledX + 2, enabledY + 2,
+            duckSansFont14.drawString(setting.name, enabledX + 2, enabledY + 2,
                     ColorUtil.applyOpacity(textColor, .5f + (.5f * toggleAnimation.getOutput().floatValue())));
 
 
@@ -137,7 +137,7 @@ public class MultipleBoolComponent extends SettingComponent<MultipleBoolSetting>
     }
 
     private float getEnabledWidth(BooleanSetting setting) {
-        return (tenacityFont14.getStringWidth(setting.name) + 4);
+        return (duckSansFont14.getStringWidth(setting.name) + 4);
     }
 
     @Override
@@ -158,7 +158,7 @@ public class MultipleBoolComponent extends SettingComponent<MultipleBoolSetting>
 
         for (BooleanSetting setting : sortedSettings) {
             float enabledWidth = getEnabledWidth(setting);
-            float enabledHeight = tenacityFont14.getHeight() + 4;
+            float enabledHeight = duckSansFont14.getHeight() + 4;
 
             //If the width exceeds the available space, we need to add a new line
             if (xOffset + enabledWidth > avaliableWidth) {

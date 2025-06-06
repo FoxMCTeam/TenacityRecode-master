@@ -154,9 +154,9 @@ public class CompactClickgui extends GuiScreen {
         mc.getTextureManager().bindTexture(new ResourceLocation("Tenacity/modernlogo.png"));
         Gui.drawModalRectWithCustomSizedTexture(x + 5, y + 5, 0, 0, 20.5f, 20.5f, 20.5f, 20.5f);
 
-        FontUtil.tenacityBoldFont22.drawString(Client.NAME, x + 33, y + 7, -1);
-        FontUtil.tenacityFont16.drawCenteredString(Client.VERSION,
-                (float) (x + 31 + FontUtil.tenacityBoldFont22.getStringWidth(Client.NAME) / 2f), y + 19, -1);
+        FontUtil.duckSansBoldFont22.drawString(Client.NAME, x + 33, y + 7, -1);
+        FontUtil.duckSansFont16.drawCenteredString(Client.VERSION,
+                (float) (x + 31 + FontUtil.duckSansBoldFont22.getStringWidth(Client.NAME) / 2f), y + 19, -1);
 
         boolean searching = Client.INSTANCE.getSearchBar().isFocused();
 
@@ -181,7 +181,7 @@ public class CompactClickgui extends GuiScreen {
             }
 
             RenderUtil.resetColor();
-            tenacityBoldFont22.drawString(category.name, x + 8, catY + tenacityFont22.getMiddleOfBox(catHeight), selectColor.getRGB());
+            duckSansBoldFont22.drawString(category.name, x + 8, catY + duckSansFont22.getMiddleOfBox(catHeight), selectColor.getRGB());
             RenderUtil.resetColor();
             seperation += catHeight;
         }

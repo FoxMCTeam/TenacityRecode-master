@@ -82,7 +82,7 @@ public class SplashScreen implements Utils {
         GL11.glEnable(GL11.GL_BLEND);
         RenderUtil.setAlphaLimit(0);
 
-        CustomFont fr = tenacityBoldFont80;
+        CustomFont fr = duckSansBoldFont80;
 
         if(count > 3){
             count = 0;
@@ -123,7 +123,7 @@ public class SplashScreen implements Utils {
 
         drawSplashBackground(width, height, 1);
 
-        CustomFont fr = tenacityBoldFont80;
+        CustomFont fr = duckSansBoldFont80;
 
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < count; i++){
@@ -146,13 +146,13 @@ public class SplashScreen implements Utils {
 
         if (versionAnim != null) {
 
-            float versionWidth = tenacityFont32.getStringWidth(Client.VERSION) / 2f;
+            float versionWidth = duckSansFont32.getStringWidth(Client.VERSION) / 2f;
             float versionX = width / 2f + fr.getStringWidth("Tenacity") / 2f - (versionWidth);
-            float versionY = (tenacityFont32.getMiddleOfBox(height) - 57) - (48 * yMovement);
+            float versionY = (duckSansFont32.getMiddleOfBox(height) - 57) - (48 * yMovement);
 
-            RenderUtil.scaleStart(versionX + versionWidth, versionY + tenacityFont32.getHeight() / 2f, versionAnim.getOutput().floatValue());
+            RenderUtil.scaleStart(versionX + versionWidth, versionY + duckSansFont32.getHeight() / 2f, versionAnim.getOutput().floatValue());
 
-            tenacityFont32.drawSmoothString(Client.VERSION, versionX, versionY, ColorUtil.applyOpacity(-1, versionAnim.getOutput().floatValue()));
+            duckSansFont32.drawSmoothString(Client.VERSION, versionX, versionY, ColorUtil.applyOpacity(-1, versionAnim.getOutput().floatValue()));
             RenderUtil.scaleEnd();
         }
 
@@ -179,7 +179,7 @@ public class SplashScreen implements Utils {
 
 
             float textAlpha = progress2Anim.getDirection().forwards() ? progress2Anim.getOutput().floatValue() : 1;
-            tenacityFont18.drawCenteredString("by cedo, senoe, and tear", width / 2f, actualY + 42, ColorUtil.applyOpacity(-1, textAlpha));
+            duckSansFont18.drawCenteredString("by cedo, senoe, and tear", width / 2f, actualY + 42, ColorUtil.applyOpacity(-1, textAlpha));
 
 
             if (progressAnim.finished(Direction.FORWARDS) && progress2Anim.finished(Direction.FORWARDS)) {

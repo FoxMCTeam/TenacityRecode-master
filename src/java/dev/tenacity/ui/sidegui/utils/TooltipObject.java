@@ -59,11 +59,11 @@ public class TooltipObject implements Screen {
             RoundedUtil.drawRound(x - .75f, y - .75f, width + 1.5f, height + 1.5f, 3, ColorUtil.tripleColor(45, fadeAnim));
             RoundedUtil.drawRound(x, y, width, height, 2.5f, ColorUtil.applyOpacity(ColorUtil.tripleColor(15), fadeAnim));
 
-            MutablePair<Float, Float> whPair = tenacityFont14.drawNewLineText(tooltip, x + 2, y + 2, ColorUtil.applyOpacity(-1, fadeAnim), 3);
+            MutablePair<Float, Float> whPair = duckSansFont14.drawNewLineText(tooltip, x + 2, y + 2, ColorUtil.applyOpacity(-1, fadeAnim), 3);
 
             float additionalHeight = 0;
             if (additionalInformation != null) {
-                additionalHeight = tenacityFont14.drawWrappedText(additionalInformation, x + 2,
+                additionalHeight = duckSansFont14.drawWrappedText(additionalInformation, x + 2,
                         y + 1.5f + whPair.getSecond(), ColorUtil.applyOpacity(-1, fadeAnim), width, 3);
             }
 
@@ -80,8 +80,8 @@ public class TooltipObject implements Screen {
 
         } else {
 
-            width = tenacityFont14.getStringWidth(tooltip) + 4;
-            height = tenacityFont14.getHeight() + 2;
+            width = duckSansFont14.getStringWidth(tooltip) + 4;
+            height = duckSansFont14.getHeight() + 2;
 
             RenderUtil.scissorStart(x - 1.5f, y - 1.5f, (width + 4) * fadeAnim, height + 4);
 
@@ -93,7 +93,7 @@ public class TooltipObject implements Screen {
                         ColorUtil.tripleColor(45, fadeAnim).getRGB());
             }
 
-            tenacityFont14.drawCenteredString(tooltip, x + width / 2f, y + tenacityFont14.getMiddleOfBox(height), ColorUtil.applyOpacity(-1, fadeAnim));
+            duckSansFont14.drawCenteredString(tooltip, x + width / 2f, y + duckSansFont14.getMiddleOfBox(height), ColorUtil.applyOpacity(-1, fadeAnim));
 
             RenderUtil.scissorEnd();
         }

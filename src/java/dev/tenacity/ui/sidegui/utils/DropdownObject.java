@@ -103,7 +103,7 @@ public class DropdownObject implements Screen {
 
 
                 Color optionColor = selection.equals(option) ? accentColor : textColor;
-                tenacityFont18.drawString(option, getX() + 5, dropdownY + seperation + tenacityFont18.getMiddleOfBox(getHeight()),
+                duckSansFont18.drawString(option, getX() + 5, dropdownY + seperation + duckSansFont18.getMiddleOfBox(getHeight()),
                         ColorUtil.applyOpacity(optionColor, openAnim));
 
                 seperation += getHeight();
@@ -117,7 +117,7 @@ public class DropdownObject implements Screen {
                 ColorUtil.tripleColor(17 + (int) (3 * hoverAnimation.getOutput().floatValue()), getAlpha()));
 
 
-        tenacityFont18.drawString("§l" + name + ":§r " + selection, getX() + 4, getY() + tenacityFont18.getMiddleOfBox(getHeight()), textColor);
+        duckSansFont18.drawString("§l" + name + ":§r " + selection, getX() + 4, getY() + duckSansFont18.getMiddleOfBox(getHeight()), textColor);
 
 
         float iconX = getX() + getWidth() - 10;

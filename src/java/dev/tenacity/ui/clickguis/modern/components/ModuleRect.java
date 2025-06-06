@@ -120,28 +120,28 @@ public class ModuleRect extends Component {
         hoverDescriptionAnimation.setDuration(hoverModule ? 300 : 400);
 
         GlStateManager.color(1, 1, 1, 1);
-        float xStart = (float) (x + 55 + tenacityFont24.getStringWidth(module.getName()));
-        float yVal = y + 35 / 2f - tenacityFont18.getHeight() / 2f;
+        float xStart = (float) (x + 55 + duckSansFont24.getStringWidth(module.getName()));
+        float yVal = y + 35 / 2f - duckSansFont18.getHeight() / 2f;
         if (module.getCategory().equals(Category.SCRIPTS)) yVal -= 6;
         if (binding != module && (!hoverDescriptionAnimation.isDone() || hoverDescriptionAnimation.finished(Direction.FORWARDS))) {
             float hover = hoverDescriptionAnimation.getOutput().floatValue();
-            float descWidth = 305 - ((55 + tenacityFont24.getStringWidth(module.getName())) + 15);
+            float descWidth = 305 - ((55 + duckSansFont24.getStringWidth(module.getName())) + 15);
 
-            tenacityFont18.drawWrappedText(module.getDescription(), xStart, yVal,
+            duckSansFont18.drawWrappedText(module.getDescription(), xStart, yVal,
                     new Color(128, 134, 141, (int) (255 * hover)).getRGB(), descWidth, 3);
         } else if (binding == module){
-            tenacityFont18.drawString(
+            duckSansFont18.drawString(
                     "Currently bound to " + Keyboard.getKeyName(module.getKeybind().getCode()),
                     xStart, yVal, new Color(128, 134, 141).getRGB());
         }
 
 
         if (module.getCategory().equals(Category.SCRIPTS)) {
-            tenacityFont24.drawString(module.getName(), x + 42, y + (35 / 2f - tenacityFont24.getHeight() / 2f) - 6, -1);
-            tenacityFont18.drawString(module.getAuthor(), x + 42, y + (35 / 2f - tenacityFont24.getHeight() / 2f) + 9,
+            duckSansFont24.drawString(module.getName(), x + 42, y + (35 / 2f - duckSansFont24.getHeight() / 2f) - 6, -1);
+            duckSansFont18.drawString(module.getAuthor(), x + 42, y + (35 / 2f - duckSansFont24.getHeight() / 2f) + 9,
                     new Color(255, 65, 65).getRGB());
         } else {
-            tenacityFont24.drawString(module.getName(), x + 42, y + 35 / 2f - tenacityFont24.getHeight() / 2f, -1);
+            duckSansFont24.drawString(module.getName(), x + 42, y + 35 / 2f - duckSansFont24.getHeight() / 2f, -1);
         }
         settingAnimation.setDirection(drawSettingThing ? Direction.FORWARDS : Direction.BACKWARDS);
 

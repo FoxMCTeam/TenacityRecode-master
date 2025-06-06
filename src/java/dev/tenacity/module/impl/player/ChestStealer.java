@@ -127,7 +127,7 @@ public class ChestStealer extends Module {
     public void onRender2DEvent(Render2DEvent event) {
         if (stealingIndicator.isEnabled() && stealing) {
             ScaledResolution sr = new ScaledResolution(mc);
-            AbstractFontRenderer fr = HUDMod.customFont.isEnabled() ? tenacityFont20 : mc.fontRendererObj;
+            AbstractFontRenderer fr = HUDMod.customFont.isEnabled() ? duckSansFont20 : mc.fontRendererObj;
             fr.drawStringWithShadow("§lStealing...", sr.getScaledWidth() / 2.0F - fr.getStringWidth("§lStealing...") / 2.0F, sr.getScaledHeight() / 2.0F + 10, HUDMod.getClientColors().getFirst());
         }
     }

@@ -50,8 +50,8 @@ public class OptionButton implements Screen {
 
         Gui.drawRect2(x, y, 3, height, ColorUtil.applyOpacity(color, (float) hoverAnimation.getOutput().floatValue()).getRGB());
 
-        float middle = y + tenacityBoldFont40.getMiddleOfBox(height);
-        tenacityBoldFont40.drawString(name, x + 60, y + tenacityBoldFont40.getMiddleOfBox(height), -1);
+        float middle = y + duckSansBoldFont40.getMiddleOfBox(height);
+        duckSansBoldFont40.drawString(name, x + 60, y + duckSansBoldFont40.getMiddleOfBox(height), -1);
 
         if (icon != null) {
             FontUtil.iconFont40.drawString(icon, x + 20, middle + iconAdjustY, -1);

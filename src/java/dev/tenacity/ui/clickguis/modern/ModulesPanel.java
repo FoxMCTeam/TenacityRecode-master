@@ -96,7 +96,7 @@ public class ModulesPanel extends Panel {
         }
         double scrollVal = MathUtils.roundToHalf(scroll.getScroll());
 
-        tenacityFont18.drawCenteredString("Click your scroll wheel while hovering a module to change a keybind", x + 305 / 2f, (float) (y - 15 + scrollVal),
+        duckSansFont18.drawCenteredString("Click your scroll wheel while hovering a module to change a keybind", x + 305 / 2f, (float) (y - 15 + scrollVal),
                 new Color(128, 134, 141, 150));
 
 
@@ -144,7 +144,7 @@ public class ModulesPanel extends Panel {
             //       RenderUtil.renderRoundedRect(newX, y - 15, 130, 255, 10, new Color(47, 49, 54).getRGB());
             RenderUtil.setAlphaLimit(0);
             Gui.drawGradientRect2(newX - .5f, y, 130.5f, 8, new Color(0, 0, 0, 70).getRGB(), new Color(0, 0, 0, 0).getRGB());
-            tenacityBoldFont22.drawCenteredString(currentlySelected.module.getName(), newX + 125 / 2f, y - 15, -1);
+            duckSansBoldFont22.drawCenteredString(currentlySelected.module.getName(), newX + 125 / 2f, y - 15, -1);
 
             GL11.glEnable(GL11.GL_SCISSOR_TEST);
             RenderUtil.scissor(newX, y + .5f, 135, 255);

@@ -27,7 +27,7 @@ public abstract class Form implements Screen {
     @Override
     public void drawScreen(int mouseX, int mouseY) {
         RoundedUtil.drawRound(x,y,width,height, 5, ColorUtil.tripleColor(37, alpha));
-        tenacityBoldFont40.drawString(title, x + 5, y + 3, getTextColor());
+        duckSansBoldFont40.drawString(title, x + 5, y + 3, getTextColor());
     }
 
     @Override

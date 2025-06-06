@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class FontBinding implements Utils {
 
     public AbstractFontRenderer getCustomFont(String fontName, int fontSize) {
-        FontUtil.FontType fontType = Arrays.stream(FontUtil.FontType.values()).filter(fontType1 -> fontType1.name().equals(fontName)).findFirst().orElse(FontUtil.FontType.TENACITY);
+        FontUtil.FontType fontType = Arrays.stream(FontUtil.FontType.values()).filter(fontType1 -> fontType1.name().equals(fontName)).findFirst().orElse(FontUtil.FontType.DUCKSANS);
         return fontType.size(fontSize);
     }
 
@@ -19,15 +19,15 @@ public class FontBinding implements Utils {
     }
 
 
-    public AbstractFontRenderer getTenacityFont14() {return tenacityFont14; }
-    public AbstractFontRenderer getTenacityFont16() {return tenacityFont16; }
-    public AbstractFontRenderer getTenacityFont18() {return tenacityFont18; }
-    public AbstractFontRenderer getTenacityFont20() {return tenacityFont20; }
-    public AbstractFontRenderer getTenacityFont22() {return tenacityFont22; }
-    public AbstractFontRenderer getTenacityFont24() {return tenacityFont24; }
-    public AbstractFontRenderer getTenacityFont26() {return tenacityFont26; }
-    public AbstractFontRenderer getTenacityFont28() {return tenacityFont28; }
-    public AbstractFontRenderer getTenacityFont32() {return tenacityFont32; }
-    public AbstractFontRenderer getTenacityFont40() {return tenacityFont40; }
-    public AbstractFontRenderer getTenacityFont80() {return tenacityFont80; }
+    public AbstractFontRenderer getduckSansFont14() {return duckSansFont14; }
+    public AbstractFontRenderer getduckSansFont16() {return duckSansFont16; }
+    public AbstractFontRenderer getduckSansFont18() {return duckSansFont18; }
+    public AbstractFontRenderer getduckSansFont20() {return duckSansFont20; }
+    public AbstractFontRenderer getduckSansFont22() {return duckSansFont22; }
+    public AbstractFontRenderer getduckSansFont24() {return duckSansFont24; }
+    public AbstractFontRenderer getduckSansFont26() {return duckSansFont26; }
+    public AbstractFontRenderer getduckSansFont28() {return duckSansFont28; }
+    public AbstractFontRenderer getduckSansFont32() {return duckSansFont32; }
+    public AbstractFontRenderer getduckSansFont40() {return duckSansFont40; }
+    public AbstractFontRenderer getduckSansFont80() {return duckSansFont80; }
 }

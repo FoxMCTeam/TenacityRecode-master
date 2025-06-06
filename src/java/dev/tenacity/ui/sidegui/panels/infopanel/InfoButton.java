@@ -52,9 +52,9 @@ public class InfoButton implements Screen {
         if (!openAnimation.isDone() || openAnimation.finished(Direction.FORWARDS)) {
             float heightIncrement = 3;
             float openAnim = openAnimation.getOutput().floatValue();
-            List<String> lines = tenacityFont16.getWrappedLines(answer, x + 5, (width - 5), heightIncrement);
+            List<String> lines = duckSansFont16.getWrappedLines(answer, x + 5, (width - 5), heightIncrement);
             int spacing = 3;
-            float totalAnswerHeight = (lines.size() * (tenacityFont16.getHeight() + heightIncrement)) + 4;
+            float totalAnswerHeight = (lines.size() * (duckSansFont16.getHeight() + heightIncrement)) + 4;
             float additionalHeight = height + totalAnswerHeight + (spacing * 2);
 
             RenderUtil.scissorStart(x - 1, y + 5, width + 2, additionalHeight - 5);
@@ -64,8 +64,8 @@ public class InfoButton implements Screen {
 
 
             for (String line : lines) {
-                tenacityFont16.drawString(line, x + 3, answerY + 3.5f, textColor);
-                answerY += tenacityFont16.getHeight() + heightIncrement;
+                duckSansFont16.drawString(line, x + 3, answerY + 3.5f, textColor);
+                answerY += duckSansFont16.getHeight() + heightIncrement;
             }
             RenderUtil.scissorEnd();
 
@@ -77,7 +77,7 @@ public class InfoButton implements Screen {
         int additionalColor = (int) (5 * hoverAnimation.getOutput().floatValue());
         RoundedUtil.drawRound(x, y, width, height, 5, ColorUtil.tripleColor(37 + additionalColor, alpha));
         //Question Text
-        tenacityBoldFont18.drawString(question, x + 5, y + tenacityBoldFont18.getMiddleOfBox(height), textColor);
+        duckSansBoldFont18.drawString(question, x + 5, y + duckSansBoldFont18.getMiddleOfBox(height), textColor);
 
 
         float iconX = x + width - (iconFont20.getStringWidth(FontUtil.DROPDOWN_ARROW) + 5);

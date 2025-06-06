@@ -1107,7 +1107,7 @@ public class GuiIngame extends Gui implements Utils {
     }
 
     public AbstractFontRenderer getScoreboardFontRenderer() {
-        return ScoreboardMod.customFont.isEnabled() ? tenacityFont20 : this.mc.fontRendererObj;
+        return ScoreboardMod.customFont.isEnabled() ? duckSansFont20 : this.mc.fontRendererObj;
     }
 
     public GuiSpectator getSpectatorGui() {

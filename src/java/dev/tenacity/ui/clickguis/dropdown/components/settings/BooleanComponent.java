@@ -40,7 +40,7 @@ public class BooleanComponent extends SettingComponent<BooleanSetting> {
         toggleAnimation.setDirection(getSetting().isEnabled() ? Direction.FORWARDS : Direction.BACKWARDS);
         RenderUtil.resetColor();
 
-        tenacityFont16.drawString(getSetting().name, x + 5, y + tenacityFont16.getMiddleOfBox(height),
+        duckSansFont16.drawString(getSetting().name, x + 5, y + duckSansFont16.getMiddleOfBox(height),
                 ColorUtil.applyOpacity(textColor, .5f + (.5f * toggleAnimation.getOutput().floatValue())));
 
         float switchWidth = 17;
@@ -62,7 +62,7 @@ public class BooleanComponent extends SettingComponent<BooleanSetting> {
         RenderUtil.resetColor();
 
         RoundedUtil.drawRound(x + width - (switchWidth + 4) + ((switchWidth - 8) * toggleAnimation.getOutput().floatValue()),
-                y + tenacityFont16.getMiddleOfBox(height) + .5f, 5, 5, 2,textColor);
+                y + duckSansFont16.getMiddleOfBox(height) + .5f, 5, 5, 2,textColor);
     }
 
     @Override

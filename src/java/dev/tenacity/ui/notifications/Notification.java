@@ -54,11 +54,11 @@ public class Notification implements Utils {
         FontUtil.iconFont35.drawString(getNotificationType().getIcon(), x + 5, (y + FontUtil.iconFont35.getMiddleOfBox(height) + 1), notificationColor);
 
         if (onlyTitle) {
-            tenacityBoldFont22.drawString(getTitle(), x + 10 + FontUtil.iconFont35.getStringWidth(getNotificationType().getIcon()),
-                    y + tenacityBoldFont22.getMiddleOfBox(height), textColor);
+            duckSansBoldFont22.drawString(getTitle(), x + 10 + FontUtil.iconFont35.getStringWidth(getNotificationType().getIcon()),
+                    y + duckSansBoldFont22.getMiddleOfBox(height), textColor);
         } else {
-            tenacityBoldFont22.drawString(getTitle(), x + 10 + FontUtil.iconFont35.getStringWidth(getNotificationType().getIcon()), y + 4, textColor);
-            tenacityFont18.drawString(getDescription(), x + 10 + FontUtil.iconFont35.getStringWidth(getNotificationType().getIcon()), y + 7 + tenacityBoldFont22.getHeight(), textColor);
+            duckSansBoldFont22.drawString(getTitle(), x + 10 + FontUtil.iconFont35.getStringWidth(getNotificationType().getIcon()), y + 4, textColor);
+            duckSansFont18.drawString(getDescription(), x + 10 + FontUtil.iconFont35.getStringWidth(getNotificationType().getIcon()), y + 7 + duckSansBoldFont22.getHeight(), textColor);
         }
 
     }
@@ -92,8 +92,8 @@ public class Notification implements Utils {
 
         String editTitle = getTitle() + (getTitle().endsWith(".") || getTitle().endsWith("/") ? " " : ". ") + getDescription();
 
-        tenacityBoldFont22.drawCenteredString(editTitle, x + width /2f,
-                yVal + tenacityBoldFont22.getMiddleOfBox(heightVal), ColorUtil.applyOpacity(Color.WHITE, animation - .5f));
+        duckSansBoldFont22.drawCenteredString(editTitle, x + width /2f,
+                yVal + duckSansBoldFont22.getMiddleOfBox(heightVal), ColorUtil.applyOpacity(Color.WHITE, animation - .5f));
 
     }
 

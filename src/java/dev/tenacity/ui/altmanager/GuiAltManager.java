@@ -29,7 +29,7 @@ public class GuiAltManager extends GuiScreen {
     private final AltManagerUtils utils = new AltManagerUtils();
     public Alt currentSessionAlt;
     private List<Panel> panels;
-    public final TextField searchField = new TextField(tenacityFont20);
+    public final TextField searchField = new TextField(duckSansFont20);
     public final ToggleButton filterBanned = new ToggleButton("Filter banned accounts");
     private final AltPanel.AltRect altRect = new AltPanel.AltRect(null);
 
@@ -108,8 +108,8 @@ public class GuiAltManager extends GuiScreen {
             altRect.setBackgroundColor(ColorUtil.tripleColor(27));
             altRect.setRemoveShit(true);
             altRect.drawScreen(mouseX, mouseY);
-            tenacityBoldFont22.drawCenteredString("Current Account", altRect.getX() + altRect.getWidth() / 2f,
-                    altRect.getY() - (tenacityBoldFont22.getHeight() + 5), -1);
+            duckSansBoldFont22.drawCenteredString("Current Account", altRect.getX() + altRect.getWidth() / 2f,
+                    altRect.getY() - (duckSansBoldFont22.getHeight() + 5), -1);
         }
 
 

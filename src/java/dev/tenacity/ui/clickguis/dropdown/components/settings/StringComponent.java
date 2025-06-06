@@ -6,7 +6,7 @@ import dev.tenacity.utils.objects.TextField;
 
 public class StringComponent extends SettingComponent<StringSetting> {
 
-    private final TextField textField = new TextField(tenacityFont16);
+    private final TextField textField = new TextField(duckSansFont16);
 
     public StringComponent(StringSetting setting) {
         super(setting);
@@ -45,7 +45,7 @@ public class StringComponent extends SettingComponent<StringSetting> {
 
         textField.setBackgroundText("Type here...");
 
-        tenacityFont14.drawString(getSetting().name, boxX, y + 3, textColor);
+        duckSansFont14.drawString(getSetting().name, boxX, y + 3, textColor);
 
         textField.setXPosition(boxX);
         textField.setYPosition(boxY);

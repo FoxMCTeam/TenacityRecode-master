@@ -107,7 +107,7 @@ public class ESP2D extends Module {
                 float x = pos.getX(), y = pos.getY(), right = pos.getZ(), bottom = pos.getW();
 
                 if (entity instanceof EntityLivingBase) {
-                    AbstractFontRenderer font = tenacityBoldFont20;
+                    AbstractFontRenderer font = duckSansBoldFont20;
                     if (mcfont.isEnabled()) {
                         font = mc.fontRendererObj;
                     }
@@ -188,7 +188,7 @@ public class ESP2D extends Module {
                     bottom = pos.getW();
 
             if (entity instanceof EntityLivingBase) {
-                AbstractFontRenderer font = tenacityBoldFont20;
+                AbstractFontRenderer font = duckSansBoldFont20;
                 if (mcfont.isEnabled()) {
                     font = mc.fontRendererObj;
                 }
@@ -234,7 +234,7 @@ public class ESP2D extends Module {
                         RenderUtil.resetColor();
                         mc.fontRendererObj.drawString(text.toString(), middle, (float) (y - (fontHeight + 4)), healthColor.getRGB());
                     } else {
-                        tenacityBoldFont20.drawSmoothStringWithShadow(text.toString(), middle, (float) (y - (fontHeight + 5)), healthColor.getRGB());
+                        duckSansBoldFont20.drawSmoothStringWithShadow(text.toString(), middle, (float) (y - (fontHeight + 5)), healthColor.getRGB());
                     }
                     glPopMatrix();
                 }
@@ -259,7 +259,7 @@ public class ESP2D extends Module {
                         if (mcfont.isEnabled()) {
                             mc.fontRendererObj.drawStringWithShadow(text, middle, bottom + 4, -1);
                         } else {
-                            tenacityBoldFont20.drawSmoothStringWithShadow(text, middle, bottom + 4, -1);
+                            duckSansBoldFont20.drawSmoothStringWithShadow(text, middle, bottom + 4, -1);
                         }
                         glPopMatrix();
                     }
@@ -311,7 +311,7 @@ public class ESP2D extends Module {
                         String text = health + "%";
                         double fontScale = .5;
                         float textX = x - ((font.getStringWidth(text) / 2f) + 2);
-                        float fontHeight = mcfont.isEnabled() ? (float) (mc.fontRendererObj.FONT_HEIGHT * fontScale) : (float) (tenacityBoldFont20.getHeight() * fontScale);
+                        float fontHeight = mcfont.isEnabled() ? (float) (mc.fontRendererObj.FONT_HEIGHT * fontScale) : (float) (duckSansBoldFont20.getHeight() * fontScale);
                         float newHeight = height - fontHeight;
                         float textY = y + (newHeight - (newHeight * (healthValue / 100)));
 
@@ -322,7 +322,7 @@ public class ESP2D extends Module {
                         if (mcfont.isEnabled()) {
                             mc.fontRendererObj.drawStringWithShadow(text, textX, textY, -1);
                         } else {
-                            tenacityBoldFont20.drawSmoothStringWithShadow(text, textX, textY, -1);
+                            duckSansBoldFont20.drawSmoothStringWithShadow(text, textX, textY, -1);
                         }
                         glPopMatrix();
                     }

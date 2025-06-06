@@ -51,31 +51,31 @@ public class KeybindComponent extends SettingComponent<KeybindSetting> {
 
         String bind = Keyboard.getKeyName(getSetting().getCode());
 
-        float fullTextWidth = tenacityFont16.getStringWidth("Bind: §l" + bind);
+        float fullTextWidth = duckSansFont16.getStringWidth("Bind: §l" + bind);
 
         float startX = x + width / 2f - fullTextWidth / 2f;
-        float startY = y + tenacityFont16.getMiddleOfBox(height);
+        float startY = y + duckSansFont16.getMiddleOfBox(height);
 
-        boolean hovering = HoveringUtil.isHovering(startX - 3, startY - 2, fullTextWidth + 6, tenacityFont16.getHeight() + 4, mouseX, mouseY);
+        boolean hovering = HoveringUtil.isHovering(startX - 3, startY - 2, fullTextWidth + 6, duckSansFont16.getHeight() + 4, mouseX, mouseY);
         hoverAnimation.setDirection(hovering ? Direction.FORWARDS : Direction.BACKWARDS);
 
         Color rectColor = ColorUtil.brighter(settingRectColor, .7f - (.25f * hoverAnimation.getOutput().floatValue()));
-        RoundedUtil.drawRound(startX - 3, startY - 2, fullTextWidth + 6, tenacityFont16.getHeight() + 4, 4, rectColor);
+        RoundedUtil.drawRound(startX - 3, startY - 2, fullTextWidth + 6, duckSansFont16.getHeight() + 4, 4, rectColor);
 
 
-        tenacityFont16.drawCenteredString("Bind: §l" + bind, x + width /2f, y + tenacityFont16.getMiddleOfBox(height), textColor);
+        duckSansFont16.drawCenteredString("Bind: §l" + bind, x + width /2f, y + duckSansFont16.getMiddleOfBox(height), textColor);
     }
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
         String bind = Keyboard.getKeyName(getSetting().getCode());
         String text = "§fBind: §r" + bind;
-        float textWidth = tenacityFont18.getStringWidth(text);
+        float textWidth = duckSansFont18.getStringWidth(text);
         float startX = x + width / 2f - textWidth / 2f;
-        float startY = y + tenacityFont18.getMiddleOfBox(height);
-        float rectHeight = tenacityFont18.getHeight() + 4;
+        float startY = y + duckSansFont18.getMiddleOfBox(height);
+        float rectHeight = duckSansFont18.getHeight() + 4;
 
-        boolean hovering = HoveringUtil.isHovering(startX - 3, startY - 2, textWidth + 6, tenacityFont18.getHeight() + 4, mouseX, mouseY);
+        boolean hovering = HoveringUtil.isHovering(startX - 3, startY - 2, textWidth + 6, duckSansFont18.getHeight() + 4, mouseX, mouseY);
 
         if (isClickable(startY + rectHeight) && hovering && button == 0) {
             binding = true;
