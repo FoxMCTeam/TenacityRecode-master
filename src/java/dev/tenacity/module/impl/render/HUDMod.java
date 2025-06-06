@@ -515,6 +515,11 @@ public class HUDMod extends Module {
         }
     }
 
+    public static Color color(int tick) {
+        return new Color(ColorUtil.colorSwitch(HUDMod.getClientColors().getFirst(), HUDMod.getClientColors().getSecond(),
+                2000.0f, -(tick * 200) / 40, 75L, 1.0));
+    }
+
     public static boolean isRainbowTheme() {
         return theme.is("Custom Theme") && color1.isRainbow();
     }
