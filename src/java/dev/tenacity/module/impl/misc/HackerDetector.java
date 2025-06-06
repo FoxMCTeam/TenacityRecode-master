@@ -1,6 +1,7 @@
 package dev.tenacity.module.impl.misc;
 
-import dev.tenacity.event.impl.game.TickEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.game.TickEvent;
 import dev.tenacity.utils.client.addons.hackerdetector.Detection;
 import dev.tenacity.utils.client.addons.hackerdetector.DetectionManager;
 import dev.tenacity.module.Category;
@@ -28,7 +29,7 @@ public class HackerDetector extends Module {
         this.addSettings(detections);
     }
 
-    @Override
+    @EventTarget
     public void onTickEvent(TickEvent event) {
         if(mc.theWorld == null || mc.thePlayer == null) return;
         for(Entity entity : mc.theWorld.getLoadedEntityList()) {

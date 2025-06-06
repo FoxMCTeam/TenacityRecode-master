@@ -1,7 +1,7 @@
 package net.minecraft.client.renderer.tileentity;
 
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.render.RenderChestEvent;
+import com.cubk.event.impl.render.RenderChestEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.client.model.ModelChest;
@@ -154,7 +154,7 @@ public class TileEntityChestRenderer extends TileEntitySpecialRenderer<TileEntit
 
             if (!renderingInInventory) {
                 RenderChestEvent renderChestEvent = new RenderChestEvent(te, modelchest::renderAll);
-                Client.INSTANCE.getEventProtocol().handleEvent(renderChestEvent);
+                Client.INSTANCE.getEventProtocol().register(renderChestEvent);
 
                 if(!renderChestEvent.isCancelled()) {
                     renderChestEvent.drawChest();

@@ -1,7 +1,8 @@
 package dev.tenacity.module.impl.movement;
 
-import dev.tenacity.event.impl.player.MotionEvent;
-import dev.tenacity.event.impl.player.StepConfirmEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.player.MotionEvent;
+import com.cubk.event.impl.player.StepConfirmEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.ModeSetting;
@@ -29,7 +30,7 @@ public final class Step extends Module {
         this.addSettings(mode, height, timer);
     }
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent event) {
         setSuffix(mode.getMode());
         if(mc.thePlayer.onGround) {
@@ -44,7 +45,7 @@ public final class Step extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onStepConfirmEvent(StepConfirmEvent event) {
         double diffY = mc.thePlayer.getEntityBoundingBox().minY - mc.thePlayer.posY;
         if(diffY > 0.625f && diffY <= 1.5f && mc.thePlayer.onGround) {

@@ -10,8 +10,8 @@ import dev.tenacity.utils.client.addons.viamcp.vialoadingbase.ViaLoadingBase;
 import dev.tenacity.utils.client.addons.viamcp.vialoadingbase.netty.event.CompressionReorderEvent;
 import dev.tenacity.utils.client.addons.viamcp.viamcp.MCPVLBPipeline;
 import dev.tenacity.utils.client.addons.viamcp.viamcp.ViaMCP;
-import dev.tenacity.event.impl.network.PacketReceiveEvent;
-import dev.tenacity.event.impl.network.PacketSendEvent;
+import com.cubk.event.impl.network.PacketReceiveEvent;
+import com.cubk.event.impl.network.PacketSendEvent;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.epoll.Epoll;
@@ -133,7 +133,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         if (this.channel.isOpen()) {
             try {
                 PacketReceiveEvent e = new PacketReceiveEvent(p_channelRead0_2_);
-                Client.INSTANCE.getEventProtocol().handleEvent(e);
+                Client.INSTANCE.getEventProtocol().register(e);
                 if (e.isCancelled()) return;
                 p_channelRead0_2_.processPacket(this.packetListener);
             } catch (ThreadQuickExitException ignored) {
@@ -159,7 +159,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         if (this.isChannelOpen()) {
             if (!silent) {
                 PacketSendEvent e = new PacketSendEvent(packetIn);
-                Client.INSTANCE.getEventProtocol().handleEvent(e);
+                Client.INSTANCE.getEventProtocol().register(e);
                 if (e.isCancelled()) return;
                 packetIn = e.getPacket();
             }

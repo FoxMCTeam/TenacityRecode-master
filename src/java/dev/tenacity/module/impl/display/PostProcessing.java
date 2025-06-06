@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.display;
 
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.render.ShaderEvent;
+import com.cubk.event.impl.render.ShaderEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.ParentAttribute;
@@ -94,7 +94,7 @@ public class PostProcessing extends Module {
 
             stencilFramebuffer.framebufferClear();
             stencilFramebuffer.bindFramebuffer(false);
-            Client.INSTANCE.getEventProtocol().handleEvent(new ShaderEvent(false, glowOptions));
+            Client.INSTANCE.getEventProtocol().register(new ShaderEvent(false, glowOptions));
             stuffToBlur(false);
             stencilFramebuffer.unbindFramebuffer();
 
@@ -109,7 +109,7 @@ public class PostProcessing extends Module {
             stencilFramebuffer.framebufferClear();
             stencilFramebuffer.bindFramebuffer(false);
 
-            Client.INSTANCE.getEventProtocol().handleEvent(new ShaderEvent(true, glowOptions));
+            Client.INSTANCE.getEventProtocol().register(new ShaderEvent(true, glowOptions));
             stuffToBlur(true);
 
             stencilFramebuffer.unbindFramebuffer();

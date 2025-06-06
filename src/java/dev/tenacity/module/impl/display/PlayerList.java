@@ -1,7 +1,8 @@
 package dev.tenacity.module.impl.display;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.render.Render2DEvent;
+import com.cubk.event.impl.render.Render2DEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.utils.misc.MathUtils;
@@ -25,7 +26,7 @@ public class PlayerList extends Module {
         super("PlayerList", Category.DISPLAY, "Displays a list of players in your world");
     }
 
-    @Override
+    @EventTarget
     public void onRender2DEvent(Render2DEvent event) {
         if (mc.thePlayer == null || mc.theWorld == null) return;
         List<EntityPlayer> players = mc.theWorld.playerEntities.stream().filter(p -> p != null && !p.isDead).collect(Collectors.toList());

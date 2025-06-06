@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.player.LivingDeathEvent;
+import com.cubk.event.impl.player.LivingDeathEvent;
 import io.netty.buffer.Unpooled;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
@@ -495,7 +495,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
 
             entitylivingbase.addToPlayerScore(this, this.scoreValue);
 
-            Client.INSTANCE.getEventProtocol().handleEvent(new LivingDeathEvent(this, cause));
+            Client.INSTANCE.getEventProtocol().register(new LivingDeathEvent(this, cause));
         }
 
         this.triggerAchievement(StatList.deathsStat);

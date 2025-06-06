@@ -1,6 +1,7 @@
 package dev.tenacity.module.impl.combat;
 
-import dev.tenacity.event.impl.player.AttackEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.player.AttackEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.utils.server.PacketUtils;
@@ -12,7 +13,7 @@ public final class SuperKnockback extends Module {
         super("SuperKnockback", Category.COMBAT, "Makes the player your attacking take extra knockback");
     }
 
-    @Override
+    @EventTarget
     public void onAttackEvent(AttackEvent event) {
         if(event.getTargetEntity() != null) {
             if (mc.thePlayer.isSprinting())

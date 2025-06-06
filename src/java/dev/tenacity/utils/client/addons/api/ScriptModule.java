@@ -1,11 +1,11 @@
 package dev.tenacity.utils.client.addons.api;
 
-import dev.tenacity.event.impl.game.TickEvent;
-import dev.tenacity.event.impl.game.WorldEvent;
-import dev.tenacity.event.impl.network.PacketReceiveEvent;
-import dev.tenacity.event.impl.network.PacketSendEvent;
-import dev.tenacity.event.impl.player.*;
-import dev.tenacity.event.impl.render.*;
+import com.cubk.event.impl.game.TickEvent;
+import com.cubk.event.impl.game.WorldEvent;
+import com.cubk.event.impl.network.PacketReceiveEvent;
+import com.cubk.event.impl.network.PacketSendEvent;
+import com.cubk.event.impl.player.*;
+import com.cubk.event.impl.render.*;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.ui.notifications.NotificationManager;

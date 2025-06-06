@@ -1,7 +1,8 @@
 package dev.tenacity.module.impl.render;
 
-import dev.tenacity.event.impl.game.TickEvent;
-import dev.tenacity.event.impl.network.PacketReceiveEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.game.TickEvent;
+import com.cubk.event.impl.network.PacketReceiveEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.ModeSetting;
@@ -29,7 +30,7 @@ public class Ambience extends Module {
 
     String mode = "";
 
-    @Override
+    @EventTarget
     public void onTickEvent(TickEvent event) {
         if (mc.theWorld != null) {
 
@@ -87,7 +88,7 @@ public class Ambience extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onPacketReceiveEvent(PacketReceiveEvent e) {
         if (e.getPacket() instanceof S03PacketTimeUpdate) {
             e.cancel();

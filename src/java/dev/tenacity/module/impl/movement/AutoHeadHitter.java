@@ -1,6 +1,7 @@
 package dev.tenacity.module.impl.movement;
 
-import dev.tenacity.event.impl.player.MotionEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.BooleanSetting;
@@ -23,7 +24,7 @@ public class AutoHeadHitter extends Module {
         addSettings(onlyWhileJumping, ignoreIfSneaking, jps);
     }
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent e) {
         if (e.isPre()) {
             if ((onlyWhileJumping.isEnabled() && !mc.gameSettings.keyBindJump.isKeyDown())

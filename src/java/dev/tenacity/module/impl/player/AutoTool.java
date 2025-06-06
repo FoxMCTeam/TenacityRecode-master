@@ -1,6 +1,7 @@
 package dev.tenacity.module.impl.player;
 
-import dev.tenacity.event.impl.player.MotionEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.combat.KillAura;
@@ -20,7 +21,7 @@ public class AutoTool extends Module {
         this.addSettings(autoSword);
     }
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent e) {
         if (e.isPre()) {
             if (mc.objectMouseOver != null && mc.gameSettings.keyBindAttack.isKeyDown()) {

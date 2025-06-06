@@ -1,10 +1,11 @@
 package dev.tenacity.module.impl.movement;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.network.PacketReceiveEvent;
-import dev.tenacity.event.impl.player.MotionEvent;
-import dev.tenacity.event.impl.player.MoveEvent;
-import dev.tenacity.event.impl.player.PlayerMoveUpdateEvent;
+import com.cubk.event.impl.network.PacketReceiveEvent;
+import com.cubk.event.impl.player.MotionEvent;
+import com.cubk.event.impl.player.MoveEvent;
+import com.cubk.event.impl.player.PlayerMoveUpdateEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.combat.TargetStrafe;
@@ -56,7 +57,7 @@ public final class Speed extends Module {
         this.addSettings(mode, vanillaSpeed, watchdogMode, verusMode, viperMode, autoDisable, groundSpeed, timer);
     }
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent e) {
         this.setSuffix(mode.getMode());
         if (setTimer) {
@@ -240,7 +241,7 @@ public final class Speed extends Module {
 
     }
 
-    @Override
+    @EventTarget
     public void onMoveEvent(MoveEvent e) {
         if (mode.is("Watchdog")) {
             switch (watchdogMode.getMode()) {
@@ -268,7 +269,7 @@ public final class Speed extends Module {
         TargetStrafe.strafe(e);
     }
 
-    @Override
+    @EventTarget
     public void onPlayerMoveUpdateEvent(PlayerMoveUpdateEvent e) {
         if (mode.is("Watchdog") && (watchdogMode.is("Hop") || watchdogMode.is("Dev") || watchdogMode.is("Low Hop")) && mc.thePlayer.fallDistance < 1 && !mc.thePlayer.isPotionActive(Potion.jump)) {
             if (MovementUtils.isMoving()) {
@@ -305,7 +306,7 @@ public final class Speed extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onPacketReceiveEvent(PacketReceiveEvent e) {
         if (e.getPacket() instanceof S08PacketPlayerPosLook && autoDisable.isEnabled()) {
             NotificationManager.post(NotificationType.WARNING, "Flag Detector",

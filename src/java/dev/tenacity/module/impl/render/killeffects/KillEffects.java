@@ -1,9 +1,10 @@
 package dev.tenacity.module.impl.render.killeffects;
 
-import dev.tenacity.event.impl.game.WorldEvent;
-import dev.tenacity.event.impl.player.ChatReceivedEvent;
-import dev.tenacity.event.impl.player.LivingDeathEvent;
-import dev.tenacity.event.impl.render.RendererLivingEntityEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.game.WorldEvent;
+import com.cubk.event.impl.player.ChatReceivedEvent;
+import com.cubk.event.impl.player.LivingDeathEvent;
+import com.cubk.event.impl.render.RendererLivingEntityEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.ModeSetting;
@@ -30,7 +31,7 @@ public class KillEffects extends Module {
         addSettings(killEffect);
     }
 
-    @Override
+    @EventTarget
     public void onLivingDeathEvent(LivingDeathEvent event) {
         if (event.getSource().getEntity() != null && event.getSource().getEntity().equals(mc.thePlayer) && event.getEntity() != mc.thePlayer) {
             String name = event.getEntity().getName();
@@ -44,7 +45,7 @@ public class KillEffects extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onChatReceivedEvent(ChatReceivedEvent event) {
         String message = StringUtils.stripControlCodes(event.message.getUnformattedText());
         if (mc.thePlayer != null && !message.contains(":") && message.contains("by " + mc.thePlayer.getName())) {
@@ -56,7 +57,7 @@ public class KillEffects extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onRendererLivingEntityEvent(RendererLivingEntityEvent event) {
         if (event.isPost() && event.getEntity() instanceof EntityPlayer && event.getEntity() != mc.thePlayer) {
             EntityLivingBase ent = event.getEntity();
@@ -64,7 +65,7 @@ public class KillEffects extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onWorldEvent(WorldEvent event) {
         players.clear();
     }

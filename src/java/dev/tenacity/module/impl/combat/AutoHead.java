@@ -1,6 +1,7 @@
 package dev.tenacity.module.impl.combat;
 
-import dev.tenacity.event.impl.player.MotionEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.NumberSetting;
@@ -24,7 +25,7 @@ public class AutoHead extends Module {
         this.addSettings(delay, healPercent);
     }
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent e) {
         if (mc.thePlayer != null && mc.theWorld != null && e.isPre()
                 && !(mc.thePlayer.isPotionActive(Potion.moveSpeed) && mc.thePlayer.isPotionActive(Potion.regeneration))

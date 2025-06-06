@@ -1,6 +1,7 @@
 package dev.tenacity.module.impl.render;
 
-import dev.tenacity.event.impl.player.PlayerMoveUpdateEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.player.PlayerMoveUpdateEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.BooleanSetting;
@@ -53,7 +54,7 @@ public class XRay extends Module {
         addSettings(ores, opacity, bypass);
     }
 
-    @Override
+    @EventTarget
     public void onPlayerMoveUpdateEvent(PlayerMoveUpdateEvent e) {
         if (bypass.isEnabled() && !mc.isSingleplayer()) {
             if (updateTimer.hasTimeElapsed(2000)) {

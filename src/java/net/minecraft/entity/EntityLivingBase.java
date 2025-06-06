@@ -4,8 +4,8 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Maps;
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.player.JumpFixEvent;
-import dev.tenacity.event.impl.player.LivingDeathEvent;
+import com.cubk.event.impl.player.JumpFixEvent;
+import com.cubk.event.impl.player.LivingDeathEvent;
 import dev.tenacity.module.impl.render.Animations;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -936,7 +936,7 @@ public abstract class EntityLivingBase extends Entity {
 
         if (entity != null) {
             if (entity instanceof EntityLivingBase) {
-                Client.INSTANCE.getEventProtocol().handleEvent(new LivingDeathEvent(this, cause));
+                Client.INSTANCE.getEventProtocol().register(new LivingDeathEvent(this, cause));
             }
             entity.onKillEntity(this);
         }
@@ -1412,7 +1412,7 @@ public abstract class EntityLivingBase extends Entity {
             JumpFixEvent jumpFixEvent = new JumpFixEvent(this.rotationYaw);
 
             if (this instanceof EntityPlayerSP) {
-                Client.INSTANCE.getEventProtocol().handleEvent(jumpFixEvent);
+                Client.INSTANCE.getEventProtocol().register(jumpFixEvent);
             }
 
             float f = jumpFixEvent.getYaw() * 0.017453292F;

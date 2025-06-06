@@ -1,12 +1,13 @@
 package dev.tenacity.module.impl.render;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.game.WorldEvent;
-import dev.tenacity.event.impl.render.Render2DEvent;
-import dev.tenacity.event.impl.render.RenderChestEvent;
-import dev.tenacity.event.impl.render.RenderModelEvent;
+import com.cubk.event.impl.game.WorldEvent;
+import com.cubk.event.impl.render.Render2DEvent;
+import com.cubk.event.impl.render.RenderChestEvent;
+import com.cubk.event.impl.render.RenderModelEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.ParentAttribute;
@@ -94,7 +95,7 @@ public class GlowESP extends Module {
 
     private static final List<Framebuffer> framebufferList = new ArrayList<>();
 
-    @Override
+    @EventTarget
     public void onWorldEvent(WorldEvent event) {
         entityColorMap.clear();
     }
@@ -111,7 +112,7 @@ public class GlowESP extends Module {
         outlineFrameBuffer = RenderUtil.createFrameBuffer(outlineFrameBuffer);
     }
 
-    @Override
+    @EventTarget
     public void onRenderChestEvent(RenderChestEvent e) {
         if (validEntities.getSetting("Chests").isEnabled() && framebuffer != null) {
             framebuffer.bindFramebuffer(false);
@@ -128,7 +129,7 @@ public class GlowESP extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onRenderModelEvent(RenderModelEvent e) {
         if (e.isPost() && framebuffer != null) {
             if (!entities.contains(e.getEntity())) return;
@@ -156,7 +157,7 @@ public class GlowESP extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onRender2DEvent(Render2DEvent e) {
         createFrameBuffers();
         collectEntities();

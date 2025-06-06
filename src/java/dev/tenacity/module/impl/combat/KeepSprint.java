@@ -1,6 +1,7 @@
 package dev.tenacity.module.impl.combat;
 
-import dev.tenacity.event.impl.player.KeepSprintEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.player.KeepSprintEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 
@@ -10,7 +11,7 @@ public final class KeepSprint extends Module {
         super("KeepSprint", Category.COMBAT, "Stops sprint reset after hitting");
     }
 
-    @Override
+    @EventTarget
     public void onKeepSprintEvent(KeepSprintEvent event) {
         event.cancel();
     }

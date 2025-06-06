@@ -3,7 +3,7 @@ package net.minecraft.client.multiplayer;
 import dev.tenacity.Client;
 import dev.tenacity.module.impl.combat.KillAura;
 import dev.tenacity.module.impl.movement.Flight;
-import dev.tenacity.event.impl.player.AttackEvent;
+import com.cubk.event.impl.player.AttackEvent;
 import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -416,7 +416,7 @@ public class PlayerControllerMP {
         boolean cancelled = false;
         if (targetEntity instanceof EntityLivingBase) {
             AttackEvent attackEvent = new AttackEvent((EntityLivingBase) targetEntity);
-            Client.INSTANCE.getEventProtocol().handleEvent(attackEvent);
+            Client.INSTANCE.getEventProtocol().register(attackEvent);
             cancelled = attackEvent.isCancelled();
         }
         if (!cancelled) {

@@ -1,6 +1,7 @@
 package dev.tenacity.module.impl.render;
 
-import dev.tenacity.event.impl.render.HurtCamEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.render.HurtCamEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 
@@ -10,7 +11,7 @@ public class NoHurtCam extends Module {
         super("NoHurtCam", Category.RENDER, "removes shaking after being hit");
     }
 
-    @Override
+    @EventTarget
     public void onHurtCamEvent(HurtCamEvent e) {
         e.cancel();
     }

@@ -1,6 +1,7 @@
 package dev.tenacity.module.impl.misc;
 
-import dev.tenacity.event.impl.player.MotionEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.BooleanSetting;
@@ -19,7 +20,7 @@ public final class Spammer extends Module {
             new BooleanSetting("Bypass", false));
     private final TimerUtil delayTimer = new TimerUtil();
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent event) {
         String spammerText = text.getString();
 

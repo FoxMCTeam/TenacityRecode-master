@@ -1,11 +1,12 @@
 package dev.tenacity.module.impl.display;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.render.PreRenderEvent;
-import dev.tenacity.event.impl.render.Render2DEvent;
-import dev.tenacity.event.impl.render.Render3DEvent;
-import dev.tenacity.event.impl.render.ShaderEvent;
+import com.cubk.event.impl.render.PreRenderEvent;
+import com.cubk.event.impl.render.Render2DEvent;
+import com.cubk.event.impl.render.Render3DEvent;
+import com.cubk.event.impl.render.ShaderEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.combat.KillAura;
@@ -58,7 +59,7 @@ public class TargetHUDMod extends Module {
 
     private Vector4f targetVector;
 
-    @Override
+    @EventTarget
     public void onRender3DEvent(Render3DEvent event) {
         if (trackTarget.isEnabled() && target != null) {
             for (Entity entity : mc.theWorld.loadedEntityList) {
@@ -73,7 +74,7 @@ public class TargetHUDMod extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onPreRenderEvent(PreRenderEvent event) {
         TargetHUD currentTargetHUD = TargetHUD.get(targetHud.getMode());
         drag.setWidth(currentTargetHUD.getWidth());
@@ -127,7 +128,7 @@ public class TargetHUDMod extends Module {
 
     }
 
-    @Override
+    @EventTarget
     public void onRender2DEvent(Render2DEvent e) {
         this.setSuffix(targetHud.getMode());
         boolean tracking = trackTarget.isEnabled() && targetVector != null && target != mc.thePlayer;
@@ -161,7 +162,7 @@ public class TargetHUDMod extends Module {
     }
 
 
-    @Override
+    @EventTarget
     public void onShaderEvent(ShaderEvent e) {
         float x = drag.getX(), y = drag.getY();
         float trackScale = 1;

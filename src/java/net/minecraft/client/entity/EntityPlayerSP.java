@@ -2,7 +2,7 @@ package net.minecraft.client.entity;
 
 import dev.tenacity.Client;
 import dev.tenacity.commands.CommandHandler;
-import dev.tenacity.event.impl.player.*;
+import com.cubk.event.impl.player.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -146,7 +146,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
      * Called to update the entity's position/logic.
      */
     public void onUpdate() {
-        Client.INSTANCE.getEventProtocol().handleEvent(new UpdateEvent());
+        Client.INSTANCE.getEventProtocol().register(new UpdateEvent());
 
         if (this.worldObj.isBlockLoaded(new BlockPos(this.posX, 0.0D, this.posZ))) {
             super.onUpdate();
@@ -190,7 +190,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 
         if (this.isCurrentViewEntity()) {
             MotionEvent motionEvent = new MotionEvent(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround);
-            Client.INSTANCE.getEventProtocol().handleEvent(motionEvent);
+            Client.INSTANCE.getEventProtocol().register(motionEvent);
 
             if(!motionEvent.isCancelled()) {
                 double posX = motionEvent.getX(), posY = motionEvent.getY(), posZ = motionEvent.getZ();
@@ -235,7 +235,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
                 }
             }
             motionEvent.setPost();
-            Client.INSTANCE.getEventProtocol().handleEvent(motionEvent);
+            Client.INSTANCE.getEventProtocol().register(motionEvent);
             this.rotationPitchHead = motionEvent.getPitch();
         }
     }
@@ -281,7 +281,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
         }
 
         PlayerSendMessageEvent playerSendMessageEvent = new PlayerSendMessageEvent(message);
-        Client.INSTANCE.getEventProtocol().handleEvent(playerSendMessageEvent);
+        Client.INSTANCE.getEventProtocol().register(playerSendMessageEvent);
         if (!playerSendMessageEvent.isCancelled()) {
             this.sendQueue.addToSendQueue(new C01PacketChatMessage(message));
         }
@@ -401,7 +401,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 
     protected boolean pushOutOfBlocks(double x, double y, double z) {
         PushOutOfBlockEvent pushOutOfBlockEvent = new PushOutOfBlockEvent();
-        Client.INSTANCE.getEventProtocol().handleEvent(pushOutOfBlockEvent);
+        Client.INSTANCE.getEventProtocol().register(pushOutOfBlockEvent);
         if (!this.noClip || !pushOutOfBlockEvent.isCancelled()) {
             BlockPos blockpos = new BlockPos(x, y, z);
             double d0 = x - (double) blockpos.getX();
@@ -680,7 +680,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 
         if (this.isUsingItem() && !this.isRiding()) {
             SlowDownEvent slowDownEvent = new SlowDownEvent();
-            Client.INSTANCE.getEventProtocol().handleEvent(slowDownEvent);
+            Client.INSTANCE.getEventProtocol().register(slowDownEvent);
             if (!slowDownEvent.isCancelled()) {
                 this.movementInput.moveStrafe *= 0.2F;
                 this.movementInput.moveForward *= 0.2F;
@@ -776,7 +776,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
     @Override
     public void moveEntity(double x, double y, double z) {
         MoveEvent event = new MoveEvent(x, y, z);
-        Client.INSTANCE.getEventProtocol().handleEvent(event);
+        Client.INSTANCE.getEventProtocol().register(event);
         if (!event.isCancelled()) {
             x = event.getX();
             y = event.getY();
@@ -788,7 +788,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
     @Override
     public void jump() {
         JumpEvent jumpEvent = new JumpEvent();
-        Client.INSTANCE.getEventProtocol().handleEvent(jumpEvent);
+        Client.INSTANCE.getEventProtocol().register(jumpEvent);
         if (!jumpEvent.isCancelled()) {
             super.jump();
         }

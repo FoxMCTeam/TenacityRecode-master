@@ -1,7 +1,8 @@
 package dev.tenacity.module.impl.misc;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.commands.impl.FriendCommand;
-import dev.tenacity.event.impl.game.TickEvent;
+import com.cubk.event.impl.game.TickEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.ui.notifications.NotificationManager;
@@ -17,7 +18,7 @@ public class MCF extends Module {
         super("MCF", Category.MISC, "middle click friends");
     }
 
-    @Override
+    @EventTarget
     public void onTickEvent(TickEvent event) {
         if (mc.inGameHasFocus) {
             boolean down = mc.gameSettings.keyBindPickBlock.isKeyDown();

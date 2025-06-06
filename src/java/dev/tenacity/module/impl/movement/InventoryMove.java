@@ -1,7 +1,8 @@
 package dev.tenacity.module.impl.movement;
 
-import dev.tenacity.event.impl.network.PacketReceiveEvent;
-import dev.tenacity.event.impl.player.MotionEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.network.PacketReceiveEvent;
+import com.cubk.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.ModeSetting;
@@ -40,7 +41,7 @@ public final class InventoryMove extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent e) {
         boolean inContainer = mc.currentScreen instanceof GuiContainer;
         if (wasInContainer && !inContainer) {
@@ -67,7 +68,7 @@ public final class InventoryMove extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onPacketReceiveEvent(PacketReceiveEvent e) {
         if (mode.is("Spoof") && (e.getPacket() instanceof S2DPacketOpenWindow || e.getPacket() instanceof S2EPacketCloseWindow)) {
             e.cancel();

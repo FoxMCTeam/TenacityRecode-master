@@ -1,6 +1,7 @@
 package dev.tenacity.module.impl.movement;
 
-import dev.tenacity.event.impl.player.MotionEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.ModeSetting;
@@ -14,7 +15,7 @@ public final class Spider extends Module {
         addSettings(mode);
     }
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent event) {
         setSuffix(mode.getMode());
         if(mc.thePlayer.isCollidedHorizontally) {

@@ -1,6 +1,7 @@
 package dev.tenacity.module.impl.player;
 
-import dev.tenacity.event.impl.player.MotionEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.BooleanSetting;
@@ -27,7 +28,7 @@ public class AutoArmor extends Module {
         this.addSettings(delay, onlyWhileNotMoving, invOnly);
     }
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent e) {
         if (e.isPost()) return;
         if ((invOnly.isEnabled() && !(mc.currentScreen instanceof GuiInventory)) || (onlyWhileNotMoving.isEnabled() && MovementUtils.isMoving())) {

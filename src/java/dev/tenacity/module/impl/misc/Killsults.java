@@ -1,7 +1,8 @@
 package dev.tenacity.module.impl.misc;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.player.ChatReceivedEvent;
+import com.cubk.event.impl.player.ChatReceivedEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.utils.misc.FileUtils;
@@ -32,7 +33,7 @@ public class Killsults extends Module {
         super("Killsults", Category.MISC, "Insults the player that you just killed");
     }
 
-    @Override
+    @EventTarget
     public void onChatReceivedEvent(ChatReceivedEvent event) {
         String message = StringUtils.stripControlCodes(event.message.getUnformattedText());
         if (!message.contains(":") && (

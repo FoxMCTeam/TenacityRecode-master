@@ -1,8 +1,9 @@
 package dev.tenacity.module.impl.combat;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.network.PacketSendEvent;
-import dev.tenacity.event.impl.player.MotionEvent;
+import com.cubk.event.impl.network.PacketSendEvent;
+import com.cubk.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.movement.Flight;
@@ -35,11 +36,11 @@ public final class Criticals extends Module {
         this.addSettings(mode, watchdogMode, delay);
     }
 
-    @Override
+    @EventTarget
     public void onPacketSendEvent(PacketSendEvent e) {
     }
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent e) {
         this.setSuffix(mode.getMode());
         switch (mode.getMode()) {

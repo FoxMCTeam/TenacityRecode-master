@@ -1,9 +1,10 @@
 package dev.tenacity.module.impl.player;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.game.WorldEvent;
-import dev.tenacity.event.impl.player.MotionEvent;
-import dev.tenacity.event.impl.render.Render2DEvent;
+import com.cubk.event.impl.game.WorldEvent;
+import com.cubk.event.impl.player.MotionEvent;
+import com.cubk.event.impl.render.Render2DEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.display.HUDMod;
@@ -56,7 +57,7 @@ public class ChestStealer extends Module {
         this.addSettings(delay, aura, auraRange, stealingIndicator, titleCheck, freeLook, reverse, silent, smart);
     }
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent e) {
         if (e.isPre()) {
             setSuffix(smart.isEnabled() ? "Smart" : null);
@@ -123,7 +124,7 @@ public class ChestStealer extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onRender2DEvent(Render2DEvent event) {
         if (stealingIndicator.isEnabled() && stealing) {
             ScaledResolution sr = new ScaledResolution(mc);
@@ -156,7 +157,7 @@ public class ChestStealer extends Module {
         return false;
     }
 
-    @Override
+    @EventTarget
     public void onWorldEvent(WorldEvent event) {
         if (event instanceof WorldEvent.Load) {
             openedChests.clear();

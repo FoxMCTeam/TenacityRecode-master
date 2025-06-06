@@ -1,11 +1,12 @@
 package dev.tenacity.module.impl.movement;
 
-import dev.tenacity.event.impl.network.PacketReceiveEvent;
-import dev.tenacity.event.impl.network.PacketSendEvent;
-import dev.tenacity.event.impl.player.BoundingBoxEvent;
-import dev.tenacity.event.impl.player.MotionEvent;
-import dev.tenacity.event.impl.player.MoveEvent;
-import dev.tenacity.event.impl.player.UpdateEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.network.PacketReceiveEvent;
+import com.cubk.event.impl.network.PacketSendEvent;
+import com.cubk.event.impl.player.BoundingBoxEvent;
+import com.cubk.event.impl.player.MotionEvent;
+import com.cubk.event.impl.player.MoveEvent;
+import com.cubk.event.impl.player.UpdateEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.combat.TargetStrafe;
@@ -92,7 +93,7 @@ public final class Flight extends Module {
         this.addSettings(mode, teleportDelay, teleportLength, motionY, damage, damageMode, speed, speedAmount, timerAmount, horizontalSpeed, verticalSpeed, viewBobbing, antiKick);
     }
 
-    @Override
+    @EventTarget
     public void onMoveEvent(MoveEvent e) {
         switch (mode.getMode()) {
             case "Vanilla":
@@ -120,7 +121,7 @@ public final class Flight extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent e) {
         this.setSuffix(mode.getMode());
         if (viewBobbing.isEnabled()) {
@@ -291,11 +292,11 @@ public final class Flight extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onUpdateEvent(UpdateEvent event) {
     }
 
-    @Override
+    @EventTarget
     public void onPacketSendEvent(PacketSendEvent event) {
         if(mc.isSingleplayer() || mc.thePlayer == null) return;
         if(mode.is("Slime") && stage > 7 && PacketUtils.isPacketValid(event.getPacket())) {
@@ -307,7 +308,7 @@ public final class Flight extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onBoundingBoxEvent(BoundingBoxEvent event) {
         if(mode.is("AirWalk") || mode.is("Verus")) {
             final AxisAlignedBB axisAlignedBB = AxisAlignedBB.fromBounds(-5, -1, -5, 5, 1, 5).offset(event.getBlockPos().getX(), event.getBlockPos().getY(), event.getBlockPos().getZ());
@@ -315,7 +316,7 @@ public final class Flight extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onPacketReceiveEvent(PacketReceiveEvent e) {
         if (e.getPacket() instanceof S08PacketPlayerPosLook && !hasS08) {
             S08PacketPlayerPosLook s08 = (S08PacketPlayerPosLook) e.getPacket();

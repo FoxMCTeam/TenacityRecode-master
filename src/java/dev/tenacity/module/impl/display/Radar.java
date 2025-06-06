@@ -1,8 +1,9 @@
 package dev.tenacity.module.impl.display;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.render.Render2DEvent;
-import dev.tenacity.event.impl.render.ShaderEvent;
+import com.cubk.event.impl.render.Render2DEvent;
+import com.cubk.event.impl.render.ShaderEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.BooleanSetting;
@@ -56,7 +57,7 @@ public class Radar extends Module {
                 size, playerColor, mobColor, animalColor, itemColor);
     }
 
-    @Override
+    @EventTarget
     public void onShaderEvent(ShaderEvent e) {
         float x = drag.getX(), y = drag.getY(), size = this.size.getValue().floatValue(), middleX = x + size / 2f, middleY = y + size / 2f;
         if (e.getBloomOptions().getSetting("Radar").isEnabled()) {
@@ -67,7 +68,7 @@ public class Radar extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onRender2DEvent(Render2DEvent e) {
         getEntities();
         float x = drag.getX(), y = drag.getY(), size = this.size.getValue().floatValue(), middleX = x + size / 2f, middleY = y + size / 2f;

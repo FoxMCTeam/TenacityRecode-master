@@ -4,8 +4,8 @@ import com.google.common.base.Predicates;
 import com.google.gson.JsonSyntaxException;
 import dev.tenacity.Client;
 import dev.tenacity.module.impl.player.ChestStealer;
-import dev.tenacity.event.impl.render.HurtCamEvent;
-import dev.tenacity.event.impl.render.Render3DEvent;
+import com.cubk.event.impl.render.HurtCamEvent;
+import com.cubk.event.impl.render.Render3DEvent;
 import dev.tenacity.module.impl.render.Ambience;
 import dev.tenacity.utils.render.EntityCulling;
 import net.minecraft.block.Block;
@@ -584,7 +584,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
     private void hurtCameraEffect(float partialTicks) {
         if (this.mc.getRenderViewEntity() instanceof EntityLivingBase) {
             HurtCamEvent hurtCamEvent = new HurtCamEvent();
-            Client.INSTANCE.getEventProtocol().handleEvent(hurtCamEvent);
+            Client.INSTANCE.getEventProtocol().register(hurtCamEvent);
 
             if (!hurtCamEvent.isCancelled()) {
                 EntityLivingBase entitylivingbase = (EntityLivingBase) this.mc.getRenderViewEntity();
@@ -1537,7 +1537,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
             this.renderCloudsCheck(renderglobal, partialTicks, pass);
         }
 
-        Client.INSTANCE.getEventProtocol().handleEvent(new Render3DEvent(partialTicks));
+        Client.INSTANCE.getEventProtocol().register(new Render3DEvent(partialTicks));
 
         this.mc.mcProfiler.endStartSection("hand");
 

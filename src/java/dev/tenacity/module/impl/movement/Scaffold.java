@@ -1,10 +1,11 @@
 package dev.tenacity.module.impl.movement;
 
-import dev.tenacity.event.impl.game.TickEvent;
-import dev.tenacity.event.impl.network.PacketSendEvent;
-import dev.tenacity.event.impl.player.BlockPlaceableEvent;
-import dev.tenacity.event.impl.player.MotionEvent;
-import dev.tenacity.event.impl.player.SafeWalkEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.game.TickEvent;
+import com.cubk.event.impl.network.PacketSendEvent;
+import com.cubk.event.impl.player.BlockPlaceableEvent;
+import com.cubk.event.impl.player.MotionEvent;
+import com.cubk.event.impl.player.SafeWalkEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.ParentAttribute;
@@ -106,7 +107,7 @@ public class Scaffold extends Module {
         speedSlowdownAmount.addParent(speedSlowdown, ParentAttribute.BOOLEAN_CONDITION);
     }
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent e) {
         // Timer Stuff
         if (!mc.gameSettings.keyBindJump.isKeyDown()) {
@@ -311,14 +312,14 @@ public class Scaffold extends Module {
         return placed;
     }
 
-    @Override
+    @EventTarget
     public void onBlockPlaceable(BlockPlaceableEvent event) {
         if (placeType.is("Legit")) {
             place();
         }
     }
 
-    @Override
+    @EventTarget
     public void onTickEvent(TickEvent event) {
         if (mc.thePlayer == null) return;
         if (hideJump.isEnabled() && !mc.gameSettings.keyBindJump.isKeyDown() && MovementUtils.isMoving() && !mc.thePlayer.onGround && autoJump.isEnabled()) {
@@ -508,7 +509,7 @@ public class Scaffold extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onPacketSendEvent(PacketSendEvent e) {
         if (e.getPacket() instanceof C0BPacketEntityAction
                 && ((C0BPacketEntityAction) e.getPacket()).getAction() == C0BPacketEntityAction.Action.START_SPRINTING
@@ -520,7 +521,7 @@ public class Scaffold extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onSafeWalkEvent(SafeWalkEvent event) {
         if ((safewalk.isEnabled() && !isDownwards()) || ScaffoldUtils.getBlockCount() == 0) {
             event.setSafe(true);

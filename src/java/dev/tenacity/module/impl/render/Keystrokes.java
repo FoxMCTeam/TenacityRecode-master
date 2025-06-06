@@ -1,8 +1,9 @@
 package dev.tenacity.module.impl.render;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.render.Render2DEvent;
-import dev.tenacity.event.impl.render.ShaderEvent;
+import com.cubk.event.impl.render.Render2DEvent;
+import com.cubk.event.impl.render.ShaderEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.display.HUDMod;
@@ -45,7 +46,7 @@ public class Keystrokes extends Module {
     private Button keyBindRight;
     private Button keyBindJump;
 
-    @Override
+    @EventTarget
     public void onShaderEvent(ShaderEvent e) {
         if (keyBindForward == null) return;
         float offset = offsetValue.getValue().floatValue();
@@ -59,7 +60,7 @@ public class Keystrokes extends Module {
         keyBindJump.renderForEffects(x, y + increment * 2, width, size, e);
     }
 
-    @Override
+    @EventTarget
     public void onRender2DEvent(Render2DEvent e) {
         float offset = offsetValue.getValue().floatValue();
         dragging.setHeight((float) ((sizeValue.getValue() + offset) * 3) - offset);

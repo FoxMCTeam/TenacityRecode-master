@@ -4,7 +4,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import dev.tenacity.Client;
 import dev.tenacity.config.ConfigSetting;
-import dev.tenacity.event.ListenerAdapter;
 import dev.tenacity.module.impl.render.GlowESP;
 import dev.tenacity.module.impl.display.NotificationsMod;
 import dev.tenacity.module.settings.Setting;
@@ -26,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 @Getter
 @Setter
-public class Module extends ListenerAdapter implements Utils {
+public class Module implements Utils {
     @Expose
     @SerializedName("name")
     private final String name;

@@ -1,9 +1,10 @@
 package dev.tenacity.module.impl.combat;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.Client;
 import dev.tenacity.commands.impl.FriendCommand;
-import dev.tenacity.event.impl.player.*;
-import dev.tenacity.event.impl.render.Render3DEvent;
+import com.cubk.event.impl.player.*;
+import com.cubk.event.impl.render.Render3DEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.movement.Scaffold;
@@ -109,7 +110,7 @@ public final class KillAura extends Module {
         super.onDisable();
     }
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent event) {
         this.setSuffix(mode.getMode());
 
@@ -151,7 +152,7 @@ public final class KillAura extends Module {
                     if(mode.is("Multi")) {
                         for(EntityLivingBase entityLivingBase : targets) {
                             AttackEvent attackEvent = new AttackEvent(entityLivingBase);
-                            Client.INSTANCE.getEventProtocol().handleEvent(attackEvent);
+                            Client.INSTANCE.getEventProtocol().register(attackEvent);
 
                             if (!attackEvent.isCancelled()) {
                                 AttackOrder.sendFixedAttack(mc.thePlayer, entityLivingBase);
@@ -159,7 +160,7 @@ public final class KillAura extends Module {
                         }
                     } else {
                         AttackEvent attackEvent = new AttackEvent(target);
-                        Client.INSTANCE.getEventProtocol().handleEvent(attackEvent);
+                        Client.INSTANCE.getEventProtocol().register(attackEvent);
 
                         if (!attackEvent.isCancelled()) {
                             AttackOrder.sendFixedAttack(mc.thePlayer, target);
@@ -254,21 +255,21 @@ public final class KillAura extends Module {
         return false;
     }
 
-    @Override
+    @EventTarget
     public void onPlayerMoveUpdateEvent(PlayerMoveUpdateEvent event) {
         if(addons.getSetting("Movement Fix").isEnabled() && target != null){
             event.setYaw(yaw);
         }
     }
 
-    @Override
+    @EventTarget
     public void onJumpFixEvent(JumpFixEvent event) {
         if(addons.getSetting("Movement Fix").isEnabled() && target != null){
             event.setYaw(yaw);
         }
     }
 
-    @Override
+    @EventTarget
     public void onKeepSprintEvent(KeepSprintEvent event) {
         if(addons.getSetting("Keep Sprint").isEnabled()) {
             event.cancel();
@@ -277,7 +278,7 @@ public final class KillAura extends Module {
 
     private final Animation auraESPAnim = new DecelerateAnimation(300, 1);
 
-    @Override
+    @EventTarget
     public void onRender3DEvent(Render3DEvent event) {
         auraESPAnim.setDirection(target != null ? Direction.FORWARDS : Direction.BACKWARDS);
         if(target != null) {

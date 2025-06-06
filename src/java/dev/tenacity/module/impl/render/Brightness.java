@@ -1,12 +1,13 @@
 package dev.tenacity.module.impl.render;
 
-import dev.tenacity.event.impl.player.MotionEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 
 public final class Brightness extends Module {
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent event) {
         mc.gameSettings.gammaSetting = 100;
     }

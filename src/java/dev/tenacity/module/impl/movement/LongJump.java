@@ -1,8 +1,9 @@
 package dev.tenacity.module.impl.movement;
 
-import dev.tenacity.event.impl.network.PacketSendEvent;
-import dev.tenacity.event.impl.player.MotionEvent;
-import dev.tenacity.event.impl.player.MoveEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.network.PacketSendEvent;
+import com.cubk.event.impl.player.MotionEvent;
+import com.cubk.event.impl.player.MoveEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.BooleanSetting;
@@ -45,7 +46,7 @@ public final class LongJump extends Module {
     private final List<Packet> packets = new ArrayList<>();
     private int stage;
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent event) {
         setSuffix(mode.getMode());
         if(spoofY.isEnabled()) mc.thePlayer.posY = y;
@@ -167,11 +168,11 @@ public final class LongJump extends Module {
             ticks++;
     }
 
-    @Override
+    @EventTarget
     public void onPacketSendEvent(PacketSendEvent event) {
     }
 
-    @Override
+    @EventTarget
     public void onMoveEvent(MoveEvent event) {
         if (!damagedBow && mode.is("AGC")) {
             event.setX(0);

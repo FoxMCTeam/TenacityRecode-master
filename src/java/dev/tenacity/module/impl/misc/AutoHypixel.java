@@ -1,6 +1,7 @@
 package dev.tenacity.module.impl.misc;
 
-import dev.tenacity.event.impl.player.ChatReceivedEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.player.ChatReceivedEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.ParentAttribute;
@@ -30,7 +31,7 @@ public class AutoHypixel extends Module {
         this.addSettings(autoGG, autoGGMessage, autoPlay, autoPlayDelay, autoHubOnBan);
     }
 
-    @Override
+    @EventTarget
     public void onChatReceivedEvent(ChatReceivedEvent event) {
         String message = event.message.getUnformattedText(), strippedMessage = StringUtils.stripControlCodes(message);
         if (autoHubOnBan.isEnabled() && strippedMessage.equals("A player has been removed from your game.")) {

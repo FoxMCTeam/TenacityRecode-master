@@ -1,7 +1,8 @@
 package dev.tenacity.module.impl.player;
 
-import dev.tenacity.event.impl.network.PacketSendEvent;
-import dev.tenacity.event.impl.player.MotionEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.network.PacketSendEvent;
+import com.cubk.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.NumberSetting;
@@ -25,7 +26,7 @@ public class SpeedMine extends Module {
         this.addSettings(speed);
     }
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent e) {
         if (e.isPre()) {
             mc.playerController.blockHitDelay = 0;
@@ -55,7 +56,7 @@ public class SpeedMine extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onPacketSendEvent(PacketSendEvent e) {
         if (e.getPacket() instanceof C07PacketPlayerDigging) {
             C07PacketPlayerDigging packet = (C07PacketPlayerDigging) e.getPacket();

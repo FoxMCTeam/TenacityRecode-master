@@ -1,9 +1,10 @@
 package dev.tenacity.module.impl.display;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.render.Render2DEvent;
-import dev.tenacity.event.impl.render.ShaderEvent;
+import com.cubk.event.impl.render.Render2DEvent;
+import com.cubk.event.impl.render.ShaderEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.combat.KillAura;
@@ -81,7 +82,7 @@ public class HUDMod extends Module {
     public static float xOffset = 0;
 
 
-    @Override
+    @EventTarget
     public void onShaderEvent(ShaderEvent e) {
         Pair<Color, Color> clientColors = getClientColors();
         String name = Client.NAME;
@@ -169,7 +170,7 @@ public class HUDMod extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onRender2DEvent(Render2DEvent e) {
         ScaledResolution sr = new ScaledResolution(mc);
         Pair<Color, Color> clientColors = getClientColors();

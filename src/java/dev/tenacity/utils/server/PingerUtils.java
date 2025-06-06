@@ -1,8 +1,8 @@
 package dev.tenacity.utils.server;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.Client;
-import dev.tenacity.event.ListenerAdapter;
-import dev.tenacity.event.impl.game.TickEvent;
+import com.cubk.event.impl.game.TickEvent;
 import dev.tenacity.utils.Utils;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
@@ -14,7 +14,7 @@ import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PingerUtils extends ListenerAdapter implements Utils {
+public class PingerUtils implements Utils {
 
     public static long SERVER_UPDATE_TIME = 30000;
 
@@ -25,7 +25,7 @@ public class PingerUtils extends ListenerAdapter implements Utils {
     @Getter
     private Long serverPing;
 
-    @Override
+    @EventTarget
     public void onTickEvent(TickEvent event) {
         updateManually(Minecraft.getMinecraft().getCurrentServerData());
     }

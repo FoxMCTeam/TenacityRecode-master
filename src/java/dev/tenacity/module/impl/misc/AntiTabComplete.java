@@ -1,7 +1,8 @@
 package dev.tenacity.module.impl.misc;
 
-import dev.tenacity.event.impl.network.PacketReceiveEvent;
-import dev.tenacity.event.impl.network.PacketSendEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.network.PacketReceiveEvent;
+import com.cubk.event.impl.network.PacketSendEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import net.minecraft.network.play.client.C14PacketTabComplete;
@@ -14,14 +15,14 @@ public final class AntiTabComplete extends Module {
         super("AntiTabComplete", Category.MISC, "prevents you from tab completing");
     }
 
-    @Override
+    @EventTarget
     public void onPacketSendEvent(PacketSendEvent event) {
         if (event.getPacket() instanceof C14PacketTabComplete) {
             event.cancel();
         }
     }
 
-    @Override
+    @EventTarget
     public void onPacketReceiveEvent(PacketReceiveEvent event) {
         if (event.getPacket() instanceof S3APacketTabComplete) {
             event.cancel();

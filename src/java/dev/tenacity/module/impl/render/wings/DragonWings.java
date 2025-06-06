@@ -1,6 +1,7 @@
 package dev.tenacity.module.impl.render.wings;
 
-import dev.tenacity.event.impl.render.RendererLivingEntityEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.render.RendererLivingEntityEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.ColorSetting;
@@ -23,7 +24,7 @@ public class DragonWings extends Module {
         addSettings(scale, color);
     }
 
-    @Override
+    @EventTarget
     public void onRendererLivingEntityEvent(RendererLivingEntityEvent event) {
         if (event.isPost() && event.getEntity() == mc.thePlayer && !mc.thePlayer.isInvisible()) {
             model.renderWings(mc.thePlayer, event.getPartialTicks(), scale.getValue(), color.getColor());

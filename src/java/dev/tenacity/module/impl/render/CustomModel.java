@@ -1,8 +1,9 @@
 package dev.tenacity.module.impl.render;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.utils.tuples.Pair;
-import dev.tenacity.event.impl.game.WorldEvent;
+import com.cubk.event.impl.game.WorldEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.ColorSetting;
@@ -51,7 +52,7 @@ public class CustomModel extends Module {
         enabled = true;
     }
 
-    @Override
+    @EventTarget
     public void onWorldEvent(WorldEvent event) {
         entityColorMap.clear();
     }

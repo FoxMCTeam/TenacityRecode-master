@@ -1,8 +1,9 @@
 package dev.tenacity.module.impl.combat;
 
-import dev.tenacity.event.impl.game.WorldEvent;
-import dev.tenacity.event.impl.network.PacketReceiveEvent;
-import dev.tenacity.event.impl.network.PacketSendEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.game.WorldEvent;
+import com.cubk.event.impl.network.PacketReceiveEvent;
+import com.cubk.event.impl.network.PacketSendEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.Setting;
@@ -38,7 +39,7 @@ public class Velocity extends Module {
         this.addSettings(mode, horizontal, vertical, chance, onlyWhileMoving, staffCheck);
     }
 
-    @Override
+    @EventTarget
     public void onPacketSendEvent(PacketSendEvent event) {
         if (mode.is("C0F Cancel")) {
             if (event.getPacket() instanceof C0FPacketConfirmTransaction && mc.thePlayer.hurtTime > 0) {
@@ -47,7 +48,7 @@ public class Velocity extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onPacketReceiveEvent(PacketReceiveEvent e) {
         this.setSuffix(mode.getMode());
         if ((onlyWhileMoving.isEnabled() && !MovementUtils.isMoving()) || (chance.getValue() != 100 && MathUtils.getRandomInRange(0, 100) > chance.getValue()))
@@ -122,7 +123,7 @@ public class Velocity extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onWorldEvent(WorldEvent event) {
         stack = 0;
     }

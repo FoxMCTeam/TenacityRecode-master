@@ -1,7 +1,8 @@
 package dev.tenacity.module.impl.movement;
 
-import dev.tenacity.event.impl.player.BoundingBoxEvent;
-import dev.tenacity.event.impl.player.MotionEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.player.BoundingBoxEvent;
+import com.cubk.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.ModeSetting;
@@ -18,7 +19,7 @@ public final class Jesus extends Module {
         this.addSettings(mode);
     }
 
-    @Override
+    @EventTarget
     public void onBoundingBoxEvent(BoundingBoxEvent event) {
         if(event.getBlock().getMaterial().isLiquid()) {
             final AxisAlignedBB axisAlignedBB = AxisAlignedBB.fromBounds(-5, -1, -5, 5, 1, 5).offset(event.getBlockPos().getX(), event.getBlockPos().getY(), event.getBlockPos().getZ());
@@ -27,7 +28,7 @@ public final class Jesus extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent event) {
         setSuffix(mode.getMode());
         if(event.isPre()) {

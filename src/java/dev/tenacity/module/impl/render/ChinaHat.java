@@ -1,9 +1,10 @@
 package dev.tenacity.module.impl.render;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.render.Render3DEvent;
+import com.cubk.event.impl.render.Render3DEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.combat.KillAura;
@@ -38,7 +39,7 @@ public class ChinaHat extends Module {
         this.addSettings(firstPerson, allPlayers, colorMode, color);
     }
 
-    @Override
+    @EventTarget
     public void onRender3DEvent(Render3DEvent event) {
         if (mc.thePlayer == null || mc.theWorld == null) return;
 

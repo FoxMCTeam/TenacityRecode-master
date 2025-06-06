@@ -1,9 +1,10 @@
 package dev.tenacity.module.impl.player;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.network.PacketSendEvent;
-import dev.tenacity.event.impl.player.MotionEvent;
-import dev.tenacity.event.impl.render.Render3DEvent;
+import com.cubk.event.impl.network.PacketSendEvent;
+import com.cubk.event.impl.player.MotionEvent;
+import com.cubk.event.impl.render.Render3DEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.render.Breadcrumbs;
@@ -35,7 +36,7 @@ public final class Blink extends Module {
         this.addSettings(pulse, delayPulse);
     }
 
-    @Override
+    @EventTarget
     public void onPacketSendEvent(PacketSendEvent event) {
         if (mc.thePlayer == null || mc.thePlayer.isDead || mc.isSingleplayer() || mc.thePlayer.ticksExisted < 50) {
             packets.clear();
@@ -55,7 +56,7 @@ public final class Blink extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent event) {
         if(event.isPre()) {
             if (mc.thePlayer.ticksExisted < 50) return;
@@ -76,7 +77,7 @@ public final class Blink extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onRender3DEvent(Render3DEvent event) {
         Client.INSTANCE.getModuleCollection().getModule(Breadcrumbs.class).renderLine(path);
     }

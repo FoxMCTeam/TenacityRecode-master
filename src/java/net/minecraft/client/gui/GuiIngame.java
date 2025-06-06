@@ -3,13 +3,13 @@ package net.minecraft.client.gui;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.render.PreRenderEvent;
+import com.cubk.event.impl.render.PreRenderEvent;
 import dev.tenacity.module.impl.display.NotificationsMod;
 import dev.tenacity.module.impl.display.PostProcessing;
 import dev.tenacity.module.impl.display.ScoreboardMod;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.RenderUtil;
-import dev.tenacity.event.impl.render.Render2DEvent;
+import com.cubk.event.impl.render.Render2DEvent;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.font.AbstractFontRenderer;
 import dev.tenacity.utils.render.GLUtil;
@@ -184,14 +184,14 @@ public class GuiIngame extends Gui implements Utils {
             }
         }
 
-        Client.INSTANCE.getEventProtocol().handleEvent(new PreRenderEvent());
+        Client.INSTANCE.getEventProtocol().register(new PreRenderEvent());
 
 
         PostProcessing postProcessing = (PostProcessing) Client.INSTANCE.getModuleCollection().get(PostProcessing.class);
         postProcessing.blurScreen();
 
 
-        Client.INSTANCE.getEventProtocol().handleEvent(new Render2DEvent(scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight()));
+        Client.INSTANCE.getEventProtocol().register(new Render2DEvent(scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight()));
         NotificationsMod notif = Client.INSTANCE.getModuleCollection().getModule(NotificationsMod.class);
         if (notif.isEnabled()) {
             notif.render();

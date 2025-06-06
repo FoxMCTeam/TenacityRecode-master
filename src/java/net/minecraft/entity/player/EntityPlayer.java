@@ -4,7 +4,7 @@ import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.player.KeepSprintEvent;
+import com.cubk.event.impl.player.KeepSprintEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.BlockDirectional;
@@ -1146,7 +1146,7 @@ public abstract class EntityPlayer extends EntityLivingBase {
                             targetEntity.addVelocity(-MathHelper.sin(this.rotationYaw * (float) Math.PI / 180.0F) * (float) i * 0.5F, 0.1D, MathHelper.cos(this.rotationYaw * (float) Math.PI / 180.0F) * (float) i * 0.5F);
 
                             KeepSprintEvent keepSprintEvent = new KeepSprintEvent();
-                            Client.INSTANCE.getEventProtocol().handleEvent(keepSprintEvent);
+                            Client.INSTANCE.getEventProtocol().register(keepSprintEvent);
                             if(!keepSprintEvent.isCancelled()) {
                                 this.motionX *= 0.6D;
                                 this.motionZ *= 0.6D;

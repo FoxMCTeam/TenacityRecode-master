@@ -45,7 +45,6 @@ public class ProtectedLaunch {
         modules.put(AutoPot.class, new AutoPot());
         modules.put(FastBow.class, new FastBow());
         modules.put(KeepSprint.class, new KeepSprint());
-        modules.put(IdleFighter.class, new IdleFighter());
         modules.put(SuperKnockback.class, new SuperKnockback());
 
         // Exploit

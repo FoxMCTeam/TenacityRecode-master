@@ -1,6 +1,7 @@
 package dev.tenacity.module.impl.misc;
 
-import dev.tenacity.event.impl.network.PacketReceiveEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.network.PacketReceiveEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.ModeSetting;
@@ -11,7 +12,7 @@ public final class AntiFreeze extends Module {
 
     private final ModeSetting mode = new ModeSetting("Mode", "Normal", "Normal", "Teleport");
 
-    @Override
+    @EventTarget
     public void onPacketReceiveEvent(PacketReceiveEvent event) {
         if (event.getPacket() instanceof S2DPacketOpenWindow
                 && ((S2DPacketOpenWindow) event.getPacket()).getWindowTitle().getUnformattedText().contains("frozen")) {

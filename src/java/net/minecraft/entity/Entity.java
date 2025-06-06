@@ -2,9 +2,9 @@ package net.minecraft.entity;
 
 import dev.tenacity.Client;
 import dev.tenacity.module.impl.movement.Flight;
-import dev.tenacity.event.impl.player.PlayerMoveUpdateEvent;
-import dev.tenacity.event.impl.player.SafeWalkEvent;
-import dev.tenacity.event.impl.player.StepConfirmEvent;
+import com.cubk.event.impl.player.PlayerMoveUpdateEvent;
+import com.cubk.event.impl.player.SafeWalkEvent;
+import com.cubk.event.impl.player.StepConfirmEvent;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -653,7 +653,7 @@ public abstract class Entity implements ICommandSender {
             double d5 = z;
 
             SafeWalkEvent safeWalkEvent = new SafeWalkEvent();
-            Client.INSTANCE.getEventProtocol().handleEvent(safeWalkEvent);
+            Client.INSTANCE.getEventProtocol().register(safeWalkEvent);
 
             boolean flag = this.onGround && (this.isSneaking() || safeWalkEvent.isSafe()) && this instanceof EntityPlayer;
 
@@ -803,7 +803,7 @@ public abstract class Entity implements ICommandSender {
                     z = d8;
                     this.setEntityBoundingBox(axisalignedbb3);
                 } else {
-                    Client.INSTANCE.getEventProtocol().handleEvent(new StepConfirmEvent());
+                    Client.INSTANCE.getEventProtocol().register(new StepConfirmEvent());
                 }
             }
 
@@ -1153,7 +1153,7 @@ public abstract class Entity implements ICommandSender {
     public void moveFlying(float strafe, float forward, float friction) {
         PlayerMoveUpdateEvent playerMovementEvent = new PlayerMoveUpdateEvent(strafe, forward, friction, this.rotationYaw, this.rotationPitch);
         if (this instanceof EntityPlayerSP) {
-            Client.INSTANCE.getEventProtocol().handleEvent(playerMovementEvent);
+            Client.INSTANCE.getEventProtocol().register(playerMovementEvent);
         }
         if (playerMovementEvent.isCancelled()) return;
 

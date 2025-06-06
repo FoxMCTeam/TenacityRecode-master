@@ -1,7 +1,8 @@
 package dev.tenacity.module.impl.player;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.network.PacketSendEvent;
+import com.cubk.event.impl.network.PacketSendEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.movement.Speed;
@@ -31,7 +32,7 @@ public class AntiVoid extends Module {
         this.addSettings(mode, fallDist);
     }
 
-    @Override
+    @EventTarget
     public void onPacketSendEvent(PacketSendEvent event) {
         if(mode.is("Watchdog") && !Client.INSTANCE.getModuleCollection().getModule(Speed.class).isEnabled()) {
             if(event.getPacket() instanceof C03PacketPlayer) {

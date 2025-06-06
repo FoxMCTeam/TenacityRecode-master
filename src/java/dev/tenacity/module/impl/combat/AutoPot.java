@@ -1,7 +1,8 @@
 package dev.tenacity.module.impl.combat;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.player.MotionEvent;
+import com.cubk.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.movement.Scaffold;
@@ -37,7 +38,7 @@ public class AutoPot extends Module {
         this.addSettings(delay, minHealHP, splashFrogPots);
     }
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent e) {
         if (Client.INSTANCE.isEnabled(Scaffold.class) || mc.currentScreen instanceof GuiChest)
             return;
@@ -225,5 +226,4 @@ public class AutoPot extends Module {
         }
         return false;
     }
-
 }

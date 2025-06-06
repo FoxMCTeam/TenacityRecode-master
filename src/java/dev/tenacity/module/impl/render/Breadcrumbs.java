@@ -1,9 +1,10 @@
 package dev.tenacity.module.impl.render;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.utils.tuples.Pair;
-import dev.tenacity.event.impl.player.MotionEvent;
-import dev.tenacity.event.impl.render.Render3DEvent;
+import com.cubk.event.impl.player.MotionEvent;
+import com.cubk.event.impl.render.Render3DEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.BooleanSetting;
@@ -43,7 +44,7 @@ public final class Breadcrumbs extends Module {
 
     private final List<Vec3> path = new ArrayList<>();
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent e) {
         if (e.isPre()) {
             if (mc.thePlayer.lastTickPosX != mc.thePlayer.posX || mc.thePlayer.lastTickPosY != mc.thePlayer.posY || mc.thePlayer.lastTickPosZ != mc.thePlayer.posZ) {
@@ -56,7 +57,7 @@ public final class Breadcrumbs extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onRender3DEvent(Render3DEvent event) {
         int i = 0;
 

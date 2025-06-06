@@ -1,10 +1,11 @@
 package dev.tenacity.module.impl.misc;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.game.WorldEvent;
-import dev.tenacity.event.impl.player.ChatReceivedEvent;
-import dev.tenacity.event.impl.player.MotionEvent;
-import dev.tenacity.event.impl.render.Render2DEvent;
+import com.cubk.event.impl.game.WorldEvent;
+import com.cubk.event.impl.player.ChatReceivedEvent;
+import com.cubk.event.impl.player.MotionEvent;
+import com.cubk.event.impl.render.Render2DEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.display.HUDMod;
@@ -36,7 +37,7 @@ public class AutoAuthenticate extends Module {
         this.addSettings(delay, password);
     }
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent event) {
         if (this.runAt < System.currentTimeMillis() && this.runCommand != null) {
             animation.setDirection(Direction.BACKWARDS);
@@ -45,7 +46,7 @@ public class AutoAuthenticate extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onChatReceivedEvent(ChatReceivedEvent event) {
         String msg = event.message.getUnformattedText();
         String password = this.password.getString();
@@ -59,7 +60,7 @@ public class AutoAuthenticate extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onRender2DEvent(Render2DEvent event) {
         if ((this.runAt > System.currentTimeMillis() && this.runCommand != null) || !animation.isDone()) {
             if (hudMod == null) {
@@ -85,7 +86,7 @@ public class AutoAuthenticate extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onWorldEvent(WorldEvent event) {
         reset();
     }

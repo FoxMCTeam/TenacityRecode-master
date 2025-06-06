@@ -1,7 +1,7 @@
 package dev.tenacity.utils.player;
 
 import com.google.common.base.Predicates;
-import dev.tenacity.event.impl.player.MotionEvent;
+import com.cubk.event.impl.player.MotionEvent;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.misc.MathUtils;
 import net.minecraft.client.Minecraft;

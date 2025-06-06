@@ -1,8 +1,9 @@
 package dev.tenacity.module.impl.render;
 
-import dev.tenacity.event.impl.player.AttackEvent;
-import dev.tenacity.event.impl.player.MotionEvent;
-import dev.tenacity.event.impl.render.Render2DEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.player.AttackEvent;
+import com.cubk.event.impl.player.MotionEvent;
+import com.cubk.event.impl.render.Render2DEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.display.HUDMod;
@@ -52,7 +53,7 @@ public class Hitmarkers extends Module {
         addSettings(playSound, sound, volume, spacing, thickness, length, outline, colorMode, color);
     }
 
-    @Override
+    @EventTarget
     public void onRender2DEvent(Render2DEvent e) {
         if (animation.finished(Direction.FORWARDS)) {
             animation.changeDirection();
@@ -76,7 +77,7 @@ public class Hitmarkers extends Module {
         drawRotatedCrosshair(spacing.getValue().floatValue(), thickness.getValue().floatValue(), length.getValue().floatValue(), color.getRGB());
     }
 
-    @Override
+    @EventTarget
     public void onAttackEvent(AttackEvent e) {
         animation.setDirection(Direction.FORWARDS);
         if (playSound.isEnabled()) {
@@ -84,7 +85,7 @@ public class Hitmarkers extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent event) {
         if (event.isPre() && playSound.isEnabled() && lastAttackedEntity != null && lastAttackedEntity.hurtResistantTime == 19) {
             if (mc.thePlayer.getDistanceToEntity(lastAttackedEntity) < 10) {

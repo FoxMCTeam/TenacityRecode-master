@@ -7,7 +7,7 @@ import com.google.common.util.concurrent.MoreExecutors;
 import com.mojang.authlib.GameProfile;
 import dev.tenacity.Client;
 import dev.tenacity.module.impl.movement.Flight;
-import dev.tenacity.event.impl.player.ChatReceivedEvent;
+import com.cubk.event.impl.player.ChatReceivedEvent;
 import dev.tenacity.utils.misc.Enhancements;
 import io.netty.buffer.Unpooled;
 import net.minecraft.block.Block;
@@ -632,7 +632,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
 
         ChatReceivedEvent e = new ChatReceivedEvent(packetIn.getType(), packetIn.getChatComponent());
 
-        Client.INSTANCE.getEventProtocol().handleEvent(e);
+        Client.INSTANCE.getEventProtocol().register(e);
         if (e.isCancelled() || e.message == null) return;
 
         if (packetIn.getType() == 2) {

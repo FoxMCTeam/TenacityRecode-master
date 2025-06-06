@@ -1,7 +1,7 @@
 package net.minecraft.client.renderer;
 
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.render.CustomBlockRenderEvent;
+import com.cubk.event.impl.render.CustomBlockRenderEvent;
 import dev.tenacity.module.impl.combat.KillAura;
 import dev.tenacity.module.impl.render.Animations;
 import dev.tenacity.utils.player.InventoryUtils;
@@ -461,7 +461,7 @@ public class ItemRenderer {
                                                 (equipProg, swingProg) -> transformFirstPersonItem(equipProg, swingProgress),
                                                 this::doBlockTransformations, swingProgress, f);
 
-                                        Client.INSTANCE.getEventProtocol().handleEvent(blockRenderEvent);
+                                        Client.INSTANCE.getEventProtocol().register(blockRenderEvent);
                                         break;
                                 }
                             } else {

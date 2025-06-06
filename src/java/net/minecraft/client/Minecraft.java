@@ -12,11 +12,11 @@ import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.game.*;
-import dev.tenacity.event.impl.player.BlockEvent;
-import dev.tenacity.event.impl.player.BlockPlaceableEvent;
-import dev.tenacity.event.impl.player.ClickEvent;
-import dev.tenacity.event.impl.player.ClickEventRight;
+import com.cubk.event.impl.game.*;
+import com.cubk.event.impl.player.BlockEvent;
+import com.cubk.event.impl.player.BlockPlaceableEvent;
+import com.cubk.event.impl.player.ClickEvent;
+import com.cubk.event.impl.player.ClickEventRight;
 import dev.tenacity.module.impl.display.ClickGUIMod;
 import dev.tenacity.module.ProtectedLaunch;
 import dev.tenacity.ui.SplashScreen;
@@ -972,12 +972,12 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
 
         if (!this.skipRenderWorld) {
             RenderTickEvent renderTickEvent = new RenderTickEvent(this.timer.renderPartialTicks);
-            Client.INSTANCE.getEventProtocol().handleEvent(renderTickEvent);
+            Client.INSTANCE.getEventProtocol().register(renderTickEvent);
             this.mcProfiler.endStartSection("gameRenderer");
             this.entityRenderer.updateCameraAndRender(this.timer.renderPartialTicks, i);
             this.mcProfiler.endSection();
             renderTickEvent.setPost();
-            Client.INSTANCE.getEventProtocol().handleEvent(renderTickEvent);
+            Client.INSTANCE.getEventProtocol().register(renderTickEvent);
         }
 
         this.mcProfiler.endSection();
@@ -1225,7 +1225,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
      * Called when the window is closing. Sets 'running' to false which allows the game loop to exit cleanly.
      */
     public void shutdown() {
-        Client.INSTANCE.getEventProtocol().handleEvent(new GameCloseEvent());
+        Client.INSTANCE.getEventProtocol().register(new GameCloseEvent());
         this.running = false;
     }
 
@@ -1303,7 +1303,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         if (this.leftClickCounter <= 0) {
             final ClickEvent e = new ClickEvent(false);
 
-            Client.INSTANCE.getEventProtocol().handleEvent(e);
+            Client.INSTANCE.getEventProtocol().register(e);
 
 //            this.thePlayer.swingItem();
             AttackOrder.sendConditionalSwing(this.objectMouseOver);
@@ -1342,7 +1342,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
     @SuppressWarnings("incomplete-switch")
 
     public void rightClickMouse() {
-        Client.INSTANCE.getEventProtocol().handleEvent(new ClickEventRight());
+        Client.INSTANCE.getEventProtocol().register(new ClickEventRight());
 
         if (!this.playerController.getIsHittingBlock()) {
             this.rightClickDelayTimer = 4;
@@ -1523,7 +1523,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         }
 
         TickEvent tickEvent = new TickEvent(ticks);
-        Client.INSTANCE.getEventProtocol().handleEvent(tickEvent);
+        Client.INSTANCE.getEventProtocol().register(tickEvent);
 
         this.mcProfiler.startSection("gui");
 
@@ -1662,7 +1662,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
                     if (this.currentScreen != null) {
                         this.currentScreen.handleKeyboardInput();
                     } else {
-                        Client.INSTANCE.getEventProtocol().handleEvent(new KeyPressEvent(k));
+                        Client.INSTANCE.getEventProtocol().register(new KeyPressEvent(k));
 
                         if (k == 1) {
                             this.displayInGameMenu();
@@ -1813,7 +1813,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
 
             if (this.thePlayer.isUsingItem()) {
                 BlockEvent blockEvent = new BlockEvent();
-                Client.INSTANCE.getEventProtocol().handleEvent(blockEvent);
+                Client.INSTANCE.getEventProtocol().register(blockEvent);
                 if (!this.gameSettings.keyBindUseItem.isKeyDown() && !blockEvent.isCancelled()) {
                     this.playerController.onStoppedUsingItem(this.thePlayer);
                 }
@@ -1843,7 +1843,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
                 this.rightClickMouse();
             }
 
-            Client.INSTANCE.getEventProtocol().handleEvent(new BlockPlaceableEvent());
+            Client.INSTANCE.getEventProtocol().register(new BlockPlaceableEvent());
             this.sendClickBlockToController(this.currentScreen == null && this.gameSettings.keyBindAttack.isKeyDown() && this.inGameHasFocus);
         }
 
@@ -1928,7 +1928,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         }
 
         tickEvent.setPost();
-        Client.INSTANCE.getEventProtocol().handleEvent(tickEvent);
+        Client.INSTANCE.getEventProtocol().register(tickEvent);
 
         this.mcProfiler.endSection();
         this.systemTime = getSystemTime();
@@ -2006,7 +2006,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         }
         if (theWorld != null) {
             WorldEvent e = new WorldEvent.Unload(theWorld);
-            Client.INSTANCE.getEventProtocol().handleEvent(e);
+            Client.INSTANCE.getEventProtocol().register(e);
         }
         if (worldClientIn == null) {
             NetHandlerPlayClient nethandlerplayclient = this.getNetHandler();

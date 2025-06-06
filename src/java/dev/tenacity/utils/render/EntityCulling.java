@@ -1,9 +1,9 @@
 package dev.tenacity.utils.render;
 
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.game.RenderTickEvent;
-import dev.tenacity.event.impl.game.TickEvent;
-import dev.tenacity.event.impl.render.RendererLivingEntityEvent;
+import com.cubk.event.impl.game.RenderTickEvent;
+import com.cubk.event.impl.game.TickEvent;
+import com.cubk.event.impl.render.RendererLivingEntityEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.ModeSetting;

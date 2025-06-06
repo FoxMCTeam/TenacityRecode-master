@@ -1,6 +1,7 @@
 package dev.tenacity.module.impl.render;
 
-import dev.tenacity.event.impl.player.ChatReceivedEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.player.ChatReceivedEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.ParentAttribute;
@@ -24,7 +25,7 @@ public class Streamer extends Module {
         this.addSettings(hideIP, hideServerId, hideUsername, customName);
     }
 
-    @Override
+    @EventTarget
     public void onChatReceivedEvent(ChatReceivedEvent e) {
         if (ServerUtils.isOnHypixel() && hideServerId.isEnabled()) {
             String message = StringUtils.stripControlCodes(e.message.getUnformattedText());

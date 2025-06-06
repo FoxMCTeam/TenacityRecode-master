@@ -1,9 +1,10 @@
 package dev.tenacity.module.impl.display;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.player.MotionEvent;
-import dev.tenacity.event.impl.render.Render2DEvent;
-import dev.tenacity.event.impl.render.ShaderEvent;
+import com.cubk.event.impl.player.MotionEvent;
+import com.cubk.event.impl.render.Render2DEvent;
+import com.cubk.event.impl.render.ShaderEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.ParentAttribute;
@@ -47,7 +48,7 @@ public class Statistics extends Module {
 
     private float width, height;
 
-    @Override
+    @EventTarget
     public void onShaderEvent(ShaderEvent e) {
         float x = this.dragging.getX(), y = this.dragging.getY();
         boolean seperated = motionGraph.isEnabled() && seprateMotionGraph.isEnabled();
@@ -73,7 +74,7 @@ public class Statistics extends Module {
 
     private final ShaderUtil circleShader = new ShaderUtil("Tenacity/Shaders/circle-arc.frag");
 
-    @Override
+    @EventTarget
     public void onRender2DEvent(Render2DEvent e) {
         float x = this.dragging.getX(), y = this.dragging.getY();
         boolean moreHeight = motionGraph.isEnabled() && !seprateMotionGraph.isEnabled();
@@ -170,7 +171,7 @@ public class Statistics extends Module {
 
     private final List<Float> speeds = new ArrayList<>();
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent event) {
         if (event.isPre()) {
             if ((speeds.size() - 1) >= 100) {

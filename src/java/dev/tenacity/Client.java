@@ -1,9 +1,9 @@
 package dev.tenacity;
 
+import com.cubk.event.EventManager;
 import dev.tenacity.commands.CommandHandler;
 import dev.tenacity.config.ConfigManager;
 import dev.tenacity.config.DragManager;
-import dev.tenacity.event.EventProtocol;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.ModuleCollection;
 import dev.tenacity.utils.client.addons.api.ScriptManager;
@@ -41,7 +41,7 @@ public class Client implements Utils {
     public static final File DIRECTORY = new File(mc.mcDataDir, NAME);
     public static final File BACKGROUND = new File(DIRECTORY, "background");
     public static File backGroundFile;
-    private final EventProtocol eventProtocol = new EventProtocol();
+    private final EventManager eventProtocol = new EventManager();
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final SideGUI sideGui = new SideGUI();
     private final SearchBar searchBar = new SearchBar();

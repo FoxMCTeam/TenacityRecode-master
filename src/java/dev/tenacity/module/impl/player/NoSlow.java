@@ -1,7 +1,8 @@
 package dev.tenacity.module.impl.player;
 
-import dev.tenacity.event.impl.player.MotionEvent;
-import dev.tenacity.event.impl.player.SlowDownEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.player.MotionEvent;
+import com.cubk.event.impl.player.SlowDownEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.ModeSetting;
@@ -23,12 +24,12 @@ public class NoSlow extends Module {
         this.addSettings(mode);
     }
 
-    @Override
+    @EventTarget
     public void onSlowDownEvent(SlowDownEvent event) {
         event.cancel();
     }
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent e) {
         this.setSuffix(mode.getMode());
         switch (mode.getMode()) {

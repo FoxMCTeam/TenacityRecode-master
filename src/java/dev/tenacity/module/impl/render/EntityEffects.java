@@ -1,10 +1,11 @@
 package dev.tenacity.module.impl.render;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.render.Render2DEvent;
-import dev.tenacity.event.impl.render.Render3DEvent;
-import dev.tenacity.event.impl.render.RenderModelEvent;
-import dev.tenacity.event.impl.render.ShaderEvent;
+import com.cubk.event.impl.render.Render2DEvent;
+import com.cubk.event.impl.render.Render3DEvent;
+import com.cubk.event.impl.render.RenderModelEvent;
+import com.cubk.event.impl.render.ShaderEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.display.PostProcessing;
@@ -60,7 +61,7 @@ public class EntityEffects extends Module {
 
     private final List<Entity> entities = new ArrayList<>();
 
-    @Override
+    @EventTarget
     public void onRender3DEvent(Render3DEvent event) {
         entities.clear();
         for (final Entity entity : mc.theWorld.loadedEntityList) {
@@ -71,7 +72,7 @@ public class EntityEffects extends Module {
     }
 
 
-    @Override
+    @EventTarget
     public void onRenderModelEvent(RenderModelEvent event) {
         if (event.isPost() && entities.contains(event.getEntity())) {
             entityFramebuffer.bindFramebuffer(false);
@@ -89,7 +90,7 @@ public class EntityEffects extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onShaderEvent(ShaderEvent e) {
         if (e.isBloom() ? bloom.isEnabled() : blur.isEnabled()) {
             RenderUtil.setAlphaLimit(0);
@@ -106,7 +107,7 @@ public class EntityEffects extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onRender2DEvent(Render2DEvent event) {
         entityFramebuffer = RenderUtil.createFrameBuffer(entityFramebuffer);
         entityFramebuffer.framebufferClear();

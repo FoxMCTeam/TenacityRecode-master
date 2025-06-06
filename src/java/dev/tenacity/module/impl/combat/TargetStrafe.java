@@ -1,9 +1,10 @@
 package dev.tenacity.module.impl.combat;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.Client;
-import dev.tenacity.event.impl.player.MotionEvent;
-import dev.tenacity.event.impl.player.MoveEvent;
-import dev.tenacity.event.impl.render.Render3DEvent;
+import com.cubk.event.impl.player.MotionEvent;
+import com.cubk.event.impl.player.MoveEvent;
+import com.cubk.event.impl.render.Render3DEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.movement.Flight;
@@ -64,7 +65,7 @@ public final class TargetStrafe extends Module {
         color.addParent(render, ParentAttribute.BOOLEAN_CONDITION);
     }
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent event) {
         if (canStrafe()) {
             if (auto3rdPerson.isEnabled() && mc.gameSettings.thirdPersonView == 0) {
@@ -108,7 +109,7 @@ public final class TargetStrafe extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onRender3DEvent(Render3DEvent event) {
         if (render.isEnabled()) {
             if (animation.getEndPoint() != radius.getValue()) animation.setEndPoint(radius.getValue());

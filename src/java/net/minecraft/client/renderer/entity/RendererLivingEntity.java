@@ -5,9 +5,9 @@ import dev.tenacity.Client;
 import dev.tenacity.module.impl.render.CustomModel;
 import dev.tenacity.module.impl.render.ESP2D;
 import dev.tenacity.module.impl.display.TargetHUDMod;
-import dev.tenacity.event.impl.render.NametagRenderEvent;
-import dev.tenacity.event.impl.render.RenderModelEvent;
-import dev.tenacity.event.impl.render.RendererLivingEntityEvent;
+import com.cubk.event.impl.render.NametagRenderEvent;
+import com.cubk.event.impl.render.RenderModelEvent;
+import com.cubk.event.impl.render.RendererLivingEntityEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.IFontRenderer;
@@ -104,7 +104,7 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
      */
     public void doRender(T entity, double x, double y, double z, float entityYaw, float partialTicks) {
         RendererLivingEntityEvent event = new RendererLivingEntityEvent(entity, this, partialTicks, x, y, z);
-        Client.INSTANCE.getEventProtocol().handleEvent(event);
+        Client.INSTANCE.getEventProtocol().register(event);
         if (event.isCancelled()) return;
 
 
@@ -253,7 +253,7 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
         }
 
         event.setPost();
-        Client.INSTANCE.getEventProtocol().handleEvent(event);
+        Client.INSTANCE.getEventProtocol().register(event);
     }
 
     protected boolean setScoreTeamColor(T entityLivingBaseIn) {
@@ -317,14 +317,14 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
                     () -> this.renderLayers(entitylivingbaseIn, x, y, partialTicks, z, entityYaw, entityPitch, scaleFactor));
 
 
-            Client.INSTANCE.getEventProtocol().handleEvent(renderModelEvent);
+            Client.INSTANCE.getEventProtocol().register(renderModelEvent);
 
             GL11.glEnable(GL11.GL_ALPHA_TEST);
 
             renderModelEvent.drawModel();
 
             renderModelEvent.setPost();
-            Client.INSTANCE.getEventProtocol().handleEvent(renderModelEvent);
+            Client.INSTANCE.getEventProtocol().register(renderModelEvent);
 
 
             if (flag1) {
@@ -572,7 +572,7 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
     public void renderName(T entity, double x, double y, double z) {
         if (entity instanceof EntityPlayer) {
             NametagRenderEvent nametagRenderEvent = new NametagRenderEvent();
-            Client.INSTANCE.getEventProtocol().handleEvent(nametagRenderEvent);
+            Client.INSTANCE.getEventProtocol().register(nametagRenderEvent);
             if (nametagRenderEvent.isCancelled()) return;
         }
         if (esp2D == null) {

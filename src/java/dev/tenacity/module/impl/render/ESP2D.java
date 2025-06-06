@@ -1,12 +1,13 @@
 package dev.tenacity.module.impl.render;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.commands.impl.FriendCommand;
-import dev.tenacity.event.impl.render.NametagRenderEvent;
-import dev.tenacity.event.impl.render.Render2DEvent;
-import dev.tenacity.event.impl.render.Render3DEvent;
-import dev.tenacity.event.impl.render.ShaderEvent;
+import com.cubk.event.impl.render.NametagRenderEvent;
+import com.cubk.event.impl.render.Render2DEvent;
+import com.cubk.event.impl.render.Render3DEvent;
+import com.cubk.event.impl.render.ShaderEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.ParentAttribute;
@@ -84,12 +85,12 @@ public class ESP2D extends Module {
 
     private final Map<Entity, Vector4f> entityPosition = new HashMap<>();
 
-    @Override
+    @EventTarget
     public void onNametagRenderEvent(NametagRenderEvent e) {
         if (nametags.isEnabled()) e.cancel();
     }
 
-    @Override
+    @EventTarget
     public void onRender3DEvent(Render3DEvent event) {
         entityPosition.clear();
         for (final Entity entity : mc.theWorld.loadedEntityList) {
@@ -99,7 +100,7 @@ public class ESP2D extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onShaderEvent(ShaderEvent e) {
 
         if (nametagSettings.getSetting("Add PostProcessing").isEnabled() && nametags.isEnabled()) {
@@ -158,7 +159,7 @@ public class ESP2D extends Module {
     private Color firstColor = Color.BLACK, secondColor = Color.BLACK, thirdColor = Color.BLACK, fourthColor = Color.BLACK;
 
 
-    @Override
+    @EventTarget
     public void onRender2DEvent(Render2DEvent e) {
 
         if (boxColorMode.is("Custom")) {

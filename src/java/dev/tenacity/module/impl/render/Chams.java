@@ -1,9 +1,10 @@
 package dev.tenacity.module.impl.render;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.utils.tuples.Pair;
-import dev.tenacity.event.impl.render.RenderChestEvent;
-import dev.tenacity.event.impl.render.RenderModelEvent;
+import com.cubk.event.impl.render.RenderChestEvent;
+import com.cubk.event.impl.render.RenderModelEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.ParentAttribute;
@@ -45,7 +46,7 @@ public class Chams extends Module {
     }
 
 
-    @Override
+    @EventTarget
     public void onRenderChestEvent(RenderChestEvent event) {
         if (!entities.isEnabled("Chests")) return;
         Color behindWallsColor = Color.WHITE;
@@ -106,7 +107,7 @@ public class Chams extends Module {
         glPopMatrix();
     }
 
-    @Override
+    @EventTarget
     public void onRenderModelEvent(RenderModelEvent event) {
         if (!isValidEntity(event.getEntity())) return;
 

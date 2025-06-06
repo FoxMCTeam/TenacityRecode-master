@@ -1,7 +1,8 @@
 package dev.tenacity.module.impl.misc;
 
-import dev.tenacity.event.impl.game.WorldEvent;
-import dev.tenacity.event.impl.player.MotionEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.game.WorldEvent;
+import com.cubk.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.ModeSetting;
@@ -43,7 +44,7 @@ public class Sniper extends Module {
     }
 
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent event) {
         if (event.isPre()) {
             if(!ServerUtils.isGeniuneHypixel() || mc.isSingleplayer()) {
@@ -70,7 +71,7 @@ public class Sniper extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onWorldEvent(WorldEvent event) {
         if(event instanceof WorldEvent.Load) {
             reset = true;

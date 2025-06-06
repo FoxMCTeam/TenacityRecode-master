@@ -1,6 +1,7 @@
 package dev.tenacity.module.impl.player;
 
-import dev.tenacity.event.impl.player.MotionEvent;
+import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.BooleanSetting;
@@ -16,7 +17,7 @@ public final class FastPlace extends Module {
     private final BooleanSetting blocks = new BooleanSetting("Blocks", true);
     private final BooleanSetting projectiles = new BooleanSetting("Projectiles", true);
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent event) {
         if (canFastPlace()) {
             mc.rightClickDelayTimer = Math.min(mc.rightClickDelayTimer, ticks.getValue().intValue());

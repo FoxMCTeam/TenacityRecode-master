@@ -1,9 +1,10 @@
 package dev.tenacity.module.impl.render;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.utils.tuples.Pair;
-import dev.tenacity.event.impl.player.MotionEvent;
-import dev.tenacity.event.impl.render.Render3DEvent;
+import com.cubk.event.impl.player.MotionEvent;
+import com.cubk.event.impl.render.Render3DEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.NumberSetting;
@@ -35,7 +36,7 @@ public class JumpCircle extends Module {
     private final List<Circle> circles = new ArrayList<>();
     private final List<Circle> toRemove = new ArrayList<>();
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent event) {
         if (event.isPre()) {
             if (!event.isOnGround()) {
@@ -47,7 +48,7 @@ public class JumpCircle extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onRender3DEvent(Render3DEvent event) {
         for (Circle circle : circles) {
             circle.drawCircle();
