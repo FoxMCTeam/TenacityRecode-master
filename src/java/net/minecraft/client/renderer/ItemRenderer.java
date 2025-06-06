@@ -461,7 +461,7 @@ public class ItemRenderer {
                                                 (equipProg, swingProg) -> transformFirstPersonItem(equipProg, swingProgress),
                                                 this::doBlockTransformations, swingProgress, f);
 
-                                        Client.INSTANCE.getEventProtocol().call(blockRenderEvent);
+                                        Client.INSTANCE.getEventManager().call(blockRenderEvent);
                                         break;
                                 }
                             } else {

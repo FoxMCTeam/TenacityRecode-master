@@ -184,14 +184,14 @@ public class GuiIngame extends Gui implements Utils {
             }
         }
 
-        Client.INSTANCE.getEventProtocol().call(new PreRenderEvent());
+        Client.INSTANCE.getEventManager().call(new PreRenderEvent());
 
 
         PostProcessing postProcessing = (PostProcessing) Client.INSTANCE.getModuleCollection().get(PostProcessing.class);
         postProcessing.blurScreen();
 
 
-        Client.INSTANCE.getEventProtocol().call(new Render2DEvent(scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight()));
+        Client.INSTANCE.getEventManager().call(new Render2DEvent(scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight()));
         NotificationsMod notif = Client.INSTANCE.getModuleCollection().getModule(NotificationsMod.class);
         if (notif.isEnabled()) {
             notif.render();

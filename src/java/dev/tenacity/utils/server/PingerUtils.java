@@ -35,7 +35,7 @@ public class PingerUtils implements Utils {
         this.serverUpdateTime = new HashMap<>();
         this.serverUpdateStatus = new HashMap<>();
         this.serverPing = null;
-        Client.INSTANCE.getEventProtocol().register(this);
+        Client.INSTANCE.getEventManager().register(this);
     }
 
     public static String getPing() {

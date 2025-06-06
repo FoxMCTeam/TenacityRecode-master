@@ -41,7 +41,7 @@ public class Client implements Utils {
     public static final File DIRECTORY = new File(mc.mcDataDir, NAME);
     public static final File BACKGROUND = new File(DIRECTORY, "background");
     public static File backGroundFile;
-    private final EventManager eventProtocol = new EventManager();
+    private final EventManager eventManager = new EventManager();
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final SideGUI sideGui = new SideGUI();
     private final SearchBar searchBar = new SearchBar();

@@ -133,7 +133,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         if (this.channel.isOpen()) {
             try {
                 PacketReceiveEvent e = new PacketReceiveEvent(p_channelRead0_2_);
-                Client.INSTANCE.getEventProtocol().call(e);
+                Client.INSTANCE.getEventManager().call(e);
                 if (e.isCancelled()) return;
                 p_channelRead0_2_.processPacket(this.packetListener);
             } catch (ThreadQuickExitException ignored) {
@@ -159,7 +159,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         if (this.isChannelOpen()) {
             if (!silent) {
                 PacketSendEvent e = new PacketSendEvent(packetIn);
-                Client.INSTANCE.getEventProtocol().call(e);
+                Client.INSTANCE.getEventManager().call(e);
                 if (e.isCancelled()) return;
                 packetIn = e.getPacket();
             }

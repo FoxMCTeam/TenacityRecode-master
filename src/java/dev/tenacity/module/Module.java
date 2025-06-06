@@ -133,15 +133,15 @@ public class Module implements Utils {
 
 
     public void onEnable() {
-        Client.INSTANCE.getEventProtocol().register(this);
+        Client.INSTANCE.getEventManager().register(this);
     }
 
     public void onDisable() {
         if (this instanceof GlowESP) {
             GlowESP.fadeIn.setDirection(Direction.BACKWARDS);
-            Multithreading.schedule(() -> Client.INSTANCE.getEventProtocol().unregister(this), 250, TimeUnit.MILLISECONDS);
+            Multithreading.schedule(() -> Client.INSTANCE.getEventManager().unregister(this), 250, TimeUnit.MILLISECONDS);
         } else {
-            Client.INSTANCE.getEventProtocol().unregister(this);
+            Client.INSTANCE.getEventManager().unregister(this);
         }
     }
 

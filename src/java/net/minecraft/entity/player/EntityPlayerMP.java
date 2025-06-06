@@ -495,7 +495,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
 
             entitylivingbase.addToPlayerScore(this, this.scoreValue);
 
-            Client.INSTANCE.getEventProtocol().call(new LivingDeathEvent(this, cause));
+            Client.INSTANCE.getEventManager().call(new LivingDeathEvent(this, cause));
         }
 
         this.triggerAchievement(StatList.deathsStat);

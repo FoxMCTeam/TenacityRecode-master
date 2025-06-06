@@ -152,7 +152,7 @@ public final class KillAura extends Module {
                     if(mode.is("Multi")) {
                         for(EntityLivingBase entityLivingBase : targets) {
                             AttackEvent attackEvent = new AttackEvent(entityLivingBase);
-                            Client.INSTANCE.getEventProtocol().register(attackEvent);
+                            Client.INSTANCE.getEventManager().register(attackEvent);
 
                             if (!attackEvent.isCancelled()) {
                                 AttackOrder.sendFixedAttack(mc.thePlayer, entityLivingBase);
@@ -160,7 +160,7 @@ public final class KillAura extends Module {
                         }
                     } else {
                         AttackEvent attackEvent = new AttackEvent(target);
-                        Client.INSTANCE.getEventProtocol().register(attackEvent);
+                        Client.INSTANCE.getEventManager().register(attackEvent);
 
                         if (!attackEvent.isCancelled()) {
                             AttackOrder.sendFixedAttack(mc.thePlayer, target);

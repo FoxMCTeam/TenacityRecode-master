@@ -150,7 +150,7 @@ public class ProtectedLaunch {
                 new ToggleCommand()
         ));
         Client.INSTANCE.setCommandHandler(commandHandler);
-        Client.INSTANCE.getEventProtocol().register(new BackgroundProcess());
+        Client.INSTANCE.getEventManager().register(new BackgroundProcess());
 
         Client.INSTANCE.setConfigManager(new ConfigManager());
         ConfigManager.defaultConfig = new File(Minecraft.getMinecraft().mcDataDir + "/Tenacity/Config.json");

@@ -653,7 +653,7 @@ public abstract class Entity implements ICommandSender {
             double d5 = z;
 
             SafeWalkEvent safeWalkEvent = new SafeWalkEvent();
-            Client.INSTANCE.getEventProtocol().call(safeWalkEvent);
+            Client.INSTANCE.getEventManager().call(safeWalkEvent);
 
             boolean flag = this.onGround && (this.isSneaking() || safeWalkEvent.isSafe()) && this instanceof EntityPlayer;
 
@@ -803,7 +803,7 @@ public abstract class Entity implements ICommandSender {
                     z = d8;
                     this.setEntityBoundingBox(axisalignedbb3);
                 } else {
-                    Client.INSTANCE.getEventProtocol().call(new StepConfirmEvent());
+                    Client.INSTANCE.getEventManager().call(new StepConfirmEvent());
                 }
             }
 
@@ -1153,7 +1153,7 @@ public abstract class Entity implements ICommandSender {
     public void moveFlying(float strafe, float forward, float friction) {
         PlayerMoveUpdateEvent playerMovementEvent = new PlayerMoveUpdateEvent(strafe, forward, friction, this.rotationYaw, this.rotationPitch);
         if (this instanceof EntityPlayerSP) {
-            Client.INSTANCE.getEventProtocol().call(playerMovementEvent);
+            Client.INSTANCE.getEventManager().call(playerMovementEvent);
         }
         if (playerMovementEvent.isCancelled()) return;
 

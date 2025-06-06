@@ -632,7 +632,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
 
         ChatReceivedEvent e = new ChatReceivedEvent(packetIn.getType(), packetIn.getChatComponent());
 
-        Client.INSTANCE.getEventProtocol().call(e);
+        Client.INSTANCE.getEventManager().call(e);
         if (e.isCancelled() || e.message == null) return;
 
         if (packetIn.getType() == 2) {

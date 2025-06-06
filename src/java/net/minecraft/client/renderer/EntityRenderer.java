@@ -584,7 +584,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
     private void hurtCameraEffect(float partialTicks) {
         if (this.mc.getRenderViewEntity() instanceof EntityLivingBase) {
             HurtCamEvent hurtCamEvent = new HurtCamEvent();
-            Client.INSTANCE.getEventProtocol().call(hurtCamEvent);
+            Client.INSTANCE.getEventManager().call(hurtCamEvent);
 
             if (!hurtCamEvent.isCancelled()) {
                 EntityLivingBase entitylivingbase = (EntityLivingBase) this.mc.getRenderViewEntity();
@@ -1537,7 +1537,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
             this.renderCloudsCheck(renderglobal, partialTicks, pass);
         }
 
-        Client.INSTANCE.getEventProtocol().call(new Render3DEvent(partialTicks));
+        Client.INSTANCE.getEventManager().call(new Render3DEvent(partialTicks));
 
         this.mc.mcProfiler.endStartSection("hand");
 

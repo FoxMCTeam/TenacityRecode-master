@@ -94,7 +94,7 @@ public class PostProcessing extends Module {
 
             stencilFramebuffer.framebufferClear();
             stencilFramebuffer.bindFramebuffer(false);
-            Client.INSTANCE.getEventProtocol().call(new ShaderEvent(false, glowOptions));
+            Client.INSTANCE.getEventManager().call(new ShaderEvent(false, glowOptions));
             stuffToBlur(false);
             stencilFramebuffer.unbindFramebuffer();
 
@@ -109,7 +109,7 @@ public class PostProcessing extends Module {
             stencilFramebuffer.framebufferClear();
             stencilFramebuffer.bindFramebuffer(false);
 
-            Client.INSTANCE.getEventProtocol().call(new ShaderEvent(true, glowOptions));
+            Client.INSTANCE.getEventManager().call(new ShaderEvent(true, glowOptions));
             stuffToBlur(true);
 
             stencilFramebuffer.unbindFramebuffer();
