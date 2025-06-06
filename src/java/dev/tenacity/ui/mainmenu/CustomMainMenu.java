@@ -62,7 +62,7 @@ public class CustomMainMenu extends GuiScreen {
 
         RenderUtil.resetColor();
 
-
+        Client.INSTANCE.videoRenderer.render(width, height);
 
         float rectWidth = 277;
         float rectHeight = 275.5f;

@@ -21,18 +21,13 @@ import org.lwjgl.opengl.GL11;
 import java.awt.*;
 
 public class SplashScreen implements Utils {
-
-    private static int currentProgress;
-
-    // Background texture
-    private static ResourceLocation splash;
     private static Framebuffer framebuffer;
-
-
-    static ResourceLocation image = new ResourceLocation("Tenacity/splashscreen.png");
-
     private static int count;
-
+    private static Animation fadeAnim;
+    private static Animation moveAnim;
+    private static Animation versionAnim;
+    private static Animation progressAnim;
+    private static Animation progress2Anim;
 
     public static void continueCount() {
         continueCount(true);
@@ -40,7 +35,7 @@ public class SplashScreen implements Utils {
 
     public static void continueCount(boolean continueCount) {
         drawSplash();
-        if(continueCount){
+        if (continueCount) {
             count++;
         }
     }
@@ -84,38 +79,23 @@ public class SplashScreen implements Utils {
 
         CustomFont fr = duckSansBoldFont80;
 
-        if(count > 3){
+        if (count > 3) {
             count = 0;
         }
-        StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < count; i++){
-            sb.append(".");
-        }
 
-
-        fr.drawCenteredString("Authenticating" + sb, sr.getScaledWidth() / 2f, fr.getMiddleOfBox(sr.getScaledHeight()), -1);
-        // Unbind the width and height as it's no longer needed
+        fr.drawCenteredString("Authenticating" + ".".repeat(Math.max(0, count)), sr.getScaledWidth() / 2f, fr.getMiddleOfBox(sr.getScaledHeight()), -1);
         framebuffer.unbindFramebuffer();
 
-        // Render the previously used frame buffer
         framebuffer.framebufferRender(sr.getScaledWidth() * scaleFactor, sr.getScaledHeight() * scaleFactor);
 
-        // Update the texture to enable alpha drawing
         RenderUtil.setAlphaLimit(1);
 
-        // Update the users screen
         Minecraft.getMinecraft().updateDisplay();
     }
 
-
-    private static Animation fadeAnim;
-    private static Animation moveAnim;
-    private static Animation versionAnim;
-    private static Animation progressAnim;
-    private static Animation progress2Anim;
-
     private static void drawScreen(float width, float height) {
         Gui.drawRect2(0, 0, width, height, Color.BLACK.getRGB());
+
         if (fadeAnim == null) {
             fadeAnim = new DecelerateAnimation(600, 1);
             moveAnim = new DecelerateAnimation(600, 1);
@@ -125,7 +105,9 @@ public class SplashScreen implements Utils {
 
         CustomFont fr = duckSansBoldFont80;
 
-        fr.drawCenteredString("Authenticating" + ".".repeat(Math.max(0, count)), width / 2f, fr.getMiddleOfBox(height), ColorUtil.applyOpacity(-1, 1 - fadeAnim.getOutput().floatValue()));
+        if (versionAnim == null && !fadeAnim.isDone()) {
+            fr.drawCenteredString("Authenticating" + ".".repeat(Math.max(0, count)), width / 2f, fr.getMiddleOfBox(height), ColorUtil.setColorAlpha(-1, 1F - fadeAnim.getOutput().floatValue()));
+        }
 
         float yMovement = progressAnim != null && progressAnim.getDirection().backwards() ? 1 - progressAnim.getOutput().floatValue() : 0;
         float actualY = (fr.getMiddleOfBox(height) - 40) - (48 * yMovement);

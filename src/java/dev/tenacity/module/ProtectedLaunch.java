@@ -163,7 +163,11 @@ public class ProtectedLaunch {
         DragManager.loadDragData();
 
         Client.INSTANCE.setAltManager(new GuiAltManager());
+        Client.LOGGER.info("Trying download Background Video");
+        Client.INSTANCE.downloadBackGroundVideo();
 
+        Client.LOGGER.info("Initializing background...");
+        Client.INSTANCE.initVideoBackground();
         try {
             Client.LOGGER.info("Starting ViaMCP...");
             ViaMCP.create();
