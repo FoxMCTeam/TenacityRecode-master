@@ -27,7 +27,6 @@ public class ModuleManager {
     @Getter
     private final List<Class<? extends Module>> hiddenModules = new ArrayList<>(Arrays.asList(ArrayListMod.class, NotificationsMod.class));
     public void init() {
-        Client.INSTANCE.setModuleManager(new ModuleManager());
         // Combat
         modules.put(KillAura.class, new KillAura());
         modules.put(Velocity.class, new Velocity());

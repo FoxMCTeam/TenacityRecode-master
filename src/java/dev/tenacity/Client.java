@@ -40,7 +40,7 @@ import java.util.concurrent.Executors;
 public class Client implements Utils {
     public static final Client INSTANCE = new Client();
     public static final String NAME = "Tenacity";
-    public static final String VERSION = "250606B";
+    public static final String VERSION = "5.2";
     public static final String THANKS = "d3Ck, bzdhyp";
     public static final ReleaseType RELEASE = ReleaseType.DEV;
     public static final Logger LOGGER = LogManager.getLogger(NAME);
@@ -85,8 +85,9 @@ public class Client implements Utils {
     }
 
     public static void initClient() {
-        Client.INSTANCE.getModuleManager().init();
+        Client.INSTANCE.setModuleManager(new ModuleManager());
 
+        Client.INSTANCE.getModuleManager().init();
         Theme.init();
 
         Client.INSTANCE.setPingerUtils(new PingerUtils());
