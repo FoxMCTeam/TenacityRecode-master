@@ -59,27 +59,27 @@ public class Dragging implements Utils {
         return name;
     }
 
-
+    
     public float getWidth() {
         return width;
     }
 
-
+    
     public void setWidth(float width) {
         this.width = width;
     }
 
-
+    
     public float getHeight() {
         return height;
     }
 
-
+    
     public void setHeight(float height) {
         this.height = height;
     }
 
-
+    
     public float getX() {
         return xPos;
     }
@@ -88,7 +88,7 @@ public class Dragging implements Utils {
         this.xPos = x;
     }
 
-
+    
 
     public float getY() {
         return yPos;
@@ -160,7 +160,7 @@ public class Dragging implements Utils {
 
         String longest = getLongestModule(arraylistMod);
 
-        float textVal = (float) arraylistMod.font.getStringWidth(longest);
+        float textVal = arraylistMod.font.getStringWidth(longest);
         float xVal = sr.getScaledWidth() - (textVal + 8 + xPos);
 
         if (sr.getScaledWidth() - xPos <= sr.getScaledWidth() / 2f) {

@@ -1,13 +1,13 @@
 package dev.tenacity.module.impl.display;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.utils.tuples.Pair;
-import dev.tenacity.Client;
 import com.cubk.event.impl.render.Render2DEvent;
 import com.cubk.event.impl.render.ShaderEvent;
+import dev.tenacity.Client;
+import dev.tenacity.module.ModuleManager;
+import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
-import dev.tenacity.module.ModuleManager;
 import dev.tenacity.module.settings.ParentAttribute;
 import dev.tenacity.module.settings.impl.BooleanSetting;
 import dev.tenacity.module.settings.impl.ModeSetting;
@@ -28,13 +28,8 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ArrayListMod extends Module {
-    public final MultipleBoolSetting hideModules = new MultipleBoolSetting("Hide Modules",
-            new BooleanSetting("Combat", false),
-            new BooleanSetting("Movement", false),
-            new BooleanSetting("Render", false),
-            new BooleanSetting("Display", true),
-            new BooleanSetting("Player", false),
-            new BooleanSetting("Misc", false));
+
+    public final BooleanSetting importantModules = new BooleanSetting("Important", false);
     private final ModeSetting textShadow = new ModeSetting("Text Shadow", "Black", "Colored", "Black", "None");
     private final ModeSetting rectangle = new ModeSetting("Rectangle", "Top", "None", "Top", "Side", "Outline");
     private final BooleanSetting partialGlow = new BooleanSetting("Partial Glow", true);
@@ -54,8 +49,8 @@ public class ArrayListMod extends Module {
     public List<Module> modules;
 
     public ArrayListMod() {
-        super("ArrayList", Category.DISPLAY, "Displays your active modules");
-        addSettings(hideModules, rectangle, partialGlow, textShadow, fontSettings, height, animation,
+        super("ArrayList", Category.RENDER, "Displays your active modules");
+        addSettings(importantModules, rectangle, partialGlow, textShadow, fontSettings, height, animation,
                 colorIndex, colorSpeed, background, backgroundColor, backgroundAlpha);
         backgroundAlpha.addParent(background, ParentAttribute.BOOLEAN_CONDITION);
         backgroundColor.addParent(background, ParentAttribute.BOOLEAN_CONDITION);
@@ -87,7 +82,7 @@ public class ArrayListMod extends Module {
         ScaledResolution sr = new ScaledResolution(mc);
         int count = 0;
         for (Module module : modules) {
-            if (module.getCategory() == Category.RENDER) continue;
+            if (importantModules.isEnabled() && module.getCategory() == Category.RENDER) continue;
             final Animation moduleAnimation = module.getAnimation();
             if (!module.isEnabled() && moduleAnimation.finished(Direction.BACKWARDS)) continue;
 
@@ -190,7 +185,7 @@ public class ArrayListMod extends Module {
         ScaledResolution sr = new ScaledResolution(mc);
         int count = 0;
         for (Module module : modules) {
-            if (module.getCategory() == Category.RENDER) continue;
+            if (importantModules.isEnabled() && module.getCategory() == Category.RENDER) continue;
             final Animation moduleAnimation = module.getAnimation();
 
             moduleAnimation.setDirection(module.isEnabled() ? Direction.FORWARDS : Direction.BACKWARDS);

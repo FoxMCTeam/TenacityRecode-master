@@ -135,6 +135,7 @@ public class GuiChat extends GuiScreen {
             this.mc2.ingameGUI.getChatGUI().scroll(i);
         }
     }
+
     Animation resetButtonHover;
 
     ArrayListMod arraylistMod;
