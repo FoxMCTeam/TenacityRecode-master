@@ -63,6 +63,13 @@ public class FontUtil implements Utils {
 
                     fontSizes.put(size, font);
                 }
+            } else if (type.hasThin()) {
+                for (int size : type.getSizes()) {
+                    CustomFont font = new CustomFont(type.fromSize(size));
+                    font.setThinFont(new CustomFont(type.fromThinSize(size)));
+
+                    fontSizes.put(size, font);
+                }
             } else {
                 for (int size : type.getSizes()) {
                     fontSizes.put(size, new CustomFont(type.fromSize(size)));
@@ -82,26 +89,33 @@ public class FontUtil implements Utils {
         NEVERLOSE("neverlose", 12, 18, 22),
         ICON("icon", 16, 20, 26, 35, 40);
 
-        private final ResourceLocation location, boldLocation;
-        private Font font, boldFont;
+        private final ResourceLocation location, boldLocation, thinLocation;
+        private Font font, boldFont, thinFont;
         private final int[] sizes;
 
         FontType(String fontName, String boldName, String thinName, int... sizes) {
             this.location = new ResourceLocation("Tenacity/Fonts/" + fontName + ".ttf");
             this.boldLocation = new ResourceLocation("Tenacity/Fonts/" + boldName + ".ttf");
+            this.thinLocation = new ResourceLocation("Tenacity/Fonts/" + thinName + ".ttf");
             this.sizes = sizes;
         }
 
         FontType(String fontName, String boldName, int... sizes) {
             this.location = new ResourceLocation("Tenacity/Fonts/" + fontName + ".ttf");
             this.boldLocation = new ResourceLocation("Tenacity/Fonts/" + boldName + ".ttf");
+            this.thinLocation = null;
             this.sizes = sizes;
         }
 
         FontType(String fontName, int... sizes) {
             this.location = new ResourceLocation("Tenacity/Fonts/" + fontName + ".ttf");
+            this.thinLocation = null;
             this.boldLocation = null;
             this.sizes = sizes;
+        }
+
+        public boolean hasThin() {
+            return thinLocation != null;
         }
 
         public boolean hasBold() {
@@ -111,7 +125,9 @@ public class FontUtil implements Utils {
         public Font fromSize(int size) {
             return font.deriveFont(Font.PLAIN, size);
         }
-
+        private Font fromThinSize(int size) {
+            return thinFont.deriveFont(Font.PLAIN, size);
+        }
         private Font fromBoldSize(int size) {
             return boldFont.deriveFont(Font.PLAIN, size);
         }
@@ -121,6 +137,9 @@ public class FontUtil implements Utils {
             if (boldLocation != null) {
                 boldFont = getFontData(boldLocation);
             }
+            if (thinLocation != null) {
+                thinFont = getFontData(thinLocation);
+            }
         }
 
         public CustomFont size(int size) {
@@ -129,6 +148,10 @@ public class FontUtil implements Utils {
 
         public CustomFont boldSize(int size) {
             return customFontMap.get(this).get(size).getBoldFont();
+        }
+
+        public CustomFont thinSize(int size) {
+            return customFontMap.get(this).get(size).getThinFont();
         }
     }
 

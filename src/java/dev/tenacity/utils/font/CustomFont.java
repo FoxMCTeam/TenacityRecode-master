@@ -52,6 +52,9 @@ public class CustomFont implements AbstractFontRenderer {
     @Setter
     @Getter
     private CustomFont boldFont;
+    @Setter
+    @Getter
+    private CustomFont thinFont;
     private final List<String> lines = new ArrayList<>();
     private final byte[][] charWidth;
     private final int[] textures;
