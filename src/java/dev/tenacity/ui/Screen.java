@@ -8,14 +8,24 @@ public interface Screen extends Utils {
 
     }
 
-    void initGui();
+    default void initGui() {
 
-    void keyTyped(char typedChar, int keyCode);
+    }
 
-    void drawScreen(int mouseX, int mouseY);
+    default void keyTyped(char typedChar, int keyCode) {
 
-    void mouseClicked(int mouseX, int mouseY, int button);
+    }
 
-    void mouseReleased(int mouseX, int mouseY, int state);
+    default void drawScreen(int mouseX, int mouseY) {
+
+    }
+
+    default void mouseClicked(int mouseX, int mouseY, int button) {
+
+    }
+
+    default void mouseReleased(int mouseX, int mouseY, int state) {
+
+    }
 
 }

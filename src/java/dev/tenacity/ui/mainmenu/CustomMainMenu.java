@@ -2,7 +2,6 @@ package dev.tenacity.ui.mainmenu;
 
 import dev.tenacity.Client;
 import dev.tenacity.ui.Screen;
-import dev.tenacity.ui.mainmenu.particles.ParticleEngine;
 import dev.tenacity.utils.animations.Animation;
 import dev.tenacity.utils.animations.Direction;
 import dev.tenacity.utils.animations.impl.DecelerateAnimation;
@@ -22,11 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomMainMenu extends GuiScreen {
-    private ParticleEngine particleEngine;
 
     public static boolean animatedOpen = false;
 
-    private final List<MenuButton> buttons = new ArrayList() {{
+    private final List<MenuButton> buttons = new ArrayList<>() {{
         add(new MenuButton("Singleplayer"));
         add(new MenuButton("Multiplayer"));
         add(new MenuButton("Alt Manager"));
@@ -34,12 +32,6 @@ public class CustomMainMenu extends GuiScreen {
         add(new MenuButton("Exit"));
     }};
 
-    private final List<TextButton> textButtons = new ArrayList() {{
-        add(new TextButton("Scripting"));
-        add(new TextButton("Discord"));
-    }};
-
-    private final ResourceLocation backgroundResource = new ResourceLocation("Tenacity/MainMenu/funny.png");
     private final ResourceLocation blurredRect = new ResourceLocation("Tenacity/MainMenu/rect-test.png");
 
     private static boolean firstInit = false;
@@ -51,7 +43,6 @@ public class CustomMainMenu extends GuiScreen {
             firstInit = true;
         }
 
-        if (particleEngine == null) particleEngine = new ParticleEngine();
         if (mc.gameSettings.guiScale != 2) {
             Client.prevGuiScale = mc.gameSettings.guiScale;
             Client.updateGuiScale = true;
@@ -70,9 +61,8 @@ public class CustomMainMenu extends GuiScreen {
 
 
         RenderUtil.resetColor();
-        RenderUtil.drawImage(backgroundResource, 0, 0, width, height);
 
-        particleEngine.render();
+
 
         float rectWidth = 277;
         float rectHeight = 275.5f;
@@ -89,12 +79,6 @@ public class CustomMainMenu extends GuiScreen {
         RenderUtil.color(-1);
         RenderUtil.drawImage(blurredRect, width / 2f - outlineImgWidth / 2f, height / 2f - outlineImgHeight / 2f,
                 outlineImgWidth, outlineImgHeight);
-
-
-        if (animatedOpen) {
-            //    duckSansFont80.drawCenteredString("Tenacity", width / 2f, height / 2f - 110, Color.WHITE.getRGB());
-            //    duckSansFont32.drawString(Tenacity.VERSION, width / 2f + duckSansFont80.getStringWidth("Tenacity") / 2f - (duckSansFont32.getStringWidth(Tenacity.VERSION) / 2f), height / 2f - 113, Color.WHITE.getRGB());
-        }
 
         GL11.glEnable(GL11.GL_BLEND);
 
@@ -147,51 +131,17 @@ public class CustomMainMenu extends GuiScreen {
                 }
             };
             button.drawScreen(mouseX, mouseY);
-            count += buttonHeight + 5;
-        }
-
-
-        float buttonCount = 0;
-        float buttonsWidth = (float) textButtons.stream().mapToDouble(TextButton::getWidth).sum();
-        int buttonsSize = textButtons.size();
-        buttonsWidth += duckSansFont16.getStringWidth(" | ") * (buttonsSize - 1);
-
-        int buttonIncrement = 0;
-        for (TextButton button : textButtons) {
-            button.x = width / 2f - buttonsWidth / 2f + buttonCount;
-            button.y = (height / 2f) + 120;
-            switch (button.text) {
-                case "Scripting":
-                    button.clickAction = () -> {
-                        IOUtils.openLink("https://scripting.tenacity.dev");
-                    };
-                    break;
-                case "Discord":
-                    button.clickAction = () -> {
-                        IOUtils.openLink("https://tenacity.dev/discord");
-                    };
-                    break;
-            }
-
-            button.addToEnd = (buttonIncrement != (buttonsSize - 1));
-
-            button.drawScreen(mouseX, mouseY);
-
-
-            buttonCount += button.getWidth() + duckSansFont14.getStringWidth(" | ");
-            buttonIncrement++;
+            count += (int) (buttonHeight + 5F);
         }
 
         duckSansBoldFont80.drawCenteredString("Tenacity", width / 2f, height / 2f - 110, Color.WHITE.getRGB());
         duckSansFont32.drawString(Client.VERSION, width / 2f + duckSansBoldFont80.getStringWidth("Tenacity") / 2f - (duckSansFont32.getStringWidth(Client.VERSION) / 2f), height / 2f - 113, Color.WHITE.getRGB());
-        duckSansFont18.drawCenteredString("by cedo, senoe, and tear", width / 2f, height / 2f - 68, Color.WHITE.getRGB());
-
+        duckSansFont18.drawCenteredString("by " + Client.THANKS, width / 2f, height / 2f - 68, Color.WHITE.getRGB());
     }
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
         buttons.forEach(button -> button.mouseClicked(mouseX, mouseY, mouseButton));
-        textButtons.forEach(button -> button.mouseClicked(mouseX, mouseY, mouseButton));
     }
 
     @Override
@@ -199,57 +149,6 @@ public class CustomMainMenu extends GuiScreen {
         if (Client.updateGuiScale) {
             mc.gameSettings.guiScale = Client.prevGuiScale;
             Client.updateGuiScale = false;
-        }
-    }
-
-    private static class TextButton implements Screen {
-        public float x, y;
-        @Getter
-        private final float width, height;
-        public Runnable clickAction;
-        private final String text;
-
-        private final Animation hoverAnimation = new DecelerateAnimation(150, 1);
-
-        public boolean addToEnd;
-
-        public TextButton(String text) {
-            this.text = text;
-            width = duckSansFont16.getStringWidth(text);
-            height = duckSansFont16.getHeight();
-        }
-
-        @Override
-        public void initGui() {
-
-        }
-
-        @Override
-        public void keyTyped(char typedChar, int keyCode) {
-
-        }
-
-        @Override
-        public void drawScreen(int mouseX, int mouseY) {
-            boolean hovered = HoveringUtil.isHovering(x, y, width, height, mouseX, mouseY);
-            hoverAnimation.setDirection(hovered ? Direction.FORWARDS : Direction.BACKWARDS);
-            duckSansFont16.drawString(text, x, y - (height / 2f * hoverAnimation.getOutput().floatValue()), Color.WHITE.getRGB());
-            if (addToEnd) {
-                duckSansFont16.drawString(" | ", x + width, y, Color.WHITE.getRGB());
-            }
-        }
-
-        @Override
-        public void mouseClicked(int mouseX, int mouseY, int button) {
-            boolean hovered = HoveringUtil.isHovering(x, y, width, height, mouseX, mouseY);
-            if (hovered && button == 0) {
-                clickAction.run();
-            }
-        }
-
-        @Override
-        public void mouseReleased(int mouseX, int mouseY, int state) {
-
         }
     }
 
