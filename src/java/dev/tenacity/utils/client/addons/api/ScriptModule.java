@@ -1,5 +1,6 @@
 package dev.tenacity.utils.client.addons.api;
 
+import com.cubk.event.annotations.EventTarget;
 import com.cubk.event.impl.game.TickEvent;
 import com.cubk.event.impl.game.WorldEvent;
 import com.cubk.event.impl.network.PacketReceiveEvent;
@@ -34,7 +35,7 @@ public class ScriptModule extends Module {
         setAuthor(author);
     }
 
-    @Override
+    @EventTarget
     public void onRender2DEvent(Render2DEvent event) {
         if (eventMap.containsKey("render")) {
             try {
@@ -49,7 +50,7 @@ public class ScriptModule extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onShaderEvent(ShaderEvent shaderEvent) {
         if (eventMap.containsKey("shader")) {
             try {
@@ -63,7 +64,7 @@ public class ScriptModule extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onChatReceivedEvent(ChatReceivedEvent event) {
         if (eventMap.containsKey("chat")) {
             try {
@@ -77,7 +78,7 @@ public class ScriptModule extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onSafeWalkEvent(SafeWalkEvent event) {
         if (eventMap.containsKey("safewalk")) {
             try {
@@ -91,7 +92,7 @@ public class ScriptModule extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onPlayerSendMessageEvent(PlayerSendMessageEvent event) {
         if (eventMap.containsKey("playerMessage")) {
             try {
@@ -105,7 +106,7 @@ public class ScriptModule extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onWorldEvent(WorldEvent event) {
         if(event instanceof WorldEvent.Load) {
             if (eventMap.containsKey("worldLoad")) {
@@ -121,7 +122,7 @@ public class ScriptModule extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onRender3DEvent(Render3DEvent event) {
         if (eventMap.containsKey("render3D")) {
             try {
@@ -135,7 +136,7 @@ public class ScriptModule extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onMotionEvent(MotionEvent event) {
         setSuffix(getAuthor());
         if (eventMap.containsKey("motion")) {
@@ -151,7 +152,7 @@ public class ScriptModule extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onMoveEvent(MoveEvent event) {
         if (eventMap.containsKey("move")) {
             try {
@@ -165,7 +166,7 @@ public class ScriptModule extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onTickEvent(TickEvent event) {
         if (eventMap.containsKey("tick")) {
             try {
@@ -179,7 +180,7 @@ public class ScriptModule extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onPacketSendEvent(PacketSendEvent event) {
     if (eventMap.containsKey("packetSend")) {
             try {
@@ -193,7 +194,7 @@ public class ScriptModule extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onPacketReceiveEvent(PacketReceiveEvent event) {
         if (eventMap.containsKey("packetReceive")) {
             try {
@@ -208,7 +209,7 @@ public class ScriptModule extends Module {
     }
 
 
-    @Override
+    @EventTarget
     public void onAttackEvent(AttackEvent event) {
         if (eventMap.containsKey("attack")) {
             try {
@@ -222,7 +223,7 @@ public class ScriptModule extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onRenderModelEvent(RenderModelEvent event) {
         if (eventMap.containsKey("renderModel")) {
             try {
@@ -236,7 +237,7 @@ public class ScriptModule extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onCustomBlockRender(CustomBlockRenderEvent event) {
         if (eventMap.containsKey("customBlockRender")) {
             try {
@@ -250,7 +251,7 @@ public class ScriptModule extends Module {
         }
     }
 
-    @Override
+    @EventTarget
     public void onEnable() {
         if (eventMap.containsKey("enable")) {
             try {
@@ -265,7 +266,7 @@ public class ScriptModule extends Module {
         super.onEnable();
     }
 
-    @Override
+    @EventTarget
     public void onDisable() {
         if (eventMap.containsKey("disable")) {
             try {

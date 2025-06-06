@@ -1,5 +1,6 @@
 package dev.tenacity.utils.render;
 
+import com.cubk.event.annotations.EventTarget;
 import dev.tenacity.Client;
 import com.cubk.event.impl.game.RenderTickEvent;
 import com.cubk.event.impl.game.TickEvent;
@@ -72,7 +73,7 @@ public class EntityCulling extends Module {
     }
 
 
-    @Override
+    @EventTarget
     public void onRendererLivingEntityEvent(RendererLivingEntityEvent e) {
         if (e.isPost() || !shouldPerformCulling) return;
 
@@ -143,7 +144,7 @@ public class EntityCulling extends Module {
     }
 
 
-    @Override
+    @EventTarget
     public void onRenderTickEvent(RenderTickEvent e) {
         if (e.isPre()) {
             mc.addScheduledTask(this::check);
@@ -183,7 +184,7 @@ public class EntityCulling extends Module {
         //#endif
     }
 
-    @Override
+    @EventTarget
     public void onTickEvent(TickEvent e) {
         if (e.isPost() || this.destroyTimer++ < 120) {
             return;
