@@ -67,10 +67,6 @@ public class MovementUtils implements Utils {
         }
     }
 
-    public static void setSpeed(double moveSpeed) {
-        setSpeed(moveSpeed, mc.thePlayer.rotationYaw, mc.thePlayer.movementInput.moveStrafe, mc.thePlayer.movementInput.moveForward);
-    }
-
     public static void setSpeed(MoveEvent moveEvent, double moveSpeed, float yaw, double strafe, double forward) {
         if (forward != 0.0D) {
             if (strafe > 0.0D) {
@@ -128,6 +124,7 @@ public class MovementUtils implements Utils {
         }
         return baseSpeed;
     }
+
     public static double getBaseMoveSpeedStupid() {
         double sped = 0.2873;
         if (mc.thePlayer.isPotionActive(Potion.moveSpeed)) {
@@ -143,6 +140,10 @@ public class MovementUtils implements Utils {
     public static float getSpeed() {
         if (mc.thePlayer == null || mc.theWorld == null) return 0;
         return (float) Math.sqrt(mc.thePlayer.motionX * mc.thePlayer.motionX + mc.thePlayer.motionZ * mc.thePlayer.motionZ);
+    }
+
+    public static void setSpeed(double moveSpeed) {
+        setSpeed(moveSpeed, mc.thePlayer.rotationYaw, mc.thePlayer.movementInput.moveStrafe, mc.thePlayer.movementInput.moveForward);
     }
 
     public static float getMaxFallDist() {

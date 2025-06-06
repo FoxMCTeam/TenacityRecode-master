@@ -15,11 +15,15 @@ public final class NoRotate extends Module {
     private final ModeSetting mode = new ModeSetting("Mode", "Normal", "Normal", "Cancel");
     private final BooleanSetting fakeUpdate = new BooleanSetting("Fake Update", false);
 
+    public NoRotate() {
+        super("NoRotate", Category.MISC, "Prevents servers from rotating you");
+        this.addSettings(fakeUpdate);
+    }
+
     @EventTarget
     public void onPacketReceiveEvent(PacketReceiveEvent e) {
         if (mc.thePlayer == null) return;
-        if (e.getPacket() instanceof S08PacketPlayerPosLook) {
-            S08PacketPlayerPosLook packet = (S08PacketPlayerPosLook) e.getPacket();
+        if (e.getPacket() instanceof S08PacketPlayerPosLook packet) {
             switch (mode.getMode()) {
                 case "Normal":
                     packet.setYaw(mc.thePlayer.rotationYaw);
@@ -36,11 +40,6 @@ public final class NoRotate extends Module {
                         packet.getYaw(), packet.getPitch(), mc.thePlayer.onGround));
             }
         }
-    }
-
-    public NoRotate() {
-        super("NoRotate", Category.MISC, "Prevents servers from rotating you");
-        this.addSettings(fakeUpdate);
     }
 
 }

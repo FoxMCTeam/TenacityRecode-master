@@ -27,27 +27,27 @@ public class NumberSetting extends Setting {
         return value;
     }
 
-    
+
     public double getMaxValue() {
         return maxValue;
     }
 
-    
+
     public double getMinValue() {
         return minValue;
     }
 
-    
+
     public double getDefaultValue() {
         return defaultValue;
     }
 
-    
+
     public Double getValue() {
         return value;
     }
 
-    
+
     public void setValue(double value) {
         value = clamp(value, this.minValue, this.maxValue);
         value = Math.round(value * (1.0 / this.increment)) / (1.0 / this.increment);

@@ -19,15 +19,14 @@ import java.awt.*;
 @Getter
 @RequiredArgsConstructor
 public class ActionButton implements Screen {
+    private final String name;
+    private final Animation hoverAnimation = new DecelerateAnimation(250, 1);
     private float x, y, width, height, alpha;
     private boolean bypass = false;
-    private final String name;
     private boolean bold = false;
     private CustomFont font;
     private Color color = ColorUtil.tripleColor(55);
     private Runnable clickAction;
-
-    private final Animation hoverAnimation = new DecelerateAnimation(250, 1);
 
     @Override
     public void initGui() {

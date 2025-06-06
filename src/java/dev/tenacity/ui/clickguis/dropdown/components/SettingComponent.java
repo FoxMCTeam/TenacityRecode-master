@@ -1,10 +1,10 @@
 package dev.tenacity.ui.clickguis.dropdown.components;
 
-import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.Setting;
 import dev.tenacity.ui.Screen;
 import dev.tenacity.utils.misc.HoveringUtil;
+import dev.tenacity.utils.tuples.Pair;
 import lombok.Getter;
 
 import java.awt.*;
@@ -26,7 +26,7 @@ public abstract class SettingComponent<T extends Setting> implements Screen {
     }
 
     public boolean isHoveringBox(int mouseX, int mouseY) {
-        return HoveringUtil.isHovering(x,y,width,height, mouseX, mouseY);
+        return HoveringUtil.isHovering(x, y, width, height, mouseX, mouseY);
     }
 
     //Idk why 40 is perfect for it

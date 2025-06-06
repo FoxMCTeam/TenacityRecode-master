@@ -58,8 +58,7 @@ public class SpeedMine extends Module {
 
     @EventTarget
     public void onPacketSendEvent(PacketSendEvent e) {
-        if (e.getPacket() instanceof C07PacketPlayerDigging) {
-            C07PacketPlayerDigging packet = (C07PacketPlayerDigging) e.getPacket();
+        if (e.getPacket() instanceof C07PacketPlayerDigging packet) {
             if (packet.getStatus() == C07PacketPlayerDigging.Action.START_DESTROY_BLOCK) {
                 boost = true;
                 pos = packet.getPosition();

@@ -11,7 +11,6 @@ public class ContinualAnimation {
     private Animation animation = new SmoothStepAnimation(0, 0, Direction.BACKWARDS);
 
 
-    
     public void animate(float destination, int ms) {
         output = endpoint - animation.getOutput().floatValue();
         endpoint = destination;
@@ -25,7 +24,7 @@ public class ContinualAnimation {
         return output == endpoint || animation.isDone();
     }
 
-    
+
     public float getOutput() {
         output = endpoint - animation.getOutput().floatValue();
         return output;

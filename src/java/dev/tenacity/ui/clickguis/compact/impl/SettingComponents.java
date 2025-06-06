@@ -38,9 +38,9 @@ public class SettingComponents implements Screen {
     public Color actualColor;
     public float x, y, rectWidth;
     public Setting draggingNumber;
+    public boolean typing;
     private boolean hueFlag;
     private boolean saturationFlag;
-    public boolean typing;
 
     public SettingComponents(Module module) {
         this.module = module;
@@ -48,25 +48,21 @@ public class SettingComponents implements Screen {
             if (setting instanceof NumberSetting) {
                 numberSettingMap.put((NumberSetting) setting, 0f);
             }
-            if (setting instanceof StringSetting) {
-                StringSetting stringSetting = (StringSetting) setting;
+            if (setting instanceof StringSetting stringSetting) {
                 TextField textField = new TextField(duckSansFont14);
                 textField.setText(stringSetting.getString());
                 textField.setCursorPositionZero();
                 textFieldMap.put(stringSetting, textField);
             }
-            if (setting instanceof ColorSetting) {
-                ColorSetting colorSetting = (ColorSetting) setting;
+            if (setting instanceof ColorSetting colorSetting) {
                 Animation animation = new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
                 colorSettingMap.put(colorSetting, animation);
             }
-            if (setting instanceof ModeSetting) {
-                ModeSetting modeSetting = (ModeSetting) setting;
+            if (setting instanceof ModeSetting modeSetting) {
                 Animation animation = new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
                 modeSettingMap.put(modeSetting, animation);
             }
-            if (setting instanceof MultipleBoolSetting) {
-                MultipleBoolSetting multipleBoolSetting = (MultipleBoolSetting) setting;
+            if (setting instanceof MultipleBoolSetting multipleBoolSetting) {
                 Animation animation = new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
                 multiBoolMap.put(multipleBoolSetting, animation);
             }
@@ -101,8 +97,7 @@ public class SettingComponents implements Screen {
             float settingY = y + (count * settingHeight);
             float middleSettingY = (float) (MathUtils.roundToHalf(y + duckSansFont16.getMiddleOfBox(settingHeight) + (count * settingHeight)));
 
-            if (setting instanceof NumberSetting) {
-                NumberSetting numberSetting = (NumberSetting) setting;
+            if (setting instanceof NumberSetting numberSetting) {
                 duckSansFont16.drawString(setting.name, x + 5, middleSettingY, -1);
 
                 String value = String.valueOf(MathUtils.round(numberSetting.getValue(), 2));
@@ -168,8 +163,7 @@ public class SettingComponents implements Screen {
                 // RenderUtil.drawGoodCircle(sliderX + Math.max(3, numberSettingMap.get(numberSetting)), sliderY + circleSize /2f - .5f, circleSize, accentColor.getRGB());
 
             }
-            if (setting instanceof BooleanSetting) {
-                BooleanSetting booleanSetting = (BooleanSetting) setting;
+            if (setting instanceof BooleanSetting booleanSetting) {
                 duckSansFont16.drawString(setting.name, x + 5, middleSettingY, -1);
 
 
@@ -197,8 +191,7 @@ public class SettingComponents implements Screen {
 
 
             }
-            if (setting instanceof ColorSetting) {
-                ColorSetting colorSetting = (ColorSetting) setting;
+            if (setting instanceof ColorSetting colorSetting) {
 
                 Animation clickAnimation = colorSettingMap.get(colorSetting);
 
@@ -234,7 +227,7 @@ public class SettingComponents implements Screen {
                     float gradientX = x + 5;
                     float gradientY = settingY + 20;
                     float gradientWidth = 115;
-                    float gradientHeight = (float) (10 + (35 * clickAnimation.getOutput().floatValue()));
+                    float gradientHeight = 10 + (35 * clickAnimation.getOutput().floatValue());
 
                     if (type == GuiEvents.CLICK) {
                         if (button == 0) {
@@ -261,13 +254,13 @@ public class SettingComponents implements Screen {
                         }
                     }
 
-                    int hsbZeroOneOne = ColorUtil.applyOpacity(Color.getHSBColor(hsb[0], 1, 1).getRGB(), (float) clickAnimation.getOutput().floatValue());
+                    int hsbZeroOneOne = ColorUtil.applyOpacity(Color.getHSBColor(hsb[0], 1, 1).getRGB(), clickAnimation.getOutput().floatValue());
 
-                    int hsbZeroZeroOne = ColorUtil.applyOpacity(Color.getHSBColor(hsb[0], 0, 1).getRGB(), (float) clickAnimation.getOutput().floatValue());
+                    int hsbZeroZeroOne = ColorUtil.applyOpacity(Color.getHSBColor(hsb[0], 0, 1).getRGB(), clickAnimation.getOutput().floatValue());
 
-                    int hsbZeroOneZero = ColorUtil.applyOpacity(Color.getHSBColor(hsb[0], 1, 0).getRGB(), (float) clickAnimation.getOutput().floatValue());
+                    int hsbZeroOneZero = ColorUtil.applyOpacity(Color.getHSBColor(hsb[0], 1, 0).getRGB(), clickAnimation.getOutput().floatValue());
 
-                    int hue = ColorUtil.applyOpacity(Color.getHSBColor(hsb[0], 0, 0).getRGB(), (float) clickAnimation.getOutput().floatValue());
+                    int hue = ColorUtil.applyOpacity(Color.getHSBColor(hsb[0], 0, 0).getRGB(), clickAnimation.getOutput().floatValue());
 
                     //Picker gradients
                     Gui.drawRect2(gradientX, gradientY, gradientWidth, gradientHeight, hsbZeroOneOne);
@@ -279,9 +272,9 @@ public class SettingComponents implements Screen {
                             ColorUtil.applyOpacity(Color.getHSBColor(hsb[0], 1, 0).getRGB(), 0), hsbZeroOneZero);
 
 
-                    int rectColor = ColorUtil.applyOpacity(disabledColor.getRGB(), (float) clickAnimation.getOutput().floatValue());
-                    int textColor = ColorUtil.applyOpacity(-1, (float) clickAnimation.getOutput().floatValue());
-                    float colorInfoWidth = (float) duckSansFont14.getStringWidth("R: 255") + 6;
+                    int rectColor = ColorUtil.applyOpacity(disabledColor.getRGB(), clickAnimation.getOutput().floatValue());
+                    int textColor = ColorUtil.applyOpacity(-1, clickAnimation.getOutput().floatValue());
+                    float colorInfoWidth = duckSansFont14.getStringWidth("R: 255") + 6;
 
 
                     Gui.drawRect2(gradientX, gradientY + gradientHeight + 4, colorInfoWidth, 8, rectColor);
@@ -375,8 +368,7 @@ public class SettingComponents implements Screen {
 
                 count += (4 * clickAnimation.getOutput().floatValue());
             }
-            if (setting instanceof StringSetting) {
-                StringSetting stringSetting = (StringSetting) setting;
+            if (setting instanceof StringSetting stringSetting) {
                 RenderUtil.resetColor();
                 duckSansFont16.drawString(setting.name, x + 5, middleSettingY, -1);
 
@@ -402,11 +394,10 @@ public class SettingComponents implements Screen {
                 stringSetting.setString(textField.getText());
 
             }
-            if (setting instanceof ModeSetting) {
-                ModeSetting modeSetting = (ModeSetting) setting;
+            if (setting instanceof ModeSetting modeSetting) {
                 duckSansFont16.drawString(setting.name, x + 5, middleSettingY, -1);
 
-                float modeRectWidth = (float) duckSansFont14.getStringWidth(StringUtils.getLongestModeName(modeSetting.modes)) + 10;
+                float modeRectWidth = duckSansFont14.getStringWidth(StringUtils.getLongestModeName(modeSetting.modes)) + 10;
 
                 float modeSize = 10;
                 float realY = settingY + settingHeight / 2f - modeSize / 2f;
@@ -465,8 +456,7 @@ public class SettingComponents implements Screen {
 
                 count += ((2 + ((modeSetting.modes.size() - 1) * modeSize)) / settingHeight) * openAnimation.getOutput().floatValue();
             }
-            if (setting instanceof MultipleBoolSetting) {
-                MultipleBoolSetting multipleBoolSetting = (MultipleBoolSetting) setting;
+            if (setting instanceof MultipleBoolSetting multipleBoolSetting) {
 
                 Animation openingAnimation = multiBoolMap.get(multipleBoolSetting);
                 duckSansFont16.drawString(setting.name, x + 5, middleSettingY, -1);
@@ -504,10 +494,10 @@ public class SettingComponents implements Screen {
                         int hoverColor = hovered ? ColorUtil.darker(toggleColor, .8f).getRGB() : toggleColor.getRGB();
                         RenderUtil.resetColor();
                         Gui.drawRect2(x + rectWidth - (width + 5), boolSettingY - duckSansFont14.getMiddleOfBox(boolRectSize),
-                                width, boolRectSize, ColorUtil.applyOpacity(hoverColor, (float) openingAnimation.getOutput().floatValue()));
+                                width, boolRectSize, ColorUtil.applyOpacity(hoverColor, openingAnimation.getOutput().floatValue()));
 
                         RenderUtil.resetColor();
-                        duckSansFont14.drawString(booleanSetting.name, x + rectWidth - (width + 2), boolSettingY, ColorUtil.applyOpacity(-1, (float) openingAnimation.getOutput().floatValue()));
+                        duckSansFont14.drawString(booleanSetting.name, x + rectWidth - (width + 2), boolSettingY, ColorUtil.applyOpacity(-1, openingAnimation.getOutput().floatValue()));
 
                         seperation += boolRectSize * openingAnimation.getOutput().floatValue();
                     }

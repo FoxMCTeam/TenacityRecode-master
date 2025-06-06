@@ -33,23 +33,30 @@ public final class LongJump extends Module {
     private final ModeSetting watchdogMode = new ModeSetting("Watchdog Mode", "Damage", "Damage", "Damageless");
     private final NumberSetting damageSpeed = new NumberSetting("Damage Speed", 1, 20, 1, 0.5);
     private final BooleanSetting spoofY = new BooleanSetting("Spoof Y", false);
+    private final TimerUtil jumpTimer = new TimerUtil();
+    private final List<Packet> packets = new ArrayList<>();
     private int movementTicks = 0;
     private double speed;
     private float pitch;
     private int prevSlot, ticks = 0;
     private boolean damagedBow;
-    private final TimerUtil jumpTimer = new TimerUtil();
     private boolean damaged;
     private double x;
     private double y;
     private double z;
-    private final List<Packet> packets = new ArrayList<>();
     private int stage;
+
+    public LongJump() {
+        super("LongJump", Category.MOVEMENT, "jump further");
+        watchdogMode.addParent(mode, m -> m.is("Watchdog"));
+        damageSpeed.addParent(mode, m -> m.is("Watchdog") && watchdogMode.is("Damage"));
+        this.addSettings(mode, watchdogMode, damageSpeed, spoofY);
+    }
 
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
         setSuffix(mode.getMode());
-        if(spoofY.isEnabled()) mc.thePlayer.posY = y;
+        if (spoofY.isEnabled()) mc.thePlayer.posY = y;
         switch (mode.getMode()) {
             case "Vanilla":
                 if (MovementUtils.isMoving() && mc.thePlayer.onGround) {
@@ -58,50 +65,50 @@ public final class LongJump extends Module {
                 }
                 break;
             case "Watchdog":
-                if(event.isPre()) {
-                    switch(watchdogMode.getMode()) {
+                if (event.isPre()) {
+                    switch (watchdogMode.getMode()) {
                         case "Damage":
-                            if(mc.thePlayer.onGround) {
+                            if (mc.thePlayer.onGround) {
                                 stage++;
-                                if(stage <= 3)
+                                if (stage <= 3)
                                     mc.thePlayer.jump();
-                                if(stage > 5 && damaged)
+                                if (stage > 5 && damaged)
                                     toggle();
                             }
-                            if(stage <= 3) {
+                            if (stage <= 3) {
                                 event.setOnGround(false);
                                 mc.thePlayer.posY = y;
                                 mc.timer.timerSpeed = damageSpeed.getValue().floatValue();
                                 speed = 1.2;
                             }
-                            if(mc.thePlayer.hurtTime > 0) {
+                            if (mc.thePlayer.hurtTime > 0) {
                                 damaged = true;
                                 ticks++;
-                                if(ticks < 2)
+                                if (ticks < 2)
                                     mc.thePlayer.motionY = 0.41999998688698;
                                 MovementUtils.setSpeed(MovementUtils.getBaseMoveSpeed() * speed);
                                 speed -= 0.01;
                                 mc.timer.timerSpeed = 1;
                             }
-                            if(damaged) {
+                            if (damaged) {
                                 mc.thePlayer.motionY += 0.0049;
                             }
                             break;
                         case "Damageless":
                             stage++;
 
-                            if(stage == 1 && mc.thePlayer.onGround) {
+                            if (stage == 1 && mc.thePlayer.onGround) {
                                 mc.thePlayer.motionY = 0.42;
                                 MovementUtils.setSpeed(MovementUtils.getBaseMoveSpeed() * 1.2);
                                 speed = 1.45f;
                             }
 
-                            if(stage > 1) {
+                            if (stage > 1) {
                                 MovementUtils.setSpeed(MovementUtils.getBaseMoveSpeed() * speed);
                                 speed -= 0.015;
                             }
 
-                            if(mc.thePlayer.onGround && stage > 1)
+                            if (mc.thePlayer.onGround && stage > 1)
                                 toggle();
                             break;
                     }
@@ -135,9 +142,9 @@ public final class LongJump extends Module {
                     if (mc.thePlayer.onGround && jumpTimer.hasTimeElapsed(1000)) {
                         toggle();
                     }
-                    if(mc.thePlayer.onGround && mc.thePlayer.motionY > 0.003){
+                    if (mc.thePlayer.onGround && mc.thePlayer.motionY > 0.003) {
                         mc.thePlayer.motionY = 0.575f;
-                    }else{
+                    } else {
                         MovementUtils.setSpeed(MovementUtils.getBaseMoveSpeed() * 1.8);
                     }
                 }
@@ -164,7 +171,7 @@ public final class LongJump extends Module {
                     }
                 }
         }
-        if(!mode.is("Watchdog"))
+        if (!mode.is("Watchdog"))
             ticks++;
     }
 
@@ -178,7 +185,7 @@ public final class LongJump extends Module {
             event.setX(0);
             event.setZ(0);
         }
-        if(!damaged && mode.is("Watchdog") && watchdogMode.is("Damage")) {
+        if (!damaged && mode.is("Watchdog") && watchdogMode.is("Damage")) {
             event.setSpeed(0);
         }
     }
@@ -236,13 +243,6 @@ public final class LongJump extends Module {
         packets.forEach(PacketUtils::sendPacketNoEvent);
         packets.clear();
         super.onDisable();
-    }
-
-    public LongJump() {
-        super("LongJump", Category.MOVEMENT, "jump further");
-        watchdogMode.addParent(mode, m -> m.is("Watchdog"));
-        damageSpeed.addParent(mode, m -> m.is("Watchdog") && watchdogMode.is("Damage"));
-        this.addSettings(mode, watchdogMode, damageSpeed, spoofY);
     }
 
 }

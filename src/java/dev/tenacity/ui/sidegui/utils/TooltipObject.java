@@ -1,6 +1,5 @@
 package dev.tenacity.ui.sidegui.utils;
 
-import dev.tenacity.utils.tuples.mutable.MutablePair;
 import dev.tenacity.ui.Screen;
 import dev.tenacity.utils.animations.Animation;
 import dev.tenacity.utils.animations.Direction;
@@ -8,23 +7,25 @@ import dev.tenacity.utils.animations.impl.DecelerateAnimation;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.RenderUtil;
 import dev.tenacity.utils.render.RoundedUtil;
+import dev.tenacity.utils.tuples.mutable.MutablePair;
 import lombok.Getter;
 import lombok.Setter;
 
 public class TooltipObject implements Screen {
 
+    @Getter
+    private final Animation fadeInAnimation = new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
     @Setter
     @Getter
     private boolean hovering = false;
     @Setter
     private boolean round = true;
-
-    @Getter
-    private final Animation fadeInAnimation = new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
-
     private String tooltip;
     //This is so stupid but it works
     private String additionalInformation;
+    private float width = 150;
+    private float height = 40;
+
 
     public TooltipObject(String tooltip) {
         this.tooltip = tooltip;
@@ -32,7 +33,6 @@ public class TooltipObject implements Screen {
 
     public TooltipObject() {
     }
-
 
     @Override
     public void initGui() {
@@ -43,9 +43,6 @@ public class TooltipObject implements Screen {
     public void keyTyped(char typedChar, int keyCode) {
 
     }
-
-    private float width = 150;
-    private float height = 40;
 
     @Override
     public void drawScreen(int mouseX, int mouseY) {
@@ -85,10 +82,10 @@ public class TooltipObject implements Screen {
 
             RenderUtil.scissorStart(x - 1.5f, y - 1.5f, (width + 4) * fadeAnim, height + 4);
 
-            if(round){
+            if (round) {
                 RoundedUtil.drawRound(x - .75f, y - .75f, width + 1.5f, height + 1.5f, 3, ColorUtil.tripleColor(45, fadeAnim));
                 RoundedUtil.drawRound(x, y, width, height, 2.5f, ColorUtil.applyOpacity(ColorUtil.tripleColor(15), fadeAnim));
-            }else {
+            } else {
                 RenderUtil.drawBorderedRect(x, y, width, height, 1, ColorUtil.tripleColor(15, fadeAnim).getRGB(),
                         ColorUtil.tripleColor(45, fadeAnim).getRGB());
             }

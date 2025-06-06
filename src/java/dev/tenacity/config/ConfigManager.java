@@ -142,9 +142,8 @@ public class ConfigManager {
                                     if (setting instanceof BooleanSetting) {
                                         ((BooleanSetting) setting).setState(Boolean.parseBoolean(String.valueOf(cfgSetting.value)));
                                     }
-                                    if (setting instanceof ModeSetting) {
+                                    if (setting instanceof ModeSetting ms) {
                                         String value = String.valueOf(cfgSetting.value);
-                                        ModeSetting ms = (ModeSetting) setting;
                                         if (ms.modes.contains(value)) {
                                             ms.setCurrentMode(value);
                                         } else {
@@ -152,8 +151,7 @@ public class ConfigManager {
                                             Client.LOGGER.info(String.format("The value of setting %s in module %s was reset", ms.name, module.getName()));
                                         }
                                     }
-                                    if (setting instanceof NumberSetting) {
-                                        NumberSetting ss = (NumberSetting) setting;
+                                    if (setting instanceof NumberSetting ss) {
                                         double value;
                                         try {
                                             value = Double.parseDouble(String.valueOf(cfgSetting.value));
@@ -163,9 +161,8 @@ public class ConfigManager {
                                         }
                                         ss.setValue(value);
                                     }
-                                    if (setting instanceof MultipleBoolSetting) {
+                                    if (setting instanceof MultipleBoolSetting mbs) {
                                         LinkedTreeMap<String, Boolean> boolMap = (LinkedTreeMap<String, Boolean>) cfgSetting.value;
-                                        MultipleBoolSetting mbs = (MultipleBoolSetting) setting;
                                         for (String s : boolMap.keySet()) {
                                             BooleanSetting childSetting = mbs.getSetting(s);
                                             if (childSetting != null && boolMap.get(s) != null) {
@@ -173,8 +170,7 @@ public class ConfigManager {
                                             }
                                         }
                                     }
-                                    if (setting instanceof ColorSetting) {
-                                        ColorSetting colorSetting = (ColorSetting) setting;
+                                    if (setting instanceof ColorSetting colorSetting) {
                                         //If it is rainbow
                                         if (JsonParser.parseString(cfgSetting.value.toString()).isJsonObject()) {
                                             JsonObject colorObject = JsonParser.parseString(cfgSetting.value.toString()).getAsJsonObject();

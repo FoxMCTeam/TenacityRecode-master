@@ -1,12 +1,11 @@
 package dev.tenacity.module.impl.display;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.utils.tuples.Pair;
-import dev.tenacity.Client;
 import com.cubk.event.impl.render.PreRenderEvent;
 import com.cubk.event.impl.render.Render2DEvent;
 import com.cubk.event.impl.render.Render3DEvent;
 import com.cubk.event.impl.render.ShaderEvent;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.combat.KillAura;
@@ -25,6 +24,7 @@ import dev.tenacity.utils.objects.PlayerDox;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.ESPUtil;
 import dev.tenacity.utils.render.RenderUtil;
+import dev.tenacity.utils.tuples.Pair;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.Entity;
@@ -35,13 +35,16 @@ import java.awt.*;
 
 public class TargetHUDMod extends Module {
 
+    public static boolean renderLayers = true;
     private final ModeSetting targetHud = new ModeSetting("Mode", "Tenacity", "Tenacity", "Old Tenacity", "Rise", "Exhibition", "Auto-Dox", "Akrien", "Astolfo", "Novoline");
     private final BooleanSetting trackTarget = new BooleanSetting("Track Target", false);
     private final ModeSetting trackingMode = new ModeSetting("Tracking Mode", "Middle", "Middle", "Top", "Left", "Right");
-
-    public static boolean renderLayers = true;
-
     private final GradientColorWheel colorWheel = new GradientColorWheel();
+    private final Dragging drag = Client.INSTANCE.createDrag(this, "targetHud", 300, 300);
+    private final Animation openAnimation = new DecelerateAnimation(175, .5);
+    private EntityLivingBase target;
+    private KillAura killAura;
+    private Vector4f targetVector;
 
     public TargetHUDMod() {
         super("TargetHUD", Category.DISPLAY, "Displays info about the KillAura target");
@@ -50,21 +53,11 @@ public class TargetHUDMod extends Module {
         TargetHUD.init();
     }
 
-    private EntityLivingBase target;
-    private final Dragging drag = Client.INSTANCE.createDrag(this, "targetHud", 300, 300);
-
-    private final Animation openAnimation = new DecelerateAnimation(175, .5);
-
-    private KillAura killAura;
-
-    private Vector4f targetVector;
-
     @EventTarget
     public void onRender3DEvent(Render3DEvent event) {
         if (trackTarget.isEnabled() && target != null) {
             for (Entity entity : mc.theWorld.loadedEntityList) {
-                if (entity instanceof EntityLivingBase) {
-                    EntityLivingBase entityLivingBase = (EntityLivingBase) entity;
+                if (entity instanceof EntityLivingBase entityLivingBase) {
                     if (target.equals(entityLivingBase)) {
                         targetVector = ESPUtil.getEntityPositionsOn2D(entity);
                     }

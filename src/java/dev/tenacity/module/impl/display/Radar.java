@@ -1,9 +1,9 @@
 package dev.tenacity.module.impl.display;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.Client;
 import com.cubk.event.impl.render.Render2DEvent;
 import com.cubk.event.impl.render.ShaderEvent;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.BooleanSetting;
@@ -29,19 +29,16 @@ import java.util.List;
 public class Radar extends Module {
 
     public final NumberSetting size = new NumberSetting("Size", 90, 125, 75, 1);
-    private final ColorSetting playerColor = new ColorSetting("Player Color", Color.RED);
-    private final ColorSetting mobColor = new ColorSetting("Mob Color", Color.ORANGE);
-    private final ColorSetting animalColor = new ColorSetting("Animal Color", Color.BLUE);
-    private final ColorSetting itemColor = new ColorSetting("Item Color", Color.YELLOW);
-
     public final MultipleBoolSetting targets = new MultipleBoolSetting("Entities",
             new BooleanSetting("Players", true),
             new BooleanSetting("Mobs", true),
             new BooleanSetting("Animals", true),
             new BooleanSetting("Items", true));
-
-
     public final Dragging drag = Client.INSTANCE.createDrag(this, "radar", 5, 40);
+    private final ColorSetting playerColor = new ColorSetting("Player Color", Color.RED);
+    private final ColorSetting mobColor = new ColorSetting("Mob Color", Color.ORANGE);
+    private final ColorSetting animalColor = new ColorSetting("Animal Color", Color.BLUE);
+    private final ColorSetting itemColor = new ColorSetting("Item Color", Color.YELLOW);
     private final List<Entity> entities = new ArrayList<>();
     private final GradientColorWheel colorWheel = new GradientColorWheel();
 

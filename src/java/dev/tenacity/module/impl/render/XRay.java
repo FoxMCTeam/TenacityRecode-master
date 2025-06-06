@@ -54,6 +54,19 @@ public class XRay extends Module {
         addSettings(ores, opacity, bypass);
     }
 
+    public static boolean isWhitelisted(Block block) {
+        for (Ore o : Ore.values()) {
+            if (o.ore == block) {
+                return o.setting.isEnabled();
+            }
+        }
+        return false;
+    }
+
+    public static boolean isExposed(IBlockAccess worldIn, BlockPos pos, EnumFacing side, double minY, double maxY, double minZ, double maxZ, double minX, double maxX) {
+        return side == EnumFacing.DOWN && minY > 0.0D || (side == EnumFacing.UP && maxY < 1.0D || (side == EnumFacing.NORTH && minZ > 0.0D || (side == EnumFacing.SOUTH && maxZ < 1.0D || (side == EnumFacing.WEST && minX > 0.0D || (side == EnumFacing.EAST && maxX < 1.0D || !worldIn.getBlockState(pos).getBlock().isOpaqueCube())))));
+    }
+
     @EventTarget
     public void onPlayerMoveUpdateEvent(PlayerMoveUpdateEvent e) {
         if (bypass.isEnabled() && !mc.isSingleplayer()) {
@@ -74,19 +87,6 @@ public class XRay extends Module {
                 });
             }
         }
-    }
-
-    public static boolean isWhitelisted(Block block) {
-        for (Ore o : Ore.values()) {
-            if (o.ore == block) {
-                return o.setting.isEnabled();
-            }
-        }
-        return false;
-    }
-
-    public static boolean isExposed(IBlockAccess worldIn, BlockPos pos, EnumFacing side, double minY, double maxY, double minZ, double maxZ, double minX, double maxX) {
-        return side == EnumFacing.DOWN && minY > 0.0D || (side == EnumFacing.UP && maxY < 1.0D || (side == EnumFacing.NORTH && minZ > 0.0D || (side == EnumFacing.SOUTH && maxZ < 1.0D || (side == EnumFacing.WEST && minX > 0.0D || (side == EnumFacing.EAST && maxX < 1.0D || !worldIn.getBlockState(pos).getBlock().isOpaqueCube())))));
     }
 
     @Override

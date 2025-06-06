@@ -1,21 +1,21 @@
 package dev.tenacity.module.impl.render;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.module.impl.display.HUDMod;
-import dev.tenacity.utils.tuples.Pair;
-import dev.tenacity.Client;
 import com.cubk.event.impl.game.WorldEvent;
 import com.cubk.event.impl.render.Render2DEvent;
 import com.cubk.event.impl.render.RenderChestEvent;
 import com.cubk.event.impl.render.RenderModelEvent;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
+import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.module.settings.ParentAttribute;
 import dev.tenacity.module.settings.impl.*;
 import dev.tenacity.utils.animations.Animation;
 import dev.tenacity.utils.animations.impl.DecelerateAnimation;
 import dev.tenacity.utils.misc.MathUtils;
 import dev.tenacity.utils.render.*;
+import dev.tenacity.utils.tuples.Pair;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.shader.Framebuffer;
@@ -42,6 +42,11 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class GlowESP extends Module {
 
+    private static final List<Framebuffer> framebufferList = new ArrayList<>();
+    public static boolean renderNameTags = true;
+    public static boolean renderGlint = true;
+    public static Animation fadeIn;
+    private static int currentIterations;
     private final BooleanSetting kawaseGlow = new BooleanSetting("Kawase Glow", false);
     private final ModeSetting colorMode = new ModeSetting("Color Mode", "Sync", "Sync", "Random", "Custom");
     private final MultipleBoolSetting validEntities = new MultipleBoolSetting("Entities",
@@ -59,6 +64,16 @@ public class GlowESP extends Module {
     private final NumberSetting offsetSetting = new NumberSetting("Offset", 4, 10, 2, 1);
     private final NumberSetting exposure = new NumberSetting("Exposure", 2.2, 3.5, .5, .1);
     private final BooleanSetting seperate = new BooleanSetting("Seperate Texture", false);
+    private final ShaderUtil chamsShader = new ShaderUtil("chams");
+    private final ShaderUtil outlineShader = new ShaderUtil("Tenacity/Shaders/outline.frag");
+    private final ShaderUtil glowShader = new ShaderUtil("glow");
+    private final ShaderUtil kawaseGlowShader = new ShaderUtil("kawaseDownBloom");
+    private final ShaderUtil kawaseGlowShader2 = new ShaderUtil("kawaseUpGlow");
+    private final List<Entity> entities = new ArrayList<>();
+    private final Map<Object, Color> entityColorMap = new HashMap<>();
+    public Framebuffer framebuffer;
+    public Framebuffer outlineFrameBuffer;
+    public Framebuffer glowFrameBuffer;
 
     public GlowESP() {
         super("GlowESP", Category.RENDER, "ESP that glows on players");
@@ -73,27 +88,21 @@ public class GlowESP extends Module {
         addSettings(kawaseGlow, colorMode, validEntities, playerColor, animalColor, mobColor, chestColor, hurtTimeColor, iterationsSetting, offsetSetting, radius, exposure, seperate);
     }
 
-    public static boolean renderNameTags = true;
-    private final ShaderUtil chamsShader = new ShaderUtil("chams");
-    private final ShaderUtil outlineShader = new ShaderUtil("Tenacity/Shaders/outline.frag");
-    private final ShaderUtil glowShader = new ShaderUtil("glow");
-    private final ShaderUtil kawaseGlowShader = new ShaderUtil("kawaseDownBloom");
-    private final ShaderUtil kawaseGlowShader2 = new ShaderUtil("kawaseUpGlow");
+    private static void renderFBO(Framebuffer framebuffer, int framebufferTexture, ShaderUtil shader, float offset) {
+        framebuffer.framebufferClear();
+        framebuffer.bindFramebuffer(false);
+        shader.init();
+        RenderUtil.bindTexture(framebufferTexture);
+        shader.setUniformf("offset", offset, offset);
+        shader.setUniformi("inTexture", 0);
+        shader.setUniformi("check", 0);
+        shader.setUniformf("lastPass", 0);
+        shader.setUniformf("halfpixel", 1.0f / framebuffer.framebufferWidth, 1.0f / framebuffer.framebufferHeight);
+        shader.setUniformf("iResolution", framebuffer.framebufferWidth, framebuffer.framebufferHeight);
 
-    public Framebuffer framebuffer;
-    public Framebuffer outlineFrameBuffer;
-
-    public Framebuffer glowFrameBuffer;
-    public static boolean renderGlint = true;
-
-    private final List<Entity> entities = new ArrayList<>();
-    private final Map<Object, Color> entityColorMap = new HashMap<>();
-
-    public static Animation fadeIn;
-
-    private static int currentIterations;
-
-    private static final List<Framebuffer> framebufferList = new ArrayList<>();
+        ShaderUtil.drawQuads();
+        shader.unload();
+    }
 
     @EventTarget
     public void onWorldEvent(WorldEvent event) {
@@ -223,7 +232,7 @@ public class GlowESP extends Module {
                 kawaseGlowShader2.setUniformi("inTexture", 0);
                 kawaseGlowShader2.setUniformi("check", seperate.isEnabled() ? 1 : 0);
                 kawaseGlowShader2.setUniformf("lastPass", 1);
-                kawaseGlowShader2.setUniformf("exposure", (float) (exposure.getValue().floatValue() * fadeIn.getOutput().floatValue()));
+                kawaseGlowShader2.setUniformf("exposure", exposure.getValue().floatValue() * fadeIn.getOutput().floatValue());
                 kawaseGlowShader2.setUniformi("textureToCheck", 16);
                 kawaseGlowShader2.setUniformf("halfpixel", 1.0f / lastBuffer.framebufferWidth, 1.0f / lastBuffer.framebufferHeight);
                 kawaseGlowShader2.setUniformf("iResolution", lastBuffer.framebufferWidth, lastBuffer.framebufferHeight);
@@ -313,23 +322,6 @@ public class GlowESP extends Module {
         }
     }
 
-    private static void renderFBO(Framebuffer framebuffer, int framebufferTexture, ShaderUtil shader, float offset) {
-        framebuffer.framebufferClear();
-        framebuffer.bindFramebuffer(false);
-        shader.init();
-        RenderUtil.bindTexture(framebufferTexture);
-        shader.setUniformf("offset", offset, offset);
-        shader.setUniformi("inTexture", 0);
-        shader.setUniformi("check", 0);
-        shader.setUniformf("lastPass", 0);
-        shader.setUniformf("halfpixel", 1.0f / framebuffer.framebufferWidth, 1.0f / framebuffer.framebufferHeight);
-        shader.setUniformf("iResolution", framebuffer.framebufferWidth, framebuffer.framebufferHeight);
-
-        ShaderUtil.drawQuads();
-        shader.unload();
-    }
-
-
     public void setupGlowUniforms(float dir1, float dir2) {
         glowShader.setUniformi("texture", 0);
         if (seperate.isEnabled()) {
@@ -338,7 +330,7 @@ public class GlowESP extends Module {
         glowShader.setUniformf("radius", radius.getValue().floatValue());
         glowShader.setUniformf("texelSize", 1.0f / mc.displayWidth, 1.0f / mc.displayHeight);
         glowShader.setUniformf("direction", dir1, dir2);
-        glowShader.setUniformf("exposure", (float) (exposure.getValue().floatValue() * fadeIn.getOutput().floatValue()));
+        glowShader.setUniformf("exposure", exposure.getValue().floatValue() * fadeIn.getOutput().floatValue());
         glowShader.setUniformi("avoidTexture", seperate.isEnabled() ? 1 : 0);
 
         final FloatBuffer buffer = BufferUtils.createFloatBuffer(256);
@@ -379,9 +371,9 @@ public class GlowESP extends Module {
                 break;
             case "Sync":
                 Pair<Color, Color> colors = HUDMod.getClientColors();
-                if(HUDMod.isRainbowTheme()) {
+                if (HUDMod.isRainbowTheme()) {
                     color = colors.getFirst();
-                }else {
+                } else {
                     color = ColorUtil.interpolateColorsBackAndForth(15, 0, colors.getFirst(), colors.getSecond(), false);
                 }
                 break;
@@ -395,8 +387,7 @@ public class GlowESP extends Module {
                 break;
         }
 
-        if (entity instanceof EntityLivingBase) {
-            EntityLivingBase entityLivingBase = (EntityLivingBase) entity;
+        if (entity instanceof EntityLivingBase entityLivingBase) {
             if (entityLivingBase.hurtTime > 0) {
                 //We use a the first part of the sine wave to make the color more red as the entity gets hurt and animate it back to normal
                 color = ColorUtil.interpolateColorC(color, hurtTimeColor.getColor(), (float) Math.sin(entityLivingBase.hurtTime * (18 * Math.PI / 180)));

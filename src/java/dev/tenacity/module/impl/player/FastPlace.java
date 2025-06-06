@@ -17,6 +17,11 @@ public final class FastPlace extends Module {
     private final BooleanSetting blocks = new BooleanSetting("Blocks", true);
     private final BooleanSetting projectiles = new BooleanSetting("Projectiles", true);
 
+    public FastPlace() {
+        super("FastPlace", Category.PLAYER, "place blocks fast");
+        this.addSettings(ticks, blocks, projectiles);
+    }
+
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
         if (canFastPlace()) {
@@ -35,11 +40,6 @@ public final class FastPlace extends Module {
             return false;
         Item heldItem = mc.thePlayer.getCurrentEquippedItem().getItem();
         return (blocks.isEnabled() && heldItem instanceof ItemBlock) || (projectiles.isEnabled() && (heldItem instanceof ItemSnowball || heldItem instanceof ItemEgg));
-    }
-
-    public FastPlace() {
-        super("FastPlace", Category.PLAYER, "place blocks fast");
-        this.addSettings(ticks, blocks, projectiles);
     }
 
 }

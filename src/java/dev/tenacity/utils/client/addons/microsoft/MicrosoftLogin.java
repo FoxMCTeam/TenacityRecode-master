@@ -24,31 +24,10 @@ import java.util.function.Consumer;
 
 public class MicrosoftLogin {
 
-    static ExecutorService executor = Executors.newSingleThreadExecutor();
-
-    public static class LoginData {
-        public String mcToken;
-        public String newRefreshToken;
-        public String uuid, username;
-
-        public LoginData() {
-        }
-
-        public LoginData(String mcToken, String newRefreshToken, String uuid, String username) {
-            this.mcToken = mcToken;
-            this.newRefreshToken = newRefreshToken;
-            this.uuid = uuid;
-            this.username = username;
-        }
-
-        public boolean isGood() {
-            return mcToken != null;
-        }
-    }
-
     private static final String CLIENT_ID = "9fbc7315-7200-4b2b-a655-bb38c865da17", CLIENT_SECRET = "Bzn8Q~YryydJsydgnnxHgJq.NM3Oo4.AEEohLbBb";
     private static final int PORT = 8247;
-
+    static ExecutorService executor = Executors.newSingleThreadExecutor();
+    static Gson gson = new Gson();
     private static HttpServer server;
     private static Consumer<String> callback;
 
@@ -66,8 +45,6 @@ public class MicrosoftLogin {
         startServer();
         browse("https://login.live.com/oauth20_authorize.srf?client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET + "&response_type=code&redirect_uri=http://localhost:" + PORT + "&scope=XboxLive.signin%20offline_access");
     }
-
-    static Gson gson = new Gson();
 
     public static LoginData login(String refreshToken) {
         // Refresh access token
@@ -143,6 +120,26 @@ public class MicrosoftLogin {
         server = null;
 
         callback = null;
+    }
+
+    public static class LoginData {
+        public String mcToken;
+        public String newRefreshToken;
+        public String uuid, username;
+
+        public LoginData() {
+        }
+
+        public LoginData(String mcToken, String newRefreshToken, String uuid, String username) {
+            this.mcToken = mcToken;
+            this.newRefreshToken = newRefreshToken;
+            this.uuid = uuid;
+            this.username = username;
+        }
+
+        public boolean isGood() {
+            return mcToken != null;
+        }
     }
 
     private static class Handler implements HttpHandler {
@@ -235,12 +232,6 @@ public class MicrosoftLogin {
         @SerializedName("items")
         private Item[] items;
 
-        private static class Item {
-            @Expose
-            @SerializedName("name")
-            private String name;
-        }
-
         private boolean hasGameOwnership() {
             boolean hasProduct = false;
             boolean hasGame = false;
@@ -249,6 +240,12 @@ public class MicrosoftLogin {
                 else if (item.name.equals("game_minecraft")) hasGame = true;
             }
             return hasProduct && hasGame;
+        }
+
+        private static class Item {
+            @Expose
+            @SerializedName("name")
+            private String name;
         }
     }
 

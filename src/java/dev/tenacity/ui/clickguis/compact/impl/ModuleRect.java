@@ -1,6 +1,5 @@
 package dev.tenacity.ui.clickguis.compact.impl;
 
-import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.Client;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.display.HUDMod;
@@ -15,6 +14,7 @@ import dev.tenacity.utils.misc.HoveringUtil;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.RenderUtil;
 import dev.tenacity.utils.time.TimerUtil;
+import dev.tenacity.utils.tuples.Pair;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.Gui;
@@ -24,19 +24,19 @@ import org.lwjglx.input.Keyboard;
 import java.awt.*;
 
 public class ModuleRect implements Screen {
-    @Getter
-    @Setter
-    private int searchScore;
     public final Module module;
+    public final TooltipObject tooltipObject = new TooltipObject();
     private final Animation enableAnimation = new DecelerateAnimation(150, 1);
     private final SettingComponents settingComponents;
+    private final TimerUtil timerUtil = new TimerUtil();
     public float x, y, width, height;
     public float rectHeight;
     public float rectWidth;
     public Module binding;
     public boolean typing;
-    public final TooltipObject tooltipObject = new TooltipObject();
-    private final TimerUtil timerUtil = new TimerUtil();
+    @Getter
+    @Setter
+    private int searchScore;
 
     public ModuleRect(Module module) {
         this.module = module;
@@ -79,9 +79,9 @@ public class ModuleRect implements Screen {
 
         KeybindSetting keybindSetting = module.getKeybind();
 
-        float bindWidth = (float) (duckSansFont14.getStringWidth(Keyboard.getKeyName(keybindSetting.getCode())) + 4);
+        float bindWidth = duckSansFont14.getStringWidth(Keyboard.getKeyName(keybindSetting.getCode())) + 4;
 
-        boolean hovered = HoveringUtil.isHovering((float) (x + duckSansFont20.getStringWidth(module.getName()) + 13), y + 6, bindWidth, 8, mouseX, mouseY);
+        boolean hovered = HoveringUtil.isHovering(x + duckSansFont20.getStringWidth(module.getName()) + 13, y + 6, bindWidth, 8, mouseX, mouseY);
         boolean hoveringModule = HoveringUtil.isHovering(x, y, width, 20, mouseX, mouseY);
 
         if (!hoveringModule) {
@@ -98,7 +98,7 @@ public class ModuleRect implements Screen {
                 duckSansFont14.getStringWidth(Keyboard.getKeyName(keybindSetting.getCode())) + 4, 8,
                 hovered ? bindRect.brighter().getRGB() : bindRect.getRGB());
 
-        duckSansFont14.drawCenteredString(Keyboard.getKeyName(keybindSetting.getCode()), (float) (x + duckSansFont20.getStringWidth(module.getName()) + 13 + bindWidth / 2f),
+        duckSansFont14.drawCenteredString(Keyboard.getKeyName(keybindSetting.getCode()), x + duckSansFont20.getStringWidth(module.getName()) + 13 + bindWidth / 2f,
                 y + 8, -1);
 
         Gui.drawRect2(x, y + 20, rectWidth, rectHeight, new Color(35, 35, 35).getRGB());
@@ -107,10 +107,10 @@ public class ModuleRect implements Screen {
         enableAnimation.setDirection(module.isEnabled() ? Direction.FORWARDS : Direction.BACKWARDS);
 
 
-        float o = (float) enableAnimation.getOutput().floatValue();
+        float o = enableAnimation.getOutput().floatValue();
 
 //        RenderUtil.fakeCircleGlow(x + rectWidth - 10, y + 10, (float) (2 + (5 * o)), accentColor, 115);
-        RenderUtil.drawGoodCircle(x + rectWidth - 10, y + 10, 4, ColorUtil.interpolateColor(new Color(64, 68, 75), actualColor, (float) o));
+        RenderUtil.drawGoodCircle(x + rectWidth - 10, y + 10, 4, ColorUtil.interpolateColor(new Color(64, 68, 75), actualColor, o));
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(3.5F, 2, 0);

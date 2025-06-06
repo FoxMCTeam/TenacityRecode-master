@@ -27,23 +27,37 @@ public class MutablePair<A, B> extends Pair<A, B> {
         return new MutablePair<>(a, a);
     }
 
-    public MutablePair<A, A> pairOfFirst() { return of(a); }
+    public MutablePair<A, A> pairOfFirst() {
+        return of(a);
+    }
 
-    public MutablePair<B, B> pairOfSecond() { return of(b); }
+    public MutablePair<B, B> pairOfSecond() {
+        return of(b);
+    }
 
-
-    @Override
-    public A getFirst() { return a; }
-
-    @Override
-    public B getSecond() { return b; }
-
-    public void setFirst(A a) { this.a = a; }
-
-    public void setSecond(B b) { this.b = b; }
 
     @Override
-    public <R> R apply(BiFunction<? super A, ? super B, ? extends R> func) { return func.apply(a, b); }
+    public A getFirst() {
+        return a;
+    }
+
+    public void setFirst(A a) {
+        this.a = a;
+    }
+
+    @Override
+    public B getSecond() {
+        return b;
+    }
+
+    public void setSecond(B b) {
+        this.b = b;
+    }
+
+    @Override
+    public <R> R apply(BiFunction<? super A, ? super B, ? extends R> func) {
+        return func.apply(a, b);
+    }
 
     @Override
     public void use(BiConsumer<? super A, ? super B> func) {

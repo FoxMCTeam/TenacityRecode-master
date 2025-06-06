@@ -12,10 +12,9 @@ import java.nio.file.Files;
 import java.util.HashMap;
 
 public class DragManager {
-    public static HashMap<String, Dragging> draggables = new HashMap<>();
-
     private static final File DRAG_DATA = new File(Client.DIRECTORY, "Drag.json");
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().setLenient().create();
+    public static HashMap<String, Dragging> draggables = new HashMap<>();
 
     public static void saveDragData() {
         if (!DRAG_DATA.exists()) {
@@ -25,27 +24,27 @@ public class DragManager {
             Files.write(DRAG_DATA.toPath(), GSON.toJson(draggables.values()).getBytes(StandardCharsets.UTF_8));
         } catch (IOException ex) {
             ex.printStackTrace();
-            System.out.println("Failed to save draggables");
+            Client.LOGGER.error("Failed to save draggables");
         }
     }
 
     public static void loadDragData() {
         if (!DRAG_DATA.exists()) {
-            System.out.println("No drag data found");
+            Client.LOGGER.error("No drag data found");
             return;
         }
 
         Dragging[] draggings;
         try {
-            draggings = GSON.fromJson(new String(Files.readAllBytes(DRAG_DATA.toPath()), StandardCharsets.UTF_8), Dragging[].class);
+            draggings = GSON.fromJson(Files.readString(DRAG_DATA.toPath()), Dragging[].class);
         } catch (IOException ex) {
             ex.printStackTrace();
-            System.out.println("Failed to load draggables");
+            Client.LOGGER.error("Failed to load draggables");
             return;
         }
 
-        for(Dragging dragging : draggings) {
-            if(!draggables.containsKey(dragging.getName())) continue;
+        for (Dragging dragging : draggings) {
+            if (!draggables.containsKey(dragging.getName())) continue;
             Dragging currentDrag = draggables.get(dragging.getName());
             currentDrag.setX(dragging.getX());
             currentDrag.setY(dragging.getY());

@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 public class DetectionManager {
 
-    private ArrayList<Detection> detections = new ArrayList<>();
+    private final ArrayList<Detection> detections = new ArrayList<>();
 
     public DetectionManager() {
         addDetections(

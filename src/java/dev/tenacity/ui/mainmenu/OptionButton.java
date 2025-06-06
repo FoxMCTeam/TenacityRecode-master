@@ -16,14 +16,13 @@ import java.awt.*;
 
 public class OptionButton implements Screen {
 
-    private Animation hoverAnimation;
-    private final String icon;
     public final String name;
+    private final String icon;
     public float x, y, iconAdjustY;
     public Color color;
     public float width, height;
-
     public Runnable clickAction;
+    private Animation hoverAnimation;
 
     public OptionButton(String icon, String name) {
         this.icon = icon;
@@ -46,9 +45,9 @@ public class OptionButton implements Screen {
         //Black opaque background
         RoundedUtil.drawRound(x - 69, y, width + 69, height, 6, ColorUtil.applyOpacity(Color.BLACK, .2f));
         //Have the actual color fade in as the button is hovered
-        RoundedUtil.drawRound(x - 10, y, (float) ((width + 10) * hoverAnimation.getOutput().floatValue()), height, 6, ColorUtil.applyOpacity(color, .5f));
+        RoundedUtil.drawRound(x - 10, y, (width + 10) * hoverAnimation.getOutput().floatValue(), height, 6, ColorUtil.applyOpacity(color, .5f));
 
-        Gui.drawRect2(x, y, 3, height, ColorUtil.applyOpacity(color, (float) hoverAnimation.getOutput().floatValue()).getRGB());
+        Gui.drawRect2(x, y, 3, height, ColorUtil.applyOpacity(color, hoverAnimation.getOutput().floatValue()).getRGB());
 
         float middle = y + duckSansBoldFont40.getMiddleOfBox(height);
         duckSansBoldFont40.drawString(name, x + 60, y + duckSansBoldFont40.getMiddleOfBox(height), -1);

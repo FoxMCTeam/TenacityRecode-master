@@ -1,17 +1,13 @@
 package dev.tenacity.module.impl.player;
 
 import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.network.PacketReceiveEvent;
-import com.cubk.event.impl.network.PacketSendEvent;
 import com.cubk.event.impl.player.BoundingBoxEvent;
 import com.cubk.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.ModeSetting;
-import dev.tenacity.utils.misc.MathUtils;
 import dev.tenacity.utils.server.PacketUtils;
 import net.minecraft.network.play.client.C03PacketPlayer;
-import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.util.AxisAlignedBB;
 
 @SuppressWarnings("unused")
@@ -48,7 +44,7 @@ public final class NoFall extends Module {
 
     @EventTarget
     public void onBoundingBoxEvent(BoundingBoxEvent event) {
-        if(mode.is("Verus") && mc.thePlayer.fallDistance > 2) {
+        if (mode.is("Verus") && mc.thePlayer.fallDistance > 2) {
             final AxisAlignedBB axisAlignedBB = AxisAlignedBB.fromBounds(-5, -1, -5, 5, 1, 5).offset(event.getBlockPos().getX(), event.getBlockPos().getY(), event.getBlockPos().getZ());
             event.setBoundingBox(axisAlignedBB);
         }

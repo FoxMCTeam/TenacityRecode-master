@@ -70,8 +70,7 @@ public class Velocity extends Module {
                     s27.motionX *= horizontal.getValue() / 100.0;
                     s27.motionZ *= horizontal.getValue() / 100.0;
                     s27.motionY *= vertical.getValue() / 100.0;
-                } else if (e.getPacket() instanceof S19PacketEntityStatus) {
-                    S19PacketEntityStatus s19 = (S19PacketEntityStatus) e.getPacket();
+                } else if (e.getPacket() instanceof S19PacketEntityStatus s19) {
                     if (mc.thePlayer != null && s19.getEntityId() == mc.thePlayer.getEntityId() && s19.getOpCode() == 2) {
                         lastDamageTimestamp = System.currentTimeMillis();
                     }
@@ -89,8 +88,7 @@ public class Velocity extends Module {
                 }
                 break;
             case "Stack":
-                if (packet instanceof S12PacketEntityVelocity) {
-                    S12PacketEntityVelocity s12 = (S12PacketEntityVelocity) packet;
+                if (packet instanceof S12PacketEntityVelocity s12) {
                     cancel = !cancel;
                     if (cancel) {
                         e.cancel();

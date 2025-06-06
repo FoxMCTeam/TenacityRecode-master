@@ -1,7 +1,6 @@
 package dev.tenacity.ui.sidegui.panels.scriptpanel;
 
 import dev.tenacity.Client;
-import dev.tenacity.utils.client.addons.api.Script;
 import dev.tenacity.ui.Screen;
 import dev.tenacity.ui.sidegui.SideGUI;
 import dev.tenacity.ui.sidegui.forms.Form;
@@ -11,6 +10,7 @@ import dev.tenacity.ui.sidegui.utils.TooltipObject;
 import dev.tenacity.utils.animations.Animation;
 import dev.tenacity.utils.animations.Direction;
 import dev.tenacity.utils.animations.impl.DecelerateAnimation;
+import dev.tenacity.utils.client.addons.api.Script;
 import dev.tenacity.utils.font.FontUtil;
 import dev.tenacity.utils.misc.FileUtils;
 import dev.tenacity.utils.misc.IOUtils;
@@ -32,18 +32,14 @@ import java.util.List;
 @Getter
 @Setter
 public class LocalScriptRect implements Screen {
+    private final TooltipObject hoverInformation = new TooltipObject();
+    private final List<IconButton> buttons = new ArrayList<>();
+    private final Script script;
+    private final Animation hoverAnimation = new DecelerateAnimation(250, 1);
     private float x, y, width, height, alpha;
     private Color accentColor;
     private boolean clickable = true, compact = false;
-
     private BasicFileAttributes bfa = null;
-    private final TooltipObject hoverInformation = new TooltipObject();
-
-
-    private final List<IconButton> buttons = new ArrayList<>();
-
-    private final Script script;
-    private final Animation hoverAnimation = new DecelerateAnimation(250, 1);
 
     public LocalScriptRect(Script script) {
         this.script = script;

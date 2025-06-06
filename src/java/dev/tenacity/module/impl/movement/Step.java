@@ -13,17 +13,12 @@ import net.minecraft.network.play.client.C03PacketPlayer;
 @SuppressWarnings("unused")
 public final class Step extends Module {
 
-    private final ModeSetting mode = new ModeSetting("Mode", "Vanilla", "Vanilla", "NCP", "Full Jump Packets");
-
-    private final NumberSetting height = new NumberSetting("Height", 1, 10, 1, 0.5);
-
-    private final NumberSetting timer = new NumberSetting("Timer", 1, 2, 0.1, 0.1);
-
-    private boolean hasStepped;
-
-    private final TimerUtil timerUtil = new TimerUtil();
-
     public static boolean isStepping;
+    private final ModeSetting mode = new ModeSetting("Mode", "Vanilla", "Vanilla", "NCP", "Full Jump Packets");
+    private final NumberSetting height = new NumberSetting("Height", 1, 10, 1, 0.5);
+    private final NumberSetting timer = new NumberSetting("Timer", 1, 2, 0.1, 0.1);
+    private final TimerUtil timerUtil = new TimerUtil();
+    private boolean hasStepped;
 
     public Step() {
         super("Step", Category.MOVEMENT, "step up blocks");
@@ -33,12 +28,13 @@ public final class Step extends Module {
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
         setSuffix(mode.getMode());
-        if(mc.thePlayer.onGround) {
-            if(mc.thePlayer.stepHeight != height.getValue().floatValue()) mc.thePlayer.stepHeight = height.getValue().floatValue();
+        if (mc.thePlayer.onGround) {
+            if (mc.thePlayer.stepHeight != height.getValue().floatValue())
+                mc.thePlayer.stepHeight = height.getValue().floatValue();
         } else {
-            if(mc.thePlayer.stepHeight != 0.625f) mc.thePlayer.stepHeight = 0.625f;
+            if (mc.thePlayer.stepHeight != 0.625f) mc.thePlayer.stepHeight = 0.625f;
         }
-        if(timerUtil.hasTimeElapsed(20) && hasStepped) {
+        if (timerUtil.hasTimeElapsed(20) && hasStepped) {
             mc.timer.timerSpeed = 1;
             hasStepped = false;
             isStepping = false;
@@ -48,12 +44,12 @@ public final class Step extends Module {
     @EventTarget
     public void onStepConfirmEvent(StepConfirmEvent event) {
         double diffY = mc.thePlayer.getEntityBoundingBox().minY - mc.thePlayer.posY;
-        if(diffY > 0.625f && diffY <= 1.5f && mc.thePlayer.onGround) {
+        if (diffY > 0.625f && diffY <= 1.5f && mc.thePlayer.onGround) {
             mc.timer.timerSpeed = timer.getValue().floatValue();
             timerUtil.reset();
             hasStepped = true;
             isStepping = true;
-            switch(mode.getMode()) {
+            switch (mode.getMode()) {
                 case "NCP":
                     for (double offset : new double[]{0.41999998688698, 0.7531999805212})
                         mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + offset, mc.thePlayer.posZ, false));

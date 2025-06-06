@@ -16,25 +16,6 @@ import net.minecraft.util.Vec3;
 
 public class ScaffoldUtils implements Utils {
 
-    public static class BlockCache {
-
-        private final BlockPos position;
-        private final EnumFacing facing;
-
-        public BlockCache(final BlockPos position, final EnumFacing facing) {
-            this.position = position;
-            this.facing = facing;
-        }
-
-        public BlockPos getPosition() {
-            return this.position;
-        }
-
-        public EnumFacing getFacing() {
-            return this.facing;
-        }
-    }
-
     public static double getYLevel() {
         if (!Scaffold.keepY.isEnabled() || Scaffold.keepYMode.is("Speed toggled") && !Client.INSTANCE.isEnabled(Speed.class)) {
             return mc.thePlayer.posY - 1.0;
@@ -71,8 +52,7 @@ public class ScaffoldUtils implements Utils {
     public static int getBlockSlot() {
         for (int i = 0; i < 9; i++) {
             final ItemStack itemStack = mc.thePlayer.inventory.mainInventory[i];
-            if (itemStack != null && itemStack.getItem() instanceof ItemBlock && itemStack.stackSize > 0) {
-                final ItemBlock itemBlock = (ItemBlock) itemStack.getItem();
+            if (itemStack != null && itemStack.getItem() instanceof ItemBlock itemBlock && itemStack.stackSize > 0) {
                 if (isBlockValid(itemBlock.getBlock())) {
                     return i;
                 }
@@ -85,8 +65,7 @@ public class ScaffoldUtils implements Utils {
         int count = 0;
         for (int i = 0; i < 9; i++) {
             final ItemStack itemStack = mc.thePlayer.inventory.mainInventory[i];
-            if (itemStack != null && itemStack.getItem() instanceof ItemBlock && itemStack.stackSize > 0) {
-                final ItemBlock itemBlock = (ItemBlock) itemStack.getItem();
+            if (itemStack != null && itemStack.getItem() instanceof ItemBlock itemBlock && itemStack.stackSize > 0) {
                 if (isBlockValid(itemBlock.getBlock())) {
                     count += itemStack.stackSize;
                 }
@@ -126,6 +105,25 @@ public class ScaffoldUtils implements Utils {
             x += 0.15;
         }
         return new Vec3(x, y, z);
+    }
+
+    public static class BlockCache {
+
+        private final BlockPos position;
+        private final EnumFacing facing;
+
+        public BlockCache(final BlockPos position, final EnumFacing facing) {
+            this.position = position;
+            this.facing = facing;
+        }
+
+        public BlockPos getPosition() {
+            return this.position;
+        }
+
+        public EnumFacing getFacing() {
+            return this.facing;
+        }
     }
 
 }

@@ -12,14 +12,14 @@ public class DamageUtils implements Utils {
         double x = mc.thePlayer.posX, y = mc.thePlayer.posY, z = mc.thePlayer.posZ;
         switch (type) {
             case WATCHDOGUP:
-                for(int i = 0; i < 49; i++) {
+                for (int i = 0; i < 49; i++) {
                     PacketUtils.sendPacketNoEvent(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 0.0625, mc.thePlayer.posZ, false));
                     PacketUtils.sendPacketNoEvent(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, false));
                 }
                 PacketUtils.sendPacketNoEvent(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, true));
                 break;
             case WATCHDOGDOWN:
-                for(int i = 0; i < 49; i++) {
+                for (int i = 0; i < 49; i++) {
                     PacketUtils.sendPacketNoEvent(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY - 0.0625, mc.thePlayer.posZ, false));
                     PacketUtils.sendPacketNoEvent(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, false));
                 }
@@ -52,12 +52,12 @@ public class DamageUtils implements Utils {
         }
     }
 
-    public enum DamageType {
-        WATCHDOGUP, WATCHDOGDOWN, NCP, VANILLA, VERUS, SUFFOCATE
-    }
-
     private static void send(Packet<?> packet) {
         PacketUtils.sendPacketNoEvent(packet);
+    }
+
+    public enum DamageType {
+        WATCHDOGUP, WATCHDOGDOWN, NCP, VANILLA, VERUS, SUFFOCATE
     }
 
 }

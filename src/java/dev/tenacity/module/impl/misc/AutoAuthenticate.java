@@ -1,11 +1,11 @@
 package dev.tenacity.module.impl.misc;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.Client;
 import com.cubk.event.impl.game.WorldEvent;
 import com.cubk.event.impl.player.ChatReceivedEvent;
 import com.cubk.event.impl.player.MotionEvent;
 import com.cubk.event.impl.render.Render2DEvent;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.display.HUDMod;
@@ -69,7 +69,7 @@ public class AutoAuthenticate extends Module {
             ScaledResolution sr = new ScaledResolution(mc);
             float width = 120, height = 5, width2 = width / 2.0F;
             float calc = runAt == 0 ? 1 : (float) (System.currentTimeMillis() - startAt) / (float) (runAt - startAt),
-                    scale = (float) animation.getOutput().floatValue(),
+                    scale = animation.getOutput().floatValue(),
                     left = (sr.getScaledWidth() / 2.0F) / scale - width2,
                     top = sr.getScaledHeight() / 2.0F + 30,
                     bottom = (sr.getScaledHeight() / 2.0F + 30) / scale + height,

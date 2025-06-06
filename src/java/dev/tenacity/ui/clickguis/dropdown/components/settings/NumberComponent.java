@@ -1,6 +1,5 @@
 package dev.tenacity.ui.clickguis.dropdown.components.settings;
 
-import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.module.settings.impl.NumberSetting;
 import dev.tenacity.ui.clickguis.dropdown.components.SettingComponent;
 import dev.tenacity.utils.animations.Animation;
@@ -11,6 +10,7 @@ import dev.tenacity.utils.misc.HoveringUtil;
 import dev.tenacity.utils.misc.MathUtils;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.RoundedUtil;
+import dev.tenacity.utils.tuples.Pair;
 import org.lwjglx.input.Keyboard;
 
 public class NumberComponent extends SettingComponent<NumberSetting> {
@@ -19,12 +19,9 @@ public class NumberComponent extends SettingComponent<NumberSetting> {
 
     private final Pair<Animation, Animation> textAnimations = Pair.of(
             new DecelerateAnimation(250, 1), new DecelerateAnimation(250, 1));
-
-
-    private boolean dragging;
     private final ContinualAnimation animationWidth = new ContinualAnimation();
-
     public float clickCountAdd = 0;
+    private boolean dragging;
     private boolean selected;
 
 
@@ -86,16 +83,12 @@ public class NumberComponent extends SettingComponent<NumberSetting> {
 
 
         String text = "You can use arrow keys";
-        duckSansFont14.drawCenteredString(text, x + width /2f, sliderY + sliderHeight + 4.5f,
+        duckSansFont14.drawCenteredString(text, x + width / 2f, sliderY + sliderHeight + 4.5f,
                 ColorUtil.applyOpacity(-1, textAnimations.getSecond().getOutput().floatValue() * .25f));
 
         duckSansFont16.drawString(numberSetting.name, sliderX, y + 2, textColor);
         RoundedUtil.drawRound(sliderX, sliderY, sliderWidth, sliderHeight, 1.5f,
                 ColorUtil.brighter(settingRectColor, .7f - (.2f * hoverAnimation.getOutput().floatValue())));
-
-
-
-
 
 
         double currentValue = numberSetting.getValue();

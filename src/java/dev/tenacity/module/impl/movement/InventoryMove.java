@@ -18,10 +18,6 @@ import java.util.List;
 
 public final class InventoryMove extends Module {
 
-    private final ModeSetting mode = new ModeSetting("Mode", "Vanilla", "Vanilla", "Spoof", "Delay");
-    private final TimerUtil delayTimer = new TimerUtil();
-    private boolean wasInContainer;
-
     private static final List<KeyBinding> keys = Arrays.asList(
             mc.gameSettings.keyBindForward,
             mc.gameSettings.keyBindBack,
@@ -29,6 +25,9 @@ public final class InventoryMove extends Module {
             mc.gameSettings.keyBindRight,
             mc.gameSettings.keyBindJump
     );
+    private final ModeSetting mode = new ModeSetting("Mode", "Vanilla", "Vanilla", "Spoof", "Delay");
+    private final TimerUtil delayTimer = new TimerUtil();
+    private boolean wasInContainer;
 
     public InventoryMove() {
         super("InventoryMove", Category.MOVEMENT, "lets you move in your inventory");

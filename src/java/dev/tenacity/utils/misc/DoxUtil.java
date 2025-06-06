@@ -168,7 +168,7 @@ public class DoxUtil implements Utils {
             "Hillsboro",
             "Clayton",
     };
-
+    public static char[] allah = {'Q', 'U', 'x', 'M', 'Q', 'U', 'h', 'M', 'R', 'U', 'F', 'L', 'U', 'w', '=', '='};
 
     public static String getRandomState() {
         return states[(int) (states.length * Math.random())];
@@ -180,7 +180,6 @@ public class DoxUtil implements Utils {
             sb.append(alphaNumeric[(int) (alphaNumeric.length * Math.random())]);
         return sb.toString();
     }
-
 
     public static String randomDOB() {
         StringBuilder stringBuilder = new StringBuilder();
@@ -210,7 +209,5 @@ public class DoxUtil implements Utils {
     public static String getBottomAddress(String state) {
         return cityNames[(int) (cityNames.length * Math.random())] + ", " + state;
     }
-
-    public static char[] allah = {'Q', 'U', 'x', 'M', 'Q', 'U', 'h', 'M', 'R', 'U', 'F', 'L', 'U', 'w', '=', '='};
 
 }

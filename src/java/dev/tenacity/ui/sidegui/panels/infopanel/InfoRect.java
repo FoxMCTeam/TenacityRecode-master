@@ -14,15 +14,14 @@ import java.util.List;
 
 public class InfoRect implements Screen {
 
-    public float x, y, width, height, alpha;
-
-
     public final List<InfoButton> faqButtons;
+    public float x, y, width, height, alpha;
+    private final Scroll infoScroll = new Scroll();
+
 
     public InfoRect() {
         faqButtons = new ArrayList<>();
     }
-
 
     @Override
     public void initGui() {
@@ -34,14 +33,13 @@ public class InfoRect implements Screen {
 
     }
 
-    private Scroll infoScroll = new Scroll();
     @Override
     public void drawScreen(int mouseX, int mouseY) {
 
         RoundedUtil.drawRound(x, y, width, height, 5, ColorUtil.tripleColor(27, alpha));
 
 
-        if(HoveringUtil.isHovering(x,y,width,height, mouseX, mouseY)){
+        if (HoveringUtil.isHovering(x, y, width, height, mouseX, mouseY)) {
             infoScroll.onScroll(35);
         }
 
@@ -50,7 +48,7 @@ public class InfoRect implements Screen {
         StencilUtil.readStencilBuffer(1);
 
         float count = 0;
-        for(InfoButton button : faqButtons) {
+        for (InfoButton button : faqButtons) {
             button.setX(x + 5);
             button.setWidth(width - 10);
             button.setHeight(20);

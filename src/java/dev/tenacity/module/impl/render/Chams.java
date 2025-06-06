@@ -1,12 +1,11 @@
 package dev.tenacity.module.impl.render;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.module.impl.display.HUDMod;
-import dev.tenacity.utils.tuples.Pair;
 import com.cubk.event.impl.render.RenderChestEvent;
 import com.cubk.event.impl.render.RenderModelEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
+import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.module.settings.ParentAttribute;
 import dev.tenacity.module.settings.impl.BooleanSetting;
 import dev.tenacity.module.settings.impl.ColorSetting;
@@ -14,6 +13,7 @@ import dev.tenacity.module.settings.impl.ModeSetting;
 import dev.tenacity.module.settings.impl.MultipleBoolSetting;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.RenderUtil;
+import dev.tenacity.utils.tuples.Pair;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityMob;

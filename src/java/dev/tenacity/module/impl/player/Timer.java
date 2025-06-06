@@ -11,6 +11,11 @@ public final class Timer extends Module {
 
     private final NumberSetting amount = new NumberSetting("Amount", 1, 10, 0.1, 0.1);
 
+    public Timer() {
+        super("Timer", Category.PLAYER, "changes game speed");
+        this.addSettings(amount);
+    }
+
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
         mc.timer.timerSpeed = amount.getValue().floatValue();
@@ -20,11 +25,6 @@ public final class Timer extends Module {
     public void onDisable() {
         mc.timer.timerSpeed = 1;
         super.onDisable();
-    }
-
-    public Timer() {
-        super("Timer", Category.PLAYER, "changes game speed");
-        this.addSettings(amount);
     }
 
 }

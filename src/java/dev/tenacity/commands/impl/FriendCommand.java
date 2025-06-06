@@ -18,13 +18,39 @@ import java.util.List;
 
 public class FriendCommand extends Command {
 
+    public static final List<String> friends = new ArrayList<>();
     private static final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
     private static final File file = new File(Client.DIRECTORY, "Friends.json");
-    public static final List<String> friends = new ArrayList<>();
 
     public FriendCommand() {
         super("friend", "Manage friends", ".f [add/remove] [username]", "f");
         load();
+    }
+
+    public static boolean save() {
+        try {
+            if (!file.exists() && file.getParentFile().mkdirs()) {
+                file.createNewFile();
+            }
+            Files.write(file.toPath(), serialize().getBytes(StandardCharsets.UTF_8));
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private static String serialize() {
+        JsonObject obj = new JsonObject();
+        JsonArray arr = new JsonArray();
+        friends.forEach(arr::add);
+        obj.add("friends", arr);
+        return gson.toJson(obj);
+    }
+
+    public static boolean isFriend(String name) {
+        if (name == null) return false;
+        return friends.stream().anyMatch(name::equalsIgnoreCase);
     }
 
     @Override
@@ -78,32 +104,6 @@ public class FriendCommand extends Command {
         } catch (Exception e) {
             Client.LOGGER.error("Failed to load " + file, e);
         }
-    }
-
-    public static boolean save() {
-        try {
-            if (!file.exists() && file.getParentFile().mkdirs()) {
-                file.createNewFile();
-            }
-            Files.write(file.toPath(), serialize().getBytes(StandardCharsets.UTF_8));
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    private static String serialize() {
-        JsonObject obj = new JsonObject();
-        JsonArray arr = new JsonArray();
-        friends.forEach(arr::add);
-        obj.add("friends", arr);
-        return gson.toJson(obj);
-    }
-
-    public static boolean isFriend(String name) {
-        if (name == null) return false;
-        return friends.stream().anyMatch(name::equalsIgnoreCase);
     }
 
 }

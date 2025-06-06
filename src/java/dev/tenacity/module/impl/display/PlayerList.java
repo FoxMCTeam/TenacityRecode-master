@@ -1,8 +1,8 @@
 package dev.tenacity.module.impl.display;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.Client;
 import com.cubk.event.impl.render.Render2DEvent;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.utils.misc.MathUtils;
@@ -68,7 +68,7 @@ public class PlayerList extends Module {
 
         float headX = x + 4;
         float headWH = 32;
-        float headY = y + offset + height /2f - 6;
+        float headY = y + offset + height / 2f - 6;
         float f = 0.35F;
         RenderUtil.resetColor();
         RenderUtil.scaleStart(headX, headY, f);
@@ -79,9 +79,6 @@ public class PlayerList extends Module {
         if (player == mc.thePlayer) {
             duckSansFont18.drawStringWithShadow("*", x + 139 - duckSansFont18.getStringWidth("*"), y + offset + 6.75F, HUDMod.getClientColors().getFirst().getRGB());
         }
-
-
-
 
 
     }

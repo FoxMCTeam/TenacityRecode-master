@@ -15,10 +15,9 @@ import java.awt.*;
 public class KeybindComponent extends SettingComponent<KeybindSetting> {
 
 
-    private boolean binding;
-
     private final Animation clickAnimation = new DecelerateAnimation(250, 1, Direction.BACKWARDS);
     private final Animation hoverAnimation = new DecelerateAnimation(250, 1, Direction.BACKWARDS);
+    private boolean binding;
 
     public KeybindComponent(KeybindSetting keybindSetting) {
         super(keybindSetting);
@@ -63,7 +62,7 @@ public class KeybindComponent extends SettingComponent<KeybindSetting> {
         RoundedUtil.drawRound(startX - 3, startY - 2, fullTextWidth + 6, duckSansFont16.getHeight() + 4, 4, rectColor);
 
 
-        duckSansFont16.drawCenteredString("Bind: §l" + bind, x + width /2f, y + duckSansFont16.getMiddleOfBox(height), textColor);
+        duckSansFont16.drawCenteredString("Bind: §l" + bind, x + width / 2f, y + duckSansFont16.getMiddleOfBox(height), textColor);
     }
 
     @Override

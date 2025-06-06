@@ -4,8 +4,8 @@ import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.ModuleManager;
-import dev.tenacity.module.impl.movement.InventoryMove;
 import dev.tenacity.module.impl.display.ClickGUIMod;
+import dev.tenacity.module.impl.movement.InventoryMove;
 import dev.tenacity.module.settings.Setting;
 import dev.tenacity.ui.clickguis.modern.components.CategoryButton;
 import dev.tenacity.ui.clickguis.modern.components.ClickCircle;
@@ -45,14 +45,18 @@ public class ModernClickGui extends GuiScreen {
             add(new CategoryButton(category));
         }
     }};
+    private final List<ModuleRect> searchResults = new ArrayList<>();
+    private final List<String> searchTerms = new ArrayList<>();
     public float rectHeight = 255, rectWidth = 370;
+    public boolean typing;
     private Category currentCategory = Category.COMBAT;
     private Animation openingAnimation;
     private Animation expandedAnimation;
     private ModulesPanel modpanel;
     private HashMap<Category, ArrayList<ModuleRect>> moduleRects;
     private boolean firstOpen = true;
-    public boolean typing;
+    private float adjustment = 0;
+    private String searchText;
 
     public void drawBigRect() {
         float x = drag.getX(), y = drag.getY();
@@ -130,9 +134,6 @@ public class ModernClickGui extends GuiScreen {
         modpanel.keyTyped(typedChar, keyCode);
     }
 
-    private float adjustment = 0;
-    private final List<ModuleRect> searchResults = new ArrayList<>();
-
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         if (ModuleManager.reloadModules || moduleRects == null) {
@@ -187,20 +188,20 @@ public class ModernClickGui extends GuiScreen {
         }
 
 
-        RoundedUtil.drawRound(x, y, (float) (100 - (55 * expandedAnimation.getOutput().floatValue())), rectHeight, 10, categoryColor);
+        RoundedUtil.drawRound(x, y, 100 - (55 * expandedAnimation.getOutput().floatValue()), rectHeight, 10, categoryColor);
         //   RenderUtil.renderRoundedRect(x, y, (float) (100 - (55 * expandedAnimation.getOutput().floatValue())), rectHeight, 10, categoryColor.getRGB());
 
 
         adjustWidth(55 - (55 * expandedAnimation.getOutput().floatValue()));
 
         StencilUtil.initStencilToWrite();
-        Gui.drawRect2(x, y, (float) (100 - (55 * expandedAnimation.getOutput().floatValue())), rectHeight, -1);
+        Gui.drawRect2(x, y, 100 - (55 * expandedAnimation.getOutput().floatValue()), rectHeight, -1);
         StencilUtil.readStencilBuffer(1);
 
 
         GL11.glEnable(GL11.GL_BLEND);
         mc.getTextureManager().bindTexture(new ResourceLocation("Tenacity/modernlogo.png"));
-        Gui.drawModalRectWithCustomSizedTexture((float) (x + 9 + (3 * expandedAnimation.getOutput().floatValue())), y + 6, 0, 0, 20.5f, 20.5f, 20.5f, 20.5f);
+        Gui.drawModalRectWithCustomSizedTexture(x + 9 + (3 * expandedAnimation.getOutput().floatValue()), y + 6, 0, 0, 20.5f, 20.5f, 20.5f, 20.5f);
         GL11.glDisable(GL11.GL_BLEND);
 
         Gui.drawRect2(x + 10, y + 35, 80 - (55 * expandedAnimation.getOutput().floatValue()), 1, lighterGray.getRGB());
@@ -304,13 +305,9 @@ public class ModernClickGui extends GuiScreen {
         return false;
     }
 
-
     public void adjustWidth(float adjustment) {
         this.adjustment += adjustment;
     }
-
-    private final List<String> searchTerms = new ArrayList<>();
-    private String searchText;
 
     public List<ModuleRect> getModuleRects(Category category) {
         if (!Client.INSTANCE.getSearchBar().isFocused()) {

@@ -38,6 +38,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public final class Flight extends Module {
 
+    public static final Set<BlockPos> hiddenBlocks = new HashSet<>();
     private final ModeSetting mode = new ModeSetting("Mode", "Watchdog", "Zonecraft", "Watchdog", "Vanilla", "AirWalk", "Viper", "Verus", "Minemen", "Old NCP", "Slime", "Custom", "Packet", "Minemora", "Vulcan");
     private final NumberSetting teleportDelay = new NumberSetting("Teleport Delay", 5, 20, 1, 1);
     private final NumberSetting teleportLength = new NumberSetting("Teleport Length", 5, 20, 1, 1);
@@ -46,37 +47,32 @@ public final class Flight extends Module {
     private final NumberSetting verticalSpeed = new NumberSetting("Vertical Speed", 1, 5, 0, 0.1);
     private final BooleanSetting viewBobbing = new BooleanSetting("View Bobbing", true);
     private final BooleanSetting antiKick = new BooleanSetting("Anti-kick", false);
+    private final CopyOnWriteArrayList<Packet> packets = new CopyOnWriteArrayList<>();
+    private final TimerUtil timer = new TimerUtil();
+    // Custom fly settings
+    private final BooleanSetting damage = new BooleanSetting("Damage", false);
+    private final ModeSetting damageMode = new ModeSetting("Damage Mode", "Vanilla", "Vanilla", "Suffocate", "NCP");
+    private final NumberSetting motionY = new NumberSetting("Motion Y", 0, 0.3, -0.3, 0.01);
+    private final BooleanSetting speed = new BooleanSetting("Speed", false);
+    private final NumberSetting speedAmount = new NumberSetting("Speed Amount", 0.2, 9, 0.05, 0.01);
+    public double moveSpeed2, lastDist;
+    public int stage3;
     private int stage;
     private int ticks;
     private boolean doFly;
     private double x, y, z;
     private double lastX, lastY, lastZ;
-    private final CopyOnWriteArrayList<Packet> packets = new CopyOnWriteArrayList<>();
     private boolean hasClipped;
     private int slot = 0;
     private double speedStage;
     private float clip;
     private double moveSpeed;
     private int stage2;
-    private final TimerUtil timer = new TimerUtil();
-    public static final Set<BlockPos> hiddenBlocks = new HashSet<>();
     private boolean hasS08;
     private boolean hasDamaged;
     private boolean up;
     private int airTicks;
-
     private boolean adjustSpeed, canSpeed, hasBeenDamaged;
-    public double moveSpeed2, lastDist;
-    public int stage3;
-
-    // Custom fly settings
-    private final BooleanSetting damage = new BooleanSetting("Damage", false);
-    private final ModeSetting damageMode = new ModeSetting("Damage Mode", "Vanilla", "Vanilla", "Suffocate", "NCP");
-
-    private final NumberSetting motionY = new NumberSetting("Motion Y", 0, 0.3, -0.3, 0.01);
-
-    private final BooleanSetting speed = new BooleanSetting("Speed", false);
-    private final NumberSetting speedAmount = new NumberSetting("Speed Amount", 0.2, 9, 0.05, 0.01);
 
     public Flight() {
         super("Flight", Category.MOVEMENT, "Makes you hover in the air");
@@ -104,7 +100,7 @@ public final class Flight extends Module {
                 e.setSpeed(0);
                 break;
             case "Slime":
-                if(stage < 8) {
+                if (stage < 8) {
                     e.setSpeed(0);
                 }
                 break;
@@ -112,7 +108,7 @@ public final class Flight extends Module {
                 e.setSpeed(0);
                 break;
             case "Minemora":
-                if(!hasDamaged)
+                if (!hasDamaged)
                     e.setSpeed(0);
                 break;
             default:
@@ -134,11 +130,11 @@ public final class Flight extends Module {
                 if (e.isPre()) {
                     mc.thePlayer.motionY = 0;
                     stage++;
-                    if(stage == 1) {
+                    if (stage == 1) {
                         final double x = e.getX() + -Math.sin(Math.toRadians(mc.thePlayer.rotationYaw)) * 7.99;
                         final double y = e.getY() - 1.75;
                         final double z = e.getZ() + Math.cos(Math.toRadians(mc.thePlayer.rotationYaw)) * 7.99;
-                        if(mc.theWorld.getBlockState(new BlockPos(x, y, z)).getBlock() == Blocks.air) {
+                        if (mc.theWorld.getBlockState(new BlockPos(x, y, z)).getBlock() == Blocks.air) {
                             PacketUtils.sendPacketNoEvent(new C03PacketPlayer.C04PacketPlayerPosition(x, y, z, false));
                             mc.thePlayer.setPosition(x, y, z);
                         }
@@ -146,25 +142,25 @@ public final class Flight extends Module {
                 }
                 break;
             case "Vulcan":
-                if(e.isPre()) {
+                if (e.isPre()) {
                     mc.thePlayer.motionY = 0;
                     e.setOnGround(true);
                     mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, mc.thePlayer.getHeldItem(), new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 2, mc.thePlayer.posZ), EnumFacing.UP, new Vec3(mc.thePlayer.posX, mc.thePlayer.posY - 2, mc.thePlayer.posZ));
                 }
                 break;
             case "Minemora":
-                if(e.isPre()) {
-                    if(stage < 3) {
+                if (e.isPre()) {
+                    if (stage < 3) {
                         e.setOnGround(false);
-                        if(mc.thePlayer.onGround) {
+                        if (mc.thePlayer.onGround) {
                             mc.thePlayer.jump();
                             stage++;
                         }
                     } else {
-                        if(mc.thePlayer.hurtTime > 0 && !hasDamaged) {
+                        if (mc.thePlayer.hurtTime > 0 && !hasDamaged) {
                             hasDamaged = true;
                         }
-                        if(hasDamaged) {
+                        if (hasDamaged) {
                             mc.thePlayer.motionY = -MathUtils.getRandomInRange(0.005, 0.0051);
                             MovementUtils.setSpeed(MovementUtils.getBaseMoveSpeed() * 1.5);
                         }
@@ -172,9 +168,9 @@ public final class Flight extends Module {
                 }
                 break;
             case "Zonecraft":
-                if(e.isPre()) {
+                if (e.isPre()) {
                     stage++;
-                    switch(stage) {
+                    switch (stage) {
                         case 1:
                             e.setOnGround(true);
                             MovementUtils.setSpeed(0.55);
@@ -187,7 +183,7 @@ public final class Flight extends Module {
                 break;
             case "Verus":
                 if (e.isPre()) {
-                    if(!mc.gameSettings.keyBindJump.isKeyDown()) {
+                    if (!mc.gameSettings.keyBindJump.isKeyDown()) {
                         if (mc.thePlayer.onGround) {
                             mc.thePlayer.motionY = 0.42f;
                             up = true;
@@ -197,7 +193,7 @@ public final class Flight extends Module {
                             }
                             up = false;
                         }
-                    } else if(mc.thePlayer.ticksExisted % 3 == 0) {
+                    } else if (mc.thePlayer.ticksExisted % 3 == 0) {
                         mc.thePlayer.motionY = 0.42f;
                     }
                     MovementUtils.setSpeed(mc.gameSettings.keyBindJump.isKeyDown() ? 0 : 0.33);
@@ -242,7 +238,7 @@ public final class Flight extends Module {
                 }
                 break;
             case "Slime":
-                if(e.isPre()) {
+                if (e.isPre()) {
                     stage++;
                     switch (stage) {
                         case 1:
@@ -258,7 +254,7 @@ public final class Flight extends Module {
                             }
                             break;
                     }
-                    if(stage > 8) {
+                    if (stage > 8) {
                         e.setOnGround(true);
                         MovementUtils.setSpeed(0.3);
                         mc.thePlayer.motionY = 0;
@@ -266,22 +262,22 @@ public final class Flight extends Module {
                 }
                 break;
             case "Custom":
-                if(e.isPre()) {
+                if (e.isPre()) {
                     stage++;
-                    switch(stage) {
+                    switch (stage) {
                         case 1:
-                            if(damage.isEnabled())
+                            if (damage.isEnabled())
                                 DamageUtils.damage(DamageUtils.DamageType.valueOf(damageMode.getMode().toUpperCase()));
                             break;
                     }
                     mc.thePlayer.motionY = motionY.getValue();
-                    if(speed.isEnabled()) MovementUtils.setSpeed(speedAmount.getValue());
+                    if (speed.isEnabled()) MovementUtils.setSpeed(speedAmount.getValue());
                 }
                 break;
             case "Packet":
-                if(e.isPre()) {
+                if (e.isPre()) {
                     mc.thePlayer.motionY = 0;
-                    if(MovementUtils.isMoving() && mc.thePlayer.ticksExisted % teleportDelay.getValue().intValue() == 0) {
+                    if (MovementUtils.isMoving() && mc.thePlayer.ticksExisted % teleportDelay.getValue().intValue() == 0) {
                         final double x = e.getX() + -Math.sin(Math.toRadians(mc.thePlayer.rotationYaw)) * teleportLength.getValue().intValue();
                         final double z = e.getZ() + Math.cos(Math.toRadians(mc.thePlayer.rotationYaw)) * teleportLength.getValue().intValue();
                         PacketUtils.sendPacketNoEvent(new C03PacketPlayer.C04PacketPlayerPosition(x, mc.thePlayer.posY, z, false));
@@ -298,19 +294,19 @@ public final class Flight extends Module {
 
     @EventTarget
     public void onPacketSendEvent(PacketSendEvent event) {
-        if(mc.isSingleplayer() || mc.thePlayer == null) return;
-        if(mode.is("Slime") && stage > 7 && PacketUtils.isPacketValid(event.getPacket())) {
+        if (mc.isSingleplayer() || mc.thePlayer == null) return;
+        if (mode.is("Slime") && stage > 7 && PacketUtils.isPacketValid(event.getPacket())) {
             event.cancel();
             packets.add(event.getPacket());
         }
-        if(mode.is("Watchdog") && event.getPacket() instanceof C03PacketPlayer) {
+        if (mode.is("Watchdog") && event.getPacket() instanceof C03PacketPlayer) {
             event.cancel();
         }
     }
 
     @EventTarget
     public void onBoundingBoxEvent(BoundingBoxEvent event) {
-        if(mode.is("AirWalk") || mode.is("Verus")) {
+        if (mode.is("AirWalk") || mode.is("Verus")) {
             final AxisAlignedBB axisAlignedBB = AxisAlignedBB.fromBounds(-5, -1, -5, 5, 1, 5).offset(event.getBlockPos().getX(), event.getBlockPos().getY(), event.getBlockPos().getZ());
             event.setBoundingBox(axisAlignedBB);
         }

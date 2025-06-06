@@ -50,7 +50,6 @@ public class SaveForm extends Form {
                 getHeight() - (30 + getSpacing()), 5, ColorUtil.tripleColor(29, getAlpha()));
 
 
-
         Color noColor = ColorUtil.applyOpacity(Color.WHITE, 0);
         Color darkColor = ColorUtil.tripleColor(17, getAlpha());
 

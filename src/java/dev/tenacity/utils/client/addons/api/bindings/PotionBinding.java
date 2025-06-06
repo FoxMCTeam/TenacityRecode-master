@@ -1,7 +1,6 @@
 package dev.tenacity.utils.client.addons.api.bindings;
 
 
-
 public class PotionBinding {
     public final int moveSpeed = 1;
     public final int moveSlowdown = 2;

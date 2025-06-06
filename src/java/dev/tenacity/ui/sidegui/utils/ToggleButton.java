@@ -22,16 +22,14 @@ import java.awt.*;
 @RequiredArgsConstructor
 public class ToggleButton implements Screen {
 
+    private final String name;
+    private final float WH = 10;
+    private final Animation toggleAnimation = new DecelerateAnimation(250, 1);
     @Getter
     @Setter
     private float x, y, alpha;
     private boolean enabled;
-    private final String name;
     private boolean bypass;
-    private final float WH = 10;
-
-    private final Animation toggleAnimation = new DecelerateAnimation(250, 1);
-
 
     @Override
     public void initGui() {

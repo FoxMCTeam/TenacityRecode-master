@@ -15,17 +15,17 @@ public class BooleanSetting extends Setting {
         this.state = state;
     }
 
-    
+
     public boolean isEnabled() {
         return state;
     }
 
-    
+
     public void toggle() {
         setState(!isEnabled());
     }
 
-    
+
     public void setState(boolean state) {
         this.state = state;
     }

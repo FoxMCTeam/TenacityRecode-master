@@ -62,7 +62,7 @@ public class Hitmarkers extends Module {
 
         Color color = this.color.getColor();
 
-        if(colorMode.is("Sync")){
+        if (colorMode.is("Sync")) {
             color = HUDMod.getClientColors().getFirst();
         }
 

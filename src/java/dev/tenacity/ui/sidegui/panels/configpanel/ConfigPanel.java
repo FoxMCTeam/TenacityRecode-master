@@ -26,13 +26,14 @@ public class ConfigPanel extends Panel {
     private final DropdownObject sorting = new DropdownObject("Sort by", "Relevance", "Alphabetical", "Top all time", "Recently updated");
 
     private final CarouselButtons carouselButtons = new CarouselButtons("Local");
-
-    private List<ToggleButton> toggleButtons;
-    private ToggleButton compactMode = new ToggleButton("Compact Mode");
-    private List<ActionButton> actionButtons;
     private final List<LocalConfigRect> localConfigRects = new ArrayList<>();
     private final Scroll localConfigScroll = new Scroll();
-
+    private final List<ToggleButton> toggleButtons;
+    private final ToggleButton compactMode = new ToggleButton("Compact Mode");
+    private final List<ActionButton> actionButtons;
+    private String sortingSelection = "Relevance";
+    @Setter
+    private boolean refresh = false;
     public ConfigPanel() {
         toggleButtons = new ArrayList<>();
         toggleButtons.add(new ToggleButton("Load visuals"));
@@ -43,10 +44,6 @@ public class ConfigPanel extends Panel {
         actionButtons.add(new ActionButton("Save current config"));
         refresh();
     }
-
-    private String sortingSelection = "Relevance";
-    @Setter
-    private boolean refresh = false;
 
     @Override
     public void initGui() {

@@ -1,7 +1,6 @@
 package dev.tenacity.utils.client.addons.api.bindings;
 
 
-
 public class EnumFacingBinding {
     public final int DOWN = 0,
             UP = 1,

@@ -20,35 +20,30 @@ import java.util.List;
 
 public class DropdownObject implements Screen {
 
+    private final String name;
+    private final Animation openAnimation = new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
+    private final Animation hoverAnimation = new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
+    private final ContinualAnimation hoverRectAnimation = new ContinualAnimation();
+    private final Animation hoverRectFadeAnimation = new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
     @Getter
     @Setter
     private float x, y, width, height, alpha;
     @Setter
     private Color accentColor;
-
-    private final String name;
     @Getter
     private String selection;
     private List<String> options;
     private boolean opened = false;
     @Setter
     private boolean bypass = false;
-
     public DropdownObject(String name, String... options) {
         this.name = name;
         selection = options[0];
         this.options = Arrays.asList(options);
     }
-
     public DropdownObject(String name) {
         this.name = name;
     }
-
-    private final Animation openAnimation = new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
-    private final Animation hoverAnimation = new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
-    private final ContinualAnimation hoverRectAnimation = new ContinualAnimation();
-    private final Animation hoverRectFadeAnimation = new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
-
 
     @Override
     public void initGui() {
@@ -93,7 +88,7 @@ public class DropdownObject implements Screen {
             int seperation = 0;
             for (String option : options) {
                 boolean hovering = SideGUI.isHovering(getX(), dropdownY + seperation, getWidth(), getHeight(), mouseX, mouseY);
-                if(bypass){
+                if (bypass) {
                     hovering = HoveringUtil.isHovering(getX(), dropdownY + seperation, getWidth(), getHeight(), mouseX, mouseY);
                 }
 

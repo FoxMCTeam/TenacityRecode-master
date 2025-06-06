@@ -64,7 +64,7 @@ package dev.tenacity.utils.text;
  *     }
  * }
  * </code></pre>
- *
+ * <p>
  * Example Builder Usage:
  * <pre><code>
  * Font bold14ptSansSerifFont = new FontBuilder(Font.SANS_SERIF).bold()
@@ -72,10 +72,8 @@ package dev.tenacity.utils.text;
  *                                                              .build();
  * </code></pre>
  *
- *
  * @param <T> the type of object that the builder will construct or compute.
  * @since 1.0
- *
  */
 public interface Builder<T> {
 

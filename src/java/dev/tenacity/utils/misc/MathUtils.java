@@ -49,15 +49,15 @@ public class MathUtils {
         return (1.0 - amount) * old + amount * newVal;
     }
 
-    public static Double interpolate(double oldValue, double newValue, double interpolationValue){
+    public static Double interpolate(double oldValue, double newValue, double interpolationValue) {
         return (oldValue + (newValue - oldValue) * interpolationValue);
     }
 
-    public static float interpolateFloat(float oldValue, float newValue, double interpolationValue){
+    public static float interpolateFloat(float oldValue, float newValue, double interpolationValue) {
         return interpolate(oldValue, newValue, (float) interpolationValue).floatValue();
     }
 
-    public static int interpolateInt(int oldValue, int newValue, double interpolationValue){
+    public static int interpolateInt(int oldValue, int newValue, double interpolationValue) {
         return interpolate(oldValue, newValue, (float) interpolationValue).intValue();
     }
 
@@ -99,7 +99,6 @@ public class MathUtils {
         SecureRandom random = new SecureRandom();
         return random.nextFloat() * (max - min) + min;
     }
-
 
 
     public static int getNumberOfDecimalPlace(double value) {

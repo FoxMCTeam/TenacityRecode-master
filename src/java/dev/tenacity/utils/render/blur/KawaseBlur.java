@@ -17,19 +17,16 @@ import static org.lwjgl.opengl.GL11.GL_LINEAR;
 
 public class KawaseBlur implements Utils {
 
+    private static final List<Framebuffer> framebufferList = new ArrayList<>();
     public static ShaderUtil kawaseDown = new ShaderUtil("kawaseDown");
     public static ShaderUtil kawaseUp = new ShaderUtil("kawaseUp");
-
     public static Framebuffer framebuffer = new Framebuffer(1, 1, false);
+    private static int currentIterations;
 
     public static void setupUniforms(float offset) {
         kawaseDown.setUniformf("offset", offset, offset);
         kawaseUp.setUniformf("offset", offset, offset);
     }
-
-    private static int currentIterations;
-
-    private static final List<Framebuffer> framebufferList = new ArrayList<>();
 
     private static void initFramebuffers(float iterations) {
         for (Framebuffer framebuffer : framebufferList) {

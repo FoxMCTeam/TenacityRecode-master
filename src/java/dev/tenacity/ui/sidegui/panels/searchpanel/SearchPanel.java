@@ -8,14 +8,14 @@ import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.RoundedUtil;
 import dev.tenacity.utils.render.StencilUtil;
 import lombok.Setter;
+
 public class SearchPanel extends Panel {
+    private final ToggleButton compactMode = new ToggleButton("Compact Mode");
+    private final Scroll searchScroll = new Scroll();
     @Setter
     private String searchType = "";
     private String searchTypeHold = "";
     private String searchHold = "";
-    private final ToggleButton compactMode = new ToggleButton("Compact Mode");
-
-    private final Scroll searchScroll = new Scroll();
 
     @Override
     public void initGui() {
@@ -49,7 +49,7 @@ public class SearchPanel extends Panel {
 
         if (searchType.equals("Configs")) {
             drawConfigs(backgroundX, backgroundY, backgroundWidth, backgroundHeight, spacing, mouseX, mouseY, search);
-        }else {
+        } else {
             drawScripts(backgroundX, backgroundY, backgroundWidth, backgroundHeight, spacing, mouseX, mouseY, search);
         }
     }

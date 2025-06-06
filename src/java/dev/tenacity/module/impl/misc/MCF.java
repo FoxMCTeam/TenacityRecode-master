@@ -1,8 +1,8 @@
 package dev.tenacity.module.impl.misc;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.commands.impl.FriendCommand;
 import com.cubk.event.impl.game.TickEvent;
+import dev.tenacity.commands.impl.FriendCommand;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.ui.notifications.NotificationManager;
@@ -23,8 +23,7 @@ public class MCF extends Module {
         if (mc.inGameHasFocus) {
             boolean down = mc.gameSettings.keyBindPickBlock.isKeyDown();
             if (down && !wasDown) {
-                if (mc.objectMouseOver != null && mc.objectMouseOver.entityHit instanceof EntityPlayer) {
-                    EntityPlayer player = (EntityPlayer) mc.objectMouseOver.entityHit;
+                if (mc.objectMouseOver != null && mc.objectMouseOver.entityHit instanceof EntityPlayer player) {
                     String name = StringUtils.stripControlCodes(player.getName());
                     if (FriendCommand.isFriend(name)) {
                         FriendCommand.friends.removeIf(f -> f.equalsIgnoreCase(name));

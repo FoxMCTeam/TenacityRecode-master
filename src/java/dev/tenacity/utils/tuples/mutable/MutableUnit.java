@@ -13,11 +13,11 @@ import java.util.function.UnaryOperator;
 public class MutableUnit<A> extends Unit<A> {
     private A a;
 
-    MutableUnit(A a){
+    MutableUnit(A a) {
         this.a = a;
     }
 
-    public static <A> MutableUnit<A> of(A a){
+    public static <A> MutableUnit<A> of(A a) {
         return new MutableUnit<>(a);
     }
 
@@ -26,7 +26,9 @@ public class MutableUnit<A> extends Unit<A> {
         return a;
     }
 
-    public void set(A a) { this.a = a; }
+    public void set(A a) {
+        this.a = a;
+    }
 
     @Override
     public <R> R apply(Function<? super A, ? extends R> func) {

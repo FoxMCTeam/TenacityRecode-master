@@ -108,7 +108,7 @@ public class ScriptModule extends Module {
 
     @EventTarget
     public void onWorldEvent(WorldEvent event) {
-        if(event instanceof WorldEvent.Load) {
+        if (event instanceof WorldEvent.Load) {
             if (eventMap.containsKey("worldLoad")) {
                 try {
                     eventMap.get("worldLoad").call(null, event);
@@ -146,7 +146,7 @@ public class ScriptModule extends Module {
                 ChatUtil.scriptError(this, "in motion event");
                 ChatUtil.print(false, e.getMessage());
                 System.out.println(e.getMessage());
-                NotificationManager.post(NotificationType.WARNING,  "\"" + getName() + "\" Script", "Motion event unloaded", 7);
+                NotificationManager.post(NotificationType.WARNING, "\"" + getName() + "\" Script", "Motion event unloaded", 7);
                 eventMap.remove("motion");
             }
         }
@@ -182,7 +182,7 @@ public class ScriptModule extends Module {
 
     @EventTarget
     public void onPacketSendEvent(PacketSendEvent event) {
-    if (eventMap.containsKey("packetSend")) {
+        if (eventMap.containsKey("packetSend")) {
             try {
                 eventMap.get("packetSend").call(null, event);
             } catch (Exception e) {

@@ -45,22 +45,23 @@ package dev.tenacity.utils.text.diff;
  * This code has been adapted from Apache Commons Collections 4.0.
  * </p>
  *
+ * @param <T> object type
  * @see StringsComparator
  * @see EditScript
- *
- * @param <T> object type
  * @since 1.0
  */
 public abstract class EditCommand<T> {
 
-    /** Object on which the command should be applied. */
+    /**
+     * Object on which the command should be applied.
+     */
     private final T object;
 
     /**
      * Simple constructor. Creates a new instance of EditCommand
      *
-     * @param object  reference to the object associated with this command, this
-     *   refers to an element of one of the sequences being compared
+     * @param object reference to the object associated with this command, this
+     *               refers to an element of one of the sequences being compared
      */
     protected EditCommand(final T object) {
         this.object = object;
@@ -81,7 +82,7 @@ public abstract class EditCommand<T> {
      * This method is invoked for each commands belonging to
      * an {@link EditScript EditScript}, in order to implement the visitor design pattern
      *
-     * @param visitor  the visitor to be accepted
+     * @param visitor the visitor to be accepted
      */
     public abstract void accept(CommandVisitor<T> visitor);
 

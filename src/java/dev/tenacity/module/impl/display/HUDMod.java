@@ -1,10 +1,9 @@
 package dev.tenacity.module.impl.display;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.utils.tuples.Pair;
-import dev.tenacity.Client;
 import com.cubk.event.impl.render.Render2DEvent;
 import com.cubk.event.impl.render.ShaderEvent;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.combat.KillAura;
@@ -20,6 +19,7 @@ import dev.tenacity.utils.misc.RomanNumeralUtils;
 import dev.tenacity.utils.player.MovementUtils;
 import dev.tenacity.utils.render.*;
 import dev.tenacity.utils.server.PingerUtils;
+import dev.tenacity.utils.tuples.Pair;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.block.material.Material;
@@ -41,29 +41,34 @@ import java.util.*;
 
 public class HUDMod extends Module {
 
-    private final StringSetting clientName = new StringSetting("Client Name");
-    private final ModeSetting watermarkMode = new ModeSetting("Watermark Mode", "Tenacity", "Tenacity", "Plain Text", "Neverlose", "Tenasense", "Tenabition", "Logo", "None");
     public static final ColorSetting color1 = new ColorSetting("Color 1", new Color(0xffa028d4));
     public static final ColorSetting color2 = new ColorSetting("Color 2", new Color(0xff0008ff));
     public static final ModeSetting theme = Theme.getModeSetting("Theme Selection", "Tenacity");
     public static final BooleanSetting customFont = new BooleanSetting("Custom Font", true);
-    private static final MultipleBoolSetting infoCustomization = new MultipleBoolSetting("Info Options",
-            new BooleanSetting("Show Ping", false),
-            new BooleanSetting("Semi-Bold Info", true),
-            new BooleanSetting("White Info", false),
-            new BooleanSetting("Info Shadow", true));
-
     public static final MultipleBoolSetting hudCustomization = new MultipleBoolSetting("HUD Options",
             new BooleanSetting("Radial Gradients", true),
             new BooleanSetting("Potion HUD", true),
             new BooleanSetting("Armor HUD", true),
             new BooleanSetting("Render Cape", true),
             new BooleanSetting("Lowercase", false));
-
+    private static final MultipleBoolSetting infoCustomization = new MultipleBoolSetting("Info Options",
+            new BooleanSetting("Show Ping", false),
+            new BooleanSetting("Semi-Bold Info", true),
+            new BooleanSetting("White Info", false),
+            new BooleanSetting("Info Shadow", true));
     private static final MultipleBoolSetting disableButtons = new MultipleBoolSetting("Disable Buttons",
             new BooleanSetting("Disable KillAura", true),
             new BooleanSetting("Disable InvManager", true),
             new BooleanSetting("Disable ChestStealer", true));
+    public static int offsetValue = 0;
+    public static float xOffset = 0;
+    private final StringSetting clientName = new StringSetting("Client Name");
+    private final ModeSetting watermarkMode = new ModeSetting("Watermark Mode", "Tenacity", "Tenacity", "Plain Text", "Neverlose", "Tenasense", "Tenabition", "Logo", "None");
+    private final Animation fadeInText = new DecelerateAnimation(500, 1);
+    private final Map<String, String> bottomLeftText = new LinkedHashMap<>();
+    private int ticks = 0;
+    private boolean version = true;
+
 
     public HUDMod() {
         super("HUD", Category.DISPLAY, "customizes the client's appearance");
@@ -73,14 +78,56 @@ public class HUDMod extends Module {
         if (!enabled) this.toggleSilent();
     }
 
-    public static int offsetValue = 0;
-    private final Animation fadeInText = new DecelerateAnimation(500, 1);
-    private int ticks = 0;
+    public static Pair<Color, Color> getClientColors() {
+        return Theme.getThemeColors(theme.getMode());
+    }
 
-    private boolean version = true;
+    public static String getCurrentTimeStamp() {
+        return new SimpleDateFormat("h:mm a").format(new Date());
+    }
 
-    public static float xOffset = 0;
+    public static String get(String text) {
+        return hudCustomization.getSetting("Lowercase").isEnabled() ? text.toLowerCase() : text;
+    }
 
+    public static Color color(int tick) {
+        return new Color(ColorUtil.colorSwitch(HUDMod.getClientColors().getFirst(), HUDMod.getClientColors().getSecond(),
+                2000.0f, -(tick * 200) / 40, 75L, 1.0));
+    }
+
+    public static boolean isRainbowTheme() {
+        return theme.is("Custom Theme") && color1.isRainbow();
+    }
+
+    public static boolean drawRadialGradients() {
+        return hudCustomization.getSetting("Radial Gradients").isEnabled();
+    }
+
+    public static void addButtons(List<GuiButton> buttonList) {
+        for (ModuleButton mb : ModuleButton.values()) {
+            if (mb.getSetting().isEnabled()) {
+                buttonList.add(mb.getButton());
+            }
+        }
+    }
+
+    public static void updateButtonStatus() {
+        for (ModuleButton mb : ModuleButton.values()) {
+            mb.getButton().enabled = Client.INSTANCE.getModuleManager().getModule(mb.getModule()).isEnabled();
+        }
+    }
+
+    public static void handleActionPerformed(GuiButton button) {
+        for (ModuleButton mb : ModuleButton.values()) {
+            if (mb.getButton() == button) {
+                Module m = Client.INSTANCE.getModuleManager().getModule(mb.getModule());
+                if (m.isEnabled()) {
+                    m.toggle();
+                }
+                break;
+            }
+        }
+    }
 
     @EventTarget
     public void onShaderEvent(ShaderEvent e) {
@@ -109,7 +156,7 @@ public class HUDMod extends Module {
                     GL11.glEnable(GL11.GL_SCISSOR_TEST);
                     RenderUtil.scissor(10, 7, 13 + WH + textWidth + 5, WH);
 
-                    duckSansBoldFont32.drawString(finalName, (float) (((13 + WH) - textWidth) + (textWidth * fadeInText.getOutput().floatValue())), 8 + duckSansBoldFont32.getMiddleOfBox(WH), ColorUtil.applyOpacity(glow ? -1 : 0, (float) (fadeInText.getOutput().floatValue())));
+                    duckSansBoldFont32.drawString(finalName, ((13 + WH) - textWidth) + (textWidth * fadeInText.getOutput().floatValue()), 8 + duckSansBoldFont32.getMiddleOfBox(WH), ColorUtil.applyOpacity(glow ? -1 : 0, fadeInText.getOutput().floatValue()));
                     GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
 
@@ -206,7 +253,7 @@ public class HUDMod extends Module {
                 GL11.glEnable(GL11.GL_SCISSOR_TEST);
                 RenderUtil.scissor(10, 7, 13 + WH + textWidth + 5, WH);
 
-                duckSansBoldFont32.drawString(finalName, (float) (((13 + WH) - textWidth) + (textWidth * fadeInText.getOutput().floatValue())), 8 + duckSansBoldFont32.getMiddleOfBox(WH), ColorUtil.applyOpacity(-1, (float) (.7f * fadeInText.getOutput().floatValue())));
+                duckSansBoldFont32.drawString(finalName, ((13 + WH) - textWidth) + (textWidth * fadeInText.getOutput().floatValue()), 8 + duckSansBoldFont32.getMiddleOfBox(WH), ColorUtil.applyOpacity(-1, .7f * fadeInText.getOutput().floatValue()));
                 GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
                 RenderUtil.color(Color.BLUE.getRGB());
@@ -376,8 +423,6 @@ public class HUDMod extends Module {
         });
     }
 
-    private final Map<String, String> bottomLeftText = new LinkedHashMap<>();
-
     private void drawInfo(Pair<Color, Color> clientColors) {
         boolean shadowInfo = infoCustomization.isEnabled("Info Shadow");
         boolean semiBold = infoCustomization.isEnabled("Semi-Bold Info");
@@ -466,19 +511,6 @@ public class HUDMod extends Module {
         return Math.round(bps * 100.0) / 100.0;
     }
 
-
-    public static Pair<Color, Color> getClientColors() {
-        return Theme.getThemeColors(theme.getMode());
-    }
-
-    public static String getCurrentTimeStamp() {
-        return new SimpleDateFormat("h:mm a").format(new Date());
-    }
-
-    public static String get(String text) {
-        return hudCustomization.getSetting("Lowercase").isEnabled() ? text.toLowerCase() : text;
-    }
-
     private void drawArmor(ScaledResolution sr) {
         if (hudCustomization.getSetting("Armor HUD").isEnabled()) {
             List<ItemStack> equipment = new ArrayList<>();
@@ -512,45 +544,6 @@ public class HUDMod extends Module {
                 GlStateManager.enableAlpha();
                 GlStateManager.popMatrix();
                 armorPiece.getEnchantmentTagList();
-            }
-        }
-    }
-
-    public static Color color(int tick) {
-        return new Color(ColorUtil.colorSwitch(HUDMod.getClientColors().getFirst(), HUDMod.getClientColors().getSecond(),
-                2000.0f, -(tick * 200) / 40, 75L, 1.0));
-    }
-
-    public static boolean isRainbowTheme() {
-        return theme.is("Custom Theme") && color1.isRainbow();
-    }
-
-    public static boolean drawRadialGradients() {
-        return hudCustomization.getSetting("Radial Gradients").isEnabled();
-    }
-
-    public static void addButtons(List<GuiButton> buttonList) {
-        for (ModuleButton mb : ModuleButton.values()) {
-            if (mb.getSetting().isEnabled()) {
-                buttonList.add(mb.getButton());
-            }
-        }
-    }
-
-    public static void updateButtonStatus() {
-        for (ModuleButton mb : ModuleButton.values()) {
-            mb.getButton().enabled = Client.INSTANCE.getModuleManager().getModule(mb.getModule()).isEnabled();
-        }
-    }
-
-    public static void handleActionPerformed(GuiButton button) {
-        for (ModuleButton mb : ModuleButton.values()) {
-            if (mb.getButton() == button) {
-                Module m = Client.INSTANCE.getModuleManager().getModule(mb.getModule());
-                if (m.isEnabled()) {
-                    m.toggle();
-                }
-                break;
             }
         }
     }

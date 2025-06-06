@@ -1,13 +1,12 @@
 package dev.tenacity.module.impl.render;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.module.impl.display.HUDMod;
-import dev.tenacity.utils.tuples.Pair;
-import dev.tenacity.Client;
 import com.cubk.event.impl.render.Render3DEvent;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.combat.KillAura;
+import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.module.impl.movement.Scaffold;
 import dev.tenacity.module.settings.impl.BooleanSetting;
 import dev.tenacity.module.settings.impl.ColorSetting;
@@ -16,6 +15,7 @@ import dev.tenacity.utils.misc.MathUtils;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.ESPUtil;
 import dev.tenacity.utils.render.RenderUtil;
+import dev.tenacity.utils.tuples.Pair;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.player.EntityPlayer;

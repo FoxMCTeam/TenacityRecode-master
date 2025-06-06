@@ -38,7 +38,26 @@ import java.util.List;
 
 public class InvManager extends Module {
 
-    private BooleanSetting inventoryPackets, onlyWhileNotMoving, inventoryOnly, swapBlocks, dropArchery, moveArrows, dropFood, dropShears;
+    private static final NumberSetting slotWeapon = new NumberSetting("Weapon Slot", 1, 9, 1, 1);
+    private static final NumberSetting slotPick = new NumberSetting("Pickaxe Slot", 2, 9, 1, 1);
+    private static final NumberSetting slotAxe = new NumberSetting("Axe Slot", 3, 9, 1, 1);
+    private static final NumberSetting slotShovel = new NumberSetting("Shovel Slot", 4, 9, 1, 1);
+    private static final NumberSetting slotBow = new NumberSetting("Bow Slot", 5, 9, 1, 1);
+    private static final NumberSetting slotBlock = new NumberSetting("Block Slot", 6, 9, 1, 1);
+    private static final NumberSetting slotGapple = new NumberSetting("Gapple Slot", 7, 9, 1, 1);
+    private final NumberSetting delay = new NumberSetting("Delay", 120, 300, 0, 10);
+    private final String[] blacklist = {"tnt", "stick", "egg", "string", "cake", "mushroom", "flint", "compass", "dyePowder", "feather", "bucket", "chest", "snow", "fish", "enchant", "exp", "anvil", "torch", "seeds", "leather", "reeds", "skull", "record", "snowball", "piston"};
+    private final String[] serverItems = {"selector", "tracking compass", "(right click)", "tienda ", "perfil", "salir", "shop", "collectibles", "game", "profil", "lobby", "show all", "hub", "friends only", "cofre", "(click", "teleport", "play", "exit", "hide all", "jeux", "gadget", " (activ", "emote", "amis", "bountique", "choisir", "choose ", "recipe book", "click derecho", "todos", "teletransportador", "configuraci", "jugar de nuevo"};
+    private final List<Integer> badPotionIDs = new ArrayList<>(Arrays.asList(Potion.moveSlowdown.getId(), Potion.weakness.getId(), Potion.poison.getId(), Potion.harm.getId()));
+    private final TimerUtil timer = new TimerUtil();
+    private BooleanSetting inventoryPackets;
+    private final BooleanSetting onlyWhileNotMoving;
+    private BooleanSetting inventoryOnly;
+    private final BooleanSetting swapBlocks;
+    private BooleanSetting dropArchery;
+    private BooleanSetting moveArrows;
+    private BooleanSetting dropFood;
+    private final BooleanSetting dropShears;
     private final MultipleBoolSetting options = new MultipleBoolSetting("Options",
             inventoryPackets = new BooleanSetting("Send inventory packets", true),
             onlyWhileNotMoving = new BooleanSetting("Only while not moving", false),
@@ -49,21 +68,6 @@ public class InvManager extends Module {
             dropFood = new BooleanSetting("Drop food", false),
             dropShears = new BooleanSetting("Drop shears", true)
     );
-
-    private final NumberSetting delay = new NumberSetting("Delay", 120, 300, 0, 10);
-    private static final NumberSetting slotWeapon = new NumberSetting("Weapon Slot", 1, 9, 1, 1);
-    private static final NumberSetting slotPick = new NumberSetting("Pickaxe Slot", 2, 9, 1, 1);
-    private static final NumberSetting slotAxe = new NumberSetting("Axe Slot", 3, 9, 1, 1);
-    private static final NumberSetting slotShovel = new NumberSetting("Shovel Slot", 4, 9, 1, 1);
-    private static final NumberSetting slotBow = new NumberSetting("Bow Slot", 5, 9, 1, 1);
-    private static final NumberSetting slotBlock = new NumberSetting("Block Slot", 6, 9, 1, 1);
-    private static final NumberSetting slotGapple = new NumberSetting("Gapple Slot", 7, 9, 1, 1);
-
-    private final String[] blacklist = {"tnt", "stick", "egg", "string", "cake", "mushroom", "flint", "compass", "dyePowder", "feather", "bucket", "chest", "snow", "fish", "enchant", "exp", "anvil", "torch", "seeds", "leather", "reeds", "skull", "record", "snowball", "piston"};
-    private final String[] serverItems = {"selector", "tracking compass", "(right click)", "tienda ", "perfil", "salir", "shop", "collectibles", "game", "profil", "lobby", "show all", "hub", "friends only", "cofre", "(click", "teleport", "play", "exit", "hide all", "jeux", "gadget", " (activ", "emote", "amis", "bountique", "choisir", "choose ", "recipe book", "click derecho", "todos", "teletransportador", "configuraci", "jugar de nuevo"};
-    private final List<Integer> badPotionIDs = new ArrayList<>(Arrays.asList(Potion.moveSlowdown.getId(), Potion.weakness.getId(), Potion.poison.getId(), Potion.harm.getId()));
-
-    private final TimerUtil timer = new TimerUtil();
     private boolean isInvOpen;
 
     public InvManager() {
@@ -72,6 +76,37 @@ public class InvManager extends Module {
         moveArrows.addParent(dropArchery, ParentAttribute.BOOLEAN_CONDITION.negate());
         slotGapple.addParent(dropFood, ParentAttribute.BOOLEAN_CONDITION.negate());
         addSettings(options, delay, slotWeapon, slotPick, slotAxe, slotShovel, slotBow, slotBlock, slotGapple);
+    }
+
+    public static float getDamageScore(ItemStack stack) {
+        if (stack == null || stack.getItem() == null) return 0;
+
+        float damage = 0;
+        Item item = stack.getItem();
+
+        if (item instanceof ItemSword) {
+            damage += ((ItemSword) item).getDamageVsEntity();
+        } else if (item instanceof ItemTool) {
+            damage += item.getMaxDamage();
+        }
+
+        damage += EnchantmentHelper.getEnchantmentLevel(Enchantment.sharpness.effectId, stack) * 1.25F +
+                EnchantmentHelper.getEnchantmentLevel(Enchantment.fireAspect.effectId, stack) * 0.1F;
+
+        return damage;
+    }
+
+    public static float getProtScore(ItemStack stack) {
+        float prot = 0;
+        if (stack.getItem() instanceof ItemArmor armor) {
+            prot += armor.damageReduceAmount + ((100 - armor.damageReduceAmount) * EnchantmentHelper.getEnchantmentLevel(Enchantment.protection.effectId, stack)) * 0.0075F;
+            prot += EnchantmentHelper.getEnchantmentLevel(Enchantment.blastProtection.effectId, stack) / 100F;
+            prot += EnchantmentHelper.getEnchantmentLevel(Enchantment.fireProtection.effectId, stack) / 100F;
+            prot += EnchantmentHelper.getEnchantmentLevel(Enchantment.thorns.effectId, stack) / 100F;
+            prot += EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, stack) / 25.F;
+            prot += EnchantmentHelper.getEnchantmentLevel(Enchantment.featherFalling.effectId, stack) / 100F;
+        }
+        return prot;
     }
 
     @EventTarget
@@ -110,38 +145,6 @@ public class InvManager extends Module {
 
     private boolean isReady() {
         return timer.hasTimeElapsed(delay.getValue());
-    }
-
-    public static float getDamageScore(ItemStack stack) {
-        if (stack == null || stack.getItem() == null) return 0;
-
-        float damage = 0;
-        Item item = stack.getItem();
-
-        if (item instanceof ItemSword) {
-            damage += ((ItemSword) item).getDamageVsEntity();
-        } else if (item instanceof ItemTool) {
-            damage += item.getMaxDamage();
-        }
-
-        damage += EnchantmentHelper.getEnchantmentLevel(Enchantment.sharpness.effectId, stack) * 1.25F +
-                EnchantmentHelper.getEnchantmentLevel(Enchantment.fireAspect.effectId, stack) * 0.1F;
-
-        return damage;
-    }
-
-    public static float getProtScore(ItemStack stack) {
-        float prot = 0;
-        if (stack.getItem() instanceof ItemArmor) {
-            ItemArmor armor = (ItemArmor) stack.getItem();
-            prot += armor.damageReduceAmount + ((100 - armor.damageReduceAmount) * EnchantmentHelper.getEnchantmentLevel(Enchantment.protection.effectId, stack)) * 0.0075F;
-            prot += EnchantmentHelper.getEnchantmentLevel(Enchantment.blastProtection.effectId, stack) / 100F;
-            prot += EnchantmentHelper.getEnchantmentLevel(Enchantment.fireProtection.effectId, stack) / 100F;
-            prot += EnchantmentHelper.getEnchantmentLevel(Enchantment.thorns.effectId, stack) / 100F;
-            prot += EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, stack) / 25.F;
-            prot += EnchantmentHelper.getEnchantmentLevel(Enchantment.featherFalling.effectId, stack) / 100F;
-        }
-        return prot;
     }
 
     private void dropItems() {
@@ -514,8 +517,7 @@ public class InvManager extends Module {
     private float getToolScore(ItemStack stack) {
         float score = 0;
         Item item = stack.getItem();
-        if (item instanceof ItemTool) {
-            ItemTool tool = (ItemTool) item;
+        if (item instanceof ItemTool tool) {
             String name = item.getUnlocalizedName().toLowerCase();
             if (item instanceof ItemPickaxe) {
                 score = tool.getStrVsBlock(stack, Blocks.stone) - (name.contains("gold") ? 5 : 0);

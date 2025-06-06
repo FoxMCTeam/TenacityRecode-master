@@ -15,12 +15,12 @@ public class StringSetting extends Setting {
         this.string = defaultValue;
     }
 
-    
+
     public String getString() {
         return string;
     }
 
-    
+
     public void setString(String string) {
         this.string = string;
     }

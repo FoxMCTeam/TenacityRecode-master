@@ -15,7 +15,7 @@ public final class SuperKnockback extends Module {
 
     @EventTarget
     public void onAttackEvent(AttackEvent event) {
-        if(event.getTargetEntity() != null) {
+        if (event.getTargetEntity() != null) {
             if (mc.thePlayer.isSprinting())
                 PacketUtils.sendPacketNoEvent(new C0BPacketEntityAction(mc.thePlayer, C0BPacketEntityAction.Action.STOP_SPRINTING));
 

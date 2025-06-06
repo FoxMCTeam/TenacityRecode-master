@@ -14,7 +14,6 @@ import dev.tenacity.module.settings.impl.NumberSetting;
 import dev.tenacity.utils.animations.Animation;
 import dev.tenacity.utils.animations.Direction;
 import dev.tenacity.utils.font.AbstractFontRenderer;
-import dev.tenacity.utils.font.FontUtil;
 import dev.tenacity.utils.objects.Dragging;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.RenderUtil;

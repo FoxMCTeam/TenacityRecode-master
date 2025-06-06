@@ -1,8 +1,8 @@
 package dev.tenacity.module.impl.movement;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.Client;
 import com.cubk.event.impl.player.MotionEvent;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.player.NoSlow;

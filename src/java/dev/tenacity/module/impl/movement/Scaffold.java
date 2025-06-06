@@ -16,7 +16,6 @@ import dev.tenacity.utils.animations.Animation;
 import dev.tenacity.utils.animations.Direction;
 import dev.tenacity.utils.animations.impl.DecelerateAnimation;
 import dev.tenacity.utils.misc.MathUtils;
-import dev.tenacity.utils.player.ChatUtil;
 import dev.tenacity.utils.player.MovementUtils;
 import dev.tenacity.utils.player.RotationUtils;
 import dev.tenacity.utils.player.ScaffoldUtils;
@@ -44,21 +43,9 @@ import net.minecraft.util.MouseFilter;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Scaffold extends Module {
 
-    private final ModeSetting countMode = new ModeSetting("Block Counter", "Tenacity", "None", "Tenacity", "Basic", "Polar");
-    private final BooleanSetting rotations = new BooleanSetting("Rotations", true);
-    private final ModeSetting rotationMode = new ModeSetting("Rotation Mode", "Watchdog", "Watchdog", "NCP", "Back", "45", "Enum", "Down", "0");
-    private final ModeSetting placeType = new ModeSetting("Place Type", "Post", "Pre", "Post", "Legit", "Dynamic");
-    public static ModeSetting keepYMode = new ModeSetting("Keep Y Mode", "Always", "Always", "Speed toggled");
-    public static ModeSetting sprintMode = new ModeSetting("Sprint Mode", "Vanilla", "Vanilla", "Watchdog", "Cancel");
-    public static ModeSetting towerMode = new ModeSetting("Tower Mode", "Watchdog", "Vanilla", "NCP", "Watchdog", "Verus");
-    public static ModeSetting swingMode = new ModeSetting("Swing Mode", "Client", "Client", "Silent");
-    public static NumberSetting delay = new NumberSetting("Delay", 0, 2, 0, 0.05);
-    //public static NumberSetting extend = new NumberSetting("Extend", 0, 6, 0, 0.05);
-    private final NumberSetting timer = new NumberSetting("Timer", 1, 5, 0.1, 0.1);
     public static final BooleanSetting auto3rdPerson = new BooleanSetting("Auto 3rd Person", false);
     public static final BooleanSetting speedSlowdown = new BooleanSetting("Speed Slowdown", true);
     public static final NumberSetting speedSlowdownAmount = new NumberSetting("Slowdown Amount", 0.1, 0.2, 0.01, 0.01);
@@ -66,21 +53,33 @@ public class Scaffold extends Module {
     public static final BooleanSetting downwards = new BooleanSetting("Downwards", false);
     public static final BooleanSetting safewalk = new BooleanSetting("Safewalk", false);
     public static final BooleanSetting sprint = new BooleanSetting("Sprint", false);
-    private final BooleanSetting sneak = new BooleanSetting("Sneak", false);
     public static final BooleanSetting tower = new BooleanSetting("Tower", false);
+    public static ModeSetting keepYMode = new ModeSetting("Keep Y Mode", "Always", "Always", "Speed toggled");
+    public static ModeSetting sprintMode = new ModeSetting("Sprint Mode", "Vanilla", "Vanilla", "Watchdog", "Cancel");
+    public static ModeSetting towerMode = new ModeSetting("Tower Mode", "Watchdog", "Vanilla", "NCP", "Watchdog", "Verus");
+    public static ModeSetting swingMode = new ModeSetting("Swing Mode", "Client", "Client", "Silent");
+    public static NumberSetting delay = new NumberSetting("Delay", 0, 2, 0, 0.05);
+    public static BooleanSetting keepY = new BooleanSetting("Keep Y", false);
+    public static double keepYCoord;
+    private final ModeSetting countMode = new ModeSetting("Block Counter", "Tenacity", "None", "Tenacity", "Basic", "Polar");
+    private final BooleanSetting rotations = new BooleanSetting("Rotations", true);
+    private final ModeSetting rotationMode = new ModeSetting("Rotation Mode", "Watchdog", "Watchdog", "NCP", "Back", "45", "Enum", "Down", "0");
+    private final ModeSetting placeType = new ModeSetting("Place Type", "Post", "Pre", "Post", "Legit", "Dynamic");
+    //public static NumberSetting extend = new NumberSetting("Extend", 0, 6, 0, 0.05);
+    private final NumberSetting timer = new NumberSetting("Timer", 1, 5, 0.1, 0.1);
+    private final BooleanSetting sneak = new BooleanSetting("Sneak", false);
     private final NumberSetting towerTimer = new NumberSetting("Tower Timer Boost", 1.2, 5, 0.1, 0.1);
     private final BooleanSetting swing = new BooleanSetting("Swing", true);
     private final BooleanSetting autoJump = new BooleanSetting("Auto Jump", false);
     private final BooleanSetting hideJump = new BooleanSetting("Hide Jump", false);
     private final BooleanSetting baseSpeed = new BooleanSetting("Base Speed", false);
-    public static BooleanSetting keepY = new BooleanSetting("Keep Y", false);
-    private ScaffoldUtils.BlockCache blockCache, lastBlockCache;
-    private float y;
-    private float speed;
     private final MouseFilter pitchMouseFilter = new MouseFilter();
     private final TimerUtil delayTimer = new TimerUtil();
     private final TimerUtil timerUtil = new TimerUtil();
-    public static double keepYCoord;
+    private final Animation anim = new DecelerateAnimation(250, 1);
+    private ScaffoldUtils.BlockCache blockCache, lastBlockCache;
+    private float y;
+    private float speed;
     private boolean shouldSendPacket;
     private boolean shouldTower;
     private boolean firstJump;
@@ -89,8 +88,6 @@ public class Scaffold extends Module {
     private int slot;
     private int prevSlot;
     private float[] cachedRots = new float[2];
-
-    private final Animation anim = new DecelerateAnimation(250, 1);
 
     public Scaffold() {
         super("Scaffold", Category.MOVEMENT, "Automatically places blocks under you");
@@ -105,6 +102,10 @@ public class Scaffold extends Module {
         keepYMode.addParent(keepY, ParentAttribute.BOOLEAN_CONDITION);
         hideJump.addParent(autoJump, ParentAttribute.BOOLEAN_CONDITION);
         speedSlowdownAmount.addParent(speedSlowdown, ParentAttribute.BOOLEAN_CONDITION);
+    }
+
+    public static boolean isDownwards() {
+        return downwards.isEnabled() && GameSettings.isKeyDown(mc.gameSettings.keyBindSneak);
     }
 
     @EventTarget
@@ -526,10 +527,6 @@ public class Scaffold extends Module {
         if ((safewalk.isEnabled() && !isDownwards()) || ScaffoldUtils.getBlockCount() == 0) {
             event.setSafe(true);
         }
-    }
-
-    public static boolean isDownwards() {
-        return downwards.isEnabled() && GameSettings.isKeyDown(mc.gameSettings.keyBindSneak);
     }
 
 }

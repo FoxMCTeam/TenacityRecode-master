@@ -82,7 +82,7 @@ public class StringsComparator {
      * and the {@code equals} method is specialized.
      * </p>
      *
-     * @param left first character sequence to be compared
+     * @param left  first character sequence to be compared
      * @param right second character sequence to be compared
      */
     public StringsComparator(final String left, final String right) {
@@ -91,7 +91,7 @@ public class StringsComparator {
 
         final int size = left.length() + right.length() + 2;
         vDown = new int[size];
-        vUp   = new int[size];
+        vUp = new int[size];
     }
 
     /**
@@ -106,7 +106,7 @@ public class StringsComparator {
      * </p>
      *
      * @return The edit script resulting from the comparison of the two
-     *         sequences
+     * sequences
      */
     public EditScript<Character> getScript() {
         final EditScript<Character> script = new EditScript<>();
@@ -117,14 +117,14 @@ public class StringsComparator {
     /**
      * Build an edit script.
      *
-     * @param start1  the begin of the first sequence to be compared
-     * @param end1  the end of the first sequence to be compared
-     * @param start2  the begin of the second sequence to be compared
-     * @param end2  the end of the second sequence to be compared
+     * @param start1 the begin of the first sequence to be compared
+     * @param end1   the end of the first sequence to be compared
+     * @param start2 the begin of the second sequence to be compared
+     * @param end2   the end of the second sequence to be compared
      * @param script the edited script
      */
     private void buildScript(final int start1, final int end1, final int start2, final int end2,
-            final EditScript<Character> script) {
+                             final EditScript<Character> script) {
         final Snake middle = getMiddleSnake(start1, end1, start2, end2);
 
         if (middle == null
@@ -152,14 +152,14 @@ public class StringsComparator {
         } else {
 
             buildScript(start1, middle.getStart(),
-                        start2, middle.getStart() - middle.getDiag(),
-                        script);
+                    start2, middle.getStart() - middle.getDiag(),
+                    script);
             for (int i = middle.getStart(); i < middle.getEnd(); ++i) {
                 script.append(new KeepCommand<>(left.charAt(i)));
             }
             buildScript(middle.getEnd(), end1,
-                        middle.getEnd() - middle.getDiag(), end2,
-                        script);
+                    middle.getEnd() - middle.getDiag(), end2,
+                    script);
         }
     }
 
@@ -174,10 +174,10 @@ public class StringsComparator {
      * An O(ND) Difference Algorithm and Its Variations</a>.
      * </p>
      *
-     * @param start1  the begin of the first sequence to be compared
-     * @param end1  the end of the first sequence to be compared
-     * @param start2  the begin of the second sequence to be compared
-     * @param end2  the end of the second sequence to be compared
+     * @param start1 the begin of the first sequence to be compared
+     * @param end1   the end of the first sequence to be compared
+     * @param start2 the begin of the second sequence to be compared
+     * @param end2   the end of the second sequence to be compared
      * @return The middle snake
      */
     private Snake getMiddleSnake(final int start1, final int end1, final int start2, final int end2) {
@@ -189,11 +189,11 @@ public class StringsComparator {
             return null;
         }
 
-        final int delta  = m - n;
-        final int sum    = n + m;
+        final int delta = m - n;
+        final int sum = n + m;
         final int offset = (sum % 2 == 0 ? sum : sum + 1) / 2;
         vDown[1 + offset] = start1;
-        vUp[1 + offset]   = end1 + 1;
+        vUp[1 + offset] = end1 + 1;
 
         for (int d = 0; d <= offset; ++d) {
             // Down
@@ -256,7 +256,7 @@ public class StringsComparator {
     /**
      * Build a snake.
      *
-     * @param start  the value of the initClient of the snake
+     * @param start the value of the initClient of the snake
      * @param diag  the value of the diagonal of the snake
      * @param end1  the value of the end of the first sequence to be compared
      * @param end2  the value of the end of the second sequence to be compared
@@ -278,26 +278,32 @@ public class StringsComparator {
      */
     private static class Snake {
 
-        /** Start index. */
+        /**
+         * Start index.
+         */
         private final int start;
 
-        /** End index. */
+        /**
+         * End index.
+         */
         private final int end;
 
-        /** Diagonal number. */
+        /**
+         * Diagonal number.
+         */
         private final int diag;
 
         /**
          * Simple constructor. Creates a new instance of Snake with specified indices.
          *
-         * @param start  initClient index of the snake
-         * @param end  end index of the snake
+         * @param start initClient index of the snake
+         * @param end   end index of the snake
          * @param diag  diagonal number
          */
         Snake(final int start, final int end, final int diag) {
             this.start = start;
-            this.end   = end;
-            this.diag  = diag;
+            this.end = end;
+            this.diag = diag;
         }
 
         /**

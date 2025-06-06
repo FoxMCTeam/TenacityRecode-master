@@ -9,11 +9,10 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class RoundedUtil {
 
-    public static ShaderUtil roundedShader = new ShaderUtil("roundedRect");
-    public static ShaderUtil roundedOutlineShader = new ShaderUtil("roundRectOutline");
     private static final ShaderUtil roundedTexturedShader = new ShaderUtil("roundRectTexture");
     private static final ShaderUtil roundedGradientShader = new ShaderUtil("roundedRectGradient");
-
+    public static ShaderUtil roundedShader = new ShaderUtil("roundedRect");
+    public static ShaderUtil roundedOutlineShader = new ShaderUtil("roundRectOutline");
 
     public static void drawRound(float x, float y, float width, float height, float radius, Color color) {
         drawRound(x, y, width, height, radius, false, color);
@@ -22,9 +21,11 @@ public class RoundedUtil {
     public static void drawGradientHorizontal(float x, float y, float width, float height, float radius, Color left, Color right) {
         drawGradientRound(x, y, width, height, radius, left, left, right, right);
     }
+
     public static void drawGradientVertical(float x, float y, float width, float height, float radius, Color top, Color bottom) {
         drawGradientRound(x, y, width, height, radius, bottom, top, bottom, top);
     }
+
     public static void drawGradientCornerLR(float x, float y, float width, float height, float radius, Color topLeft, Color bottomRight) {
         Color mixedColor = ColorUtil.interpolateColorC(topLeft, bottomRight, .5f);
         drawGradientRound(x, y, width, height, radius, mixedColor, topLeft, bottomRight, mixedColor);
@@ -53,8 +54,6 @@ public class RoundedUtil {
         roundedGradientShader.unload();
         GLUtil.endBlend();
     }
-
-
 
 
     public static void drawRound(float x, float y, float width, float height, float radius, boolean blur, Color color) {

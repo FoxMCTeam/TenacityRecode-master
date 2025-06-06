@@ -24,62 +24,50 @@ import org.lwjglx.input.Keyboard;
 import java.awt.*;
 
 public class TextField extends Gui {
+    private final Animation textColor = new DecelerateAnimation(250, 1);
+    private final Animation cursorBlinkAnimation = new DecelerateAnimation(750, 1);
+    private final TimerUtil timerUtil = new TimerUtil();
     @Setter
     public CustomFont font;
-
     @Getter
     @Setter
     private float xPosition, yPosition, radius = 2, alpha = 1;
-
     @Setter
     private float width, height, textAlpha = 1;
-
     @Setter
     @Getter
     private Color outline = Color.WHITE, fill = ColorUtil.tripleColor(32);
-
     private Color focusedTextColor = new Color(224, 224, 224);
     private Color unfocusedTextColor = new Color(130, 130, 130);
     /**
      * Has the current text being edited on the textbox.
      */
     private String text = "";
-
     @Setter
     private String backgroundText;
-
     private int maxStringLength = 32;
-
     @Setter
     @Getter
     private boolean drawingBackground = true;
-
     /**
      * if true the textbox can lose focus by clicking elsewhere on the screen
      */
     private boolean canLoseFocus = true;
-
     /**
      * If this value is true along with isEnabled, keyTyped will process the keys.
      */
     @Setter
     @Getter
     private boolean isFocused;
-
     /**
      * The current character index that should be used as initClient of the rendered text.
      */
     private int lineScrollOffset;
     private int cursorPosition;
-
     /**
      * other selection position, maybe the same as the cursor
      */
     private int selectionEnd;
-    private final Animation textColor = new DecelerateAnimation(250, 1);
-    private final Animation cursorBlinkAnimation = new DecelerateAnimation(750, 1);
-    private final TimerUtil timerUtil = new TimerUtil();
-
     /**
      * True if this textbox is visible
      */
@@ -98,6 +86,13 @@ public class TextField extends Gui {
     }
 
     /**
+     * Returns the contents of the textbox
+     */
+    public String getText() {
+        return this.text;
+    }
+
+    /**
      * Sets the text of the textbox
      */
     public void setText(String text) {
@@ -108,13 +103,6 @@ public class TextField extends Gui {
         }
 
         setCursorPositionZero();
-    }
-
-    /**
-     * Returns the contents of the textbox
-     */
-    public String getText() {
-        return this.text;
     }
 
     /**
@@ -254,16 +242,6 @@ public class TextField extends Gui {
      */
     public void moveCursorBy(int p_146182_1_) {
         this.setCursorPosition(this.selectionEnd + p_146182_1_);
-    }
-
-    /**
-     * sets the position of the cursor to the provided index
-     */
-    public void setCursorPosition(int p_146190_1_) {
-        this.cursorPosition = p_146190_1_;
-        int i = this.text.length();
-        this.cursorPosition = MathHelper.clamp_int(this.cursorPosition, 0, i);
-        this.setSelectionPos(this.cursorPosition);
     }
 
     /**
@@ -553,6 +531,13 @@ public class TextField extends Gui {
         GlStateManager.enableTexture2D();
     }
 
+    /**
+     * returns the maximum number of character that can be contained in this textbox
+     */
+    public int getMaxStringLength() {
+        return this.maxStringLength;
+    }
+
     public void setMaxStringLength(int len) {
         this.maxStringLength = len;
 
@@ -562,17 +547,20 @@ public class TextField extends Gui {
     }
 
     /**
-     * returns the maximum number of character that can be contained in this textbox
-     */
-    public int getMaxStringLength() {
-        return this.maxStringLength;
-    }
-
-    /**
      * returns the current position of the cursor
      */
     public int getCursorPosition() {
         return this.cursorPosition;
+    }
+
+    /**
+     * sets the position of the cursor to the provided index
+     */
+    public void setCursorPosition(int p_146190_1_) {
+        this.cursorPosition = p_146190_1_;
+        int i = this.text.length();
+        this.cursorPosition = MathHelper.clamp_int(this.cursorPosition, 0, i);
+        this.setSelectionPos(this.cursorPosition);
     }
 
     /**

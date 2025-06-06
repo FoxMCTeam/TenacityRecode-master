@@ -1,11 +1,11 @@
 package dev.tenacity.module.impl.movement;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.Client;
 import com.cubk.event.impl.network.PacketReceiveEvent;
 import com.cubk.event.impl.player.MotionEvent;
 import com.cubk.event.impl.player.MoveEvent;
 import com.cubk.event.impl.player.PlayerMoveUpdateEvent;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.combat.TargetStrafe;
@@ -43,7 +43,7 @@ public final class Speed extends Module {
     private float speedChangingDirection;
     private int stage;
     private boolean strafe, wasOnGround;
-    private boolean setTimer = true;
+    private final boolean setTimer = true;
     private double moveSpeed;
     private int inAirTicks;
 
@@ -199,7 +199,7 @@ public final class Speed extends Module {
                         break;
                     case "Normal":
                         if (e.isPre()) {
-                            if(MovementUtils.isMoving()) {
+                            if (MovementUtils.isMoving()) {
                                 if (mc.thePlayer.onGround) {
                                     mc.thePlayer.jump();
                                     MovementUtils.setSpeed(0.48);
@@ -255,12 +255,12 @@ public final class Speed extends Module {
                     }
                     break;
                 case "Low Hop":
-                    if(MovementUtils.isMoving()) {
-                        if(mc.thePlayer.onGround)
+                    if (MovementUtils.isMoving()) {
+                        if (mc.thePlayer.onGround)
                             inAirTicks = 0;
                         else
                             inAirTicks++;
-                        if(inAirTicks == 5)
+                        if (inAirTicks == 5)
                             e.setY(mc.thePlayer.motionY = -0.19);
                     }
                     break;

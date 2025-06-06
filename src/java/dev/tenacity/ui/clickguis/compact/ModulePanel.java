@@ -21,10 +21,9 @@ public class ModulePanel implements Screen {
     public float x, y, rectWidth, rectHeight;
     public Category currentCat;
     public List<ModuleRect> moduleRects;
+    public boolean typing;
     private HashMap<Category, Scroll> scrollHashMap;
     private boolean draggingScrollBar;
-    public boolean typing;
-
 
     @Override
     public void initGui() {

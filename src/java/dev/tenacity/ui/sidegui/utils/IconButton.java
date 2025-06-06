@@ -15,15 +15,13 @@ import java.awt.*;
 
 @Setter
 public class IconButton implements Screen {
+    private final Animation hoverAnimation = new DecelerateAnimation(250, 1);
+    public Color accentColor, textColor = new Color(191, 191, 191);
     @Getter
     private float x, y, alpha;
-    public Color accentColor, textColor = new Color(191, 191, 191);
     private Runnable clickAction;
     private boolean clickable = true;
     private CustomFont iconFont = iconFont16;
-
-    private final Animation hoverAnimation = new DecelerateAnimation(250, 1);
-
     @Getter
     private String icon;
 

@@ -22,16 +22,14 @@ import java.awt.*;
 
 public class SideGUIHotbar implements Screen {
 
-    public float x, y, width, height, alpha;
-
     public final TextField searchField = new TextField(duckSansFont20);
-    private final Animation searchAnimation = new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
-
     public final DropdownObject searchType = new DropdownObject("Type", "Configs", "Scripts");
-
+    private final Animation searchAnimation = new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
     @Getter
     private final CarouselButtons carouselButtons = new CarouselButtons("Scripts", "Configs", "Info");
-
+    private final TimerUtil refreshTimer = new TimerUtil();
+    public float x, y, width, height, alpha;
+    int ticks = 0;
     @Getter
     @Setter
     private String currentPanel;
@@ -40,7 +38,6 @@ public class SideGUIHotbar implements Screen {
     public void initGui() {
         currentPanel = carouselButtons.getCurrentButton();
     }
-    int ticks = 0;
 
     @Override
     public void keyTyped(char typedChar, int keyCode) {
@@ -49,7 +46,6 @@ public class SideGUIHotbar implements Screen {
         }
     }
 
-    private final TimerUtil refreshTimer = new TimerUtil();
     @Override
     public void drawScreen(int mouseX, int mouseY) {
         RoundedUtil.drawRound(x + .625f, y + .625f, width - 1.25f, height - 1.25f, 5, ColorUtil.tripleColor(25, alpha));

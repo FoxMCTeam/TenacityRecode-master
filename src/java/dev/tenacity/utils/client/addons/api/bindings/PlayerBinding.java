@@ -1,7 +1,7 @@
 package dev.tenacity.utils.client.addons.api.bindings;
 
-import dev.tenacity.utils.client.addons.api.objects.ScriptPlayerCapabilites;
 import dev.tenacity.utils.Utils;
+import dev.tenacity.utils.client.addons.api.objects.ScriptPlayerCapabilites;
 import dev.tenacity.utils.player.MovementUtils;
 import dev.tenacity.utils.server.PacketUtils;
 import net.minecraft.entity.Entity;
@@ -261,6 +261,7 @@ public class PlayerBinding implements Utils {
     public double getBaseMoveSpeed() {
         return MovementUtils.getBaseMoveSpeed();
     }
+
     public ItemStack getInventorySlot(int slot) {
         return mc.thePlayer.inventoryContainer.getSlot(slot).getStack();
     }

@@ -1,12 +1,11 @@
 package dev.tenacity.module.impl.render;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.module.impl.display.HUDMod;
-import dev.tenacity.utils.tuples.Pair;
 import com.cubk.event.impl.player.MotionEvent;
 import com.cubk.event.impl.render.Render3DEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
+import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.module.settings.impl.NumberSetting;
 import dev.tenacity.utils.animations.Animation;
 import dev.tenacity.utils.animations.Direction;
@@ -14,6 +13,7 @@ import dev.tenacity.utils.animations.impl.DecelerateAnimation;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.GLUtil;
 import dev.tenacity.utils.render.RenderUtil;
+import dev.tenacity.utils.tuples.Pair;
 import net.minecraft.util.MathHelper;
 
 import java.awt.*;
@@ -25,16 +25,13 @@ import static org.lwjgl.opengl.GL11.*;
 public class JumpCircle extends Module {
 
     private static final NumberSetting radius = new NumberSetting("Radius", 2.5, 10, 1, .25);
-
+    private final List<Circle> circles = new ArrayList<>();
+    private final List<Circle> toRemove = new ArrayList<>();
+    private boolean inAir = false;
     public JumpCircle() {
         super("JumpCircle", Category.RENDER, "Draws a circle when you land on the ground.");
         addSettings(radius);
     }
-
-    private boolean inAir = false;
-
-    private final List<Circle> circles = new ArrayList<>();
-    private final List<Circle> toRemove = new ArrayList<>();
 
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
@@ -106,7 +103,6 @@ public class JumpCircle extends Module {
 
             int color1 = colors.getSecond().getRGB();
             int color2 = colors.getFirst().getRGB();
-
 
 
             float newAnim = (float) Math.max(0, animation - (.3f * (animation / expandAnimation.getEndPoint())));

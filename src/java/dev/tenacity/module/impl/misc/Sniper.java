@@ -47,7 +47,7 @@ public class Sniper extends Module {
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
         if (event.isPre()) {
-            if(!ServerUtils.isGeniuneHypixel() || mc.isSingleplayer()) {
+            if (!ServerUtils.isGeniuneHypixel() || mc.isSingleplayer()) {
                 NotificationManager.post(NotificationType.WARNING, "Error", "This module only works on Hypixel servers.");
                 toggleSilent();
                 return;
@@ -64,7 +64,7 @@ public class Sniper extends Module {
                 }
             }
 
-            if(reset) {
+            if (reset) {
                 Multithreading.schedule(() -> ChatUtil.send(getJoinCommand()), joinDelay.getValue().longValue(), TimeUnit.SECONDS);
                 reset = false;
             }
@@ -73,7 +73,7 @@ public class Sniper extends Module {
 
     @EventTarget
     public void onWorldEvent(WorldEvent event) {
-        if(event instanceof WorldEvent.Load) {
+        if (event instanceof WorldEvent.Load) {
             reset = true;
         }
     }

@@ -1,6 +1,5 @@
 package dev.tenacity.module;
 
-import dev.tenacity.Client;
 import dev.tenacity.module.impl.combat.*;
 import dev.tenacity.module.impl.display.*;
 import dev.tenacity.module.impl.exploit.*;
@@ -22,10 +21,11 @@ import java.util.stream.Collectors;
 
 public class ModuleManager {
     public static boolean reloadModules;
-    @Setter
-    private HashMap<Object, Module> modules = new HashMap<>();
     @Getter
     private final List<Class<? extends Module>> hiddenModules = new ArrayList<>(Arrays.asList(ArrayListMod.class, NotificationsMod.class));
+    @Setter
+    private HashMap<Object, Module> modules = new HashMap<>();
+
     public void init() {
         // Combat
         modules.put(KillAura.class, new KillAura());

@@ -15,14 +15,13 @@ import java.util.Map;
 
 public class AutoDoxTargetHUD extends TargetHUD {
 
+    public final PlayerDox thePlayerDox = new PlayerDox(mc.thePlayer);
+    private final ContinualAnimation animatedHealthBar = new ContinualAnimation();
+    public Map<EntityLivingBase, PlayerDox> doxMap = new HashMap<>();
+
     public AutoDoxTargetHUD() {
         super("Auto-Dox");
     }
-
-    public Map<EntityLivingBase, PlayerDox> doxMap = new HashMap<>();
-    public final PlayerDox thePlayerDox = new PlayerDox(mc.thePlayer);
-
-    private final ContinualAnimation animatedHealthBar = new ContinualAnimation();
 
     @Override
     public void render(float x, float y, float alpha, EntityLivingBase target) {

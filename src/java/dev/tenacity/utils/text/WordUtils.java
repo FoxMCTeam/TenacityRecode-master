@@ -48,11 +48,12 @@ public class WordUtils {
      * instance to operate.</p>
      */
     public WordUtils() {
-      super();
+        super();
     }
 
     // Wrapping
     //--------------------------------------------------------------------------
+
     /**
      * <p>Wraps a single line of text, identifying words by {@code ' '}.</p>
      *
@@ -95,11 +96,11 @@ public class WordUtils {
      *   <td>"Click here,\nhttps://commons.apache.org,\nto jump to the\ncommons website"</td>
      *  </tr>
      * </table>
-     *
+     * <p>
      * (assuming that '\n' is the systems line separator)
      *
-     * @param str  the String to be word wrapped, may be null
-     * @param wrapLength  the column to wrap the words at, less than 1 is treated as 1
+     * @param str        the String to be word wrapped, may be null
+     * @param wrapLength the column to wrap the words at, less than 1 is treated as 1
      * @return a line with newlines inserted, {@code null} if null input
      */
     public static String wrap(final String str, final int wrapLength) {
@@ -174,11 +175,11 @@ public class WordUtils {
      *  </tr>
      * </table>
      *
-     * @param str  the String to be word wrapped, may be null
-     * @param wrapLength  the column to wrap the words at, less than 1 is treated as 1
-     * @param newLineStr  the string to insert for a new line,
-     *  {@code null} uses the system property line separator
-     * @param wrapLongWords  true if long words (such as URLs) should be wrapped
+     * @param str           the String to be word wrapped, may be null
+     * @param wrapLength    the column to wrap the words at, less than 1 is treated as 1
+     * @param newLineStr    the string to insert for a new line,
+     *                      {@code null} uses the system property line separator
+     * @param wrapLongWords true if long words (such as URLs) should be wrapped
      * @return a line with newlines inserted, {@code null} if null input
      */
     public static String wrap(final String str,
@@ -271,13 +272,14 @@ public class WordUtils {
      *   <td>"flammable\ninflammable"</td>
      *  </tr>
      * </table>
-     * @param str  the String to be word wrapped, may be null
-     * @param wrapLength  the column to wrap the words at, less than 1 is treated as 1
-     * @param newLineStr  the string to insert for a new line,
-     *  {@code null} uses the system property line separator
-     * @param wrapLongWords  true if long words (such as URLs) should be wrapped
-     * @param wrapOn regex expression to be used as a breakable characters,
-     *               if blank string is provided a space character will be used
+     *
+     * @param str           the String to be word wrapped, may be null
+     * @param wrapLength    the column to wrap the words at, less than 1 is treated as 1
+     * @param newLineStr    the string to insert for a new line,
+     *                      {@code null} uses the system property line separator
+     * @param wrapLongWords true if long words (such as URLs) should be wrapped
+     * @param wrapOn        regex expression to be used as a breakable characters,
+     *                      if blank string is provided a space character will be used
      * @return a line with newlines inserted, {@code null} if null input
      */
     public static String wrap(final String str,
@@ -384,6 +386,7 @@ public class WordUtils {
 
     // Capitalizing
     //-----------------------------------------------------------------------
+
     /**
      * <p>Capitalizes all the whitespace separated words in a String.
      * Only the first character of each word is changed. To convert the
@@ -401,7 +404,7 @@ public class WordUtils {
      * WordUtils.capitalize("i am FINE") = "I Am FINE"
      * </pre>
      *
-     * @param str  the String to capitalize, may be null
+     * @param str the String to capitalize, may be null
      * @return capitalized String, {@code null} if null String input
      * @see #uncapitalize(String)
      * @see #capitalizeFully(String)
@@ -433,8 +436,8 @@ public class WordUtils {
      * WordUtils.capitalize("i am fine", new char[]{}) = "I am fine"
      * </pre>
      *
-     * @param str  the String to capitalize, may be null
-     * @param delimiters  set of characters to determine capitalization, null means whitespace
+     * @param str        the String to capitalize, may be null
+     * @param delimiters set of characters to determine capitalization, null means whitespace
      * @return capitalized String, {@code null} if null String input
      * @see #uncapitalize(String)
      * @see #capitalizeFully(String)
@@ -449,7 +452,7 @@ public class WordUtils {
         int outOffset = 0;
 
         boolean capitalizeNext = true;
-        for (int index = 0; index < strLen;) {
+        for (int index = 0; index < strLen; ) {
             final int codePoint = str.codePointAt(index);
 
             if (delimiterSet.contains(codePoint)) {
@@ -470,6 +473,7 @@ public class WordUtils {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * <p>Converts all the whitespace separated words in a String into capitalized words,
      * that is each word is made up of a titlecase character and then a series of
@@ -486,7 +490,7 @@ public class WordUtils {
      * WordUtils.capitalizeFully("i am FINE") = "I Am Fine"
      * </pre>
      *
-     * @param str  the String to capitalize, may be null
+     * @param str the String to capitalize, may be null
      * @return capitalized String, {@code null} if null String input
      */
     public static String capitalizeFully(final String str) {
@@ -514,8 +518,8 @@ public class WordUtils {
      * WordUtils.capitalizeFully("i aM.fine", {'.'}) = "I am.Fine"
      * </pre>
      *
-     * @param str  the String to capitalize, may be null
-     * @param delimiters  set of characters to determine capitalization, null means whitespace
+     * @param str        the String to capitalize, may be null
+     * @param delimiters set of characters to determine capitalization, null means whitespace
      * @return capitalized String, {@code null} if null String input
      */
     public static String capitalizeFully(String str, final char... delimiters) {
@@ -527,6 +531,7 @@ public class WordUtils {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * <p>Uncapitalizes all the whitespace separated words in a String.
      * Only the first character of each word is changed.</p>
@@ -540,7 +545,7 @@ public class WordUtils {
      * WordUtils.uncapitalize("I Am FINE") = "i am fINE"
      * </pre>
      *
-     * @param str  the String to uncapitalize, may be null
+     * @param str the String to uncapitalize, may be null
      * @return uncapitalized String, {@code null} if null String input
      * @see #capitalize(String)
      */
@@ -568,8 +573,8 @@ public class WordUtils {
      * WordUtils.uncapitalize("I am fine", new char[]{}) = "i am fine"
      * </pre>
      *
-     * @param str  the String to uncapitalize, may be null
-     * @param delimiters  set of characters to determine uncapitalization, null means whitespace
+     * @param str        the String to uncapitalize, may be null
+     * @param delimiters set of characters to determine uncapitalization, null means whitespace
      * @return uncapitalized String, {@code null} if null String input
      * @see #capitalize(String)
      */
@@ -583,7 +588,7 @@ public class WordUtils {
         int outOffset = 0;
 
         boolean uncapitalizeNext = true;
-        for (int index = 0; index < strLen;) {
+        for (int index = 0; index < strLen; ) {
             final int codePoint = str.codePointAt(index);
 
             if (delimiterSet.contains(codePoint)) {
@@ -604,6 +609,7 @@ public class WordUtils {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * <p>Swaps the case of a String using a word based algorithm.</p>
      *
@@ -623,7 +629,7 @@ public class WordUtils {
      * StringUtils.swapCase("The dog has a BONE") = "tHE DOG HAS A bone"
      * </pre>
      *
-     * @param str  the String to swap case, may be null
+     * @param str the String to swap case, may be null
      * @return The changed String, {@code null} if null String input
      */
     public static String swapCase(final String str) {
@@ -634,7 +640,7 @@ public class WordUtils {
         final int[] newCodePoints = new int[strLen];
         int outOffset = 0;
         boolean whitespace = true;
-        for (int index = 0; index < strLen;) {
+        for (int index = 0; index < strLen; ) {
             final int oldCodepoint = str.codePointAt(index);
             final int newCodePoint;
             if (Character.isUpperCase(oldCodepoint) || Character.isTitleCase(oldCodepoint)) {
@@ -658,6 +664,7 @@ public class WordUtils {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * <p>Extracts the initial characters from each word in the String.</p>
      *
@@ -674,9 +681,9 @@ public class WordUtils {
      * WordUtils.initials("Ben J.Lee")      = "BJ"
      * </pre>
      *
-     * @param str  the String to get initials from, may be null
+     * @param str the String to get initials from, may be null
      * @return String of initial letters, {@code null} if null String input
-     * @see #initials(String,char[])
+     * @see #initials(String, char[])
      */
     public static String initials(final String str) {
         return initials(str, null);
@@ -702,8 +709,8 @@ public class WordUtils {
      * WordUtils.initials(*, new char[0])         = ""
      * </pre>
      *
-     * @param str  the String to get initials from, may be null
-     * @param delimiters  set of characters to determine words, null means whitespace
+     * @param str        the String to get initials from, may be null
+     * @param delimiters set of characters to determine words, null means whitespace
      * @return String of initial characters, {@code null} if null String input
      * @see #initials(String)
      */
@@ -719,7 +726,7 @@ public class WordUtils {
         final int[] newCodePoints = new int[strLen / 2 + 1];
         int count = 0;
         boolean lastWasGap = true;
-        for (int i = 0; i < strLen;) {
+        for (int i = 0; i < strLen; ) {
             final int codePoint = str.codePointAt(i);
 
             if (delimiterSet.contains(codePoint) || (delimiters == null && Character.isWhitespace(codePoint))) {
@@ -735,6 +742,7 @@ public class WordUtils {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * <p>Checks if the String contains all words in the given array.</p>
      *
@@ -752,7 +760,7 @@ public class WordUtils {
      * WordUtils.containsAllWords("abc def", "def", "abc") = true
      * </pre>
      *
-     * @param word The CharSequence to check, may be null
+     * @param word  The CharSequence to check, may be null
      * @param words The array of String words to search for, may be null
      * @return {@code true} if all search words are found, {@code false} otherwise
      */
@@ -773,10 +781,11 @@ public class WordUtils {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Is the character a delimiter.
      *
-     * @param ch the character to check
+     * @param ch         the character to check
      * @param delimiters the delimiters
      * @return true if it is a delimiter
      * @deprecated as of 1.2 and will be removed in 2.0
@@ -794,11 +803,12 @@ public class WordUtils {
         return false;
     }
 
-  //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+
     /**
      * Is the codePoint a delimiter.
      *
-     * @param codePoint the codePint to check
+     * @param codePoint  the codePint to check
      * @param delimiters the delimiters
      * @return true if it is a delimiter
      * @deprecated as of 1.2 and will be removed in 2.0
@@ -818,9 +828,10 @@ public class WordUtils {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Abbreviates the words nicely.
-     *
+     * <p>
      * This method searches for the first space after the lower limit and abbreviates
      * the String there. It will also append any String passed as a parameter
      * to the end of the String. The upper limit can be specified to forcibly
@@ -896,6 +907,7 @@ public class WordUtils {
     }
 
     // -----------------------------------------------------------------------
+
     /**
      * <p>
      * Converts an array of delimiters to a hash set of code points. Code point of space(32) is added as the default
@@ -909,7 +921,7 @@ public class WordUtils {
         final Set<Integer> delimiterHashSet = new HashSet<>();
         if (delimiters == null || delimiters.length == 0) {
             if (delimiters == null) {
-                delimiterHashSet.add(Character.codePointAt(new char[] {' '}, 0));
+                delimiterHashSet.add(Character.codePointAt(new char[]{' '}, 0));
             }
 
             return delimiterHashSet;
@@ -920,4 +932,4 @@ public class WordUtils {
         }
         return delimiterHashSet;
     }
- }
+}

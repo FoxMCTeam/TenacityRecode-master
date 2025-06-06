@@ -18,14 +18,14 @@ public final class Spider extends Module {
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
         setSuffix(mode.getMode());
-        if(mc.thePlayer.isCollidedHorizontally) {
-            if(!mc.thePlayer.onGround && mc.thePlayer.isCollidedVertically) return;
-            switch(mode.getMode()) {
+        if (mc.thePlayer.isCollidedHorizontally) {
+            if (!mc.thePlayer.onGround && mc.thePlayer.isCollidedVertically) return;
+            switch (mode.getMode()) {
                 case "Vanilla":
                     mc.thePlayer.jump();
                     break;
                 case "Verus":
-                    if(mc.thePlayer.ticksExisted % 3 == 0)
+                    if (mc.thePlayer.ticksExisted % 3 == 0)
                         mc.thePlayer.motionY = 0.42f;
                     break;
             }

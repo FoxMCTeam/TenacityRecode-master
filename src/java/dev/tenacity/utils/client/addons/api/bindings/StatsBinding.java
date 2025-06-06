@@ -22,7 +22,7 @@ public class StatsBinding {
         return Statistics.gamesPlayed;
     }
 
-    public int[] getPlayTime(){
+    public int[] getPlayTime() {
         return Statistics.getPlayTime();
     }
 

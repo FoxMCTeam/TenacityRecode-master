@@ -36,9 +36,9 @@ public class ClickCircle extends Component {
         }
         GlStateManager.alphaFunc(516, 0.15f);
         int color = ColorUtil.interpolateColor(
-                new Color(249, 249, 249, 28), new Color(255, 255, 240), (float) fadeAnimation.getOutput().floatValue());
+                new Color(249, 249, 249, 28), new Color(255, 255, 240), fadeAnimation.getOutput().floatValue());
         GlStateManager.color(1, 1, 1, 1);
-        RenderUtil.drawUnfilledCircle(x, y, (float) (1 + (6 * scaleAnimation.getOutput().floatValue())), 4, color);
+        RenderUtil.drawUnfilledCircle(x, y, 1 + (6 * scaleAnimation.getOutput().floatValue()), 4, color);
         GlStateManager.alphaFunc(516, 0.1f);
     }
 

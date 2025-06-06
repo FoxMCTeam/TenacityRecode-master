@@ -31,7 +31,6 @@ import static java.util.FormattableFlags.LEFT_JUSTIFY;
  * and padding, and is not designed to allow generalised alternate formats.</p>
  *
  * @since 1.0
- *
  */
 public class FormattableUtils {
 
@@ -53,11 +52,12 @@ public class FormattableUtils {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Get the default formatted representation of the specified
      * {@code Formattable}.
      *
-     * @param formattable  the instance to convert to a string, not null
+     * @param formattable the instance to convert to a string, not null
      * @return The resulting string, not null
      */
     public static String toString(final Formattable formattable) {
@@ -69,15 +69,15 @@ public class FormattableUtils {
      * with no ellipsis on precision overflow, and padding width underflow with
      * spaces.
      *
-     * @param seq  the string to handle, not null
-     * @param formatter  the destination formatter, not null
-     * @param flags  the flags for formatting, see {@code Formattable}
-     * @param width  the width of the output, see {@code Formattable}
-     * @param precision  the precision of the output, see {@code Formattable}
+     * @param seq       the string to handle, not null
+     * @param formatter the destination formatter, not null
+     * @param flags     the flags for formatting, see {@code Formattable}
+     * @param width     the width of the output, see {@code Formattable}
+     * @param precision the precision of the output, see {@code Formattable}
      * @return The {@code formatter} instance, not null
      */
     public static Formatter append(final CharSequence seq, final Formatter formatter, final int flags, final int width,
-            final int precision) {
+                                   final int precision) {
         return append(seq, formatter, flags, width, precision, ' ', null);
     }
 
@@ -85,16 +85,16 @@ public class FormattableUtils {
      * Handles the common {@link Formattable} operations of truncate-pad-append,
      * with no ellipsis on precision overflow.
      *
-     * @param seq  the string to handle, not null
-     * @param formatter  the destination formatter, not null
-     * @param flags  the flags for formatting, see {@code Formattable}
-     * @param width  the width of the output, see {@code Formattable}
-     * @param precision  the precision of the output, see {@code Formattable}
-     * @param padChar  the pad character to use
+     * @param seq       the string to handle, not null
+     * @param formatter the destination formatter, not null
+     * @param flags     the flags for formatting, see {@code Formattable}
+     * @param width     the width of the output, see {@code Formattable}
+     * @param precision the precision of the output, see {@code Formattable}
+     * @param padChar   the pad character to use
      * @return The {@code formatter} instance, not null
      */
     public static Formatter append(final CharSequence seq, final Formatter formatter, final int flags, final int width,
-            final int precision, final char padChar) {
+                                   final int precision, final char padChar) {
         return append(seq, formatter, flags, width, precision, padChar, null);
     }
 
@@ -102,35 +102,35 @@ public class FormattableUtils {
      * Handles the common {@link Formattable} operations of truncate-pad-append,
      * padding width underflow with spaces.
      *
-     * @param seq  the string to handle, not null
-     * @param formatter  the destination formatter, not null
-     * @param flags  the flags for formatting, see {@code Formattable}
-     * @param width  the width of the output, see {@code Formattable}
-     * @param precision  the precision of the output, see {@code Formattable}
+     * @param seq       the string to handle, not null
+     * @param formatter the destination formatter, not null
+     * @param flags     the flags for formatting, see {@code Formattable}
+     * @param width     the width of the output, see {@code Formattable}
+     * @param precision the precision of the output, see {@code Formattable}
      * @param ellipsis  the ellipsis to use when precision dictates truncation, null or
-     *  empty causes a hard truncation
+     *                  empty causes a hard truncation
      * @return The {@code formatter} instance, not null
      */
     public static Formatter append(final CharSequence seq, final Formatter formatter, final int flags, final int width,
-            final int precision, final CharSequence ellipsis) {
+                                   final int precision, final CharSequence ellipsis) {
         return append(seq, formatter, flags, width, precision, ' ', ellipsis);
     }
 
     /**
      * Handles the common {@link Formattable} operations of truncate-pad-append.
      *
-     * @param seq  the string to handle, not null
-     * @param formatter  the destination formatter, not null
-     * @param flags  the flags for formatting, see {@code Formattable}
-     * @param width  the width of the output, see {@code Formattable}
-     * @param precision  the precision of the output, see {@code Formattable}
-     * @param padChar  the pad character to use
+     * @param seq       the string to handle, not null
+     * @param formatter the destination formatter, not null
+     * @param flags     the flags for formatting, see {@code Formattable}
+     * @param width     the width of the output, see {@code Formattable}
+     * @param precision the precision of the output, see {@code Formattable}
+     * @param padChar   the pad character to use
      * @param ellipsis  the ellipsis to use when precision dictates truncation, null or
-     *  empty causes a hard truncation
+     *                  empty causes a hard truncation
      * @return The {@code formatter} instance, not null
      */
     public static Formatter append(final CharSequence seq, final Formatter formatter, final int flags, final int width,
-            final int precision, final char padChar, final CharSequence ellipsis) {
+                                   final int precision, final char padChar, final CharSequence ellipsis) {
         if (!(ellipsis == null || precision < 0 || ellipsis.length() <= precision)) {
             throw new IllegalArgumentException(
                     String.format("Specified ellipsis '%s' exceeds precision of %s",

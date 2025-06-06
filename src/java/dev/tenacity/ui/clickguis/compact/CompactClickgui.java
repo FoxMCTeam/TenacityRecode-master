@@ -4,8 +4,8 @@ import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.ModuleManager;
-import dev.tenacity.module.impl.movement.InventoryMove;
 import dev.tenacity.module.impl.display.ClickGUIMod;
+import dev.tenacity.module.impl.movement.InventoryMove;
 import dev.tenacity.module.settings.Setting;
 import dev.tenacity.ui.clickguis.compact.impl.ModuleRect;
 import dev.tenacity.ui.searchbar.SearchBar;
@@ -38,11 +38,15 @@ public class CompactClickgui extends GuiScreen {
     private final Animation openingAnimation = new DecelerateAnimation(250, 1);
     private final Drag drag = new Drag(40, 40);
     private final ModulePanel modulePanel = new ModulePanel();
+    private final List<ModuleRect> searchResults = new ArrayList<>();
+    private final List<String> searchTerms = new ArrayList<>();
+    public boolean typing;
     private float rectWidth = 400;
     private float rectHeight = 300;
-    public boolean typing;
     private HashMap<Category, ArrayList<ModuleRect>> moduleRects;
-
+    private final Color firstColor = Color.BLACK;
+    private final Color secondColor = Color.BLACK;
+    private String searchText;
 
     @Override
     public void onDrag(int mouseX, int mouseY) {
@@ -88,7 +92,7 @@ public class CompactClickgui extends GuiScreen {
                 Client.INSTANCE.getSideGui().setFocused(false);
                 return;
             }
-            
+
             openingAnimation.setDirection(Direction.BACKWARDS);
         }
         modulePanel.keyTyped(typedChar, keyCode);
@@ -96,10 +100,6 @@ public class CompactClickgui extends GuiScreen {
         Client.INSTANCE.getSearchBar().keyTyped(typedChar, keyCode);
     }
 
-
-    private Color firstColor = Color.BLACK, secondColor = Color.BLACK;
-
-    private final List<ModuleRect> searchResults = new ArrayList<>();
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         if (ModuleManager.reloadModules || moduleRects == null) {
@@ -118,7 +118,6 @@ public class CompactClickgui extends GuiScreen {
             ModuleManager.reloadModules = false;
             return;
         }
-
 
 
         typing = modulePanel.typing || (Client.INSTANCE.getSideGui().isFocused() && Client.INSTANCE.getSideGui().isTyping()) || Client.INSTANCE.getSearchBar().isTyping();
@@ -156,7 +155,7 @@ public class CompactClickgui extends GuiScreen {
 
         FontUtil.duckSansBoldFont22.drawString(Client.NAME, x + 33, y + 7, -1);
         FontUtil.duckSansFont16.drawCenteredString(Client.VERSION,
-                (float) (x + 31 + FontUtil.duckSansBoldFont22.getStringWidth(Client.NAME) / 2f), y + 19, -1);
+                x + 31 + FontUtil.duckSansBoldFont22.getStringWidth(Client.NAME) / 2f, y + 19, -1);
 
         boolean searching = Client.INSTANCE.getSearchBar().isFocused();
 
@@ -176,7 +175,7 @@ public class CompactClickgui extends GuiScreen {
             Color categoryColor = hovering ? ColorUtil.tripleColor(110).brighter() : ColorUtil.tripleColor(110);
             Color selectColor = (clickGUIMod.getActiveCategory() == category) ? Color.WHITE : categoryColor;
 
-            if(!searching && (clickGUIMod.getActiveCategory() == category)) {
+            if (!searching && (clickGUIMod.getActiveCategory() == category)) {
                 Gui.drawRect2(x, catY, 90, catHeight, new Color(27, 27, 27).getRGB());
             }
 
@@ -260,9 +259,6 @@ public class CompactClickgui extends GuiScreen {
     public boolean doesGuiPauseGame() {
         return false;
     }
-
-    private final List<String> searchTerms = new ArrayList<>();
-    private String searchText;
 
     public List<ModuleRect> getModuleRects(Category category) {
         if (!Client.INSTANCE.getSearchBar().isFocused()) {

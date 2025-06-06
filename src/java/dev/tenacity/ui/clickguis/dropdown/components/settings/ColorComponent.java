@@ -1,6 +1,5 @@
 package dev.tenacity.ui.clickguis.dropdown.components.settings;
 
-import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.module.settings.impl.ColorSetting;
 import dev.tenacity.module.settings.impl.NumberSetting;
 import dev.tenacity.ui.clickguis.dropdown.components.SettingComponent;
@@ -15,6 +14,7 @@ import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.GLUtil;
 import dev.tenacity.utils.render.RenderUtil;
 import dev.tenacity.utils.render.RoundedUtil;
+import dev.tenacity.utils.tuples.Pair;
 import net.minecraft.util.ResourceLocation;
 import org.lwjglx.input.Keyboard;
 
@@ -31,26 +31,21 @@ public class ColorComponent extends SettingComponent<ColorSetting> {
     private final Pair<Animation, Animation> errorAnimations = Pair.of(
             new DecelerateAnimation(1000, 1),
             new DecelerateAnimation(250, 1));
-
-    public float realHeight;
-    public float openedHeight;
-    private boolean opened;
-
     private final TextField hexField = new TextField(FontUtil.duckSansFont16);
-
-    private boolean draggingPicker;
-    private boolean draggingHue;
-
     private final NumberSetting speedSetting = new NumberSetting("Speed", 15, 40, 1, 1);
     private final NumberSetting saturationSetting = new NumberSetting("Saturation", 1, 1, 0, .05);
-
-
+    public float realHeight;
+    public float openedHeight;
+    String hexLetters = "abcdef0123456789";
+    private boolean opened;
+    private boolean draggingPicker;
+    private boolean draggingHue;
     private List<NumberComponent> rainbowSettings;
 
 
     public ColorComponent(ColorSetting setting) {
         super(setting);
-        if(setting.isRainbow()) {
+        if (setting.isRainbow()) {
             rainbowSettings = new ArrayList<>();
             rainbowSettings.add(new NumberComponent(speedSetting));
             rainbowSettings.add(new NumberComponent(saturationSetting));
@@ -59,13 +54,10 @@ public class ColorComponent extends SettingComponent<ColorSetting> {
         }
     }
 
-
     @Override
     public void initGui() {
 
     }
-
-    String hexLetters = "abcdef0123456789";
 
     @Override
     public void keyTyped(char typedChar, int keyCode) {
@@ -279,7 +271,7 @@ public class ColorComponent extends SettingComponent<ColorSetting> {
                         rainbowCount += numberComponent.clickCountAdd;
                     }
 
-                    if(colorSetting.isRainbow()) {
+                    if (colorSetting.isRainbow()) {
                         colorSetting.getRainbow().setSpeed(speedSetting.getValue().intValue());
                         colorSetting.getRainbow().setSaturation(saturationSetting.getValue().floatValue());
                     }
@@ -334,7 +326,7 @@ public class ColorComponent extends SettingComponent<ColorSetting> {
         if (opened) {
             if (hovered && button == 0 && (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))) {
                 getSetting().setRainbow(!getSetting().isRainbow());
-                if(getSetting().isRainbow()) {
+                if (getSetting().isRainbow()) {
                     rainbowSettings = new ArrayList<>();
                     rainbowSettings.add(new NumberComponent(speedSetting));
                     rainbowSettings.add(new NumberComponent(saturationSetting));

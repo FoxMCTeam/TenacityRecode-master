@@ -1,10 +1,10 @@
 package dev.tenacity.utils.render;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.Client;
 import com.cubk.event.impl.game.RenderTickEvent;
 import com.cubk.event.impl.game.TickEvent;
 import com.cubk.event.impl.render.RendererLivingEntityEvent;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.ModeSetting;
@@ -49,7 +49,11 @@ public class EntityCulling extends Module {
     private static final NumberSetting mobCullingDis = new NumberSetting("Mob Cull Distance", 40, 150, 10, 1);
     private static final NumberSetting playerCullingDis = new NumberSetting("Player Cull Distance", 45, 150, 10, 1);
     private static final NumberSetting passiveCullingDis = new NumberSetting("Passive Cull Distance", 30, 150, 10, 1);
-
+    private static final RenderManager renderManager = mc.getRenderManager();
+    private static final ConcurrentHashMap<UUID, OcclusionQuery> queries = new ConcurrentHashMap<>();
+    private static final boolean SUPPORT_NEW_GL = GLContext.getCapabilities().OpenGL33;
+    public static boolean shouldPerformCulling = false;
+    private int destroyTimer;
     public EntityCulling() {
         super("Entity Culling", Category.RENDER, "Culls entities that are out of range");
         entityCullingDis.addParent(cullingMode, modeSetting -> modeSetting.is("Grouped"));
@@ -59,19 +63,107 @@ public class EntityCulling extends Module {
         addSettings(cullingDelay, cullingMode, entityCullingDis, playerCullingDis, mobCullingDis, passiveCullingDis);
     }
 
-    private static final RenderManager renderManager = mc.getRenderManager();
-    private static final ConcurrentHashMap<UUID, OcclusionQuery> queries = new ConcurrentHashMap<>();
-    private static final boolean SUPPORT_NEW_GL = GLContext.getCapabilities().OpenGL33;
-    public static boolean shouldPerformCulling = false;
-    private int destroyTimer;
-
-
     public static boolean renderItem(Entity stack) {
         if (!Client.INSTANCE.isEnabled(EntityCulling.class)) return false;
         //needs to be called from RenderEntityItem#doRender and RenderItemFrame#doRender. Returning true means it should cancel the render event
         return shouldPerformCulling && stack.worldObj == mc.thePlayer.worldObj && checkEntity(stack);
     }
 
+    public static boolean canRenderName(EntityLivingBase entity) {
+        final EntityPlayerSP player = mc.thePlayer;
+        if (entity instanceof EntityPlayer && entity != player) {
+            final Team otherEntityTeam = entity.getTeam();
+            final Team playerTeam = player.getTeam();
+
+            if (otherEntityTeam != null) {
+                final Team.EnumVisible teamVisibilityRule = otherEntityTeam.getNameTagVisibility();
+
+                switch (teamVisibilityRule) {
+                    case NEVER:
+                        return false;
+                    case HIDE_FOR_OTHER_TEAMS:
+                        return playerTeam == null || otherEntityTeam.isSameTeam(playerTeam);
+                    case HIDE_FOR_OWN_TEAM:
+                        return playerTeam == null || !otherEntityTeam.isSameTeam(playerTeam);
+                    case ALWAYS:
+                    default:
+                        return true;
+                }
+            }
+        }
+
+        return Minecraft.isGuiEnabled()
+                && entity != mc.getRenderManager().livingPlayer
+                && ((entity instanceof EntityArmorStand) || !entity.isInvisibleToPlayer(player)) &&
+                //#if MC==10809
+                entity.riddenByEntity == null;
+        //#else
+        //$$ !entity.isBeingRidden();
+        //#endif
+    }
+
+    /**
+     * Used OpenGL queries in order to determine if the given is visible
+     *
+     * @param entity entity to check
+     * @return true if the entity rendering should be skipped
+     */
+    private static boolean checkEntity(Entity entity) {
+        OcclusionQuery query = queries.computeIfAbsent(entity.getUniqueID(), OcclusionQuery::new);
+        if (query.refresh) {
+            query.nextQuery = getQuery();
+            query.refresh = false;
+            int mode = SUPPORT_NEW_GL ? GL33.GL_ANY_SAMPLES_PASSED : GL15.GL_SAMPLES_PASSED;
+            GL15.glBeginQuery(mode, query.nextQuery);
+            drawSelectionBoundingBox(entity.getEntityBoundingBox()
+                    .expand(.2, .2, .2)
+                    .offset(-renderManager.renderPosX, -renderManager.renderPosY, -renderManager.renderPosZ)
+            );
+            GL15.glEndQuery(mode);
+        }
+
+        return query.occluded;
+    }
+
+    public static void drawSelectionBoundingBox(AxisAlignedBB b) {
+        GlStateManager.disableAlpha();
+        GlStateManager.disableCull();
+        GlStateManager.depthMask(false);
+        GlStateManager.colorMask(false, false, false, false);
+        final Tessellator tessellator = Tessellator.getInstance();
+        final WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        worldrenderer.begin(GL11.GL_QUAD_STRIP, DefaultVertexFormats.POSITION);
+        worldrenderer.pos(b.maxX, b.maxY, b.maxZ).endVertex();
+        worldrenderer.pos(b.maxX, b.maxY, b.minZ).endVertex();
+        worldrenderer.pos(b.minX, b.maxY, b.maxZ).endVertex();
+        worldrenderer.pos(b.minX, b.maxY, b.minZ).endVertex();
+        worldrenderer.pos(b.minX, b.minY, b.maxZ).endVertex();
+        worldrenderer.pos(b.minX, b.minY, b.minZ).endVertex();
+        worldrenderer.pos(b.minX, b.maxY, b.minZ).endVertex();
+        worldrenderer.pos(b.minX, b.minY, b.minZ).endVertex();
+        worldrenderer.pos(b.maxX, b.maxY, b.minZ).endVertex();
+        worldrenderer.pos(b.maxX, b.minY, b.minZ).endVertex();
+        worldrenderer.pos(b.maxX, b.maxY, b.maxZ).endVertex();
+        worldrenderer.pos(b.maxX, b.minY, b.maxZ).endVertex();
+        worldrenderer.pos(b.minX, b.maxY, b.maxZ).endVertex();
+        worldrenderer.pos(b.minX, b.minY, b.maxZ).endVertex();
+        worldrenderer.pos(b.minX, b.minY, b.maxZ).endVertex();
+        worldrenderer.pos(b.maxX, b.minY, b.maxZ).endVertex();
+        worldrenderer.pos(b.minX, b.minY, b.minZ).endVertex();
+        worldrenderer.pos(b.maxX, b.minY, b.minZ).endVertex();
+        tessellator.draw();
+        GlStateManager.depthMask(true);
+        GlStateManager.colorMask(true, true, true, true);
+        GlStateManager.enableAlpha();
+    }
+
+    private static int getQuery() {
+        try {
+            return GL15.glGenQueries();
+        } catch (Throwable throwable) {
+            return 0;
+        }
+    }
 
     @EventTarget
     public void onRendererLivingEntityEvent(RendererLivingEntityEvent e) {
@@ -84,7 +176,7 @@ public class EntityCulling extends Module {
         //#endif
         boolean armorstand = entity instanceof EntityArmorStand;
         if (entity == mc.thePlayer || entity.worldObj != mc.thePlayer.worldObj ||
-               /* (armorstand && ((EntityArmorStand) entity).hasMarker()) ||*/
+                /* (armorstand && ((EntityArmorStand) entity).hasMarker()) ||*/
                 (entity.isInvisibleToPlayer(mc.thePlayer))) {
             return;
         }
@@ -143,45 +235,11 @@ public class EntityCulling extends Module {
         }
     }
 
-
     @EventTarget
     public void onRenderTickEvent(RenderTickEvent e) {
         if (e.isPre()) {
             mc.addScheduledTask(this::check);
         }
-    }
-
-    public static boolean canRenderName(EntityLivingBase entity) {
-        final EntityPlayerSP player = mc.thePlayer;
-        if (entity instanceof EntityPlayer && entity != player) {
-            final Team otherEntityTeam = entity.getTeam();
-            final Team playerTeam = player.getTeam();
-
-            if (otherEntityTeam != null) {
-                final Team.EnumVisible teamVisibilityRule = otherEntityTeam.getNameTagVisibility();
-
-                switch (teamVisibilityRule) {
-                    case NEVER:
-                        return false;
-                    case HIDE_FOR_OTHER_TEAMS:
-                        return playerTeam == null || otherEntityTeam.isSameTeam(playerTeam);
-                    case HIDE_FOR_OWN_TEAM:
-                        return playerTeam == null || !otherEntityTeam.isSameTeam(playerTeam);
-                    case ALWAYS:
-                    default:
-                        return true;
-                }
-            }
-        }
-
-        return Minecraft.isGuiEnabled()
-                && entity != mc.getRenderManager().livingPlayer
-                && ((entity instanceof EntityArmorStand) || !entity.isInvisibleToPlayer(player)) &&
-                //#if MC==10809
-                entity.riddenByEntity == null;
-        //#else
-        //$$ !entity.isBeingRidden();
-        //#endif
     }
 
     @EventTarget
@@ -217,7 +275,6 @@ public class EntityCulling extends Module {
             queries.remove(uuid);
         }
     }
-
 
     private void check() {
         long delay = 0;
@@ -256,71 +313,6 @@ public class EntityCulling extends Module {
             }
         }
     }
-
-    /**
-     * Used OpenGL queries in order to determine if the given is visible
-     *
-     * @param entity entity to check
-     * @return true if the entity rendering should be skipped
-     */
-    private static boolean checkEntity(Entity entity) {
-        OcclusionQuery query = queries.computeIfAbsent(entity.getUniqueID(), OcclusionQuery::new);
-        if (query.refresh) {
-            query.nextQuery = getQuery();
-            query.refresh = false;
-            int mode = SUPPORT_NEW_GL ? GL33.GL_ANY_SAMPLES_PASSED : GL15.GL_SAMPLES_PASSED;
-            GL15.glBeginQuery(mode, query.nextQuery);
-            drawSelectionBoundingBox(entity.getEntityBoundingBox()
-                    .expand(.2, .2, .2)
-                    .offset(-renderManager.renderPosX, -renderManager.renderPosY, -renderManager.renderPosZ)
-            );
-            GL15.glEndQuery(mode);
-        }
-
-        return query.occluded;
-    }
-
-
-    public static void drawSelectionBoundingBox(AxisAlignedBB b) {
-        GlStateManager.disableAlpha();
-        GlStateManager.disableCull();
-        GlStateManager.depthMask(false);
-        GlStateManager.colorMask(false, false, false, false);
-        final Tessellator tessellator = Tessellator.getInstance();
-        final WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.begin(GL11.GL_QUAD_STRIP, DefaultVertexFormats.POSITION);
-        worldrenderer.pos(b.maxX, b.maxY, b.maxZ).endVertex();
-        worldrenderer.pos(b.maxX, b.maxY, b.minZ).endVertex();
-        worldrenderer.pos(b.minX, b.maxY, b.maxZ).endVertex();
-        worldrenderer.pos(b.minX, b.maxY, b.minZ).endVertex();
-        worldrenderer.pos(b.minX, b.minY, b.maxZ).endVertex();
-        worldrenderer.pos(b.minX, b.minY, b.minZ).endVertex();
-        worldrenderer.pos(b.minX, b.maxY, b.minZ).endVertex();
-        worldrenderer.pos(b.minX, b.minY, b.minZ).endVertex();
-        worldrenderer.pos(b.maxX, b.maxY, b.minZ).endVertex();
-        worldrenderer.pos(b.maxX, b.minY, b.minZ).endVertex();
-        worldrenderer.pos(b.maxX, b.maxY, b.maxZ).endVertex();
-        worldrenderer.pos(b.maxX, b.minY, b.maxZ).endVertex();
-        worldrenderer.pos(b.minX, b.maxY, b.maxZ).endVertex();
-        worldrenderer.pos(b.minX, b.minY, b.maxZ).endVertex();
-        worldrenderer.pos(b.minX, b.minY, b.maxZ).endVertex();
-        worldrenderer.pos(b.maxX, b.minY, b.maxZ).endVertex();
-        worldrenderer.pos(b.minX, b.minY, b.minZ).endVertex();
-        worldrenderer.pos(b.maxX, b.minY, b.minZ).endVertex();
-        tessellator.draw();
-        GlStateManager.depthMask(true);
-        GlStateManager.colorMask(true, true, true, true);
-        GlStateManager.enableAlpha();
-    }
-
-    private static int getQuery() {
-        try {
-            return GL15.glGenQueries();
-        } catch (Throwable throwable) {
-            return 0;
-        }
-    }
-
 
     static class OcclusionQuery {
         private final UUID uuid; //Owner

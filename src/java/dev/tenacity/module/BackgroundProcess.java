@@ -1,8 +1,6 @@
 package dev.tenacity.module;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.Client;
-import dev.tenacity.config.DragManager;
 import com.cubk.event.impl.game.GameCloseEvent;
 import com.cubk.event.impl.game.KeyPressEvent;
 import com.cubk.event.impl.game.TickEvent;
@@ -10,9 +8,11 @@ import com.cubk.event.impl.game.WorldEvent;
 import com.cubk.event.impl.player.ChatReceivedEvent;
 import com.cubk.event.impl.render.Render2DEvent;
 import com.cubk.event.impl.render.ShaderEvent;
+import dev.tenacity.Client;
+import dev.tenacity.config.DragManager;
+import dev.tenacity.module.impl.display.Statistics;
 import dev.tenacity.module.impl.movement.Flight;
 import dev.tenacity.module.impl.movement.Scaffold;
-import dev.tenacity.module.impl.display.Statistics;
 import dev.tenacity.ui.mainmenu.CustomMainMenu;
 import dev.tenacity.utils.Utils;
 import net.minecraft.client.gui.GuiDisconnected;

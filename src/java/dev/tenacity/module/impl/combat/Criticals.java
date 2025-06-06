@@ -1,9 +1,9 @@
 package dev.tenacity.module.impl.combat;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.Client;
 import com.cubk.event.impl.network.PacketSendEvent;
 import com.cubk.event.impl.player.MotionEvent;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.movement.Flight;
@@ -21,13 +21,13 @@ import java.util.concurrent.ThreadLocalRandom;
 @SuppressWarnings("unused")
 public final class Criticals extends Module {
 
-    private boolean stage;
-    private double offset;
-    private int groundTicks;
     private final ModeSetting mode = new ModeSetting("Mode", "Watchdog", "Watchdog", "Packet", "Dev", "Verus");
     private final ModeSetting watchdogMode = new ModeSetting("Watchdog Mode", "Packet", "Packet", "Edit");
     private final NumberSetting delay = new NumberSetting("Delay", 1, 20, 0, 1);
     private final TimerUtil timer = new TimerUtil();
+    private boolean stage;
+    private double offset;
+    private int groundTicks;
 
     public Criticals() {
         super("Criticals", Category.COMBAT, "Crit attacks");
@@ -57,7 +57,7 @@ public final class Criticals extends Module {
                 if (e.isPre() && watchdogMode.is("Edit") && !Client.INSTANCE.isEnabled(Flight.class) && !Step.isStepping && KillAura.attacking) {
                     if (e.isOnGround()) {
                         groundTicks++;
-                        if(groundTicks > 2) {
+                        if (groundTicks > 2) {
                             stage = !stage;
                             e.setY(e.getY() + (stage ? 0.015 : 0.01) - Math.random() * 0.0001);
                             e.setOnGround(false);

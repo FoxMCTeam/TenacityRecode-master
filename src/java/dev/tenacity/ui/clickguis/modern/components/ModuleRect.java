@@ -1,6 +1,5 @@
 package dev.tenacity.ui.clickguis.modern.components;
 
-import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -14,18 +13,16 @@ import dev.tenacity.utils.misc.HoveringUtil;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.RenderUtil;
 import dev.tenacity.utils.render.RoundedUtil;
+import dev.tenacity.utils.tuples.Pair;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.renderer.GlStateManager;
-import org.lwjglx.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+import org.lwjglx.input.Keyboard;
 
 import java.awt.*;
 
 public class ModuleRect extends Component {
-    @Getter
-    @Setter
-    private int searchScore = 0;
     public final Module module;
     public Animation settingAnimation;
     public Animation hoverDescriptionAnimation;
@@ -33,6 +30,9 @@ public class ModuleRect extends Component {
     public float rectOffset = 0;
     public boolean rightClicked = false;
     public boolean drawSettingThing = false;
+    @Getter
+    @Setter
+    private int searchScore = 0;
     private Animation rectScaleAnimation;
     private Animation checkScaleAnimation;
 
@@ -73,7 +73,7 @@ public class ModuleRect extends Component {
         RoundedUtil.drawRound(x + .5f, y + .5f, rectWidth - 1, 34, 5, new Color(47, 49, 54));
         //  RenderUtil.renderRoundedRect(x, y, rectWidth, 35, 5, new Color(47, 49, 54).getRGB());
 
-        if(rectScaleAnimation == null){
+        if (rectScaleAnimation == null) {
             System.out.println("CRAZXy" + " " + module.getName());
         }
         rectScaleAnimation.setDirection(module.isEnabled() ? Direction.FORWARDS : Direction.BACKWARDS);
@@ -105,14 +105,14 @@ public class ModuleRect extends Component {
                 ColorUtil.applyOpacity(colors.getSecond(), rectScale));
         GL11.glPopMatrix();
 
-        float textX = (float) (x + (18 - FontUtil.iconFont35.getStringWidth(FontUtil.CHECKMARK) / 2f));
+        float textX = x + (18 - FontUtil.iconFont35.getStringWidth(FontUtil.CHECKMARK) / 2f);
         float textY = (float) (y + 18.5 - FontUtil.iconFont35.getHeight() / 2f);
         GL11.glPushMatrix();
         GL11.glTranslatef(textX + 9, textY + 9, 0);
         GL11.glScaled(Math.max(0, checkScaleAnimation.getOutput().floatValue()), Math.max(0, checkScaleAnimation.getOutput().floatValue()), 0);
         GL11.glTranslatef(-(textX + 9), -(textY + 9), 0);
 
-        FontUtil.iconFont35.drawSmoothString(FontUtil.CHECKMARK, textX, textY, ColorUtil.applyOpacity(-1, (float) checkScaleAnimation.getOutput().floatValue()));
+        FontUtil.iconFont35.drawSmoothString(FontUtil.CHECKMARK, textX, textY, ColorUtil.applyOpacity(-1, checkScaleAnimation.getOutput().floatValue()));
         GL11.glPopMatrix();
 
         boolean hoverModule = HoveringUtil.isHovering(x, y, rectWidth, 35, mouseX, mouseY);
@@ -120,7 +120,7 @@ public class ModuleRect extends Component {
         hoverDescriptionAnimation.setDuration(hoverModule ? 300 : 400);
 
         GlStateManager.color(1, 1, 1, 1);
-        float xStart = (float) (x + 55 + duckSansFont24.getStringWidth(module.getName()));
+        float xStart = x + 55 + duckSansFont24.getStringWidth(module.getName());
         float yVal = y + 35 / 2f - duckSansFont18.getHeight() / 2f;
         if (module.getCategory().equals(Category.SCRIPTS)) yVal -= 6;
         if (binding != module && (!hoverDescriptionAnimation.isDone() || hoverDescriptionAnimation.finished(Direction.FORWARDS))) {
@@ -129,7 +129,7 @@ public class ModuleRect extends Component {
 
             duckSansFont18.drawWrappedText(module.getDescription(), xStart, yVal,
                     new Color(128, 134, 141, (int) (255 * hover)).getRGB(), descWidth, 3);
-        } else if (binding == module){
+        } else if (binding == module) {
             duckSansFont18.drawString(
                     "Currently bound to " + Keyboard.getKeyName(module.getKeybind().getCode()),
                     xStart, yVal, new Color(128, 134, 141).getRGB());
@@ -149,7 +149,7 @@ public class ModuleRect extends Component {
         int interpolateColorr = ColorUtil.interpolateColorsBackAndForth(40, 1, colors.getFirst(), colors.getSecond(), false).getRGB();
 
         RoundedUtil.drawRound(x + rectWidth - 14.5f, y + .5f, 14, 34, 5,
-                ColorUtil.interpolateColorC(new Color(47, 49, 54), new Color(interpolateColorr), (float) settingAnimation.getOutput().floatValue()));
+                ColorUtil.interpolateColorC(new Color(47, 49, 54), new Color(interpolateColorr), settingAnimation.getOutput().floatValue()));
 
         RenderUtil.drawGoodCircle(x + rectWidth - 7.5, y + 7.5, 2.5f, -1);
         RenderUtil.drawGoodCircle(x + rectWidth - 7.5, y + 17.5, 2.5f, -1);

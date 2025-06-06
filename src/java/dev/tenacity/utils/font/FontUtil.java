@@ -81,6 +81,16 @@ public class FontUtil implements Utils {
         }
     }
 
+    private static Font getFontData(ResourceLocation location) {
+        try {
+            InputStream is = Minecraft.getMinecraft().getResourceManager().getResource(location).getInputStream();
+            return Font.createFont(Font.TRUETYPE_FONT, is);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error loading font");
+            return new Font("default", Font.PLAIN, +10);
+        }
+    }
 
     @Getter
     public enum FontType {
@@ -91,8 +101,8 @@ public class FontUtil implements Utils {
         ICON("icon", 16, 20, 26, 35, 40);
 
         private final ResourceLocation location, boldLocation, thinLocation;
-        private Font font, boldFont, thinFont;
         private final int[] sizes;
+        private Font font, boldFont, thinFont;
 
         FontType(String fontName, String boldName, String thinName, int... sizes) {
             this.location = new ResourceLocation("Tenacity/Fonts/" + fontName + ".ttf");
@@ -126,9 +136,11 @@ public class FontUtil implements Utils {
         public Font fromSize(int size) {
             return font.deriveFont(Font.PLAIN, size);
         }
+
         private Font fromThinSize(int size) {
             return thinFont.deriveFont(Font.PLAIN, size);
         }
+
         private Font fromBoldSize(int size) {
             return boldFont.deriveFont(Font.PLAIN, size);
         }
@@ -153,17 +165,6 @@ public class FontUtil implements Utils {
 
         public CustomFont thinSize(int size) {
             return customFontMap.get(this).get(size).getThinFont();
-        }
-    }
-
-    private static Font getFontData(ResourceLocation location) {
-        try {
-            InputStream is = Minecraft.getMinecraft().getResourceManager().getResource(location).getInputStream();
-            return Font.createFont(Font.TRUETYPE_FONT, is);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error loading font");
-            return new Font("default", Font.PLAIN, +10);
         }
     }
 

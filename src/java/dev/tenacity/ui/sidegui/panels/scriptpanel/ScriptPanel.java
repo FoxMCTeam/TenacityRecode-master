@@ -1,13 +1,13 @@
 package dev.tenacity.ui.sidegui.panels.scriptpanel;
 
 import dev.tenacity.Client;
-import dev.tenacity.utils.client.addons.api.Script;
 import dev.tenacity.ui.sidegui.SideGUI;
 import dev.tenacity.ui.sidegui.panels.Panel;
 import dev.tenacity.ui.sidegui.utils.ActionButton;
 import dev.tenacity.ui.sidegui.utils.CarouselButtons;
 import dev.tenacity.ui.sidegui.utils.DropdownObject;
 import dev.tenacity.ui.sidegui.utils.ToggleButton;
+import dev.tenacity.utils.client.addons.api.Script;
 import dev.tenacity.utils.misc.IOUtils;
 import dev.tenacity.utils.misc.Multithreading;
 import dev.tenacity.utils.objects.Scroll;
@@ -32,6 +32,7 @@ public class ScriptPanel extends Panel {
     @Setter
     private boolean refresh;
     private boolean firstRefresh = true;
+    private String sortingSelection = "Relevance";
 
     public ScriptPanel() {
         actionButtons = new ArrayList<>();
@@ -42,8 +43,6 @@ public class ScriptPanel extends Panel {
             firstRefresh = false;
         });
     }
-
-    private String sortingSelection = "Relevance";
 
     @Override
     public void initGui() {

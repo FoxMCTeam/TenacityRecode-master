@@ -1,8 +1,8 @@
 package dev.tenacity.utils.server;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.Client;
 import com.cubk.event.impl.game.TickEvent;
+import dev.tenacity.Client;
 import dev.tenacity.utils.Utils;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
@@ -24,11 +24,6 @@ public class PingerUtils implements Utils {
 
     @Getter
     private Long serverPing;
-
-    @EventTarget
-    public void onTickEvent(TickEvent event) {
-        updateManually(Minecraft.getMinecraft().getCurrentServerData());
-    }
 
     public PingerUtils() {
         this.serverPinger = new OldServerPinger();
@@ -52,6 +47,11 @@ public class PingerUtils implements Utils {
             }
         }
         return latency == 0 ? "?" : String.valueOf(latency);
+    }
+
+    @EventTarget
+    public void onTickEvent(TickEvent event) {
+        updateManually(Minecraft.getMinecraft().getCurrentServerData());
     }
 
     public void updateManually(ServerData server) {

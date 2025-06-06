@@ -9,12 +9,12 @@ import dev.tenacity.config.DragManager;
 import dev.tenacity.module.BackgroundProcess;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.ModuleManager;
-import dev.tenacity.utils.client.addons.api.ScriptManager;
 import dev.tenacity.ui.altmanager.GuiAltManager;
 import dev.tenacity.ui.searchbar.SearchBar;
 import dev.tenacity.ui.sidegui.SideGUI;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.client.ReleaseType;
+import dev.tenacity.utils.client.addons.api.ScriptManager;
 import dev.tenacity.utils.client.addons.viamcp.vialoadingbase.ViaLoadingBase;
 import dev.tenacity.utils.client.addons.viamcp.viamcp.ViaMCP;
 import dev.tenacity.utils.objects.Dragging;
@@ -47,6 +47,8 @@ public class Client implements Utils {
     public static final File DIRECTORY = new File(mc.mcDataDir, NAME);
     public static final File BACKGROUND = new File(DIRECTORY, "background");
     public static File backGroundFile;
+    public static boolean updateGuiScale;
+    public static int prevGuiScale;
     private final EventManager eventManager = new EventManager();
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final SideGUI sideGui = new SideGUI();
@@ -58,31 +60,6 @@ public class Client implements Utils {
     private GuiAltManager altManager;
     private CommandHandler commandHandler;
     private PingerUtils pingerUtils;
-
-    public static boolean updateGuiScale;
-    public static int prevGuiScale;
-
-    public String getVersion() {
-        return VERSION + (RELEASE != ReleaseType.PUBLIC ? " (" + RELEASE.getName() + ")" : "");
-    }
-
-    public final Color getClientColor() {
-        return new Color(236, 133, 209);
-    }
-
-    public final Color getAlternateClientColor() {
-        return new Color(28, 167, 222);
-    }
-
-    public boolean isEnabled(Class<? extends Module> c) {
-        Module m = INSTANCE.moduleManager.get(c);
-        return m != null && m.isEnabled();
-    }
-
-    public Dragging createDrag(Module module, String name, float x, float y) {
-        DragManager.draggables.put(name, new Dragging(module, name, x, y));
-        return DragManager.draggables.get(name);
-    }
 
     public static void initClient() {
         Client.INSTANCE.setModuleManager(new ModuleManager());
@@ -127,6 +104,28 @@ public class Client implements Utils {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String getVersion() {
+        return VERSION + (RELEASE != ReleaseType.PUBLIC ? " (" + RELEASE.getName() + ")" : "");
+    }
+
+    public final Color getClientColor() {
+        return new Color(236, 133, 209);
+    }
+
+    public final Color getAlternateClientColor() {
+        return new Color(28, 167, 222);
+    }
+
+    public boolean isEnabled(Class<? extends Module> c) {
+        Module m = INSTANCE.moduleManager.get(c);
+        return m != null && m.isEnabled();
+    }
+
+    public Dragging createDrag(Module module, String name, float x, float y) {
+        DragManager.draggables.put(name, new Dragging(module, name, x, y));
+        return DragManager.draggables.get(name);
     }
 
     public void downloadBackGroundVideo() {

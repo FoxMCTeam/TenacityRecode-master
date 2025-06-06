@@ -1,9 +1,9 @@
 package dev.tenacity.module.impl.render;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.Client;
 import com.cubk.event.impl.render.Render2DEvent;
 import com.cubk.event.impl.render.ShaderEvent;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.display.HUDMod;
@@ -28,23 +28,20 @@ import java.awt.*;
  */
 public class Keystrokes extends Module {
 
-    private final NumberSetting offsetValue = new NumberSetting("Offset", 3, 10, 2.5, .5);
-    private final NumberSetting sizeValue = new NumberSetting("Size", 25, 35, 15, 1);
     private static final NumberSetting opacity = new NumberSetting("Opacity", .5, 1, 0, .05);
     private static final NumberSetting radius = new NumberSetting("Radius", 3, 17.5, 1, .5);
-
-    public Keystrokes() {
-        super("Keystrokes", Category.RENDER, "Shows keystrokes");
-        addSettings(sizeValue, offsetValue, opacity, radius);
-    }
-
+    private final NumberSetting offsetValue = new NumberSetting("Offset", 3, 10, 2.5, .5);
+    private final NumberSetting sizeValue = new NumberSetting("Size", 25, 35, 15, 1);
     private final Dragging dragging = Client.INSTANCE.createDrag(this, "keystrokes", 10, 300);
-
     private Button keyBindForward;
     private Button keyBindLeft;
     private Button keyBindBack;
     private Button keyBindRight;
     private Button keyBindJump;
+    public Keystrokes() {
+        super("Keystrokes", Category.RENDER, "Shows keystrokes");
+        addSettings(sizeValue, offsetValue, opacity, radius);
+    }
 
     @EventTarget
     public void onShaderEvent(ShaderEvent e) {
@@ -108,7 +105,7 @@ public class Keystrokes extends Module {
         public void renderForEffects(float x, float y, float width, float height, ShaderEvent event) {
             Color color = Color.BLACK;
             if (event.getBloomOptions().getSetting("Keystrokes").isEnabled()) {
-                color = ColorUtil.interpolateColorC(Color.BLACK, Color.WHITE, (float) clickAnimation.getOutput().floatValue());
+                color = ColorUtil.interpolateColorC(Color.BLACK, Color.WHITE, clickAnimation.getOutput().floatValue());
             }
             RoundedUtil.drawRound(x, y, width, height, radius.getValue().floatValue(), color);
         }
@@ -128,7 +125,7 @@ public class Keystrokes extends Module {
             font.drawCenteredString(Keyboard.getKeyName(binding.getKeyCode()), x + width / 2 + offsetX, y + height / 2 - font.getHeight() / 2f + offsetY, Color.WHITE);
 
             if (!clickAnimation.finished(Direction.BACKWARDS)) {
-                float animation = (float) clickAnimation.getOutput().floatValue();
+                float animation = clickAnimation.getOutput().floatValue();
                 Color color2 = ColorUtil.applyOpacity(Color.WHITE, (0.5f * animation));
                 RenderUtil.scaleStart(x + width / 2f, y + height / 2f, animation);
                 float diff = (height / 2f) - radius.getValue().floatValue();

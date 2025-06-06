@@ -1,6 +1,5 @@
 package dev.tenacity.ui.clickguis.modern;
 
-import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.module.settings.Setting;
@@ -16,6 +15,7 @@ import dev.tenacity.utils.objects.TextField;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.RenderUtil;
 import dev.tenacity.utils.render.RoundedUtil;
+import dev.tenacity.utils.tuples.Pair;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
@@ -41,9 +41,9 @@ public class SettingsPanel extends Panel {
     private final HashMap<StringSetting, TextField> textFieldMap;
     public Setting draggingNumber;
     public float maxScroll = 0;
+    public boolean typing;
     private boolean hueFlag;
     private boolean saturationFlag;
-    public boolean typing;
 
     public SettingsPanel(Module module) {
         this.module = module;
@@ -77,11 +77,10 @@ public class SettingsPanel extends Panel {
                 sliderMap.put((NumberSetting) setting, 0f);
             }
 
-            if (setting instanceof ModeSetting) {
+            if (setting instanceof ModeSetting modeSetting) {
                 HashMap<String, Animation> modesHashmap = new HashMap<>();
                 modeSettingHashMap.put(setting, new DecelerateAnimation(250, 1));
                 modeSettingClick.put(setting, false);
-                ModeSetting modeSetting = (ModeSetting) setting;
 
                 for (String mode : modeSetting.modes) {
                     modesHashmap.put(mode, new DecelerateAnimation(250, 1));
@@ -91,8 +90,7 @@ public class SettingsPanel extends Panel {
                 modesHoverAnimation.put(setting, modesHashmap);
             }
 
-            if (setting instanceof StringSetting) {
-                StringSetting stringSetting = (StringSetting) setting;
+            if (setting instanceof StringSetting stringSetting) {
                 TextField textField = new TextField(duckSansFont18);
                 textField.setText(stringSetting.getString());
                 textField.setCursorPositionZero();
@@ -156,8 +154,7 @@ public class SettingsPanel extends Panel {
             if (setting instanceof KeybindSetting) continue;
             float settingY = y + 30 + count * settingHeight;
             boolean isHoveringSetting = HoveringUtil.isHovering(x + 5, settingY, 130, settingHeight - 2, mouseX, mouseY);
-            if (setting instanceof BooleanSetting) {
-                BooleanSetting booleanSetting = (BooleanSetting) setting;
+            if (setting instanceof BooleanSetting booleanSetting) {
                 Animation animation = booleanSettingHashMap.get(setting);
                 animation.setDirection(booleanSetting.isEnabled() ? Direction.FORWARDS : Direction.BACKWARDS);
 
@@ -165,27 +162,26 @@ public class SettingsPanel extends Panel {
                     booleanSetting.toggle();
                 }
 
-                int color = ColorUtil.interpolateColor(new Color(30, 31, 35), colors.getFirst(), (float) animation.getOutput().floatValue());
+                int color = ColorUtil.interpolateColor(new Color(30, 31, 35), colors.getFirst(), animation.getOutput().floatValue());
                 duckSansFont16.drawString(setting.name, x + 13, settingY + duckSansFont16.getMiddleOfBox(8), -1);
                 //  RenderUtil.renderRoundedRect(x + 95, settingY, 20, 10, 4,
                 //color);
 
                 GL11.glEnable(GL11.GL_BLEND);
-                RoundedUtil.drawRound(x + 109, settingY, 18, 8, 4, ColorUtil.interpolateColorC(new Color(30, 31, 35), colors.getFirst(), (float) animation.getOutput().floatValue()));
+                RoundedUtil.drawRound(x + 109, settingY, 18, 8, 4, ColorUtil.interpolateColorC(new Color(30, 31, 35), colors.getFirst(), animation.getOutput().floatValue()));
 
                 GlStateManager.color(1, 1, 1);
                 RenderUtil.drawGoodCircle(x + 113 + (10 * animation.getOutput().floatValue()), settingY + 4, 4f, -1);
                 count -= .2f;
             }
 
-            if (setting instanceof ModeSetting) {
-                ModeSetting modeSetting = (ModeSetting) setting;
+            if (setting instanceof ModeSetting modeSetting) {
                 Animation animation = modeSettingHashMap.get(setting);
                 if (type == GuiEvents.CLICK && isHoveringSetting && button == 1) {
                     modeSettingClick.put(setting, !modeSettingClick.get(setting));
                 }
 
-                float stringWidth = (float) duckSansFont16.getStringWidth(StringUtils.getLongestModeName(modeSetting.modes));
+                float stringWidth = duckSansFont16.getStringWidth(StringUtils.getLongestModeName(modeSetting.modes));
 
                 animation.setDirection(modeSettingClick.get(setting) ? Direction.FORWARDS : Direction.BACKWARDS);
 
@@ -205,11 +201,11 @@ public class SettingsPanel extends Panel {
                 }
 
 
-                RoundedUtil.drawRound(boxX, settingY - 1, modeWidth + 2, 12 + (float) (math * animation.getOutput().floatValue()), 4, new Color(68, 71, 78));
+                RoundedUtil.drawRound(boxX, settingY - 1, modeWidth + 2, 12 + (math * animation.getOutput().floatValue()), 4, new Color(68, 71, 78));
                 //  RenderUtil.renderRoundedRect((float) (x + 113.5 - stringWidth), settingY - 1.5f, modeWidth + 3, 14 + (float) (math * animation.getOutput().floatValue()),
                 //      4, new Color(68, 71, 78).getRGB());
 
-                RoundedUtil.drawRound(x + 114 - stringWidth, settingY, modeWidth, 10 + (float) (math * animation.getOutput().floatValue()), 3, new Color(30, 31, 35));
+                RoundedUtil.drawRound(x + 114 - stringWidth, settingY, modeWidth, 10 + (math * animation.getOutput().floatValue()), 3, new Color(30, 31, 35));
 
 
                 float modeX = x + 114 - stringWidth + modeWidth / 2f;
@@ -232,11 +228,11 @@ public class SettingsPanel extends Panel {
                         modeAnimation.setDirection(isHoveringMode ? Direction.FORWARDS : Direction.BACKWARDS);
                         modeAnimation.setDuration(isHoveringMode ? 200 : 350);
 
-                        int colorInterpolate = ColorUtil.interpolateColor(new Color(128, 134, 141), colors.getSecond(), (float) modeAnimation.getOutput().floatValue());
+                        int colorInterpolate = ColorUtil.interpolateColor(new Color(128, 134, 141), colors.getSecond(), modeAnimation.getOutput().floatValue());
 
                         GlStateManager.color(1, 1, 1, 1);
-                        duckSansFont16.drawCenteredString(mode, modeX, (float) (settingY + 2 + ((modeCount * 15) * animation.getOutput().floatValue())),
-                                ColorUtil.interpolateColor(new Color(40, 40, 40, 10), new Color(colorInterpolate), (float) animation.getOutput().floatValue()));
+                        duckSansFont16.drawCenteredString(mode, modeX, settingY + 2 + ((modeCount * 15) * animation.getOutput().floatValue()),
+                                ColorUtil.interpolateColor(new Color(40, 40, 40, 10), new Color(colorInterpolate), animation.getOutput().floatValue()));
                         modeCount++;
                     }
                 }
@@ -245,8 +241,7 @@ public class SettingsPanel extends Panel {
             }
 
 
-            if (setting instanceof ColorSetting) {
-                ColorSetting colorSetting = (ColorSetting) setting;
+            if (setting instanceof ColorSetting colorSetting) {
                 float height = (colorSetting.isRainbow() ? 100 : 90);
                 RoundedUtil.drawRound(x + 12, settingY - 1, 117, height, 4, new Color(68, 71, 78));
                 RoundedUtil.drawRound(x + 13, settingY, 115, height - 2, 3, new Color(30, 31, 35));
@@ -377,8 +372,7 @@ public class SettingsPanel extends Panel {
 
                 count += 3.5 + (colorSetting.isRainbow() ? .5f : 0);
             }
-            if (setting instanceof NumberSetting) {
-                NumberSetting numberSetting = (NumberSetting) setting;
+            if (setting instanceof NumberSetting numberSetting) {
                 duckSansFont16.drawString(setting.name, x + 13, settingY + 2, -1);
 
                 if (type == GuiEvents.CLICK && isHoveringSetting && button == 0) {
@@ -417,8 +411,7 @@ public class SettingsPanel extends Panel {
 
                 count += .5;
             }
-            if (setting instanceof StringSetting) {
-                StringSetting stringSetting = (StringSetting) setting;
+            if (setting instanceof StringSetting stringSetting) {
 
                 // RenderUtil.renderRoundedRect(x + 13, settingY - 3, 115, 40, 3, new Color(30, 31, 35).getRGB());
                 duckSansFont16.drawString(setting.name, x + 16, settingY + 1, -1);
@@ -446,9 +439,8 @@ public class SettingsPanel extends Panel {
 
                 count += .5f;
             }
-            if (setting instanceof MultipleBoolSetting) {
+            if (setting instanceof MultipleBoolSetting multiBoolSetting) {
                 Animation animation = multiBoolSettingMap.get(setting);
-                MultipleBoolSetting multiBoolSetting = (MultipleBoolSetting) setting;
 
                 if (type == GuiEvents.CLICK && isHoveringSetting && button == 1) {
                     multiBoolSettingClickMap.put(setting, !multiBoolSettingClickMap.get(setting));
@@ -459,7 +451,7 @@ public class SettingsPanel extends Panel {
 
                 float math = (multiBoolSetting.getBoolSettings().size()) * 15;
 
-                float adjustment = (float) (math * animation.getOutput().floatValue());
+                float adjustment = math * animation.getOutput().floatValue();
                 RenderUtil.renderRoundedRect(x + 11.5f, settingY - 4.5f, 118, 19 + adjustment, 4, new Color(68, 71, 78).getRGB());
                 RenderUtil.renderRoundedRect(x + 13, settingY - 3, 115, 16 + adjustment, 3, new Color(30, 31, 35).getRGB());
                 duckSansFont16.drawCenteredString(multiBoolSetting.name, x + 70.5f, settingY - 3 + 16 / 2f - duckSansFont16.getHeight() / 2f, -1);
@@ -469,7 +461,7 @@ public class SettingsPanel extends Panel {
                     Animation boolAnimation = boolHoverAnimation.get(multiBoolSetting).get(booleanSetting);
                     boolean isHoveringBool = animation.getDirection().equals(Direction.FORWARDS) &&
                             HoveringUtil.isHovering(x + 17, settingY + (boolCount * 15),
-                                    (float) duckSansFont16.getStringWidth(booleanSetting.name) + 13, 11, mouseX, mouseY);
+                                    duckSansFont16.getStringWidth(booleanSetting.name) + 13, 11, mouseX, mouseY);
 
                     if (type == GuiEvents.CLICK && button == 0 && isHoveringBool) {
                         multiBoolSetting.getSetting(booleanSetting.name).toggle();
@@ -483,12 +475,12 @@ public class SettingsPanel extends Panel {
 
                     GlStateManager.color(1, 1, 1, 1);
 
-                    RenderUtil.drawGoodCircle(x + 20, (float) (settingY + 5 + ((boolCount * 15) * animation.getOutput().floatValue())), 2,
-                            ColorUtil.interpolateColor(new Color(40, 40, 40, 10), new Color(colorInterpolate), (float) animation.getOutput().floatValue()));
+                    RenderUtil.drawGoodCircle(x + 20, settingY + 5 + ((boolCount * 15) * animation.getOutput().floatValue()), 2,
+                            ColorUtil.interpolateColor(new Color(40, 40, 40, 10), new Color(colorInterpolate), animation.getOutput().floatValue()));
 
                     GlStateManager.color(1, 1, 1, 1);
-                    duckSansFont16.drawString(booleanSetting.name, x + 28, (float) (settingY + 2 + ((boolCount * 15) * animation.getOutput().floatValue())),
-                            ColorUtil.interpolateColor(new Color(40, 40, 40, 10), new Color(colorInterpolate), (float) animation.getOutput().floatValue()));
+                    duckSansFont16.drawString(booleanSetting.name, x + 28, settingY + 2 + ((boolCount * 15) * animation.getOutput().floatValue()),
+                            ColorUtil.interpolateColor(new Color(40, 40, 40, 10), new Color(colorInterpolate), animation.getOutput().floatValue()));
                     boolCount++;
 
                 }

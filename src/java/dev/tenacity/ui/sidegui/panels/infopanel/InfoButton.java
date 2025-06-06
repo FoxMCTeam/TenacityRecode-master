@@ -19,11 +19,9 @@ import java.util.List;
 @Setter
 public class InfoButton implements Screen {
     private final String question, answer;
-
-    private float x, y, width, height, alpha, count = 1;
-
     private final Animation openAnimation = new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
     private final Animation hoverAnimation = new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
+    private float x, y, width, height, alpha, count = 1;
 
     public InfoButton(String question, String answer) {
         this.question = question;
@@ -88,13 +86,12 @@ public class InfoButton implements Screen {
         RenderUtil.rotateEnd();
 
 
-
         count = 1 + additionalCount;
     }
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
-        if(HoveringUtil.isHovering(x, y, width, height, mouseX, mouseY) && button == 1) {
+        if (HoveringUtil.isHovering(x, y, width, height, mouseX, mouseY) && button == 1) {
             openAnimation.changeDirection();
         }
 

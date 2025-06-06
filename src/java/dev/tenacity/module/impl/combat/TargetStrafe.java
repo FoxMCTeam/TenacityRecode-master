@@ -1,10 +1,10 @@
 package dev.tenacity.module.impl.combat;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.Client;
 import com.cubk.event.impl.player.MotionEvent;
 import com.cubk.event.impl.player.MoveEvent;
 import com.cubk.event.impl.render.Render3DEvent;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.movement.Flight;
@@ -40,22 +40,20 @@ import static org.lwjgl.opengl.GL11.*;
 
 public final class TargetStrafe extends Module {
 
+    public static final NumberSetting radius = new NumberSetting("Radius", 2, 8, 0.5, 0.5);
+    public static final BooleanSetting space = new BooleanSetting("Require space key", true);
+    public static final BooleanSetting auto3rdPerson = new BooleanSetting("Auto 3rd Person", false);
     private static final MultipleBoolSetting adaptiveSettings = new MultipleBoolSetting("Adaptive",
             new BooleanSetting("Edges", false),
             new BooleanSetting("Behind", false),
             new BooleanSetting("Liquids", false),
             new BooleanSetting("Controllable", true)
     );
-    public static final NumberSetting radius = new NumberSetting("Radius", 2, 8, 0.5, 0.5);
     private static final NumberSetting points = new NumberSetting("Points", 12, 16, 3, 1);
-    public static final BooleanSetting space = new BooleanSetting("Require space key", true);
-    public static final BooleanSetting auto3rdPerson = new BooleanSetting("Auto 3rd Person", false);
-    private final BooleanSetting render = new BooleanSetting("Render", true);
-    private final ColorSetting color = new ColorSetting("Color", new Color(-16711712));
-
     private static int strafe = 1;
     private static int position;
-
+    private final BooleanSetting render = new BooleanSetting("Render", true);
+    private final ColorSetting color = new ColorSetting("Color", new Color(-16711712));
     private final DecelerateAnimation animation = new DecelerateAnimation(250, radius.getValue(), Direction.FORWARDS);
     private boolean returnState;
 
@@ -63,63 +61,6 @@ public final class TargetStrafe extends Module {
         super("TargetStrafe", Category.COMBAT, "strafe around targets");
         addSettings(adaptiveSettings, radius, points, space, auto3rdPerson, render, color);
         color.addParent(render, ParentAttribute.BOOLEAN_CONDITION);
-    }
-
-    @EventTarget
-    public void onMotionEvent(MotionEvent event) {
-        if (canStrafe()) {
-            if (auto3rdPerson.isEnabled() && mc.gameSettings.thirdPersonView == 0) {
-                mc.gameSettings.thirdPersonView = 1;
-                returnState = true;
-            }
-            boolean updatePosition = false, positive = true;
-            if (mc.thePlayer.isCollidedHorizontally) {
-                strafe = -strafe;
-                updatePosition = true;
-                positive = strafe == 1;
-            } else {
-                if (adaptiveSettings.getSetting("Controllable").isEnabled()) {
-                    if (mc.gameSettings.keyBindLeft.isPressed()) {
-                        strafe = 1;
-                        updatePosition = true;
-                    }
-                    if (mc.gameSettings.keyBindRight.isPressed()) {
-                        strafe = -1;
-                        updatePosition = true;
-                        positive = false;
-                    }
-                }
-                if (adaptiveSettings.getSetting("Edges").isEnabled() && isInVoid()) {
-                    strafe = -strafe;
-                    updatePosition = true;
-                    positive = false;
-                }
-                if (adaptiveSettings.getSetting("Liquids").isEnabled() && isInLiquid()) {
-                    strafe = -strafe;
-                    updatePosition = true;
-                    positive = false;
-                }
-            }
-            if (updatePosition) {
-                position = (position + (positive ? 1 : -1)) % points.getValue().intValue();
-            }
-        } else if (auto3rdPerson.isEnabled() && mc.gameSettings.thirdPersonView != 0 && returnState) {
-            mc.gameSettings.thirdPersonView = 0;
-            returnState = false;
-        }
-    }
-
-    @EventTarget
-    public void onRender3DEvent(Render3DEvent event) {
-        if (render.isEnabled()) {
-            if (animation.getEndPoint() != radius.getValue()) animation.setEndPoint(radius.getValue());
-            boolean canStrafe = canStrafe();
-            animation.setDirection(canStrafe ? Direction.FORWARDS : Direction.BACKWARDS);
-            if (canStrafe || !animation.isDone()) {
-                drawCircle(5, 0xFF000000);
-                drawCircle(3, color.getColor().getRGB());
-            }
-        }
     }
 
     public static boolean strafe(MoveEvent e) {
@@ -195,6 +136,82 @@ public final class TargetStrafe extends Module {
         }
     }
 
+    private static int getClosestPoint(Entity target) {
+        double playerX = mc.thePlayer.posX, playerZ = mc.thePlayer.posZ;
+        return getPoints(target).stream().min(Comparator.comparingDouble(p -> p.getDistance(playerX, playerZ))).get().iteration;
+    }
+
+    private static List<Point> getPoints(Entity target) {
+        double radius = TargetStrafe.radius.getValue();
+        List<Point> pointList = new ArrayList<>();
+        int count = points.getValue().intValue();
+        double posX = target.posX, posZ = target.posZ;
+        double d = (Math.PI * 2.0) / count;
+        for (int i = 0; i <= count; i++) {
+            double x = radius * StrictMath.cos(i * d);
+            double z = radius * StrictMath.sin(i * d);
+            pointList.add(new Point(posX + x, posZ + z, i));
+        }
+        return pointList;
+    }
+
+    @EventTarget
+    public void onMotionEvent(MotionEvent event) {
+        if (canStrafe()) {
+            if (auto3rdPerson.isEnabled() && mc.gameSettings.thirdPersonView == 0) {
+                mc.gameSettings.thirdPersonView = 1;
+                returnState = true;
+            }
+            boolean updatePosition = false, positive = true;
+            if (mc.thePlayer.isCollidedHorizontally) {
+                strafe = -strafe;
+                updatePosition = true;
+                positive = strafe == 1;
+            } else {
+                if (adaptiveSettings.getSetting("Controllable").isEnabled()) {
+                    if (mc.gameSettings.keyBindLeft.isPressed()) {
+                        strafe = 1;
+                        updatePosition = true;
+                    }
+                    if (mc.gameSettings.keyBindRight.isPressed()) {
+                        strafe = -1;
+                        updatePosition = true;
+                        positive = false;
+                    }
+                }
+                if (adaptiveSettings.getSetting("Edges").isEnabled() && isInVoid()) {
+                    strafe = -strafe;
+                    updatePosition = true;
+                    positive = false;
+                }
+                if (adaptiveSettings.getSetting("Liquids").isEnabled() && isInLiquid()) {
+                    strafe = -strafe;
+                    updatePosition = true;
+                    positive = false;
+                }
+            }
+            if (updatePosition) {
+                position = (position + (positive ? 1 : -1)) % points.getValue().intValue();
+            }
+        } else if (auto3rdPerson.isEnabled() && mc.gameSettings.thirdPersonView != 0 && returnState) {
+            mc.gameSettings.thirdPersonView = 0;
+            returnState = false;
+        }
+    }
+
+    @EventTarget
+    public void onRender3DEvent(Render3DEvent event) {
+        if (render.isEnabled()) {
+            if (animation.getEndPoint() != radius.getValue()) animation.setEndPoint(radius.getValue());
+            boolean canStrafe = canStrafe();
+            animation.setDirection(canStrafe ? Direction.FORWARDS : Direction.BACKWARDS);
+            if (canStrafe || !animation.isDone()) {
+                drawCircle(5, 0xFF000000);
+                drawCircle(3, color.getColor().getRGB());
+            }
+        }
+    }
+
     private void drawCircle(float lineWidth, int color) {
         EntityLivingBase entity = KillAura.target;
         if (entity == null) return;
@@ -261,25 +278,6 @@ public final class TargetStrafe extends Module {
         double zValue = Math.cos(yaw) * 2;
         BlockPos b = new BlockPos(mc.thePlayer.posX + xValue, mc.thePlayer.posY, mc.thePlayer.posZ + zValue);
         return mc.theWorld.getBlockState(b).getBlock() instanceof BlockLiquid;
-    }
-
-    private static int getClosestPoint(Entity target) {
-        double playerX = mc.thePlayer.posX, playerZ = mc.thePlayer.posZ;
-        return getPoints(target).stream().min(Comparator.comparingDouble(p -> p.getDistance(playerX, playerZ))).get().iteration;
-    }
-
-    private static List<Point> getPoints(Entity target) {
-        double radius = TargetStrafe.radius.getValue();
-        List<Point> pointList = new ArrayList<>();
-        int count = points.getValue().intValue();
-        double posX = target.posX, posZ = target.posZ;
-        double d = (Math.PI * 2.0) / count;
-        for (int i = 0; i <= count; i++) {
-            double x = radius * StrictMath.cos(i * d);
-            double z = radius * StrictMath.sin(i * d);
-            pointList.add(new Point(posX + x, posZ + z, i));
-        }
-        return pointList;
     }
 
     @Getter

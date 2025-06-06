@@ -25,9 +25,8 @@ public class ClickGUIMod extends Module {
     public static final DropdownClickGUI dropdownClickGui = new DropdownClickGUI();
     public static final ModernClickGui modernClickGui = new ModernClickGui();
     public static final CompactClickgui compactClickgui = new CompactClickgui();
-    private Category activeCategory2 = Category.COMBAT;
-
     public static int prevGuiScale;
+    private Category activeCategory2 = Category.COMBAT;
 
     public ClickGUIMod() {
         super("ClickGUI", Category.DISPLAY, "Displays modules");

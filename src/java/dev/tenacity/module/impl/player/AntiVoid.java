@@ -1,8 +1,8 @@
 package dev.tenacity.module.impl.player;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.Client;
 import com.cubk.event.impl.network.PacketSendEvent;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.movement.Speed;
@@ -22,10 +22,9 @@ public class AntiVoid extends Module {
     private final ModeSetting mode = new ModeSetting("Mode", "Watchdog", "Watchdog");
     private final NumberSetting fallDist = new NumberSetting("Fall Distance", 3, 20, 1, 0.5);
     private final TimerUtil timer = new TimerUtil();
+    private final List<Packet> packets = new ArrayList<>();
     private boolean reset;
     private double lastGroundY;
-
-    private final List<Packet> packets = new ArrayList<>();
 
     public AntiVoid() {
         super("AntiVoid", Category.PLAYER, "saves you from the void");
@@ -34,15 +33,15 @@ public class AntiVoid extends Module {
 
     @EventTarget
     public void onPacketSendEvent(PacketSendEvent event) {
-        if(mode.is("Watchdog") && !Client.INSTANCE.getModuleManager().getModule(Speed.class).isEnabled()) {
-            if(event.getPacket() instanceof C03PacketPlayer) {
-                if(!isBlockUnder()) {
-                    if(mc.thePlayer.fallDistance < fallDist.getValue()) {
+        if (mode.is("Watchdog") && !Client.INSTANCE.getModuleManager().getModule(Speed.class).isEnabled()) {
+            if (event.getPacket() instanceof C03PacketPlayer) {
+                if (!isBlockUnder()) {
+                    if (mc.thePlayer.fallDistance < fallDist.getValue()) {
                         event.cancel();
                         packets.add(event.getPacket());
                     } else {
-                        if(!packets.isEmpty()) {
-                            for(Packet packet : packets) {
+                        if (!packets.isEmpty()) {
+                            for (Packet packet : packets) {
                                 final C03PacketPlayer c03 = (C03PacketPlayer) packet;
                                 c03.setY(lastGroundY);
                                 PacketUtils.sendPacketNoEvent(packet);
@@ -52,7 +51,7 @@ public class AntiVoid extends Module {
                     }
                 } else {
                     lastGroundY = mc.thePlayer.posY;
-                    if(!packets.isEmpty()) {
+                    if (!packets.isEmpty()) {
                         packets.forEach(PacketUtils::sendPacketNoEvent);
                         packets.clear();
                     }

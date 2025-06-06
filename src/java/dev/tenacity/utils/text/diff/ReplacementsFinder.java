@@ -43,11 +43,10 @@ import java.util.List;
  * interface to process the sub-sequences.
  * </p>
  *
+ * @param <T> object type
  * @see ReplacementsHandler
  * @see EditScript
  * @see StringsComparator
- *
- * @param <T> object type
  * @since 1.0
  */
 public class ReplacementsFinder<T> implements CommandVisitor<T> {
@@ -61,31 +60,31 @@ public class ReplacementsFinder<T> implements CommandVisitor<T> {
      * List of pending deletions.
      */
     private final List<T> pendingDeletions;
-
+    /**
+     * Handler to call when synchronized sequences are found.
+     */
+    private final ReplacementsHandler<T> handler;
     /**
      * Count of elements skipped.
      */
     private int skipped;
 
-    /** Handler to call when synchronized sequences are found. */
-    private final ReplacementsHandler<T> handler;
-
     /**
      * Simple constructor. Creates a new instance of {@link ReplacementsFinder}.
      *
-     * @param handler  handler to call when synchronized sequences are found
+     * @param handler handler to call when synchronized sequences are found
      */
     public ReplacementsFinder(final ReplacementsHandler<T> handler) {
         pendingInsertions = new ArrayList<>();
-        pendingDeletions  = new ArrayList<>();
-        skipped           = 0;
-        this.handler      = handler;
+        pendingDeletions = new ArrayList<>();
+        skipped = 0;
+        this.handler = handler;
     }
 
     /**
      * Add an object to the pending insertions set.
      *
-     * @param object  object to insert
+     * @param object object to insert
      */
     @Override
     public void visitInsertCommand(final T object) {
@@ -99,7 +98,7 @@ public class ReplacementsFinder<T> implements CommandVisitor<T> {
      * pending deletions sets are provided to the user handler as subsequences.
      * </p>
      *
-     * @param object  synchronization object detected
+     * @param object synchronization object detected
      */
     @Override
     public void visitKeepCommand(final T object) {
@@ -116,7 +115,7 @@ public class ReplacementsFinder<T> implements CommandVisitor<T> {
     /**
      * Add an object to the pending deletions set.
      *
-     * @param object  object to delete
+     * @param object object to delete
      */
     @Override
     public void visitDeleteCommand(final T object) {

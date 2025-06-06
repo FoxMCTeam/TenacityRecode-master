@@ -17,14 +17,12 @@ import java.awt.*;
 @Setter
 @RequiredArgsConstructor
 public class DoubleIconButton implements Screen {
+    private final Animation hoverAnimation = new DecelerateAnimation(200, 1);
+    private final String disabledIcon, enabledIcon;
     private float x, y, alpha;
     private Color accentColor;
     private CustomFont iconFont = iconFont20;
     private boolean enabled = false, hovering;
-
-    private final Animation hoverAnimation = new DecelerateAnimation(200, 1);
-    private final String disabledIcon, enabledIcon;
-
 
     @Override
     public void initGui() {

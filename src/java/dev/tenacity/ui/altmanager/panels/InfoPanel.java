@@ -1,8 +1,8 @@
 package dev.tenacity.ui.altmanager.panels;
 
-import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.ui.altmanager.Panel;
 import dev.tenacity.utils.render.ColorUtil;
+import dev.tenacity.utils.tuples.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +57,7 @@ public class InfoPanel extends Panel {
         duckSansBoldFont18.drawString(text2, middleX + textWidth, controlY + 4, ColorUtil.applyOpacity(-1, .5f));
 
         duckSansFont18.drawCenteredString("Combo lists must have a new line seperating each combo",
-                getX() + getWidth() /2f, controlY + 16, ColorUtil.applyOpacity(-1, .5f));
+                getX() + getWidth() / 2f, controlY + 16, ColorUtil.applyOpacity(-1, .5f));
 
     }
 

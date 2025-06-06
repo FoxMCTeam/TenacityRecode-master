@@ -69,9 +69,9 @@ public class CaseUtils {
      * CaseUtils.toCamelCase(" @to @ Camel case", false, new char[]{'@'}) = "toCamelCase"
      * </pre>
      *
-     * @param str  the String to be converted to camelCase, may be null
+     * @param str                   the String to be converted to camelCase, may be null
      * @param capitalizeFirstLetter boolean that determines if the first character of first word should be title case.
-     * @param delimiters  set of characters to determine capitalization, null and/or empty array means whitespace
+     * @param delimiters            set of characters to determine capitalization, null and/or empty array means whitespace
      * @return camelCase of String, {@code null} if null String input
      */
     public static String toCamelCase(String str, final boolean capitalizeFirstLetter, final char... delimiters) {
@@ -83,11 +83,8 @@ public class CaseUtils {
         final int[] newCodePoints = new int[strLen];
         int outOffset = 0;
         final Set<Integer> delimiterSet = generateDelimiterSet(delimiters);
-        boolean capitalizeNext = false;
-        if (capitalizeFirstLetter) {
-            capitalizeNext = true;
-        }
-        for (int index = 0; index < strLen;) {
+        boolean capitalizeNext = capitalizeFirstLetter;
+        for (int index = 0; index < strLen; ) {
             final int codePoint = str.codePointAt(index);
 
             if (delimiterSet.contains(codePoint)) {
@@ -113,7 +110,7 @@ public class CaseUtils {
      * <p>Converts an array of delimiters to a hash set of code points. Code point of space(32) is added
      * as the default value. The generated hash set provides O(1) lookup time.</p>
      *
-     * @param delimiters  set of characters to determine capitalization, null means whitespace
+     * @param delimiters set of characters to determine capitalization, null means whitespace
      * @return Set<Integer>
      */
     private static Set<Integer> generateDelimiterSet(final char[] delimiters) {

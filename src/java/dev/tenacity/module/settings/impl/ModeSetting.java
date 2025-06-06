@@ -27,12 +27,12 @@ public class ModeSetting extends Setting {
         if (currentMode == null) currentMode = defaultMode;
     }
 
-    
+
     public String getMode() {
         return currentMode;
     }
 
-    
+
     public boolean is(String mode) {
         return currentMode.equalsIgnoreCase(mode);
     }
@@ -49,7 +49,7 @@ public class ModeSetting extends Setting {
         currentMode = modes.get(modeIndex);
     }
 
-    
+
     public void setCurrentMode(String currentMode) {
         this.currentMode = currentMode;
     }

@@ -1,8 +1,8 @@
 package dev.tenacity.module.impl.combat;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.Client;
 import com.cubk.event.impl.player.MotionEvent;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.movement.Scaffold;
@@ -26,11 +26,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class AutoPot extends Module {
 
+    public static boolean isPotting;
     private final NumberSetting delay = new NumberSetting("Delay", 750, 2000, 0, 50);
     private final NumberSetting minHealHP = new NumberSetting("Heal HP", 12, 20, 1, 0.5);
     private final BooleanSetting splashFrogPots = new BooleanSetting("Frog potions", false);
     private final TimerUtil timerUtil = new TimerUtil();
-    public static boolean isPotting;
     private float prevPitch;
 
     public AutoPot() {

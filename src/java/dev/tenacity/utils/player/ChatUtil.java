@@ -1,7 +1,7 @@
 package dev.tenacity.utils.player;
 
-import dev.tenacity.utils.client.addons.api.ScriptModule;
 import dev.tenacity.utils.Utils;
+import dev.tenacity.utils.client.addons.api.ScriptModule;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 

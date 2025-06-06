@@ -37,6 +37,7 @@ package dev.tenacity.utils.text;
  *     .build();
  * }
  * </pre>
+ *
  * @since 1.1
  */
 public interface TextRandomProvider {
@@ -44,7 +45,8 @@ public interface TextRandomProvider {
     /**
      * Generates an int value between 0 (inclusive) and the specified value
      * (exclusive).
-     * @param max  Bound on the random number to be returned. Must be positive.
+     *
+     * @param max Bound on the random number to be returned. Must be positive.
      * @return a random int value between 0 (inclusive) and n (exclusive).
      */
     int nextInt(int max);

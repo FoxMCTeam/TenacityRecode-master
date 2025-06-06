@@ -27,7 +27,7 @@ public class Enhancements {
                 throw new URISyntaxException(url, "Wrong protocol");
             }
 
-            url = URLDecoder.decode(url.substring("level://".length()), StandardCharsets.UTF_8.toString());
+            url = URLDecoder.decode(url.substring("level://".length()), StandardCharsets.UTF_8);
 
             if (isLevelProtocol && (url.contains("..") || !url.endsWith("/resources.zip"))) {
                 throw new URISyntaxException(url, "Invalid levelstorage resourcepack path");
@@ -37,8 +37,6 @@ public class Enhancements {
         } catch (URISyntaxException e) {
             e.printStackTrace();
             return false;
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
         }
 
         return false;

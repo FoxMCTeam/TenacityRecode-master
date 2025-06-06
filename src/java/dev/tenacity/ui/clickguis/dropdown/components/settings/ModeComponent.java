@@ -1,6 +1,5 @@
 package dev.tenacity.ui.clickguis.dropdown.components.settings;
 
-import dev.tenacity.utils.tuples.mutable.MutablePair;
 import dev.tenacity.module.settings.impl.ModeSetting;
 import dev.tenacity.ui.clickguis.dropdown.components.SettingComponent;
 import dev.tenacity.utils.animations.Animation;
@@ -13,6 +12,7 @@ import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.RenderUtil;
 import dev.tenacity.utils.render.RoundedUtil;
 import dev.tenacity.utils.render.Theme;
+import dev.tenacity.utils.tuples.mutable.MutablePair;
 
 import java.awt.*;
 
@@ -21,13 +21,10 @@ public class ModeComponent extends SettingComponent<ModeSetting> {
     private final Animation hoverAnimation = new DecelerateAnimation(250, 1, Direction.BACKWARDS);
     private final Animation openAnimation = new DecelerateAnimation(250, 1, Direction.BACKWARDS);
     private final Animation selectionBox = new DecelerateAnimation(250, 1, Direction.BACKWARDS);
-
-    private boolean opened;
-
+    private final ContinualAnimation selectionBoxY = new ContinualAnimation();
     public float realHeight;
     public float normalCount;
-
-    private final ContinualAnimation selectionBoxY = new ContinualAnimation();
+    private boolean opened;
     private String hoveringMode = "";
 
     public ModeComponent(ModeSetting modeSetting) {
@@ -81,7 +78,7 @@ public class ModeComponent extends SettingComponent<ModeSetting> {
 
         duckSansFont16.drawString(modeSetting.getMode(), boxX + 5, boxY + duckSansFont16.getMiddleOfBox(boxHeight), textColor);
 
-        if(themeSetting){
+        if (themeSetting) {
             MutablePair<Color, Color> themeColors = Theme.getThemeColors(modeSetting.getMode()).apply(MutablePair::of);
 
             themeColors.computeFirst(color -> ColorUtil.applyOpacity(color, alpha));
@@ -89,14 +86,13 @@ public class ModeComponent extends SettingComponent<ModeSetting> {
 
             float height = 8;
             float width = 8;
-            float middleOfRect = boxHeight /2f - height /2f;
+            float middleOfRect = boxHeight / 2f - height / 2f;
             float spacing = 3;
             RoundedUtil.drawRound(boxX + 7.5f + duckSansFont16.getStringWidth(modeSetting.getMode()), boxY + middleOfRect,
                     width, height, 2.25f, themeColors.getFirst());
             RoundedUtil.drawRound(boxX + 7.5f + duckSansFont16.getStringWidth(modeSetting.getMode()) + (spacing + width), boxY + middleOfRect,
                     width, height, 2.25f, themeColors.getSecond());
         }
-
 
 
         RenderUtil.resetColor();
@@ -126,18 +122,18 @@ public class ModeComponent extends SettingComponent<ModeSetting> {
 
             selectionBox.setDirection(mouseOutsideRect ? Direction.BACKWARDS : Direction.FORWARDS);
 
-            RoundedUtil.drawRound(modeX + 1.5f, (float) (modeY + 1.5f + selectionBoxY.getOutput()), boxWidth - 3, rectHeight - 3, 2.5f,
+            RoundedUtil.drawRound(modeX + 1.5f, modeY + 1.5f + selectionBoxY.getOutput(), boxWidth - 3, rectHeight - 3, 2.5f,
                     ColorUtil.applyOpacity(settingRectColor.brighter().brighter(), openAnim * selectionBox.getOutput().floatValue()));
 
             for (String mode : modeSetting.modes) {
-                if(mode.equals(modeSetting.getMode())) continue;
+                if (mode.equals(modeSetting.getMode())) continue;
                 boolean hoveringMode = HoveringUtil.isHovering(modeX, modeY + rectCount * rectHeight, boxWidth, rectHeight, mouseX, mouseY);
-                if(hoveringMode) {
+                if (hoveringMode) {
                     this.hoveringMode = mode;
                 }
 
 
-                if(mode.equals(this.hoveringMode)) {
+                if (mode.equals(this.hoveringMode)) {
                     selectionBoxY.animate(rectCount * rectHeight, 17);
                 }
 
@@ -147,7 +143,7 @@ public class ModeComponent extends SettingComponent<ModeSetting> {
                         modeY + ((duckSansFont16.getMiddleOfBox(rectHeight) + (rectHeight * rectCount)) * openAnimation.getOutput().floatValue()),
                         ColorUtil.applyOpacity(textColor, openAnim));
 
-                if(themeSetting){
+                if (themeSetting) {
                     MutablePair<Color, Color> themeColors = Theme.getThemeColors(mode).apply(MutablePair::of);
 
                     themeColors.computeFirst(color -> ColorUtil.applyOpacity(color, openAnim));
@@ -156,7 +152,7 @@ public class ModeComponent extends SettingComponent<ModeSetting> {
                     float height = 8f;
                     float width = 8f;
                     float spacing = 3f;
-                    float middleOfRect = rectHeight /2f - height /2f;
+                    float middleOfRect = rectHeight / 2f - height / 2f;
                     float v = modeY +
                             ((middleOfRect + (rectHeight * rectCount)) * openAnim);
 
@@ -175,7 +171,7 @@ public class ModeComponent extends SettingComponent<ModeSetting> {
 
             //2 plus the increment of the mode rect height divided by the normal setting rect height
             countSize = 2 + ((.25f + (rectCount * (rectHeight / (realHeight / normalCount)))) * openAnimation.getOutput().floatValue());
-        }else {
+        } else {
             countSize = 2;
         }
 
@@ -195,16 +191,16 @@ public class ModeComponent extends SettingComponent<ModeSetting> {
         }
 
 
-        if(opened) {
+        if (opened) {
             float rectHeight = 15;
             float rectCount = 0;
             float modeY = boxY + boxHeight + 4;
             float modeX = boxX - 1;
 
             for (String mode : modeSetting.modes) {
-                if(mode.equals(modeSetting.getMode())) continue;
+                if (mode.equals(modeSetting.getMode())) continue;
                 boolean hoveringMode = HoveringUtil.isHovering(modeX, modeY + rectCount * rectHeight, boxWidth, rectHeight, mouseX, mouseY);
-                if(isClickable((modeY + rectCount * rectHeight) + rectHeight) && hoveringMode && button == 0) {
+                if (isClickable((modeY + rectCount * rectHeight) + rectHeight) && hoveringMode && button == 0) {
                     modeSetting.setCurrentMode(mode);
                     opened = false;
                     return;

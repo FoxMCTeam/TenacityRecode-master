@@ -19,6 +19,8 @@ public class UploadForm extends Form {
     private final TextField nameField = new TextField(duckSansFont18);
     private final TextField descriptionField = new TextField(duckSansFont18);
     private final TextField serverField = new TextField(duckSansFont18);
+    private boolean error = false;
+
 
     public UploadForm(String type) {
         super("Upload " + type);
@@ -27,13 +29,10 @@ public class UploadForm extends Form {
         this.type = type;
     }
 
-
     @Override
     public void initGui() {
 
     }
-
-    private boolean error = false;
 
     @Override
     public void keyTyped(char typedChar, int keyCode) {

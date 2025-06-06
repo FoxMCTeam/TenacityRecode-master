@@ -1,6 +1,5 @@
 package dev.tenacity.ui.clickguis.dropdown.components.settings;
 
-import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.module.settings.impl.BooleanSetting;
 import dev.tenacity.module.settings.impl.MultipleBoolSetting;
 import dev.tenacity.ui.clickguis.dropdown.components.SettingComponent;
@@ -10,6 +9,7 @@ import dev.tenacity.utils.animations.impl.DecelerateAnimation;
 import dev.tenacity.utils.misc.HoveringUtil;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.RoundedUtil;
+import dev.tenacity.utils.tuples.Pair;
 
 import java.awt.*;
 import java.util.Comparator;
@@ -19,15 +19,14 @@ import java.util.stream.Collectors;
 
 public class MultipleBoolComponent extends SettingComponent<MultipleBoolSetting> {
 
+    private final HashMap<BooleanSetting, Pair<Animation, Animation>> booleanSettingAnimations = new HashMap<>();
+    private final List<BooleanSetting> sortedSettings;
     public float realHeight;
     public float normalCount;
-
-    private final HashMap<BooleanSetting, Pair<Animation, Animation>> booleanSettingAnimations = new HashMap<>();
-
     private boolean opened;
+    private float additionalHeight = 0;
 
 
-    private final List<BooleanSetting> sortedSettings;
     public MultipleBoolComponent(MultipleBoolSetting setting) {
         super(setting);
 
@@ -40,7 +39,6 @@ public class MultipleBoolComponent extends SettingComponent<MultipleBoolSetting>
         normalCount = 2;
     }
 
-
     @Override
     public void initGui() {
 
@@ -50,8 +48,6 @@ public class MultipleBoolComponent extends SettingComponent<MultipleBoolSetting>
     public void keyTyped(char typedChar, int keyCode) {
 
     }
-
-    private float additionalHeight = 0;
 
     @Override
     public void drawScreen(int mouseX, int mouseY) {
@@ -63,7 +59,7 @@ public class MultipleBoolComponent extends SettingComponent<MultipleBoolSetting>
 
         float enabledCount = sortedSettings.stream().filter(BooleanSetting::isEnabled).count();
 
-        Color outlineColor = ColorUtil.interpolateColorC(settingRectColor.brighter().brighter(), clientColors.getSecond(),enabledCount / sortedSettings.size());
+        Color outlineColor = ColorUtil.interpolateColorC(settingRectColor.brighter().brighter(), clientColors.getSecond(), enabledCount / sortedSettings.size());
 
 
         Color rectColor = settingRectColor.brighter();
@@ -118,7 +114,6 @@ public class MultipleBoolComponent extends SettingComponent<MultipleBoolSetting>
             rectColorBool = ColorUtil.interpolateColorC(rectColorBool, rectColorBool.brighter(), hoverAnimation.getOutput().floatValue());
 
 
-
             RoundedUtil.drawRound(enabledX, enabledY, enabledWidth, enabledHeight, 3, rectColorBool);
 
             duckSansFont14.drawString(setting.name, enabledX + 2, enabledY + 2,
@@ -170,7 +165,7 @@ public class MultipleBoolComponent extends SettingComponent<MultipleBoolSetting>
             float enabledY = boxY + yOffset;
             boolean hovered = HoveringUtil.isHovering(enabledX, enabledY, enabledWidth, enabledHeight, mouseX, mouseY);
 
-            if(isClickable(enabledY + enabledHeight) && hovered && button == 0) {
+            if (isClickable(enabledY + enabledHeight) && hovered && button == 0) {
                 setting.toggle();
             }
 

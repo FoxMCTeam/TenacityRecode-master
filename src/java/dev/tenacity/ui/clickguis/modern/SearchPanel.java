@@ -117,7 +117,7 @@ public class SearchPanel extends Panel {
                 }
 
                 StencilUtil.initStencilToWrite();
-                Gui.drawRect2(x, y - 15, (float) (370 + (125 * expandAnim2.getOutput().floatValue())), 255, -1);
+                Gui.drawRect2(x, y - 15, 370 + (125 * expandAnim2.getOutput().floatValue()), 255, -1);
                 StencilUtil.readStencilBuffer(1);
                 //  settingScroll.setMaxScroll(Math.max(0,(Mo - 4) * 50));
                 float newX = x + 5 + 335;

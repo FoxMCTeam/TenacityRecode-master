@@ -19,6 +19,11 @@ public final class FastBow extends Module {
 
     private final TimerUtil delayTimer = new TimerUtil();
 
+    public FastBow() {
+        super("FastBow", Category.COMBAT, "shoot bows faster");
+        this.addSettings(mode, shotDelay);
+    }
+
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
         if (mc.thePlayer.getCurrentEquippedItem() == null) return;
@@ -52,11 +57,6 @@ public final class FastBow extends Module {
     public void onDisable() {
         mc.rightClickDelayTimer = 4;
         super.onDisable();
-    }
-
-    public FastBow() {
-        super("FastBow", Category.COMBAT, "shoot bows faster");
-        this.addSettings(mode, shotDelay);
     }
 
 }

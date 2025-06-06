@@ -1,7 +1,6 @@
 package dev.tenacity.utils.client.addons.api.bindings;
 
 
-
 public class ActionBinding {
     public final int START_SNEAKING = 0,
             STOP_SNEAKING = 1,

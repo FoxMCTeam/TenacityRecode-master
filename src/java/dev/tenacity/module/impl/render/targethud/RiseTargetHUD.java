@@ -14,15 +14,14 @@ import java.util.List;
 
 public class RiseTargetHUD extends TargetHUD {
 
+    public final List<Particle> particles = new ArrayList<>();
+    private final TimerUtil timer = new TimerUtil();
+    private final ContinualAnimation animatedHealthBar = new ContinualAnimation();
+    private boolean sentParticles;
+
     public RiseTargetHUD() {
         super("Rise");
     }
-
-    private boolean sentParticles;
-    public final List<Particle> particles = new ArrayList<>();
-    private final TimerUtil timer = new TimerUtil();
-
-    private final ContinualAnimation animatedHealthBar = new ContinualAnimation();
 
     @Override
     public void render(float x, float y, float alpha, EntityLivingBase target) {
@@ -89,6 +88,18 @@ public class RiseTargetHUD extends TargetHUD {
         if (target.hurtTime == 8) sentParticles = false;
     }
 
+    @Override
+    public void renderEffects(float x, float y, float alpha, boolean glow) {
+        if (glow) {
+            RoundedUtil.drawGradientRound(x, y, getWidth(), getHeight(), 6,
+                    ColorUtil.applyOpacity(colorWheel.getColor1(), alpha),
+                    ColorUtil.applyOpacity(colorWheel.getColor4(), alpha),
+                    ColorUtil.applyOpacity(colorWheel.getColor2(), alpha),
+                    ColorUtil.applyOpacity(colorWheel.getColor3(), alpha));
+        } else {
+            RoundedUtil.drawRound(x, y, getWidth(), getHeight(), 6, ColorUtil.applyOpacity(Color.BLACK, alpha));
+        }
+    }
 
     public static class Particle {
         public float x, y, adjustedX, adjustedY, deltaX, deltaY, size, opacity;
@@ -117,19 +128,6 @@ public class RiseTargetHUD extends TargetHUD {
             this.size = size;
             this.opacity = 254;
             this.color = color;
-        }
-    }
-
-    @Override
-    public void renderEffects(float x, float y, float alpha, boolean glow) {
-        if (glow) {
-            RoundedUtil.drawGradientRound(x, y, getWidth(), getHeight(), 6,
-                    ColorUtil.applyOpacity(colorWheel.getColor1(), alpha),
-                    ColorUtil.applyOpacity(colorWheel.getColor4(), alpha),
-                    ColorUtil.applyOpacity(colorWheel.getColor2(), alpha),
-                    ColorUtil.applyOpacity(colorWheel.getColor3(), alpha));
-        } else {
-            RoundedUtil.drawRound(x, y, getWidth(), getHeight(), 6, ColorUtil.applyOpacity(Color.BLACK, alpha));
         }
     }
 }

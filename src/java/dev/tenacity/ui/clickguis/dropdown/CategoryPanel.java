@@ -1,6 +1,5 @@
 package dev.tenacity.ui.clickguis.dropdown;
 
-import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -15,6 +14,7 @@ import dev.tenacity.utils.animations.Animation;
 import dev.tenacity.utils.misc.HoveringUtil;
 import dev.tenacity.utils.misc.MathUtils;
 import dev.tenacity.utils.render.*;
+import dev.tenacity.utils.tuples.Pair;
 import lombok.Getter;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 import net.minecraft.client.gui.Gui;
@@ -30,15 +30,18 @@ import static dev.tenacity.utils.misc.HoveringUtil.isHovering;
 
 public class CategoryPanel implements Screen {
 
+    public final Pair<Animation, Animation> openingAnimations;
     private final Category category;
-
     private final float rectWidth = 105;
     private final float categoryRectHeight = 15;
+    private final List<String> searchTerms = new ArrayList<>();
+    private final List<ModuleRect> moduleRectFilter = new ArrayList<>();
+    float actualHeight = 0;
     @Getter
     private boolean typing;
-
-    public final Pair<Animation, Animation> openingAnimations;
     private List<ModuleRect> moduleRects;
+    private String searchText;
+
 
     public CategoryPanel(Category category, Pair<Animation, Animation> openingAnimations) {
         this.category = category;
@@ -70,15 +73,12 @@ public class CategoryPanel implements Screen {
         category.getDrag().onDraw(mouseX, mouseY);
     }
 
-
-    float actualHeight = 0;
-
     @Override
     public void drawScreen(int mouseX, int mouseY) {
-        if(moduleRects == null) {
+        if (moduleRects == null) {
             return;
         }
-        
+
         if (category.equals(Category.SCRIPTS) && ModuleManager.reloadModules) {
             moduleRects.clear();
             for (Module module : Client.INSTANCE.getModuleManager().getModulesInCategory(category).stream().sorted(Comparator.comparing(Module::getName)).collect(Collectors.toList())) {
@@ -148,7 +148,6 @@ public class CategoryPanel implements Screen {
             }
 
         }
-
 
 
         StencilUtil.initStencilToWrite();
@@ -238,7 +237,7 @@ public class CategoryPanel implements Screen {
         float allowedHeight = Math.min(actualHeight, Module.allowedClickGuiHeight);
         boolean glow = PostProcessing.glowOptions.getSetting("ClickGui").isEnabled();
 
-        if(!ClickGUIMod.outlineAccent.isEnabled()){
+        if (!ClickGUIMod.outlineAccent.isEnabled()) {
             RoundedUtil.drawRound(x - .75f, y - .5f, rectWidth + 1.5f, allowedHeight + categoryRectHeight + 1.5f, 5, Color.BLACK);
             return;
         }
@@ -276,10 +275,6 @@ public class CategoryPanel implements Screen {
         category.getDrag().onRelease(state);
         getModuleRects().forEach(moduleRect -> moduleRect.mouseReleased(mouseX, mouseY, state));
     }
-
-    private final List<String> searchTerms = new ArrayList<>();
-    private String searchText;
-    private final List<ModuleRect> moduleRectFilter = new ArrayList<>();
 
     public List<ModuleRect> getModuleRects() {
         if (!Client.INSTANCE.getSearchBar().isFocused()) {

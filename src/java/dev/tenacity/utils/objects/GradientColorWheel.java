@@ -1,10 +1,10 @@
 package dev.tenacity.utils.objects;
 
-import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.module.settings.impl.ColorSetting;
 import dev.tenacity.module.settings.impl.ModeSetting;
 import dev.tenacity.utils.render.ColorUtil;
+import dev.tenacity.utils.tuples.Pair;
 import lombok.Getter;
 
 import java.awt.*;
@@ -18,7 +18,7 @@ public class GradientColorWheel {
     private ModeSetting colorMode;
     private ColorSetting colorSetting;
 
-    public GradientColorWheel(){
+    public GradientColorWheel() {
         color1 = Color.BLACK;
         color2 = Color.BLACK;
         color3 = Color.BLACK;
@@ -37,7 +37,7 @@ public class GradientColorWheel {
         return colorMode;
     }
 
-    public void setColorsForMode(String mode, Color color){
+    public void setColorsForMode(String mode, Color color) {
         setColorsForMode(mode, color, color, color, color);
     }
 
@@ -73,7 +73,7 @@ public class GradientColorWheel {
             }
         }
 
-        if(!HUDMod.drawRadialGradients()){
+        if (!HUDMod.drawRadialGradients()) {
             color4 = color1;
             color3 = color2;
         }

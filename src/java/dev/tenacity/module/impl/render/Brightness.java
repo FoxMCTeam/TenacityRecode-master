@@ -7,6 +7,10 @@ import dev.tenacity.module.Module;
 
 public final class Brightness extends Module {
 
+    public Brightness() {
+        super("Brightness", Category.RENDER, "changes the game brightness");
+    }
+
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
         mc.gameSettings.gammaSetting = 100;
@@ -16,10 +20,6 @@ public final class Brightness extends Module {
     public void onDisable() {
         mc.gameSettings.gammaSetting = 0;
         super.onDisable();
-    }
-
-    public Brightness() {
-        super("Brightness", Category.RENDER, "changes the game brightness");
     }
 
 }

@@ -1,20 +1,20 @@
 package dev.tenacity.module.impl.render;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.module.impl.display.HUDMod;
-import dev.tenacity.utils.tuples.Pair;
-import dev.tenacity.commands.impl.FriendCommand;
 import com.cubk.event.impl.render.NametagRenderEvent;
 import com.cubk.event.impl.render.Render2DEvent;
 import com.cubk.event.impl.render.Render3DEvent;
 import com.cubk.event.impl.render.ShaderEvent;
+import dev.tenacity.commands.impl.FriendCommand;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
+import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.module.settings.ParentAttribute;
 import dev.tenacity.module.settings.impl.*;
 import dev.tenacity.utils.font.AbstractFontRenderer;
 import dev.tenacity.utils.misc.MathUtils;
 import dev.tenacity.utils.render.*;
+import dev.tenacity.utils.tuples.Pair;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -36,14 +36,12 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class ESP2D extends Module {
 
+    public final BooleanSetting boxEsp = new BooleanSetting("Box", true);
     private final MultipleBoolSetting validEntities = new MultipleBoolSetting("Valid Entities",
             new BooleanSetting("Players", true),
             new BooleanSetting("Animals", true),
             new BooleanSetting("Mobs", true));
-
-
     private final BooleanSetting mcfont = new BooleanSetting("Minecraft Font", true);
-    public final BooleanSetting boxEsp = new BooleanSetting("Box", true);
     private final ModeSetting boxColorMode = new ModeSetting("Box Mode", "Sync", "Sync", "Custom");
     private final ColorSetting boxColor = new ColorSetting("Box Color", Color.PINK);
 
@@ -66,6 +64,10 @@ public class ESP2D extends Module {
             new BooleanSetting("Background", true),
             new BooleanSetting("Red Background", false),
             new BooleanSetting("Round", true));
+    private final Map<Entity, Vector4f> entityPosition = new HashMap<>();
+    private final NumberFormat df = new DecimalFormat("0.#");
+    private final Color backgroundColor = new Color(10, 10, 10, 130);
+    private Color firstColor = Color.BLACK, secondColor = Color.BLACK, thirdColor = Color.BLACK, fourthColor = Color.BLACK;
 
     public ESP2D() {
         super("2D ESP", Category.RENDER, "Draws a box in 2D space around entitys");
@@ -81,9 +83,6 @@ public class ESP2D extends Module {
         addSettings(validEntities, mcfont, boxEsp, boxColorMode, boxColor, itemHeld, healthBar, healthBarMode, healthBarText,
                 equipmentVisual, nametags, scale, nametagSettings);
     }
-
-
-    private final Map<Entity, Vector4f> entityPosition = new HashMap<>();
 
     @EventTarget
     public void onNametagRenderEvent(NametagRenderEvent e) {
@@ -108,12 +107,11 @@ public class ESP2D extends Module {
                 Vector4f pos = entityPosition.get(entity);
                 float x = pos.getX(), y = pos.getY(), right = pos.getZ(), bottom = pos.getW();
 
-                if (entity instanceof EntityLivingBase) {
+                if (entity instanceof EntityLivingBase renderingEntity) {
                     AbstractFontRenderer font = duckSansBoldFont20;
                     if (mcfont.isEnabled()) {
                         font = mc.fontRendererObj;
                     }
-                    EntityLivingBase renderingEntity = (EntityLivingBase) entity;
                     String name = (nametagSettings.getSetting("Formatted Tags").isEnabled() ? renderingEntity.getDisplayName().getFormattedText() : StringUtils.stripControlCodes(renderingEntity.getDisplayName().getUnformattedText()));
                     StringBuilder text = new StringBuilder(
                             (FriendCommand.isFriend(renderingEntity.getName()) ? "§d" : redTags.isEnabled() ? "§c" : "§f") + name);
@@ -152,13 +150,6 @@ public class ESP2D extends Module {
         }
     }
 
-
-    private final NumberFormat df = new DecimalFormat("0.#");
-    private final Color backgroundColor = new Color(10, 10, 10, 130);
-
-    private Color firstColor = Color.BLACK, secondColor = Color.BLACK, thirdColor = Color.BLACK, fourthColor = Color.BLACK;
-
-
     @EventTarget
     public void onRender2DEvent(Render2DEvent e) {
 
@@ -189,12 +180,11 @@ public class ESP2D extends Module {
                     right = pos.getZ(),
                     bottom = pos.getW();
 
-            if (entity instanceof EntityLivingBase) {
+            if (entity instanceof EntityLivingBase renderingEntity) {
                 AbstractFontRenderer font = duckSansBoldFont20;
                 if (mcfont.isEnabled()) {
                     font = mc.fontRendererObj;
                 }
-                EntityLivingBase renderingEntity = (EntityLivingBase) entity;
                 if (nametags.isEnabled()) {
                     float healthValue = renderingEntity.getHealth() / renderingEntity.getMaxHealth();
                     Color healthColor = healthValue > .75 ? new Color(66, 246, 123) : healthValue > .5 ? new Color(228, 255, 105) : healthValue > .35 ? new Color(236, 100, 64) : new Color(255, 65, 68);

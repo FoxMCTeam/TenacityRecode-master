@@ -24,12 +24,12 @@ public class MultipleBoolSetting extends Setting {
         Arrays.stream(booleanSettings).forEach(booleanSetting -> boolSettings.put(booleanSetting.name.toLowerCase(), booleanSetting));
     }
 
-    
+
     public BooleanSetting getSetting(String settingName) {
         return boolSettings.computeIfAbsent(settingName.toLowerCase(), k -> null);
     }
 
-    
+
     public boolean isEnabled(String settingName) {
         return boolSettings.get(settingName.toLowerCase()).isEnabled();
     }

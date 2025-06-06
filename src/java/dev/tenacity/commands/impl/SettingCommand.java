@@ -30,7 +30,7 @@ public class SettingCommand extends Command {
             }
 
             String sendSuccess = args[args.length - 1];
-            if(sendSuccess.equals("sendSuccess=false")){
+            if (sendSuccess.equals("sendSuccess=false")) {
                 Command.sendSuccess = false;
             }
 
@@ -51,8 +51,7 @@ public class SettingCommand extends Command {
                         String value = String.join(" ",
                                 Arrays.copyOfRange(args, 2, Command.sendSuccess ? args.length : (args.length - 1)));
 
-                        if (setting instanceof ModeSetting) {
-                            ModeSetting modeSetting = (ModeSetting) setting;
+                        if (setting instanceof ModeSetting modeSetting) {
                             for (String mode : modeSetting.modes) {
                                 if (mode.equalsIgnoreCase(value)) {
                                     modeSetting.setCurrentMode(mode);
@@ -65,8 +64,7 @@ public class SettingCommand extends Command {
                             }
                         }
 
-                        if (setting instanceof NumberSetting) {
-                            NumberSetting numberSetting = (NumberSetting) setting;
+                        if (setting instanceof NumberSetting numberSetting) {
                             double valueDouble;
                             try {
                                 valueDouble = Double.parseDouble(value);
@@ -83,20 +81,17 @@ public class SettingCommand extends Command {
                             break;
                         }
 
-                        if (setting instanceof StringSetting) {
-                            StringSetting stringSetting = (StringSetting) setting;
+                        if (setting instanceof StringSetting stringSetting) {
                             stringSetting.setString(value);
                             setValue = true;
                         }
 
-                        if (setting instanceof BooleanSetting) {
-                            BooleanSetting booleanSetting = (BooleanSetting) setting;
+                        if (setting instanceof BooleanSetting booleanSetting) {
                             booleanSetting.setState(Boolean.parseBoolean(value));
                             setValue = true;
                         }
 
-                        if (setting instanceof MultipleBoolSetting) {
-                            MultipleBoolSetting multipleBoolSetting = (MultipleBoolSetting) setting;
+                        if (setting instanceof MultipleBoolSetting multipleBoolSetting) {
                             String[] inputBool = value.split(" ");
                             String boolName = inputBool[0].replace("_", " ");
                             BooleanSetting booleanSetting = multipleBoolSetting.getSetting(boolName);
@@ -112,12 +107,11 @@ public class SettingCommand extends Command {
                             break;
                         }
 
-                        if (setting instanceof ColorSetting) {
-                            ColorSetting colorSetting = (ColorSetting) setting;
+                        if (setting instanceof ColorSetting colorSetting) {
                             Color newColor;
                             try {
                                 newColor = Color.decode("#" + value);
-                            }catch (NumberFormatException e){
+                            } catch (NumberFormatException e) {
                                 sendChatError("Invalid hex");
                                 return;
                             }

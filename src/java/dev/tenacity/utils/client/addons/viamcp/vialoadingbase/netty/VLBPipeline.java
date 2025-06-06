@@ -18,12 +18,12 @@
 package dev.tenacity.utils.client.addons.viamcp.vialoadingbase.netty;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import dev.tenacity.utils.client.addons.viamcp.vialoadingbase.netty.event.CompressionReorderEvent;
 import dev.tenacity.utils.client.addons.viamcp.vialoadingbase.netty.handler.VLBViaDecodeHandler;
 import dev.tenacity.utils.client.addons.viamcp.vialoadingbase.netty.handler.VLBViaEncodeHandler;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 
 public abstract class VLBPipeline extends ChannelInboundHandlerAdapter {
     public final static String VIA_DECODER_HANDLER_NAME = "via-decoder";

@@ -12,7 +12,6 @@ public class GradientUtil implements Utils {
     private static final ShaderUtil gradientShader = new ShaderUtil("gradient");
 
 
-
     public static void drawGradient(float x, float y, float width, float height, float alpha, Color bottomLeft, Color topLeft, Color bottomRight, Color topRight) {
         ScaledResolution sr = new ScaledResolution(mc);
 
@@ -84,6 +83,7 @@ public class GradientUtil implements Utils {
         Color mixedColor = ColorUtil.interpolateColorC(topRight, bottomLeft, .5f);
         applyGradient(x, y, width, height, alpha, bottomLeft, mixedColor, mixedColor, topRight, content);
     }
+
     public static void applyGradientCornerLR(float x, float y, float width, float height, float alpha, Color bottomRight, Color topLeft, Runnable content) {
         Color mixedColor = ColorUtil.interpolateColorC(bottomRight, topLeft, .5f);
         applyGradient(x, y, width, height, alpha, mixedColor, topLeft, bottomRight, mixedColor, content);

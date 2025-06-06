@@ -6,7 +6,7 @@ import dev.tenacity.module.Module;
 
 public class ClearConfigCommand extends Command {
 
-    public ClearConfigCommand(){
+    public ClearConfigCommand() {
         super("clearconfig", "Turns off all enabled modules", ".clearconfig");
     }
 

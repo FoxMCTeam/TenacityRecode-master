@@ -17,15 +17,10 @@ public class ColorSetting extends Setting {
         this.setColor(defaultColor);
     }
 
-    
+
     public Color getColor() {
         return isRainbow() ? getRainbow().getColor() : Color.getHSBColor(hue, saturation, brightness);
     }
-
-    public Color getAltColor() {
-        return isRainbow() ? getRainbow().getColor(40) : ColorUtil.darker(getColor(), .6f);
-    }
-
 
     public void setColor(Color color) {
         float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
@@ -34,13 +29,17 @@ public class ColorSetting extends Setting {
         brightness = hsb[2];
     }
 
+    public Color getAltColor() {
+        return isRainbow() ? getRainbow().getColor(40) : ColorUtil.darker(getColor(), .6f);
+    }
+
     public void setColor(float hue, float saturation, float brightness) {
         this.hue = hue;
         this.saturation = saturation;
         this.brightness = brightness;
     }
 
-    
+
     public double getHue() {
         return hue;
     }
@@ -49,7 +48,7 @@ public class ColorSetting extends Setting {
         this.hue = hue;
     }
 
-    
+
     public double getSaturation() {
         return saturation;
     }
@@ -58,7 +57,7 @@ public class ColorSetting extends Setting {
         this.saturation = saturation;
     }
 
-    
+
     public double getBrightness() {
         return brightness;
     }
@@ -72,23 +71,21 @@ public class ColorSetting extends Setting {
         return String.format("%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
     }
 
-    
+
     public Rainbow getRainbow() {
         return rainbow;
     }
 
-    
+    public boolean isRainbow() {
+        return rainbow != null;
+    }
+
     public void setRainbow(boolean rainbow) {
         if (rainbow) {
             this.rainbow = new Rainbow();
         } else {
             this.rainbow = null;
         }
-    }
-
-    
-    public boolean isRainbow() {
-        return rainbow != null;
     }
 
     @Override
@@ -100,12 +97,12 @@ public class ColorSetting extends Setting {
         private float saturation = 1;
         private int speed = 15;
 
-        
+
         public Color getColor() {
             return getColor(0);
         }
 
-        
+
         public Color getColor(int index) {
             return ColorUtil.rainbow(speed, index, saturation, 1, 1);
         }
@@ -117,19 +114,25 @@ public class ColorSetting extends Setting {
             return jsonObject;
         }
 
-        
+
         public float getSaturation() {
             return Math.max(0, Math.min(1, saturation));
         }
 
-        
-        public void setSaturation(float saturation) { this.saturation = saturation; }
 
-        
-        public int getSpeed() { return speed; }
+        public void setSaturation(float saturation) {
+            this.saturation = saturation;
+        }
 
-        
-        public void setSpeed(int speed) { this.speed = speed; }
+
+        public int getSpeed() {
+            return speed;
+        }
+
+
+        public void setSpeed(int speed) {
+            this.speed = speed;
+        }
     }
 
 }

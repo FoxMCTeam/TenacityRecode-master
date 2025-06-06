@@ -28,21 +28,18 @@ import org.apache.commons.lang3.StringUtils;
 public final class StringMatcherFactory {
 
     /**
+     * Defines the singleton for this class.
+     */
+    public static final StringMatcherFactory INSTANCE = new StringMatcherFactory();
+    /**
      * Matches the comma character.
      */
     private static final AbstractStringMatcher.CharMatcher COMMA_MATCHER = new AbstractStringMatcher.CharMatcher(',');
-
     /**
      * Matches the double quote character.
      */
     private static final AbstractStringMatcher.CharMatcher DOUBLE_QUOTE_MATCHER = new AbstractStringMatcher.CharMatcher(
-        '"');
-
-    /**
-     * Defines the singleton for this class.
-     */
-    public static final StringMatcherFactory INSTANCE = new StringMatcherFactory();
-
+            '"');
     /**
      * Matches no characters.
      */
@@ -52,13 +49,13 @@ public final class StringMatcherFactory {
      * Matches the single or double quote character.
      */
     private static final AbstractStringMatcher.CharSetMatcher QUOTE_MATCHER = new AbstractStringMatcher.CharSetMatcher(
-        "'\"".toCharArray());
+            "'\"".toCharArray());
 
     /**
      * Matches the double quote character.
      */
     private static final AbstractStringMatcher.CharMatcher SINGLE_QUOTE_MATCHER = new AbstractStringMatcher.CharMatcher(
-        '\'');
+            '\'');
 
     /**
      * Matches the space character.
@@ -69,7 +66,7 @@ public final class StringMatcherFactory {
      * Matches the same characters as StringTokenizer, namely space, tab, newline, form feed.
      */
     private static final AbstractStringMatcher.CharSetMatcher SPLIT_MATCHER = new AbstractStringMatcher.CharSetMatcher(
-        " \t\n\r\f".toCharArray());
+            " \t\n\r\f".toCharArray());
 
     /**
      * Matches the tab character.
@@ -223,7 +220,7 @@ public final class StringMatcherFactory {
     public StringMatcher stringMatcher(final char... chars) {
         final int length = ArrayUtils.getLength(chars);
         return length == 0 ? NONE_MATCHER
-            : length == 1 ? new AbstractStringMatcher.CharMatcher(chars[0])
+                : length == 1 ? new AbstractStringMatcher.CharMatcher(chars[0])
                 : new AbstractStringMatcher.CharArrayMatcher(chars);
     }
 

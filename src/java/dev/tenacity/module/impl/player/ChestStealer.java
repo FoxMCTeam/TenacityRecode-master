@@ -1,10 +1,10 @@
 package dev.tenacity.module.impl.player;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.Client;
 import com.cubk.event.impl.game.WorldEvent;
 import com.cubk.event.impl.player.MotionEvent;
 import com.cubk.event.impl.render.Render2DEvent;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.display.HUDMod;
@@ -33,20 +33,19 @@ import java.util.List;
 
 public class ChestStealer extends Module {
 
-    private final NumberSetting delay = new NumberSetting("Delay", 80, 300, 0, 10);
-    private final BooleanSetting aura = new BooleanSetting("Aura", false);
-    private final NumberSetting auraRange = new NumberSetting("Aura Range", 3, 6, 1, 1);
+    public static final BooleanSetting silent = new BooleanSetting("Silent", false);
     public static BooleanSetting stealingIndicator = new BooleanSetting("Stealing Indicator", false);
     public static BooleanSetting titleCheck = new BooleanSetting("Title Check", true);
     public static BooleanSetting freeLook = new BooleanSetting("Free Look", true);
+    public static boolean stealing;
+    private final NumberSetting delay = new NumberSetting("Delay", 80, 300, 0, 10);
+    private final BooleanSetting aura = new BooleanSetting("Aura", false);
+    private final NumberSetting auraRange = new NumberSetting("Aura Range", 3, 6, 1, 1);
     private final BooleanSetting reverse = new BooleanSetting("Reverse", false);
-    public static final BooleanSetting silent = new BooleanSetting("Silent", false);
     private final BooleanSetting smart = new BooleanSetting("Smart", false);
-
     private final List<BlockPos> openedChests = new ArrayList<>();
     private final List<Item> items = new ArrayList<>();
     private final TimerUtil timer = new TimerUtil();
-    public static boolean stealing;
     private InvManager invManager;
     private boolean clear;
 
@@ -55,6 +54,15 @@ public class ChestStealer extends Module {
         auraRange.addParent(aura, ParentAttribute.BOOLEAN_CONDITION);
         stealingIndicator.addParent(silent, ParentAttribute.BOOLEAN_CONDITION);
         this.addSettings(delay, aura, auraRange, stealingIndicator, titleCheck, freeLook, reverse, silent, smart);
+    }
+
+    public static boolean canSteal() {
+        if (Client.INSTANCE.isEnabled(ChestStealer.class) && mc.currentScreen instanceof GuiChest) {
+            ContainerChest chest = (ContainerChest) mc.thePlayer.openContainer;
+            IInventory chestInv = chest.getLowerChestInventory();
+            return !titleCheck.isEnabled() || (chestInv instanceof ContainerLocalMenu && ((ContainerLocalMenu) chestInv).realChest);
+        }
+        return false;
     }
 
     @EventTarget
@@ -81,8 +89,7 @@ public class ChestStealer extends Module {
                     }
                 }
             }
-            if (mc.thePlayer.openContainer instanceof ContainerChest) {
-                ContainerChest chest = (ContainerChest) mc.thePlayer.openContainer;
+            if (mc.thePlayer.openContainer instanceof ContainerChest chest) {
                 IInventory chestInv = chest.getLowerChestInventory();
                 if (titleCheck.isEnabled() && (!(chestInv instanceof ContainerLocalMenu) || !((ContainerLocalMenu) chestInv).realChest))
                     return;
@@ -146,15 +153,6 @@ public class ChestStealer extends Module {
             }
         }
         return true;
-    }
-
-    public static boolean canSteal() {
-        if (Client.INSTANCE.isEnabled(ChestStealer.class) && mc.currentScreen instanceof GuiChest) {
-            ContainerChest chest = (ContainerChest) mc.thePlayer.openContainer;
-            IInventory chestInv = chest.getLowerChestInventory();
-            return !titleCheck.isEnabled() || (chestInv instanceof ContainerLocalMenu && ((ContainerLocalMenu) chestInv).realChest);
-        }
-        return false;
     }
 
     @EventTarget

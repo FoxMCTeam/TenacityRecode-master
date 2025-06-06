@@ -23,10 +23,12 @@ import java.util.List;
 
 public class LoginPanel extends Panel {
 
-    private final List<ActionButton> actionButtons = new ArrayList<>();
+    public static boolean cracked = false;
     public final List<TextField> textFields = new ArrayList<>();
-
+    private final List<ActionButton> actionButtons = new ArrayList<>();
+    private final Animation hoverMicrosoftAnim = new DecelerateAnimation(250, 1);
     RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange('a', 'z').build();
+    private boolean hoveringMicrosoft = false;
 
 
     public LoginPanel() {
@@ -38,14 +40,10 @@ public class LoginPanel extends Panel {
         textFields.add(new TextField(duckSansFont20));
     }
 
-
     @Override
     public void initGui() {
 
     }
-
-    public static boolean cracked = false;
-
 
     @Override
     public void keyTyped(char typedChar, int keyCode) {
@@ -65,9 +63,6 @@ public class LoginPanel extends Panel {
         }
 
     }
-
-    private boolean hoveringMicrosoft = false;
-    private final Animation hoverMicrosoftAnim = new DecelerateAnimation(250, 1);
 
     @Override
     public void drawScreen(int mouseX, int mouseY) {

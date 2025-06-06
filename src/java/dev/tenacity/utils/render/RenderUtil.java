@@ -20,6 +20,9 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class RenderUtil implements Utils {
 
+    public static double ticks = 0;
+    public static long lastFrame = 0;
+
     public static Framebuffer createFrameBuffer(Framebuffer framebuffer) {
         return createFrameBuffer(framebuffer, false);
     }
@@ -69,7 +72,7 @@ public class RenderUtil implements Utils {
     }
 
     public static void drawMicrosoftLogo(float x, float y, float size, float spacing, float alpha) {
-        float rectSize = size /2f - spacing;
+        float rectSize = size / 2f - spacing;
         int alphaVal = (int) (255 * alpha);
         Gui.drawRect2(x, y, rectSize, rectSize, new Color(244, 83, 38, alphaVal).getRGB());
         Gui.drawRect2(x + rectSize + spacing, y, rectSize, rectSize, new Color(130, 188, 6, alphaVal).getRGB());
@@ -81,14 +84,12 @@ public class RenderUtil implements Utils {
         drawMicrosoftLogo(x, y, size, spacing, 1f);
     }
 
-
     public static void drawImage(ResourceLocation resourceLocation, float x, float y, float imgWidth, float imgHeight) {
         GLUtil.startBlend();
         mc.getTextureManager().bindTexture(resourceLocation);
-        Gui.drawModalRectWithCustomSizedTexture(x,y,0,0, imgWidth, imgHeight, imgWidth, imgHeight);
+        Gui.drawModalRectWithCustomSizedTexture(x, y, 0, 0, imgWidth, imgHeight, imgWidth, imgHeight);
         GLUtil.endBlend();
     }
-
 
     public static void fixBlendIssues() {
         GlStateManager.color(1, 1, 1, 1);
@@ -115,10 +116,6 @@ public class RenderUtil implements Utils {
         glDisable(GL_LINE_SMOOTH);
         GLUtil.end2DRendering();
     }
-
-
-    public static double ticks = 0;
-    public static long lastFrame = 0;
 
     public static void drawCircle(Entity entity, float partialTicks, double rad, int color, float alpha) {
         /*Got this from the people i made the Gui for*/

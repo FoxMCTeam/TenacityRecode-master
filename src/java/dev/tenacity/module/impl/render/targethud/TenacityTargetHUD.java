@@ -13,11 +13,11 @@ import java.awt.*;
 
 public class TenacityTargetHUD extends TargetHUD {
 
+    private final ContinualAnimation animatedHealthBar = new ContinualAnimation();
+
     public TenacityTargetHUD() {
         super("Tenacity");
     }
-
-    private final ContinualAnimation animatedHealthBar = new ContinualAnimation();
 
     @Override
     public void render(float x, float y, float alpha, EntityLivingBase target) {

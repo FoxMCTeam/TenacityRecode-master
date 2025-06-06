@@ -1,11 +1,11 @@
 package dev.tenacity.module.impl.render;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.Client;
 import com.cubk.event.impl.render.Render2DEvent;
 import com.cubk.event.impl.render.Render3DEvent;
 import com.cubk.event.impl.render.RenderModelEvent;
 import com.cubk.event.impl.render.ShaderEvent;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.display.PostProcessing;
@@ -39,8 +39,7 @@ public class EntityEffects extends Module {
     private final BooleanSetting blur = new BooleanSetting("Blur", true);
     private final BooleanSetting bloom = new BooleanSetting("Bloom", true);
     private final BooleanSetting blackBloom = new BooleanSetting("Black Bloom", true);
-
-
+    private final List<Entity> entities = new ArrayList<>();
     private Framebuffer entityFramebuffer = new Framebuffer(1, 1, false);
 
     public EntityEffects() {
@@ -58,8 +57,6 @@ public class EntityEffects extends Module {
             toggleSilent();
         }
     }
-
-    private final List<Entity> entities = new ArrayList<>();
 
     @EventTarget
     public void onRender3DEvent(Render3DEvent event) {

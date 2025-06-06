@@ -1,6 +1,5 @@
 package dev.tenacity.ui.altmanager.panels;
 
-import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.Client;
 import dev.tenacity.ui.Screen;
 import dev.tenacity.ui.altmanager.Panel;
@@ -21,6 +20,7 @@ import dev.tenacity.utils.objects.TextField;
 import dev.tenacity.utils.render.*;
 import dev.tenacity.utils.server.ban.HypixelBan;
 import dev.tenacity.utils.time.TimerUtil;
+import dev.tenacity.utils.tuples.Pair;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.Gui;
@@ -36,25 +36,39 @@ import java.util.Comparator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class AltPanel extends Panel {
-    private final CopyOnWriteArrayList<AltRect> altRects = new CopyOnWriteArrayList<>(), visibleAltRects = new CopyOnWriteArrayList<>();
-    private final Scroll scroll = new Scroll();
+    private static final TimerUtil doubleClickTimer = new TimerUtil();
+    public static AltRect loadingAltRect;
+    public static boolean refreshing = false;
     private static boolean canDrag = false;
-    private boolean altsSelected = false;
     private static boolean select = false;
     private static AltRect shiftClickStart;
     private static AltRect firstClickAlt;
-    public static AltRect loadingAltRect;
     private static Pair<AltRect, AltRect> shiftClickRange;
-    private static final TimerUtil doubleClickTimer = new TimerUtil();
+    private static AltRect hoveringAlt;
+    private final CopyOnWriteArrayList<AltRect> altRects = new CopyOnWriteArrayList<>(), visibleAltRects = new CopyOnWriteArrayList<>();
+    private final Scroll scroll = new Scroll();
+    private boolean altsSelected = false;
     private boolean hoveringScrollBar = false;
     private boolean draggingScrollBar = false;
-    public static boolean refreshing = false;
+    private boolean needsScrollBar = false;
+
+    private static void dragSelection(AltRect altRect, boolean hovering) {
+        boolean dragging = Mouse.isButtonDown(0) && canDrag;
+
+        if (!Mouse.isButtonDown(0)) {
+            canDrag = false;
+        }
+
+        if (dragging && hoveringAlt != altRect && hovering) {
+            altRect.selected = !altRect.selected;
+            hoveringAlt = altRect;
+        }
+    }
 
     @Override
     public void initGui() {
         refreshAlts();
     }
-
 
     @Override
     public void keyTyped(char typedChar, int keyCode) {
@@ -106,15 +120,12 @@ public class AltPanel extends Panel {
             AltManagerUtils.writeAlts();
             refreshAlts();
             NotificationManager.post(NotificationType.SUCCESS, "Success", "Removed " + count + " alts");
-            return;
 
 
         }
 
 
     }
-
-    private boolean needsScrollBar = false;
 
     @Override
     public void drawScreen(int mouseX, int mouseY) {
@@ -260,19 +271,33 @@ public class AltPanel extends Panel {
         refreshing = false;
     }
 
+    private void performShiftClick() {
+        if (shiftClickRange != null) {
+            AltRect start = shiftClickRange.getFirst();
+            AltRect end = shiftClickRange.getSecond();
+            int startIndex = visibleAltRects.indexOf(start);
+            int endIndex = visibleAltRects.indexOf(end);
+
+            for (int i = Math.min(startIndex, endIndex); i <= Math.max(startIndex, endIndex); i++) {
+                if (i != -1) {
+                    visibleAltRects.get(i).setSelected(select);
+                }
+            }
+
+            shiftClickRange = null;
+        }
+    }
 
     @Getter
     @Setter
     public static class AltRect implements Screen {
+        private final DoubleIconButton favoriteButton = new DoubleIconButton(FontUtil.STAR_OUTLINE, FontUtil.STAR);
+        private final Animation hoverAnimation = new DecelerateAnimation(250, 1);
+        private final Animation selectAnimation = new DecelerateAnimation(100, 1);
         private float x, y, width, height;
         private Color backgroundColor = ColorUtil.tripleColor(37);
         private boolean selected, currentAccount, hovering, clickable = true, removeShit;
         private Alt alt;
-
-        private final DoubleIconButton favoriteButton = new DoubleIconButton(FontUtil.STAR_OUTLINE, FontUtil.STAR);
-        private final Animation hoverAnimation = new DecelerateAnimation(250, 1);
-        private final Animation selectAnimation = new DecelerateAnimation(100, 1);
-
         private boolean hoveringCreds = false, showCreds = false;
         private Animation credsAnimation = new DecelerateAnimation(200, 1);
 
@@ -502,39 +527,6 @@ public class AltPanel extends Panel {
                     duckSansFont14.drawString("§lBanned §ron Hypixel permanently", x, y, ColorUtil.applyOpacity(-1, alpha * .5f));
                 }
             }
-        }
-    }
-
-
-    private static AltRect hoveringAlt;
-
-    private static void dragSelection(AltRect altRect, boolean hovering) {
-        boolean dragging = Mouse.isButtonDown(0) && canDrag;
-
-        if (!Mouse.isButtonDown(0)) {
-            canDrag = false;
-        }
-
-        if (dragging && hoveringAlt != altRect && hovering) {
-            altRect.selected = !altRect.selected;
-            hoveringAlt = altRect;
-        }
-    }
-
-    private void performShiftClick() {
-        if (shiftClickRange != null) {
-            AltRect start = shiftClickRange.getFirst();
-            AltRect end = shiftClickRange.getSecond();
-            int startIndex = visibleAltRects.indexOf(start);
-            int endIndex = visibleAltRects.indexOf(end);
-
-            for (int i = Math.min(startIndex, endIndex); i <= Math.max(startIndex, endIndex); i++) {
-                if (i != -1) {
-                    visibleAltRects.get(i).setSelected(select);
-                }
-            }
-
-            shiftClickRange = null;
         }
     }
 

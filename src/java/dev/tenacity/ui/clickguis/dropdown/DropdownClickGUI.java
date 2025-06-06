@@ -1,10 +1,9 @@
 package dev.tenacity.ui.clickguis.dropdown;
 
-import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
-import dev.tenacity.module.impl.movement.InventoryMove;
 import dev.tenacity.module.impl.display.ClickGUIMod;
+import dev.tenacity.module.impl.movement.InventoryMove;
 import dev.tenacity.ui.searchbar.SearchBar;
 import dev.tenacity.ui.sidegui.SideGUI;
 import dev.tenacity.utils.animations.Animation;
@@ -12,6 +11,7 @@ import dev.tenacity.utils.animations.Direction;
 import dev.tenacity.utils.animations.impl.EaseBackIn;
 import dev.tenacity.utils.render.RenderUtil;
 import dev.tenacity.utils.render.Theme;
+import dev.tenacity.utils.tuples.Pair;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import org.lwjglx.input.Keyboard;
@@ -21,17 +21,12 @@ import java.util.List;
 
 public class DropdownClickGUI extends GuiScreen {
 
+    public static boolean gradient;
     private final Pair<Animation, Animation> openingAnimations = Pair.of(
             new EaseBackIn(400, 1, 2f),
             new EaseBackIn(400, .4f, 2f));
-
-
-    private List<CategoryPanel> categoryPanels;
-
     public boolean binding;
-
-
-    public static boolean gradient;
+    private List<CategoryPanel> categoryPanels;
 
     @Override
     public void onDrag(int mouseX, int mouseY) {
@@ -101,7 +96,7 @@ public class DropdownClickGUI extends GuiScreen {
                 (Client.INSTANCE.getSideGui().isFocused() && Client.INSTANCE.getSideGui().typing) || Client.INSTANCE.getSearchBar().isTyping();
 
 
-     //  Gui.drawRect2(0,0, width, height, ColorUtil.applyOpacity(0, Tenacity.INSTANCE.getSearchBar().getFocusAnimation().getOutput().floatValue() * .25f));
+        //  Gui.drawRect2(0,0, width, height, ColorUtil.applyOpacity(0, Tenacity.INSTANCE.getSearchBar().getFocusAnimation().getOutput().floatValue() * .25f));
         if (ClickGUIMod.walk.isEnabled() && !binding) {
             InventoryMove.updateStates();
         }

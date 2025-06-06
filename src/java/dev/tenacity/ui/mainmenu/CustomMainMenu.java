@@ -1,17 +1,12 @@
 package dev.tenacity.ui.mainmenu;
 
 import dev.tenacity.Client;
-import dev.tenacity.ui.Screen;
-import dev.tenacity.utils.animations.Animation;
-import dev.tenacity.utils.animations.Direction;
-import dev.tenacity.utils.animations.impl.DecelerateAnimation;
-import dev.tenacity.utils.misc.*;
+import dev.tenacity.utils.misc.NetworkingUtils;
 import dev.tenacity.utils.render.GLUtil;
 import dev.tenacity.utils.render.RenderUtil;
 import dev.tenacity.utils.render.RoundedUtil;
 import dev.tenacity.utils.render.StencilUtil;
 import dev.tenacity.utils.render.blur.GaussianBlur;
-import lombok.Getter;
 import net.minecraft.client.gui.*;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -23,7 +18,7 @@ import java.util.List;
 public class CustomMainMenu extends GuiScreen {
 
     public static boolean animatedOpen = false;
-
+    private static boolean firstInit = false;
     private final List<MenuButton> buttons = new ArrayList<>() {{
         add(new MenuButton("Singleplayer"));
         add(new MenuButton("Multiplayer"));
@@ -31,10 +26,7 @@ public class CustomMainMenu extends GuiScreen {
         add(new MenuButton("Settings"));
         add(new MenuButton("Exit"));
     }};
-
     private final ResourceLocation blurredRect = new ResourceLocation("Tenacity/MainMenu/rect-test.png");
-
-    private static boolean firstInit = false;
 
     @Override
     public void initGui() {

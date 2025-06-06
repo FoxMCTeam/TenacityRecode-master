@@ -25,17 +25,6 @@ public class Streamer extends Module {
         this.addSettings(hideIP, hideServerId, hideUsername, customName);
     }
 
-    @EventTarget
-    public void onChatReceivedEvent(ChatReceivedEvent e) {
-        if (ServerUtils.isOnHypixel() && hideServerId.isEnabled()) {
-            String message = StringUtils.stripControlCodes(e.message.getUnformattedText());
-            if (message.startsWith("Sending you to")) {
-                String serverID = message.replace("Sending you to ", "").replace("!", "");
-                e.message = new ChatComponentText("§aSending you to §k" + serverID + "§r§a!");
-            }
-        }
-    }
-
     public static String filter(String text) {
         if (enabled) {
             if (hideUsername.isEnabled() && mc.getSession() != null) {
@@ -66,6 +55,17 @@ public class Streamer extends Module {
             }
         }
         return text;
+    }
+
+    @EventTarget
+    public void onChatReceivedEvent(ChatReceivedEvent e) {
+        if (ServerUtils.isOnHypixel() && hideServerId.isEnabled()) {
+            String message = StringUtils.stripControlCodes(e.message.getUnformattedText());
+            if (message.startsWith("Sending you to")) {
+                String serverID = message.replace("Sending you to ", "").replace("!", "");
+                e.message = new ChatComponentText("§aSending you to §k" + serverID + "§r§a!");
+            }
+        }
     }
 
     @Override

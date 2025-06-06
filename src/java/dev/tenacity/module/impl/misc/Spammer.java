@@ -20,6 +20,11 @@ public final class Spammer extends Module {
             new BooleanSetting("Bypass", false));
     private final TimerUtil delayTimer = new TimerUtil();
 
+    public Spammer() {
+        super("Spammer", Category.MISC, "Spams in chat");
+        this.addSettings(text, delay, settings);
+    }
+
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
         String spammerText = text.getString();
@@ -33,11 +38,6 @@ public final class Spammer extends Module {
             mc.thePlayer.sendChatMessage(spammerText);
             delayTimer.reset();
         }
-    }
-
-    public Spammer() {
-        super("Spammer", Category.MISC, "Spams in chat");
-        this.addSettings(text, delay, settings);
     }
 
 }

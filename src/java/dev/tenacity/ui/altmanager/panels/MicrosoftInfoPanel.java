@@ -1,8 +1,8 @@
 package dev.tenacity.ui.altmanager.panels;
 
-import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.ui.altmanager.Panel;
 import dev.tenacity.utils.render.ColorUtil;
+import dev.tenacity.utils.tuples.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,12 +44,12 @@ public class MicrosoftInfoPanel extends Panel {
         for (Pair<String, String> control : steps) {
             if (control.getFirst().equals("INFO")) {
                 duckSansFont16.drawCenteredString("Make sure that you are logged out of all microsoft accounts so that you are",
-                        getX() + getWidth() /2f, controlY, ColorUtil.applyOpacity(-1, .75f));
+                        getX() + getWidth() / 2f, controlY, ColorUtil.applyOpacity(-1, .75f));
 
                 controlY += duckSansBoldFont16.getHeight() + 4;
 
                 duckSansFont16.drawCenteredString("prompted with a new login panel",
-                        getX() + getWidth() /2f, controlY, ColorUtil.applyOpacity(-1, .75f));
+                        getX() + getWidth() / 2f, controlY, ColorUtil.applyOpacity(-1, .75f));
 
                 controlY += duckSansBoldFont16.getHeight() + 6;
                 continue;

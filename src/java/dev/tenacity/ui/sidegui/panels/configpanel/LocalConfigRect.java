@@ -28,17 +28,13 @@ import java.util.List;
 @Setter
 @Getter
 public class LocalConfigRect implements Screen {
+    private final List<IconButton> buttons = new ArrayList<>();
+    private final LocalConfig config;
     private float x, y, width, height, alpha;
     private Color accentColor;
     private boolean clickable = true;
-
     @Getter
     private BasicFileAttributes bfa = null;
-
-
-    private final List<IconButton> buttons = new ArrayList<>();
-
-    private final LocalConfig config;
 
     public LocalConfigRect(LocalConfig config) {
         this.config = config;

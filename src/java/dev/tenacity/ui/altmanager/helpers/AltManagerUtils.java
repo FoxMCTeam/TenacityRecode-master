@@ -3,10 +3,10 @@ package dev.tenacity.ui.altmanager.helpers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.tenacity.Client;
-import dev.tenacity.utils.client.addons.microsoft.MicrosoftLogin;
 import dev.tenacity.ui.notifications.NotificationManager;
 import dev.tenacity.ui.notifications.NotificationType;
 import dev.tenacity.utils.Utils;
+import dev.tenacity.utils.client.addons.microsoft.MicrosoftLogin;
 import dev.tenacity.utils.misc.Multithreading;
 import dev.tenacity.utils.objects.FileUtils;
 import dev.tenacity.utils.objects.TextField;
@@ -29,10 +29,10 @@ import java.util.concurrent.CompletableFuture;
 
 public class AltManagerUtils implements Utils {
 
+    public static File altsFile = new File(Client.DIRECTORY, "Alts.json");
     @Getter
     private static List<Alt> alts = new ArrayList<>();
     private final TimerUtil timerUtil = new TimerUtil();
-    public static File altsFile = new File(Client.DIRECTORY, "Alts.json");
 
     public AltManagerUtils() {
         if (!altsFile.exists()) {
@@ -46,23 +46,6 @@ public class AltManagerUtils implements Utils {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    public void writeAltsToFile() {
-        if (timerUtil.hasTimeElapsed(15000, true)) {
-            new Thread(() -> {
-                try {
-                    if (!altsFile.exists()) {
-                        if (altsFile.getParentFile().mkdirs()) {
-                            altsFile.createNewFile();
-                        }
-                    }
-                    Files.write(altsFile.toPath(), new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create().toJson(alts.toArray(new Alt[0])).getBytes(StandardCharsets.UTF_8));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }).start();
         }
     }
 
@@ -84,6 +67,22 @@ public class AltManagerUtils implements Utils {
         });
     }
 
+    public void writeAltsToFile() {
+        if (timerUtil.hasTimeElapsed(15000, true)) {
+            new Thread(() -> {
+                try {
+                    if (!altsFile.exists()) {
+                        if (altsFile.getParentFile().mkdirs()) {
+                            altsFile.createNewFile();
+                        }
+                    }
+                    Files.write(altsFile.toPath(), new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create().toJson(alts.toArray(new Alt[0])).getBytes(StandardCharsets.UTF_8));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
+    }
 
     public void login(TextField username, TextField password) {
         String usernameS;

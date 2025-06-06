@@ -1,7 +1,7 @@
 package dev.tenacity.utils.player;
 
-import com.google.common.base.Predicates;
 import com.cubk.event.impl.player.MotionEvent;
+import com.google.common.base.Predicates;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.misc.MathUtils;
 import net.minecraft.client.Minecraft;
@@ -18,7 +18,7 @@ public class RotationUtils implements Utils {
     /*
      * Sets the player's head rotations to the given yaw and pitch (visual-only).
      */
-    
+
     public static void setVisualRotations(float yaw, float pitch) {
         mc.thePlayer.rotationYawHead = mc.thePlayer.renderYawOffset = yaw;
         mc.thePlayer.rotationPitchHead = pitch;

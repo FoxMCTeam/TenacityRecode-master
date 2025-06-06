@@ -16,6 +16,10 @@ public abstract class Setting {
     public String name;
     private List<ParentAttribute<? extends Setting>> parents = new ArrayList<>();
 
+    public static <T extends Setting> void addParent(T parent, Predicate<T> condition, Setting... settings) {
+        Arrays.asList(settings).forEach(s -> s.addParent(new ParentAttribute<>(parent, condition)));
+    }
+
     public boolean hasParent() {
         return !parents.isEmpty();
     }
@@ -32,13 +36,8 @@ public abstract class Setting {
         parents.add(parent);
     }
 
-
     public <T extends Setting> void addParent(T parent, Predicate<T> condition) {
         addParent(new ParentAttribute<>(parent, condition));
-    }
-
-    public static <T extends Setting> void addParent(T parent, Predicate<T> condition, Setting... settings) {
-        Arrays.asList(settings).forEach(s -> s.addParent(new ParentAttribute<>(parent, condition)));
     }
 
     public boolean cannotBeShown() {
@@ -46,18 +45,17 @@ public abstract class Setting {
         return getParents().stream().noneMatch(ParentAttribute::isValid);
     }
 
-    
-    public String getName(){
+
+    public String getName() {
         return name;
     }
 
 
-    
     public <T extends Setting> void addJSParent(T parent, JSObject scriptFunction) {
         Predicate<T> predicate;
         try {
             predicate = object -> (boolean) scriptFunction.call(null, object);
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException("Failed to create predicate for parent");
         }
 

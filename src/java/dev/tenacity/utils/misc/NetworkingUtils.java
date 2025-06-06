@@ -20,7 +20,7 @@ public class NetworkingUtils implements Utils {
 
     private static final String USER_AGENT = "KingClient";
     public static boolean bypassed;
-
+    public static int image = 0;
 
     public static HttpResponse httpsConnection(String url) {
         bypassSSL();
@@ -47,8 +47,6 @@ public class NetworkingUtils implements Utils {
         return null;
     }
 
-
-    public static int image = 0;
     public static ResourceLocation downloadImage(String url) {
         final ThreadDownloadImageData avatarImage = new ThreadDownloadImageData(null, url, null,
                 new IImageBuffer() {

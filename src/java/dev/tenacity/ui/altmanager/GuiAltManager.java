@@ -26,12 +26,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GuiAltManager extends GuiScreen {
-    private final AltManagerUtils utils = new AltManagerUtils();
-    public Alt currentSessionAlt;
-    private List<Panel> panels;
     public final TextField searchField = new TextField(duckSansFont20);
     public final ToggleButton filterBanned = new ToggleButton("Filter banned accounts");
+    private final AltManagerUtils utils = new AltManagerUtils();
     private final AltPanel.AltRect altRect = new AltPanel.AltRect(null);
+    public Alt currentSessionAlt;
+    private List<Panel> panels;
 
     public GuiAltManager() {
         if (panels == null) {

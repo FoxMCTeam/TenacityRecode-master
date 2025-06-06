@@ -17,7 +17,7 @@ public class AutoTool extends Module {
     private final BooleanSetting autoSword = new BooleanSetting("AutoSword", true);
 
     public AutoTool() {
-        super("AutoTool", Category.PLAYER,"switches to the best tool");
+        super("AutoTool", Category.PLAYER, "switches to the best tool");
         this.addSettings(autoSword);
     }
 

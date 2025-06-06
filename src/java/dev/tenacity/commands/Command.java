@@ -5,10 +5,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.EnumChatFormatting;
 
 public abstract class Command {
+    public static boolean sendSuccess = true;
     protected final Minecraft mc = Minecraft.getMinecraft();
     private final String name, description, usage;
     private final String[] otherPrefixes;
-    public static boolean sendSuccess = true;
 
     public Command(String name, String description, String usage, String... otherPrefixes) {
         this.name = name;

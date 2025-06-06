@@ -15,9 +15,9 @@ import java.awt.*;
 public class CategoryButton extends Component {
     public final Category category;
     public Category currentCategory;
+    public Animation expandAnimation;
     private Animation hoverAnimation;
     private Animation enableAnimation;
-    public Animation expandAnimation;
 
     public CategoryButton(Category category) {
         this.category = category;
@@ -44,8 +44,8 @@ public class CategoryButton extends Component {
         hoverAnimation.setDuration(hovering ? 200 : 350);
         enableAnimation.setDirection(currentCategory == category ? Direction.FORWARDS : Direction.BACKWARDS);
 
-        int color = ColorUtil.interpolateColor(new Color(68, 71, 78), new Color(115, 115, 115), (float) hoverAnimation.getOutput().floatValue());
-        color = ColorUtil.interpolateColor(new Color(color), new Color(-1), (float) enableAnimation.getOutput().floatValue());
+        int color = ColorUtil.interpolateColor(new Color(68, 71, 78), new Color(115, 115, 115), hoverAnimation.getOutput().floatValue());
+        color = ColorUtil.interpolateColor(new Color(color), new Color(-1), enableAnimation.getOutput().floatValue());
 
 
         float adjustment = 0;

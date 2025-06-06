@@ -10,6 +10,10 @@ import net.minecraft.network.play.client.C03PacketPlayer;
 
 public final class Freecam extends Module {
 
+    public Freecam() {
+        super("Freecam", Category.PLAYER, "allows you to look around freely");
+    }
+
     @EventTarget
     public void onBoundingBoxEvent(BoundingBoxEvent event) {
         if (mc.thePlayer != null) {
@@ -46,10 +50,6 @@ public final class Freecam extends Module {
             mc.thePlayer.capabilities.isFlying = false;
         }
         super.onDisable();
-    }
-
-    public Freecam() {
-        super("Freecam", Category.PLAYER, "allows you to look around freely");
     }
 
 }

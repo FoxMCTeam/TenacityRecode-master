@@ -18,15 +18,11 @@ import static org.lwjgl.opengl.GL11.GL_ONE;
 
 public class KawaseBloom implements Utils {
 
+    private static final List<Framebuffer> framebufferList = new ArrayList<>();
     public static ShaderUtil kawaseDown = new ShaderUtil("kawaseDownBloom");
     public static ShaderUtil kawaseUp = new ShaderUtil("kawaseUpBloom");
-
     public static Framebuffer framebuffer = new Framebuffer(1, 1, true);
-
-
     private static int currentIterations;
-
-    private static final List<Framebuffer> framebufferList = new ArrayList<>();
 
     private static void initFramebuffers(float iterations) {
         for (Framebuffer framebuffer : framebufferList) {

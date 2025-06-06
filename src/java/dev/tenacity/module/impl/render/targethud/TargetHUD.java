@@ -12,31 +12,15 @@ import java.util.HashMap;
 
 public abstract class TargetHUD implements Utils {
 
-    protected GradientColorWheel colorWheel;
-    private float width, height;
+    private static final HashMap<Class<? extends TargetHUD>, TargetHUD> targetHuds = new HashMap<>();
     @Getter
     private final String name;
+    protected GradientColorWheel colorWheel;
+    private float width, height;
 
     public TargetHUD(String name) {
         this.name = name;
     }
-
-    public void setColorWheel(GradientColorWheel colorWheel) {
-        this.colorWheel = colorWheel;
-    }
-
-    protected void renderPlayer2D(float x, float y, float width, float height, AbstractClientPlayer player) {
-        GLUtil.startBlend();
-        mc.getTextureManager().bindTexture(player.getLocationSkin());
-        Gui.drawScaledCustomSizeModalRect(x, y, (float) 8.0, (float) 8.0, 8, 8, width, height, 64.0F, 64.0F);
-        GLUtil.endBlend();
-    }
-
-    public abstract void render(float x, float y, float alpha, EntityLivingBase target);
-
-    public abstract void renderEffects(float x, float y, float alpha, boolean glow);
-
-    private static final HashMap<Class<? extends TargetHUD>, TargetHUD> targetHuds = new HashMap<>();
 
     public static TargetHUD get(String name) {
         return targetHuds.values().stream().filter(hud -> hud.getName().equals(name)).findFirst().orElse(null);
@@ -57,19 +41,34 @@ public abstract class TargetHUD implements Utils {
         targetHuds.put(NovolineTargetHUD.class, new NovolineTargetHUD());
     }
 
-    public void setWidth(float width) {
-        this.width = width;
+    public void setColorWheel(GradientColorWheel colorWheel) {
+        this.colorWheel = colorWheel;
     }
 
-    public void setHeight(float height) {
-        this.height = height;
+    protected void renderPlayer2D(float x, float y, float width, float height, AbstractClientPlayer player) {
+        GLUtil.startBlend();
+        mc.getTextureManager().bindTexture(player.getLocationSkin());
+        Gui.drawScaledCustomSizeModalRect(x, y, (float) 8.0, (float) 8.0, 8, 8, width, height, 64.0F, 64.0F);
+        GLUtil.endBlend();
     }
+
+    public abstract void render(float x, float y, float alpha, EntityLivingBase target);
+
+    public abstract void renderEffects(float x, float y, float alpha, boolean glow);
 
     public float getWidth() {
         return width;
     }
 
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
     public float getHeight() {
         return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
     }
 }

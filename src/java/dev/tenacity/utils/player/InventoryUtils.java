@@ -53,8 +53,7 @@ public class InventoryUtils implements Utils {
     }
 
     public static float getSwordStrength(ItemStack stack) {
-        if (stack.getItem() instanceof ItemSword) {
-            ItemSword sword = (ItemSword) stack.getItem();
+        if (stack.getItem() instanceof ItemSword sword) {
             float sharpness = EnchantmentHelper.getEnchantmentLevel(Enchantment.sharpness.effectId, stack) * 1.25F;
             float fireAspect = EnchantmentHelper.getEnchantmentLevel(Enchantment.fireAspect.effectId, stack) * 1.5F;
             return sword.getDamageVsEntity() + sharpness + fireAspect;

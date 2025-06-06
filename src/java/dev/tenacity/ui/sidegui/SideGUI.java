@@ -1,6 +1,5 @@
 package dev.tenacity.ui.sidegui;
 
-import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.Client;
 import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.ui.Screen;
@@ -22,6 +21,7 @@ import dev.tenacity.utils.objects.Drag;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.RoundedUtil;
 import dev.tenacity.utils.time.TimerUtil;
+import dev.tenacity.utils.tuples.Pair;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.ScaledResolution;
@@ -35,24 +35,29 @@ import java.util.List;
 @Getter
 public class SideGUI implements Screen {
 
-    @Setter
-    private boolean focused;
-    private float rectWidth, rectHeight;
+    private static Form currentForm;
     private final Animation openAnimation = new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
     private final Animation hoverAnimation = new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
     private final Animation clickAnimation = new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
-    private SideGUIHotbar hotbar = new SideGUIHotbar();
-    private HashMap<String, Panel> panels;
-    private HashMap<String, Form> forms;
-    private static Form currentForm;
     private final List<TooltipObject> tooltips = new ArrayList<>();
-    public boolean typing = false;
     private final Color greenEnabledColor = new Color(70, 220, 130);
     private final Color redBadColor = new Color(209, 56, 56);
     private final Animation formFadeAnimation = new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
-
+    public boolean typing = false;
+    @Setter
+    private boolean focused;
+    private float rectWidth, rectHeight;
+    private final SideGUIHotbar hotbar = new SideGUIHotbar();
+    private HashMap<String, Panel> panels;
+    private HashMap<String, Form> forms;
     private Drag drag;
     private TimerUtil timerUtil;
+    private float animateX = 0;
+    private boolean canSnap;
+
+    public static boolean isHovering(float x, float y, float width, float height, int mouseX, int mouseY) {
+        return currentForm == null && HoveringUtil.isHovering(x, y, width, height, mouseX, mouseY);
+    }
 
     @Override
     public void onDrag(int mouseX, int mouseY) {
@@ -88,7 +93,6 @@ public class SideGUI implements Screen {
         drag = new Drag(sr.getScaledWidth() - 40, sr.getScaledHeight() / 2f - rectHeight / 2f);
     }
 
-
     @Override
     public void keyTyped(char typedChar, int keyCode) {
         if (focused) {
@@ -110,9 +114,6 @@ public class SideGUI implements Screen {
             }
         }
     }
-
-    private float animateX = 0;
-    private boolean canSnap;
 
     @Override
     public void drawScreen(int mouseX, int mouseY) {
@@ -252,7 +253,6 @@ public class SideGUI implements Screen {
         }
     }
 
-
     public ScriptPanel getScriptPanel() {
         return (ScriptPanel) panels.get("Scripts");
     }
@@ -277,10 +277,6 @@ public class SideGUI implements Screen {
 
         formFadeAnimation.setDirection(Direction.FORWARDS);
         return currentForm;
-    }
-
-    public static boolean isHovering(float x, float y, float width, float height, int mouseX, int mouseY) {
-        return currentForm == null && HoveringUtil.isHovering(x, y, width, height, mouseX, mouseY);
     }
 
 }

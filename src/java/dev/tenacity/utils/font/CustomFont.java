@@ -2,8 +2,8 @@ package dev.tenacity.utils.font;
 
 import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.utils.render.GradientUtil;
-import dev.tenacity.utils.tuples.mutable.MutablePair;
 import dev.tenacity.utils.render.RenderUtil;
+import dev.tenacity.utils.tuples.mutable.MutablePair;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.renderer.GlStateManager;
@@ -45,16 +45,17 @@ public class CustomFont implements AbstractFontRenderer {
             CustomFont.colorCode[i] = ((r & 0xFF) << 16 | (g & 0xFF) << 8 | (b & 0xFF));
         }
     }
+
+    private final List<String> lines = new ArrayList<>();
+    private final byte[][] charWidth;
+    private final int[] textures;
+    private final Font font;
     @Setter
     @Getter
     private CustomFont boldFont;
     @Setter
     @Getter
     private CustomFont thinFont;
-    private final List<String> lines = new ArrayList<>();
-    private final byte[][] charWidth;
-    private final int[] textures;
-    private final Font font;
     private float size;
     private int fontWidth;
     private int fontHeight;
@@ -93,6 +94,16 @@ public class CustomFont implements AbstractFontRenderer {
         return font;
     }
 
+    private static ByteBuffer imageToBuffer(final BufferedImage img) {
+        final int[] arr = img.getRGB(0, 0, img.getWidth(), img.getHeight(), null, 0, img.getWidth());
+        final ByteBuffer buf = ByteBuffer.allocateDirect(4 * arr.length);
+        for (final int i : arr) {
+            buf.putInt(i << 8 | (i >> 24 & 0xFF));
+        }
+        buf.flip();
+        return buf;
+    }
+
     public void drawSmoothStringWithShadow(String text, double x2, float y2, int color) {
         this.drawString(text, (float) (x2 + 0.5f), y2 + 0.5f, color, true);
 
@@ -105,16 +116,6 @@ public class CustomFont implements AbstractFontRenderer {
 
     public void drawSmoothString(String text, double x2, float y2, int color) {
         this.drawString(text, (float) x2, y2, color, false);
-    }
-
-    private static ByteBuffer imageToBuffer(final BufferedImage img) {
-        final int[] arr = img.getRGB(0, 0, img.getWidth(), img.getHeight(), null, 0, img.getWidth());
-        final ByteBuffer buf = ByteBuffer.allocateDirect(4 * arr.length);
-        for (final int i : arr) {
-            buf.putInt(i << 8 | (i >> 24 & 0xFF));
-        }
-        buf.flip();
-        return buf;
     }
 
     public List<String> getWrappedLines(String text, float x, float width, float heightIncrement) {

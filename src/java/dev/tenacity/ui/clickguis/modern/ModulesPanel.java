@@ -27,11 +27,11 @@ public class ModulesPanel extends Panel {
     public List<ModuleRect> modules;
     public Animation expandAnim;
     public Animation expandAnim2;
+    public Category currentCategory;
     Scroll settingScroll = new Scroll();
     private HashMap<Module, SettingsPanel> settingsPanelHashMap;
     private HashMap<Category, Scroll> scrollHashMap;
     private boolean rightClicked = false;
-    public Category currentCategory;
     @Getter
     private boolean typing = false;
     private ModuleRect currentlySelected;

@@ -39,9 +39,10 @@ public class GaussianBlur implements Utils {
         glUniform1(gaussianBlur.getUniform("weights"), weightBuffer);
     }
 
-    public static void startBlur(){
+    public static void startBlur() {
         StencilUtil.initStencilToWrite();
     }
+
     public static void endBlur(float radius, float compression) {
         StencilUtil.readStencilBuffer(1);
 

@@ -1,12 +1,11 @@
 package dev.tenacity.module.impl.render;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.module.impl.display.HUDMod;
-import dev.tenacity.utils.tuples.Pair;
 import com.cubk.event.impl.player.MotionEvent;
 import com.cubk.event.impl.render.Render3DEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
+import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.module.settings.impl.BooleanSetting;
 import dev.tenacity.module.settings.impl.ColorSetting;
 import dev.tenacity.module.settings.impl.ModeSetting;
@@ -14,6 +13,7 @@ import dev.tenacity.module.settings.impl.NumberSetting;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.GLUtil;
 import dev.tenacity.utils.render.RenderUtil;
+import dev.tenacity.utils.tuples.Pair;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.Vec3;
 import org.lwjgl.opengl.GL11;
@@ -34,6 +34,7 @@ public final class Breadcrumbs extends Module {
     private final BooleanSetting seeThroughWalls = new BooleanSetting("Walls", true);
     private final ModeSetting colorMode = new ModeSetting("Color Mode", "Sync", "Sync", "Custom");
     private final ColorSetting color = new ColorSetting("Color", Color.WHITE);
+    private final List<Vec3> path = new ArrayList<>();
 
     public Breadcrumbs() {
         super("Breadcrumbs", Category.RENDER, "shows where you've walked");
@@ -41,8 +42,6 @@ public final class Breadcrumbs extends Module {
         seeThroughWalls.addParent(mode, mode -> mode.getMode().equals("Rise"));
         addSettings(mode, particleAmount, seeThroughWalls, colorMode, color);
     }
-
-    private final List<Vec3> path = new ArrayList<>();
 
     @EventTarget
     public void onMotionEvent(MotionEvent e) {

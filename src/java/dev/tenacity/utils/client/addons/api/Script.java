@@ -4,8 +4,8 @@ import dev.tenacity.Client;
 import dev.tenacity.config.DragManager;
 import dev.tenacity.module.settings.Setting;
 import dev.tenacity.module.settings.impl.*;
-import dev.tenacity.utils.client.addons.api.bindings.*;
 import dev.tenacity.utils.Utils;
+import dev.tenacity.utils.client.addons.api.bindings.*;
 import dev.tenacity.utils.misc.FileUtils;
 import dev.tenacity.utils.objects.Dragging;
 import lombok.Getter;
@@ -24,9 +24,9 @@ import java.util.function.Function;
 @Getter
 public class Script implements Utils {
     private final ArrayList<Setting> settings = new ArrayList<>();
-    private String name, author, description;
     private final File file;
     private final HashMap<String, JSObject> eventHashMap = new HashMap<>();
+    private String name, author, description;
     private ScriptModule scriptModule;
     private boolean initializedSettings = false;
     @Setter
@@ -237,20 +237,6 @@ public class Script implements Utils {
         eventHashMap.put("disable", handle);
     }
 
-    private class CreateDrag implements Function<JSObject, Dragging> {
-        @Override
-        public Dragging apply(JSObject jsObject) {
-            int initialX = (int) jsObject.getMember("initialX");
-            int initialY = (int) jsObject.getMember("initialY");
-            if (mc.currentScreen instanceof GuiChat) {
-                mc.displayGuiScreen(null);
-            }
-            Dragging dragging = Client.INSTANCE.createDrag(scriptModule, "script" + description, initialX, initialY);
-            DragManager.loadDragData();
-            return dragging;
-        }
-    }
-
     private static class ColorConstructor implements Function<JSObject, Color> {
         @Override
         public Color apply(JSObject jsObject) {
@@ -267,6 +253,20 @@ public class Script implements Utils {
                 alpha = (int) jsObject.getMember("alpha");
             }
             return new Color(red, green, blue, alpha);
+        }
+    }
+
+    private class CreateDrag implements Function<JSObject, Dragging> {
+        @Override
+        public Dragging apply(JSObject jsObject) {
+            int initialX = (int) jsObject.getMember("initialX");
+            int initialY = (int) jsObject.getMember("initialY");
+            if (mc.currentScreen instanceof GuiChat) {
+                mc.displayGuiScreen(null);
+            }
+            Dragging dragging = Client.INSTANCE.createDrag(scriptModule, "script" + description, initialX, initialY);
+            DragManager.loadDragData();
+            return dragging;
         }
     }
 

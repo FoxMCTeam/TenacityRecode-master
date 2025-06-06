@@ -1,6 +1,5 @@
 package dev.tenacity.ui.clickguis.dropdown.components;
 
-import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.Setting;
 import dev.tenacity.module.settings.impl.*;
@@ -19,6 +18,7 @@ import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.RenderUtil;
 import dev.tenacity.utils.render.Theme;
 import dev.tenacity.utils.time.TimerUtil;
+import dev.tenacity.utils.tuples.Pair;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.Gui;
@@ -31,23 +31,22 @@ import java.util.List;
 public class ModuleRect implements Screen {
 
     public final Module module;
-    @Getter
-    @Setter
-    private int searchScore;
+    public final TooltipObject tooltipObject = new TooltipObject();
     private final Animation toggleAnimation = new EaseInOutQuad(300, 1);
     private final Animation hoverAnimation = new EaseOutSine(400, 1, Direction.BACKWARDS);
     private final Animation hoverKeybindAnimation = new DecelerateAnimation(200, 1, Direction.BACKWARDS);
     private final Animation settingAnimation = new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
-    public final TooltipObject tooltipObject = new TooltipObject();
     private final TimerUtil timerUtil = new TimerUtil();
-
+    private final List<SettingComponent> settingComponents;
+    public float x, y, width, height, panelLimitY, alpha;
+    @Getter
+    @Setter
+    private int searchScore;
     @Getter
     private boolean typing;
-    public float x, y, width, height, panelLimitY, alpha;
-
     @Getter
     private double settingSize = 1;
-    private final List<SettingComponent> settingComponents;
+    private double actualSettingCount;
 
     public ModuleRect(Module module) {
         this.module = module;
@@ -97,8 +96,6 @@ public class ModuleRect implements Screen {
             }
         }
     }
-
-    private double actualSettingCount;
 
     @Override
     public void drawScreen(int mouseX, int mouseY) {
@@ -188,17 +185,14 @@ public class ModuleRect implements Screen {
                 settingComponent.width = width;
                 settingComponent.typing = typing;
 
-                if (settingComponent instanceof ModeComponent) {
-                    ModeComponent modeComponent = (ModeComponent) settingComponent;
+                if (settingComponent instanceof ModeComponent modeComponent) {
                     modeComponent.realHeight = settingRectHeight * modeComponent.normalCount;
                 }
-                if (settingComponent instanceof MultipleBoolComponent) {
-                    MultipleBoolComponent multipleBoolComponent = (MultipleBoolComponent) settingComponent;
+                if (settingComponent instanceof MultipleBoolComponent multipleBoolComponent) {
                     multipleBoolComponent.realHeight = settingRectHeight * multipleBoolComponent.normalCount;
                 }
 
-                if (settingComponent instanceof ColorComponent) {
-                    ColorComponent colorComponent = (ColorComponent) settingComponent;
+                if (settingComponent instanceof ColorComponent colorComponent) {
                     colorComponent.realHeight = settingRectHeight;
                 }
 

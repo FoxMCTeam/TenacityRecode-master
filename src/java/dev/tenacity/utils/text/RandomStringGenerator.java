@@ -52,6 +52,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * {@link Builder#usingRandom(TextRandomProvider) Builder.usingRandom(TextRandomProvider)}, thread-safety
  * must be ensured externally.
  * </p>
+ *
  * @since 1.1
  */
 public final class RandomStringGenerator {
@@ -84,15 +85,11 @@ public final class RandomStringGenerator {
     /**
      * Constructs the generator.
      *
-     * @param minimumCodePoint
-     *            smallest allowed code point (inclusive)
-     * @param maximumCodePoint
-     *            largest allowed code point (inclusive)
-     * @param inclusivePredicates
-     *            filters for code points
-     * @param random
-     *            source of randomness
-     * @param characterList list of predefined set of characters.
+     * @param minimumCodePoint    smallest allowed code point (inclusive)
+     * @param maximumCodePoint    largest allowed code point (inclusive)
+     * @param inclusivePredicates filters for code points
+     * @param random              source of randomness
+     * @param characterList       list of predefined set of characters.
      */
     private RandomStringGenerator(final int minimumCodePoint, final int maximumCodePoint,
                                   final Set<CharacterPredicate> inclusivePredicates, final TextRandomProvider random,
@@ -108,10 +105,8 @@ public final class RandomStringGenerator {
      * Generates a random number within a range, using a {@link ThreadLocalRandom} instance
      * or the user-supplied source of randomness.
      *
-     * @param minInclusive
-     *            the minimum value allowed
-     * @param maxInclusive
-     *            the maximum value allowed
+     * @param minInclusive the minimum value allowed
+     * @param maxInclusive the maximum value allowed
      * @return The random number.
      */
     private int generateRandomNumber(final int minInclusive, final int maxInclusive) {
@@ -153,11 +148,9 @@ public final class RandomStringGenerator {
      * values.
      * </p>
      *
-     * @param length
-     *            the number of code points to generate
+     * @param length the number of code points to generate
      * @return The generated string
-     * @throws IllegalArgumentException
-     *             if {@code length < 0}
+     * @throws IllegalArgumentException if {@code length < 0}
      */
     public String generate(final int length) {
         if (length == 0) {
@@ -176,11 +169,11 @@ public final class RandomStringGenerator {
                 codePoint = generateRandomNumber(minimumCodePoint, maximumCodePoint);
             }
             switch (Character.getType(codePoint)) {
-            case Character.UNASSIGNED:
-            case Character.PRIVATE_USE:
-            case Character.SURROGATE:
-                continue;
-            default:
+                case Character.UNASSIGNED:
+                case Character.PRIVATE_USE:
+                case Character.SURROGATE:
+                    continue;
+                default:
             }
 
             if (inclusivePredicates != null) {
@@ -208,13 +201,10 @@ public final class RandomStringGenerator {
      * Generates a random string, containing between the minimum (inclusive) and the maximum (inclusive)
      * number of code points.
      *
-     * @param minLengthInclusive
-     *            the minimum (inclusive) number of code points to generate
-     * @param maxLengthInclusive
-     *            the maximum (inclusive) number of code points to generate
+     * @param minLengthInclusive the minimum (inclusive) number of code points to generate
+     * @param maxLengthInclusive the maximum (inclusive) number of code points to generate
      * @return The generated string
-     * @throws IllegalArgumentException
-     *             if {@code minLengthInclusive < 0}, or {@code maxLengthInclusive < minLengthInclusive}
+     * @throws IllegalArgumentException if {@code minLengthInclusive < 0}, or {@code maxLengthInclusive < minLengthInclusive}
      * @see RandomStringGenerator#generate(int)
      * @since 1.2
      */
@@ -245,6 +235,7 @@ public final class RandomStringGenerator {
      * Some commonly used predicates are provided by the {@link CharacterPredicates} enum.</p>
      *
      * <p>This class is not thread safe.</p>
+     *
      * @since 1.1
      */
     public static class Builder implements dev.tenacity.utils.text.Builder<RandomStringGenerator> {
@@ -296,18 +287,13 @@ public final class RandomStringGenerator {
          * generated string.
          * </p>
          *
-         * @param minimumCodePoint
-         *            the smallest code point allowed (inclusive)
-         * @param maximumCodePoint
-         *            the largest code point allowed (inclusive)
+         * @param minimumCodePoint the smallest code point allowed (inclusive)
+         * @param maximumCodePoint the largest code point allowed (inclusive)
          * @return {@code this}, to allow method chaining
-         * @throws IllegalArgumentException
-         *             if {@code maximumCodePoint >}
-         *             {@link Character#MAX_CODE_POINT}
-         * @throws IllegalArgumentException
-         *             if {@code minimumCodePoint < 0}
-         * @throws IllegalArgumentException
-         *             if {@code minimumCodePoint > maximumCodePoint}
+         * @throws IllegalArgumentException if {@code maximumCodePoint >}
+         *                                  {@link Character#MAX_CODE_POINT}
+         * @throws IllegalArgumentException if {@code minimumCodePoint < 0}
+         * @throws IllegalArgumentException if {@code minimumCodePoint > maximumCodePoint}
          */
         public Builder withinRange(final int minimumCodePoint, final int maximumCodePoint) {
             Validate.isTrue(minimumCodePoint <= maximumCodePoint,
@@ -326,7 +312,7 @@ public final class RandomStringGenerator {
          * Specifies the array of minimum and maximum char allowed in the
          * generated string.
          * </p>
-         *
+         * <p>
          * For example:
          * <pre>
          * {@code
@@ -341,13 +327,13 @@ public final class RandomStringGenerator {
          */
         public Builder withinRange(final char[]... pairs) {
             characterList = new ArrayList<>();
-            for (final char[] pair :  pairs) {
+            for (final char[] pair : pairs) {
                 Validate.isTrue(pair.length == 2,
-                      "Each pair must contain minimum and maximum code point");
+                        "Each pair must contain minimum and maximum code point");
                 final int minimumCodePoint = pair[0];
                 final int maximumCodePoint = pair[1];
                 Validate.isTrue(minimumCodePoint <= maximumCodePoint,
-                    "Minimum code point %d is larger than maximum code point %d", minimumCodePoint, maximumCodePoint);
+                        "Minimum code point %d is larger than maximum code point %d", minimumCodePoint, maximumCodePoint);
 
                 for (int index = minimumCodePoint; index <= maximumCodePoint; index++) {
                     characterList.add((char) index);
@@ -369,8 +355,7 @@ public final class RandomStringGenerator {
          * method will replace the previously stored predicates.
          * </p>
          *
-         * @param predicates
-         *            the predicates, may be {@code null} or empty
+         * @param predicates the predicates, may be {@code null} or empty
          * @return {@code this}, to allow method chaining
          */
         public Builder filteredBy(final CharacterPredicate... predicates) {
@@ -417,8 +402,7 @@ public final class RandomStringGenerator {
          * randomness.
          * </p>
          *
-         * @param random
-         *            the source of randomness, may be {@code null}
+         * @param random the source of randomness, may be {@code null}
          * @return {@code this}, to allow method chaining
          */
         public Builder usingRandom(final TextRandomProvider random) {
@@ -439,7 +423,7 @@ public final class RandomStringGenerator {
          * </p>
          *
          * @param chars set of predefined Characters for random string generation
-         *            the Character can be, may be {@code null} or empty
+         *              the Character can be, may be {@code null} or empty
          * @return {@code this}, to allow method chaining
          * @since 1.2
          */
@@ -453,6 +437,7 @@ public final class RandomStringGenerator {
 
         /**
          * <p>Builds the {@code RandomStringGenerator} using the properties specified.</p>
+         *
          * @return The configured {@code RandomStringGenerator}
          */
         @Override

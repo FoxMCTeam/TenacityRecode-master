@@ -1,10 +1,10 @@
 package dev.tenacity.utils.client.addons.api.bindings;
 
 import dev.tenacity.module.impl.display.HUDMod;
-import dev.tenacity.utils.client.addons.api.objects.ScriptFramebuffer;
-import dev.tenacity.utils.client.addons.api.objects.ScriptShaderUtil;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.animations.ContinualAnimation;
+import dev.tenacity.utils.client.addons.api.objects.ScriptFramebuffer;
+import dev.tenacity.utils.client.addons.api.objects.ScriptShaderUtil;
 import dev.tenacity.utils.font.AbstractFontRenderer;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.GradientUtil;
@@ -17,8 +17,8 @@ import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import org.openjdk.nashorn.api.scripting.JSObject;
 import org.lwjgl.opengl.GL11;
+import org.openjdk.nashorn.api.scripting.JSObject;
 
 import java.awt.*;
 
@@ -136,7 +136,7 @@ public class RenderBinding implements Utils {
         return new ScriptShaderUtil(fragSource);
     }
 
-    public void bindMinecraftFramebuffer(){
+    public void bindMinecraftFramebuffer() {
         mc.getFramebuffer().bindFramebuffer(false);
     }
 

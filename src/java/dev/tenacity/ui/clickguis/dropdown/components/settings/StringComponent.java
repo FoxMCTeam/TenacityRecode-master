@@ -7,13 +7,13 @@ import dev.tenacity.utils.objects.TextField;
 public class StringComponent extends SettingComponent<StringSetting> {
 
     private final TextField textField = new TextField(duckSansFont16);
+    boolean setDefaultText = false;
+
 
     public StringComponent(StringSetting setting) {
         super(setting);
     }
 
-
-    boolean setDefaultText = false;
     @Override
     public void initGui() {
         setDefaultText = false;
@@ -32,12 +32,11 @@ public class StringComponent extends SettingComponent<StringSetting> {
         float boxWidth = width - 12;
         float boxHeight = height - 16;
 
-        if(!setDefaultText){
+        if (!setDefaultText) {
             textField.setText(getSetting().getString());
             textField.setCursorPositionZero();
             setDefaultText = true;
         }
-
 
 
         getSetting().setString(textField.getText());
@@ -57,7 +56,7 @@ public class StringComponent extends SettingComponent<StringSetting> {
         textField.drawTextBox();
 
 
-        if(!typing) {
+        if (!typing) {
             typing = textField.isFocused();
         }
 

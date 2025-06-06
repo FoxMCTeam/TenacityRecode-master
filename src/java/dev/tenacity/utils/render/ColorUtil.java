@@ -18,6 +18,7 @@ public class ColorUtil {
         alpha = Math.min(1, Math.max(0, alpha));
         return new Color(rgbValue, rgbValue, rgbValue, (int) (255 * alpha));
     }
+
     public static int colorSwitch(Color firstColor, Color secondColor, float time, int index, long timePerIndex, double speed) {
         return colorSwitch(firstColor, secondColor, time, index, timePerIndex, speed, 255.0);
     }
@@ -142,12 +143,14 @@ public class ColorUtil {
         Color old = new Color(color);
         return applyOpacity(old, opacity).getRGB();
     }
+
     public static Color setColorAlpha(int color, float alpha) {
         float r = (float) (color >> 16 & 255) / 255.0F;
         float g = (float) (color >> 8 & 255) / 255.0F;
         float b = (float) (color & 255) / 255.0F;
         return new Color(r, g, b, alpha);
     }
+
     //Opacity value ranges from 0-1
     public static Color applyOpacity(Color color, float opacity) {
         opacity = Math.min(1, Math.max(0, opacity));

@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.display;
 
-import dev.tenacity.Client;
 import com.cubk.event.impl.render.ShaderEvent;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.ParentAttribute;
@@ -21,10 +21,6 @@ import java.awt.*;
 
 public class PostProcessing extends Module {
 
-    public final BooleanSetting blur = new BooleanSetting("Blur", true);
-    private final NumberSetting iterations = new NumberSetting("Blur Iterations", 2, 8, 1, 1);
-    private final NumberSetting offset = new NumberSetting("Blur Offset", 3, 10, 1, 1);
-    private final BooleanSetting bloom = new BooleanSetting("Bloom", true);
     public static MultipleBoolSetting glowOptions = new MultipleBoolSetting("Glow Options",
             new BooleanSetting("Arraylist", true),
             new BooleanSetting("ClickGui", false),
@@ -35,9 +31,14 @@ public class PostProcessing extends Module {
             new BooleanSetting("Spotify", true),
             new BooleanSetting("Notifications", false),
             new BooleanSetting("Keystrokes", false));
+    public final BooleanSetting blur = new BooleanSetting("Blur", true);
+    private final NumberSetting iterations = new NumberSetting("Blur Iterations", 2, 8, 1, 1);
+    private final NumberSetting offset = new NumberSetting("Blur Offset", 3, 10, 1, 1);
+    private final BooleanSetting bloom = new BooleanSetting("Bloom", true);
     private final NumberSetting shadowRadius = new NumberSetting("Bloom Iterations", 3, 8, 1, 1);
     private final NumberSetting shadowOffset = new NumberSetting("Bloom Offset", 1, 10, 1, 1);
-
+    private String currentMode;
+    private Framebuffer stencilFramebuffer = new Framebuffer(1, 1, false);
 
     public PostProcessing() {
         super("PostProcessing", Category.DISPLAY, "blurs shit");
@@ -46,8 +47,6 @@ public class PostProcessing extends Module {
         glowOptions.addParent(bloom, ParentAttribute.BOOLEAN_CONDITION);
         addSettings(blur, iterations, offset, bloom, glowOptions, shadowRadius, shadowOffset);
     }
-
-    private String currentMode;
 
     public void stuffToBlur(boolean bloom) {
 
@@ -84,8 +83,6 @@ public class PostProcessing extends Module {
         }
 
     }
-
-    private Framebuffer stencilFramebuffer = new Framebuffer(1, 1, false);
 
     public void blurScreen() {
         if (!enabled) return;

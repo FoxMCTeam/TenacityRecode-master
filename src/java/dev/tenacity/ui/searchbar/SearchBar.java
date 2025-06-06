@@ -21,11 +21,11 @@ import java.awt.*;
 @Setter
 public class SearchBar implements Screen {
 
-    private boolean focused, typing, hoveringBottomOfScreen;
     private final Animation focusAnimation = new DecelerateAnimation(175, 1).setDirection(Direction.BACKWARDS),
             hoverAnimation = new DecelerateAnimation(175, 1).setDirection(Direction.BACKWARDS),
             openAnimation = new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
     private final TextField searchField = new TextField(duckSansFont18);
+    private boolean focused, typing, hoveringBottomOfScreen;
     private float alpha;
 
     @Override

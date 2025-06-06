@@ -20,24 +20,22 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class CarouselButtons implements Screen {
+    private final Map<String, Animation> options;
+    private final ContinualAnimation rectAnimation = new ContinualAnimation();
     @Getter
     @Setter
     private float x, y, rectWidth, rectHeight, alpha;
     @Getter
     private boolean hovering = false;
     @Setter
-    private Color backgroundColor = new Color(39,39,39);
+    private Color backgroundColor = new Color(39, 39, 39);
     @Getter
     private String currentButton;
-    private final Map<String, Animation> options;
 
     public CarouselButtons(String... options) {
         this.options = Arrays.stream(options).collect(Collectors.toMap(Function.identity(), v -> new DecelerateAnimation(250, 1)));
         currentButton = options[0];
     }
-
-    private final ContinualAnimation rectAnimation = new ContinualAnimation();
-
 
     @Override
     public void initGui() {
@@ -55,7 +53,7 @@ public class CarouselButtons implements Screen {
         float buttonWidth = options.size() * rectWidth;
         Color textColor = ColorUtil.applyOpacity(Color.WHITE, alpha);
 
-        hovering = HoveringUtil.isHovering(x,y, buttonWidth, rectHeight, mouseX, mouseY);
+        hovering = HoveringUtil.isHovering(x, y, buttonWidth, rectHeight, mouseX, mouseY);
 
         //This is the background of the carousel buttons
         RoundedUtil.drawRound(x, y, buttonWidth, rectHeight, 5, ColorUtil.applyOpacity(backgroundColor, alpha));

@@ -6,6 +6,8 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class GLUtil {
 
+    public static int[] enabledCaps = new int[32];
+
     public static void enableDepth() {
         GlStateManager.enableDepth();
         GlStateManager.depthMask(true);
@@ -15,8 +17,6 @@ public class GLUtil {
         GlStateManager.disableDepth();
         GlStateManager.depthMask(false);
     }
-
-    public static int[] enabledCaps = new int[32];
 
     public static void enableCaps(int... caps) {
         for (int cap : caps) glEnable(cap);
@@ -59,7 +59,7 @@ public class GLUtil {
         GlStateManager.translate(-x, -y, 0);
     }
 
-    public static void endRotate(){
+    public static void endRotate() {
         GlStateManager.popMatrix();
     }
 

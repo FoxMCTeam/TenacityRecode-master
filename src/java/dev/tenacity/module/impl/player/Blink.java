@@ -1,10 +1,10 @@
 package dev.tenacity.module.impl.player;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.Client;
 import com.cubk.event.impl.network.PacketSendEvent;
 import com.cubk.event.impl.player.MotionEvent;
 import com.cubk.event.impl.render.Render3DEvent;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.render.Breadcrumbs;
@@ -23,12 +23,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public final class Blink extends Module {
     final ConcurrentLinkedQueue<Packet<?>> packets = new ConcurrentLinkedQueue<>();
-    private final BooleanSetting pulse = new BooleanSetting("Pulse",  false);
-    private final NumberSetting delayPulse = new NumberSetting("Tick Delay",20, 100, 4, 1);
-
-    private EntityOtherPlayerMP blinkEntity;
-
+    private final BooleanSetting pulse = new BooleanSetting("Pulse", false);
+    private final NumberSetting delayPulse = new NumberSetting("Tick Delay", 20, 100, 4, 1);
     List<Vec3> path = new ArrayList<>();
+    private EntityOtherPlayerMP blinkEntity;
 
     public Blink() {
         super("Blink", Category.PLAYER, "holds movement packets");
@@ -58,7 +56,7 @@ public final class Blink extends Module {
 
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
-        if(event.isPre()) {
+        if (event.isPre()) {
             if (mc.thePlayer.ticksExisted < 50) return;
 
             if (mc.thePlayer.lastTickPosX != mc.thePlayer.posX || mc.thePlayer.lastTickPosY != mc.thePlayer.posY || mc.thePlayer.lastTickPosZ != mc.thePlayer.posZ) {

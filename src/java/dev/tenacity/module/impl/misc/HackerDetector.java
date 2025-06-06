@@ -2,14 +2,14 @@ package dev.tenacity.module.impl.misc;
 
 import com.cubk.event.annotations.EventTarget;
 import com.cubk.event.impl.game.TickEvent;
-import dev.tenacity.utils.client.addons.hackerdetector.Detection;
-import dev.tenacity.utils.client.addons.hackerdetector.DetectionManager;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.BooleanSetting;
 import dev.tenacity.module.settings.impl.MultipleBoolSetting;
 import dev.tenacity.ui.notifications.NotificationManager;
 import dev.tenacity.ui.notifications.NotificationType;
+import dev.tenacity.utils.client.addons.hackerdetector.Detection;
+import dev.tenacity.utils.client.addons.hackerdetector.DetectionManager;
 import dev.tenacity.utils.time.TimerUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,14 +31,13 @@ public class HackerDetector extends Module {
 
     @EventTarget
     public void onTickEvent(TickEvent event) {
-        if(mc.theWorld == null || mc.thePlayer == null) return;
-        for(Entity entity : mc.theWorld.getLoadedEntityList()) {
-            if(entity instanceof EntityPlayer) {
-                EntityPlayer entityPlayer = (EntityPlayer) entity;
-                if(entityPlayer != mc.thePlayer) {
-                    for(Detection d : detectionManager.getDetections()) {
-                        if(detections.getSetting(d.getName()).isEnabled()) {
-                            if(d.runCheck(entityPlayer) && System.currentTimeMillis() > d.getLastViolated() + 500) {
+        if (mc.theWorld == null || mc.thePlayer == null) return;
+        for (Entity entity : mc.theWorld.getLoadedEntityList()) {
+            if (entity instanceof EntityPlayer entityPlayer) {
+                if (entityPlayer != mc.thePlayer) {
+                    for (Detection d : detectionManager.getDetections()) {
+                        if (detections.getSetting(d.getName()).isEnabled()) {
+                            if (d.runCheck(entityPlayer) && System.currentTimeMillis() > d.getLastViolated() + 500) {
                                 NotificationManager.post(NotificationType.WARNING, entityPlayer.getName(), "has flagged " + d.getName() + " | " + EnumChatFormatting.BOLD + entityPlayer.VL);
                                 entityPlayer.VL++;
                                 d.setLastViolated(System.currentTimeMillis());

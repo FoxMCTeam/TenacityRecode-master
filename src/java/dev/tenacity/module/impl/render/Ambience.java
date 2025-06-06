@@ -16,19 +16,17 @@ import java.util.Random;
 
 public class Ambience extends Module {
 
+    public static boolean overrideSnow = false;
     private final NumberSetting time = new NumberSetting("Time", 12000, 24000, 0, 1000);
     private final ModeSetting weather = new ModeSetting("Weather", "Clear", "Rain", "Thunder", "Clear", "Snow", "Don't Change");
-    public static boolean overrideSnow = false;
+    //A random value was used in the clear weather command so here's one to use
+    private final int randomValue = (300 + (new Random()).nextInt(600)) * 20;
+    String mode = "";
 
     public Ambience() {
         super("Ambience", Category.RENDER, "world time");
         this.addSettings(time, weather);
     }
-
-    //A random value was used in the clear weather command so here's one to use
-    private final int randomValue = (300 + (new Random()).nextInt(600)) * 20;
-
-    String mode = "";
 
     @EventTarget
     public void onTickEvent(TickEvent event) {

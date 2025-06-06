@@ -1,10 +1,10 @@
 package dev.tenacity.module.impl.display;
 
 import com.cubk.event.annotations.EventTarget;
-import dev.tenacity.Client;
 import com.cubk.event.impl.player.MotionEvent;
 import com.cubk.event.impl.render.Render2DEvent;
 import com.cubk.event.impl.render.ShaderEvent;
+import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.ParentAttribute;
@@ -27,9 +27,9 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Statistics extends Module {
 
+    public static final String[] KILL_TRIGGERS = {"by *", "para *", "fue destrozado a manos de *"};
     public static int gamesPlayed, killCount, deathCount;
     public static long startTime = System.currentTimeMillis(), endTime = -1;
-    public static final String[] KILL_TRIGGERS = {"by *", "para *", "fue destrozado a manos de *"};
     private final Map<String, Double> statistics = new LinkedHashMap<>();
     private final BooleanSetting motionGraph = new BooleanSetting("Show Speed Graph", true);
     private final BooleanSetting seprateMotionGraph = new BooleanSetting("Separate Graph", true);
@@ -38,7 +38,9 @@ public class Statistics extends Module {
     private final Dragging motionDragging = Client.INSTANCE.createDrag(this, "motionGraph", 5, 200);
 
     private final GradientColorWheel colorWheel = new GradientColorWheel();
-
+    private final ShaderUtil circleShader = new ShaderUtil("Tenacity/Shaders/circle-arc.frag");
+    private final List<Float> speeds = new ArrayList<>();
+    private float width, height;
 
     public Statistics() {
         super("Statistics", Category.DISPLAY, "Displays statistics about your session");
@@ -46,7 +48,30 @@ public class Statistics extends Module {
         addSettings(colorWheel.createModeSetting("Color Mode"), colorWheel.getColorSetting(), motionGraph, seprateMotionGraph);
     }
 
-    private float width, height;
+    public static int[] getPlayTime() {
+        long diff = getTimeDiff();
+        long diffSeconds = 0, diffMinutes = 0, diffHours = 0;
+        if (diff > 0) {
+            diffSeconds = diff / 1000 % 60;
+            diffMinutes = diff / (60 * 1000) % 60;
+            diffHours = diff / (60 * 60 * 1000) % 24;
+        }
+       /* String str = (int) diffSeconds + "s";
+        if (diffMinutes > 0) str = (int) diffMinutes + "m " + str;
+        if (diffHours > 0) str = (int) diffHours + "h " + str;*/
+        return new int[]{(int) diffHours, (int) diffMinutes, (int) diffSeconds};
+    }
+
+    public static long getTimeDiff() {
+        return (endTime == -1 ? System.currentTimeMillis() : endTime) - startTime;
+    }
+
+    public static void reset() {
+        startTime = System.currentTimeMillis();
+        endTime = -1;
+        gamesPlayed = 0;
+        killCount = 0;
+    }
 
     @EventTarget
     public void onShaderEvent(ShaderEvent e) {
@@ -71,8 +96,6 @@ public class Statistics extends Module {
         }
 
     }
-
-    private final ShaderUtil circleShader = new ShaderUtil("Tenacity/Shaders/circle-arc.frag");
 
     @EventTarget
     public void onRender2DEvent(Render2DEvent e) {
@@ -169,8 +192,6 @@ public class Statistics extends Module {
         }
     }
 
-    private final List<Float> speeds = new ArrayList<>();
-
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
         if (event.isPre()) {
@@ -237,7 +258,6 @@ public class Statistics extends Module {
 
     }
 
-
     private void drawAnimatedPlaytime(float circleX, float y, float circleWidth, int[] playTime) {
         String seconds = ((playTime[2] < 10) ? "0" : "") + playTime[2];
         String minutes = ((playTime[1] < 10) ? "0" : "") + playTime[1];
@@ -270,31 +290,6 @@ public class Statistics extends Module {
         ShaderUtil.drawQuads(x, y, wh, wh);
         circleShader.unload();
         GLUtil.endBlend();
-    }
-
-    public static int[] getPlayTime() {
-        long diff = getTimeDiff();
-        long diffSeconds = 0, diffMinutes = 0, diffHours = 0;
-        if (diff > 0) {
-            diffSeconds = diff / 1000 % 60;
-            diffMinutes = diff / (60 * 1000) % 60;
-            diffHours = diff / (60 * 60 * 1000) % 24;
-        }
-       /* String str = (int) diffSeconds + "s";
-        if (diffMinutes > 0) str = (int) diffMinutes + "m " + str;
-        if (diffHours > 0) str = (int) diffHours + "h " + str;*/
-        return new int[]{(int) diffHours, (int) diffMinutes, (int) diffSeconds};
-    }
-
-    public static long getTimeDiff() {
-        return (endTime == -1 ? System.currentTimeMillis() : endTime) - startTime;
-    }
-
-    public static void reset() {
-        startTime = System.currentTimeMillis();
-        endTime = -1;
-        gamesPlayed = 0;
-        killCount = 0;
     }
 
     private float getPlayerSpeed() {

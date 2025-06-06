@@ -13,10 +13,10 @@ import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
 
 public class NotificationsMod extends Module {
-    private final NumberSetting time = new NumberSetting("Time on Screen", 2, 10, 1, .5);
     public static final ModeSetting mode = new ModeSetting("Mode", "Default", "Default", "SuicideX", "Exhibition");
     public static final BooleanSetting onlyTitle = new BooleanSetting("Only Title", false);
     public static final BooleanSetting toggleNotifications = new BooleanSetting("Show Toggle", true);
+    private final NumberSetting time = new NumberSetting("Time on Screen", 2, 10, 1, .5);
 
     public NotificationsMod() {
         super("Notifications", Category.DISPLAY, "Allows you to customize the client notifications");
@@ -49,18 +49,18 @@ public class NotificationsMod extends Module {
                 case "Default":
                     animation.setDuration(250);
                     actualOffset = 8;
-                    if(onlyTitle.isEnabled()) {
+                    if (onlyTitle.isEnabled()) {
                         notificationHeight = 19;
                         notificationWidth = (int) duckSansBoldFont22.getStringWidth(notification.getTitle()) + 35;
-                    }else {
+                    } else {
                         notificationHeight = 28;
                         notificationWidth = (int) Math.max(duckSansBoldFont22.getStringWidth(notification.getTitle()), duckSansFont18.getStringWidth(notification.getDescription())) + 35;
                     }
 
-                    x = sr.getScaledWidth() - (notificationWidth + 5) * (float) animation.getOutput().floatValue();
-                    y = sr.getScaledHeight() - (yOffset + 18 + HUDMod.offsetValue + notificationHeight + (15 * (float) GuiChat.openingAnimation.getOutput().floatValue()));
+                    x = sr.getScaledWidth() - (notificationWidth + 5) * animation.getOutput().floatValue();
+                    y = sr.getScaledHeight() - (yOffset + 18 + HUDMod.offsetValue + notificationHeight + (15 * GuiChat.openingAnimation.getOutput().floatValue()));
 
-                    notification.drawDefault(x,y, notificationWidth, notificationHeight, (float) animation.getOutput().floatValue(), onlyTitle.isEnabled());
+                    notification.drawDefault(x, y, notificationWidth, notificationHeight, animation.getOutput().floatValue(), onlyTitle.isEnabled());
                     break;
                 case "SuicideX":
                     animation.setDuration(200);
@@ -71,9 +71,9 @@ public class NotificationsMod extends Module {
                     notificationWidth = (int) duckSansBoldFont22.getStringWidth(editTitle) + 5;
 
                     x = sr.getScaledWidth() - (notificationWidth + 5);
-                    y = sr.getScaledHeight() - (yOffset + 18 + HUDMod.offsetValue + notificationHeight + (15 * (float) GuiChat.openingAnimation.getOutput().floatValue()));
+                    y = sr.getScaledHeight() - (yOffset + 18 + HUDMod.offsetValue + notificationHeight + (15 * GuiChat.openingAnimation.getOutput().floatValue()));
 
-                    notification.drawSuicideX(x,y, notificationWidth, notificationHeight, (float) animation.getOutput().floatValue());
+                    notification.drawSuicideX(x, y, notificationWidth, notificationHeight, animation.getOutput().floatValue());
                     break;
                 case "Exhibition":
                     animation.setDuration(125);
@@ -81,10 +81,10 @@ public class NotificationsMod extends Module {
                     notificationHeight = 25;
                     notificationWidth = (int) Math.max(tahomaFont.size(18).getStringWidth(notification.getTitle()), tahomaFont.size(14).getStringWidth(notification.getDescription())) + 30;
 
-                    x = sr.getScaledWidth() - ((sr.getScaledWidth()/ 2f + notificationWidth/2f) *  (float) animation.getOutput().floatValue());
-                    y = sr.getScaledHeight() /2f - notificationHeight/2f + 40 + yOffset;
+                    x = sr.getScaledWidth() - ((sr.getScaledWidth() / 2f + notificationWidth / 2f) * animation.getOutput().floatValue());
+                    y = sr.getScaledHeight() / 2f - notificationHeight / 2f + 40 + yOffset;
 
-                    notification.drawExhi(x,y, notificationWidth, notificationHeight);
+                    notification.drawExhi(x, y, notificationWidth, notificationHeight);
                     break;
             }
 
@@ -116,10 +116,10 @@ public class NotificationsMod extends Module {
             switch (mode.getMode()) {
                 case "Default":
                     actualOffset = 8;
-                    if(onlyTitle.isEnabled()) {
+                    if (onlyTitle.isEnabled()) {
                         notificationHeight = 19;
                         notificationWidth = (int) duckSansBoldFont22.getStringWidth(notification.getTitle()) + 35;
-                    }else {
+                    } else {
                         notificationHeight = 28;
                         notificationWidth = (int) Math.max(duckSansBoldFont22.getStringWidth(notification.getTitle()), duckSansFont18.getStringWidth(notification.getDescription())) + 35;
                     }
@@ -127,7 +127,7 @@ public class NotificationsMod extends Module {
                     x = sr.getScaledWidth() - (notificationWidth + 5) * animation.getOutput().floatValue();
                     y = sr.getScaledHeight() - (yOffset + 18 + HUDMod.offsetValue + notificationHeight + (15 * GuiChat.openingAnimation.getOutput().floatValue()));
 
-                    notification.blurDefault(x,y, notificationWidth, notificationHeight, animation.getOutput().floatValue(), glow);
+                    notification.blurDefault(x, y, notificationWidth, notificationHeight, animation.getOutput().floatValue(), glow);
                     break;
                 case "SuicideX":
                     actualOffset = 3;
@@ -139,17 +139,17 @@ public class NotificationsMod extends Module {
                     x = sr.getScaledWidth() - (notificationWidth + 5);
                     y = sr.getScaledHeight() - (yOffset + 18 + HUDMod.offsetValue + notificationHeight + (15 * GuiChat.openingAnimation.getOutput().floatValue()));
 
-                    notification.blurSuicideX(x,y, notificationWidth, notificationHeight, animation.getOutput().floatValue());
+                    notification.blurSuicideX(x, y, notificationWidth, notificationHeight, animation.getOutput().floatValue());
                     break;
                 case "Exhibition":
                     actualOffset = 3;
                     notificationHeight = 25;
                     notificationWidth = (int) Math.max(tahomaFont.size(18).getStringWidth(notification.getTitle()), tahomaFont.size(14).getStringWidth(notification.getDescription())) + 30;
 
-                    x = sr.getScaledWidth() - ((sr.getScaledWidth()/ 2f + notificationWidth/2f) * animation.getOutput().floatValue());
-                    y = sr.getScaledHeight() /2f - notificationHeight/2f + 40 + yOffset;
+                    x = sr.getScaledWidth() - ((sr.getScaledWidth() / 2f + notificationWidth / 2f) * animation.getOutput().floatValue());
+                    y = sr.getScaledHeight() / 2f - notificationHeight / 2f + 40 + yOffset;
 
-                    notification.blurExhi(x,y, notificationWidth, notificationHeight);
+                    notification.blurExhi(x, y, notificationWidth, notificationHeight);
                     break;
             }
 

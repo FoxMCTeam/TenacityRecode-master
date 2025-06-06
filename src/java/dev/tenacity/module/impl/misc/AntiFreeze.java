@@ -12,6 +12,10 @@ public final class AntiFreeze extends Module {
 
     private final ModeSetting mode = new ModeSetting("Mode", "Normal", "Normal", "Teleport");
 
+    public AntiFreeze() {
+        super("AntiFreeze", Category.MISC, "prevents server plugins from freezing you");
+    }
+
     @EventTarget
     public void onPacketReceiveEvent(PacketReceiveEvent event) {
         if (event.getPacket() instanceof S2DPacketOpenWindow
@@ -24,10 +28,6 @@ public final class AntiFreeze extends Module {
             }
             event.cancel();
         }
-    }
-
-    public AntiFreeze() {
-        super("AntiFreeze", Category.MISC, "prevents server plugins from freezing you");
     }
 
 }

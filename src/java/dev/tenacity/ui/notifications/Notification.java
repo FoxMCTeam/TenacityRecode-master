@@ -92,7 +92,7 @@ public class Notification implements Utils {
 
         String editTitle = getTitle() + (getTitle().endsWith(".") || getTitle().endsWith("/") ? " " : ". ") + getDescription();
 
-        duckSansBoldFont22.drawCenteredString(editTitle, x + width /2f,
+        duckSansBoldFont22.drawCenteredString(editTitle, x + width / 2f,
                 yVal + duckSansBoldFont22.getMiddleOfBox(heightVal), ColorUtil.applyOpacity(Color.WHITE, animation - .5f));
 
     }
