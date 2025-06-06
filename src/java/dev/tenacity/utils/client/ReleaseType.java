@@ -6,11 +6,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ReleaseType {
-
     PUBLIC("Public"),
     BETA("Beta"),
-    DEV("Developer");
+    DEV("Development");
 
     private final String name;
-
 }

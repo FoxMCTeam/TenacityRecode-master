@@ -43,7 +43,7 @@ public class HUDMod extends Module {
 
     public static final ColorSetting color1 = new ColorSetting("Color 1", new Color(0xffa028d4));
     public static final ColorSetting color2 = new ColorSetting("Color 2", new Color(0xff0008ff));
-    public static final ModeSetting theme = Theme.getModeSetting("Theme Selection", "Tenacity");
+    public static final ModeSetting theme = Theme.getModeSetting("Theme Selection", "Lush");
     public static final BooleanSetting customFont = new BooleanSetting("Custom Font", true);
     public static final MultipleBoolSetting hudCustomization = new MultipleBoolSetting("HUD Options",
             new BooleanSetting("Radial Gradients", true),
@@ -147,7 +147,7 @@ public class HUDMod extends Module {
 
 
             String finalName = get(name);
-            String intentInfo = "USERNAME";
+            String intentInfo = Client.userName;
             switch (watermarkMode.getMode()) {
                 case "Logo":
                     float WH = 110 / 2f;
@@ -234,7 +234,7 @@ public class HUDMod extends Module {
         version = name.equalsIgnoreCase(Client.NAME);
 
         String finalName = get(name);
-        String intentInfo = "USERNAME";
+        String intentInfo = Client.userName;
 
         switch (watermarkMode.getMode()) {
             case "Logo":
@@ -405,7 +405,7 @@ public class HUDMod extends Module {
 
         String text = Client.VERSION + " - " + (customFont.isEnabled() ? "" : "§l") + Client.RELEASE.getName() + "§r";
 
-        text += " | " + "USERNAME";
+        text += " | " + Client.userName;
 
         text = get(text);
 
