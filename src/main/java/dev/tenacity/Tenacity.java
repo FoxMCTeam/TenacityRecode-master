@@ -13,7 +13,6 @@ import dev.tenacity.ui.searchbar.SearchBar;
 import dev.tenacity.ui.sidegui.SideGUI;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.client.ReleaseType;
-import dev.tenacity.utils.misc.DiscordRPC;
 import dev.tenacity.utils.objects.DiscordAccount;
 import dev.tenacity.utils.objects.Dragging;
 import dev.tenacity.utils.server.PingerUtils;

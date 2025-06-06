@@ -12,7 +12,7 @@ import dev.tenacity.module.settings.impl.NumberSetting;
 import dev.tenacity.utils.misc.MathUtils;
 import dev.tenacity.utils.player.RotationUtils;
 import dev.tenacity.utils.time.TimerUtil;
-import dev.tenacity.utils.client.addons.viamcp.utils.AttackOrder;
+import dev.tenacity.utils.client.addons.viamcp.viamcp.fixes.AttackOrder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;

@@ -1,6 +1,6 @@
 package net.minecraft.item;
 
-import dev.tenacity.utils.client.addons.viamcp.utils.FixedSoundEngine;
+import dev.tenacity.utils.client.addons.viamcp.viamcp.fixes.FixedSoundEngine;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;

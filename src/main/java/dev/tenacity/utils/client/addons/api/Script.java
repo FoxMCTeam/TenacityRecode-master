@@ -9,7 +9,6 @@ import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.misc.FileUtils;
 import dev.tenacity.utils.objects.Dragging;
 import netscape.javascript.JSObject;
-import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.GuiChat;

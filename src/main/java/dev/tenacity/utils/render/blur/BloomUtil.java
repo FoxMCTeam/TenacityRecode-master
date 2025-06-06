@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL13;
 
 import java.nio.FloatBuffer;
 
-import static org.lwjglx.opengl.GL20.glUniform1;
+import static net.minecraft.client.renderer.OpenGlHelper.glUniform1;
 
 public class BloomUtil implements Utils {
 

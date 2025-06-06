@@ -2,8 +2,8 @@ package net.minecraft.client.gui;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
+import dev.tenacity.utils.client.addons.viamcp.viamcp.gui.AsyncVersionSlider;
 import dev.tenacity.utils.server.ServerUtils;
-import dev.tenacity.utils.client.addons.viamcp.gui.GuiProtocolSelector;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.ServerList;
@@ -90,7 +90,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback {
         this.buttonList.add(new GuiButton(3, this.width / 2 + 4 + 50, this.height - 52, 100, 20, I18n.format("selectServer.add")));
         this.buttonList.add(new GuiButton(8, this.width / 2 + 4, this.height - 28, 70, 20, I18n.format("selectServer.refresh")));
         this.buttonList.add(new GuiButton(0, this.width / 2 + 4 + 76, this.height - 28, 75, 20, I18n.format("gui.cancel")));
-        this.buttonList.add(new GuiButton(1337, this.width - 104, 5, 100, 20, "Protocol Switcher"));
+        this.buttonList.add(new AsyncVersionSlider(1337,  this.width - 114, 5, 110, 20));
         this.selectServer(this.serverListSelector.func_148193_k());
     }
 
@@ -160,8 +160,6 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback {
                 this.mc2.displayGuiScreen(this.parentScreen);
             } else if (button.id == 8) {
                 this.refreshServerList();
-            } else if (button.id == 1337) {
-                this.mc2.displayGuiScreen(new GuiProtocolSelector(this));
             }
         }
     }

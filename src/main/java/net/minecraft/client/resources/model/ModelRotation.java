@@ -117,9 +117,9 @@ public enum ModelRotation implements IModelState, ITransformation
         return (Optional)Reflector.call(Reflector.ForgeHooksClient_applyTransform, new Object[] {this.getMatrix(), p_apply_1_});
     }
 
-    public org.lwjgl.util.vector.Matrix4f getMatrix()
+    public org.lwjglx.util.vector.Matrix4f getMatrix()
     {
-        return new org.lwjgl.util.vector.Matrix4f();
+        return new org.lwjglx.util.vector.Matrix4f();
     }
 
     public EnumFacing rotate(EnumFacing p_rotate_1_)

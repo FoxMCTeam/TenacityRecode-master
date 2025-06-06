@@ -18,7 +18,7 @@ import dev.tenacity.utils.player.RotationUtils;
 import dev.tenacity.utils.render.RenderUtil;
 import dev.tenacity.utils.server.PacketUtils;
 import dev.tenacity.utils.time.TimerUtil;
-import dev.tenacity.utils.client.addons.viamcp.utils.AttackOrder;
+import dev.tenacity.utils.client.addons.viamcp.viamcp.fixes.AttackOrder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;

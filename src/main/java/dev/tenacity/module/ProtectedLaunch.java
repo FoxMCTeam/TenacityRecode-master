@@ -2,6 +2,7 @@ package dev.tenacity.module;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import dev.tenacity.Tenacity;
 import dev.tenacity.commands.CommandHandler;
 import dev.tenacity.commands.impl.*;
@@ -19,12 +20,13 @@ import dev.tenacity.module.impl.render.wings.DragonWings;
 import dev.tenacity.utils.client.addons.api.ScriptManager;
 import dev.tenacity.ui.altmanager.GuiAltManager;
 import dev.tenacity.ui.altmanager.helpers.KingGenApi;
+import dev.tenacity.utils.client.addons.viamcp.vialoadingbase.ViaLoadingBase;
+import dev.tenacity.utils.client.addons.viamcp.viamcp.ViaMCP;
 import dev.tenacity.utils.misc.NetworkingUtils;
 import dev.tenacity.utils.objects.DiscordAccount;
 import dev.tenacity.utils.render.EntityCulling;
 import dev.tenacity.utils.render.Theme;
 import dev.tenacity.utils.server.PingerUtils;
-import dev.tenacity.utils.client.addons.viamcp.ViaMCP;
 import net.minecraft.client.Minecraft;
 import java.io.File;
 import java.util.Arrays;
@@ -34,7 +36,7 @@ import java.util.HashMap;
 public class ProtectedLaunch {
 
     private static final HashMap<Object, Module> modules = new HashMap<>();
-    
+
     public static void start() {
         // Setup Intent API access
         Tenacity.INSTANCE.setModuleCollection(new ModuleCollection());
@@ -167,14 +169,13 @@ public class ProtectedLaunch {
 
         Tenacity.INSTANCE.setAltManager(new GuiAltManager());
 
-
         try {
             Tenacity.LOGGER.info("Starting ViaMCP...");
-            ViaMCP viaMCP = ViaMCP.getInstance();
-            viaMCP.start();
-            viaMCP.initAsyncSlider(100, 100, 110, 20);
-        } catch (Exception e) {
-            e.printStackTrace();
+            ViaMCP.create();
+            ViaMCP.INSTANCE.initAsyncSlider();
+            ViaLoadingBase.getInstance().reload(ProtocolVersion.v1_12_2);
+        } catch (Throwable e) {
+            // e.printStackTrace();
         }
     }
 

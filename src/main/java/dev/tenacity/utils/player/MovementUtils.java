@@ -8,7 +8,7 @@ import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.network.play.client.C13PacketPlayerAbilities;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
-import org.lwjgl.util.vector.Vector2f;
+import org.lwjglx.util.vector.Vector2f;
 
 public class MovementUtils implements Utils {
 

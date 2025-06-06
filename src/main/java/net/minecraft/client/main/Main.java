@@ -9,9 +9,6 @@ import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Session;
-import store.intent.intentguard.annotation.ApiKey;
-import store.intent.intentguard.annotation.MainClass;
-
 import java.io.File;
 import java.net.Authenticator;
 import java.net.InetSocketAddress;
@@ -21,10 +18,7 @@ import java.net.Proxy.Type;
 import java.util.Arrays;
 import java.util.List;
 
-@MainClass
 public class Main {
-
-    @ApiKey
     public static String apiKey = "";
 
     public static void main(String[] p_main_0_) {

@@ -11,7 +11,8 @@ import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
 
-import static org.lwjglx.opengl.GL20.glUniform1;
+import static net.minecraft.client.renderer.OpenGlHelper.glUniform1;
+
 
 /**
  * @author cedo

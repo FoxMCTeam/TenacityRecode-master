@@ -1,6 +1,7 @@
 package dev.tenacity.utils.client.addons.api;
 
-import jdk.nashorn.api.scripting.ClassFilter;
+
+import org.bytedeco.javacpp.tools.ClassFilter;
 
 public class ScriptFilter implements ClassFilter {
 

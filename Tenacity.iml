@@ -9,9 +9,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="ffmpeg-6.1.1-1.5.10-windows-x86_64" level="project" />
-    <orderEntry type="library" name="lwjgl-freetype-natives-linux" level="project" />
-    <orderEntry type="library" name="authlib-1.5.21" level="project" />
-    <orderEntry type="library" name="ViaBackwards-5.2.0-downgraded" level="project" />
+    <orderEntry type="library" exported="" name="ffmpeg-6.1.1-1.5.10-windows-x86_64" level="project" />
+    <orderEntry type="library" exported="" name="lwjgl-freetype-natives-linux" level="project" />
+    <orderEntry type="library" exported="" name="authlib-1.5.21" level="project" />
+    <orderEntry type="library" exported="" name="ViaMCP-fix" level="project" />
   </component>
 </module>
