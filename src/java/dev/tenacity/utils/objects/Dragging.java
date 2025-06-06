@@ -19,23 +19,28 @@ import java.awt.*;
 import java.util.List;
 
 public class Dragging implements Utils {
-    private final Module module;
-    public float initialXVal;
-    public float initialYVal;
-    public Animation hoverAnimation = new DecelerateAnimation(250, 1, Direction.BACKWARDS);
     @Expose
     @SerializedName("x")
     private float xPos;
     @Expose
     @SerializedName("y")
     private float yPos;
+
+    public float initialXVal;
+    public float initialYVal;
+
     private float startX, startY;
     private boolean dragging;
+
     private float width, height;
+
     @Expose
     @SerializedName("name")
-    private final String name;
-    private String longestModule;
+    private String name;
+
+    private final Module module;
+
+    public Animation hoverAnimation = new DecelerateAnimation(250, 1, Direction.BACKWARDS);
 
     public Dragging(Module module, String name, float initialXVal, float initialYVal) {
         this.module = module;
@@ -54,21 +59,26 @@ public class Dragging implements Utils {
         return name;
     }
 
+
     public float getWidth() {
         return width;
     }
+
 
     public void setWidth(float width) {
         this.width = width;
     }
 
+
     public float getHeight() {
         return height;
     }
 
+
     public void setHeight(float height) {
         this.height = height;
     }
+
 
     public float getX() {
         return xPos;
@@ -78,6 +88,8 @@ public class Dragging implements Utils {
         this.xPos = x;
     }
 
+
+
     public float getY() {
         return yPos;
     }
@@ -85,6 +97,9 @@ public class Dragging implements Utils {
     public void setY(float y) {
         this.yPos = y;
     }
+
+
+    private String longestModule;
 
     public final void onDraw(int mouseX, int mouseY) {
         boolean hovering = HoveringUtil.isHovering(xPos, yPos, width, height, mouseX, mouseY);
@@ -95,7 +110,7 @@ public class Dragging implements Utils {
         hoverAnimation.setDirection(hovering ? Direction.FORWARDS : Direction.BACKWARDS);
         if (!hoverAnimation.isDone() || hoverAnimation.finished(Direction.FORWARDS)) {
             RoundedUtil.drawRoundOutline(xPos - 4, yPos - 4, width + 8, height + 8, 10, 2,
-                    ColorUtil.applyOpacity(Color.WHITE, 0), ColorUtil.applyOpacity(Color.WHITE, hoverAnimation.getOutput().floatValue()));
+                    ColorUtil.applyOpacity(Color.WHITE, 0), ColorUtil.applyOpacity(Color.WHITE, (float) hoverAnimation.getOutput().floatValue()));
         }
     }
 
@@ -109,7 +124,7 @@ public class Dragging implements Utils {
         width = (float) MathUtils.roundToHalf(arraylistMod.font.getStringWidth(longest) + 5);
         height = (float) MathUtils.roundToHalf((arraylistMod.height.getValue() + 1) * modules.size());
 
-        float textVal = arraylistMod.font.getStringWidth(longest);
+        float textVal = (float) arraylistMod.font.getStringWidth(longest);
         float xVal = sr.getScaledWidth() - (textVal + 8 + xPos);
 
         if (sr.getScaledWidth() - xPos <= sr.getScaledWidth() / 2f) {
@@ -126,7 +141,7 @@ public class Dragging implements Utils {
 
         if (!hoverAnimation.isDone() || hoverAnimation.finished(Direction.FORWARDS)) {
             RoundedUtil.drawRoundOutline(xVal, yPos - 8, width + 20, height + 16, 10, 2,
-                    ColorUtil.applyOpacity(Color.BLACK, 0f * hoverAnimation.getOutput().floatValue()), ColorUtil.applyOpacity(Color.WHITE, hoverAnimation.getOutput().floatValue()));
+                    ColorUtil.applyOpacity(Color.BLACK, (float) (0f * hoverAnimation.getOutput().floatValue())), ColorUtil.applyOpacity(Color.WHITE, (float) hoverAnimation.getOutput().floatValue()));
         }
 
     }
@@ -145,7 +160,7 @@ public class Dragging implements Utils {
 
         String longest = getLongestModule(arraylistMod);
 
-        float textVal = arraylistMod.font.getStringWidth(longest);
+        float textVal = (float) arraylistMod.font.getStringWidth(longest);
         float xVal = sr.getScaledWidth() - (textVal + 8 + xPos);
 
         if (sr.getScaledWidth() - xPos <= sr.getScaledWidth() / 2f) {
