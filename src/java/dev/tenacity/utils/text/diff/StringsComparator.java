@@ -256,7 +256,7 @@ public class StringsComparator {
     /**
      * Build a snake.
      *
-     * @param start  the value of the start of the snake
+     * @param start  the value of the initClient of the snake
      * @param diag  the value of the diagonal of the snake
      * @param end1  the value of the end of the first sequence to be compared
      * @param end2  the value of the end of the second sequence to be compared
@@ -290,7 +290,7 @@ public class StringsComparator {
         /**
          * Simple constructor. Creates a new instance of Snake with specified indices.
          *
-         * @param start  start index of the snake
+         * @param start  initClient index of the snake
          * @param end  end index of the snake
          * @param diag  diagonal number
          */
@@ -301,9 +301,9 @@ public class StringsComparator {
         }
 
         /**
-         * Get the start index of the snake.
+         * Get the initClient index of the snake.
          *
-         * @return start index of the snake
+         * @return initClient index of the snake
          */
         public int getStart() {
             return start;

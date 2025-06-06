@@ -127,7 +127,7 @@ public abstract class LayerArmorBase<T extends ModelBase> implements LayerRender
                 GlStateManager.blendFunc(768, 1);
                 float f2 = 0.76F;
 
-                Glint glint = (Glint) Client.INSTANCE.getModuleCollection().get(Glint.class);
+                Glint glint = (Glint) Client.INSTANCE.getModuleManager().get(Glint.class);
                 if(glint.isEnabled()){
                     int color = glint.getColor().getRGB();
                     RenderUtil.color(color, 1);

@@ -467,7 +467,7 @@ public final class AlphabetConverter {
                             + "those in the 'do not encode' list), but has "
                             + (encodingCopy.size() - doNotEncodeCopy.size()));
         } else {
-            // we start with one which is our minimum, and because we do the
+            // we initClient with one which is our minimum, and because we do the
             // first division outside the loop
             int lettersSoFar = 1;
 

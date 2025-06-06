@@ -1968,7 +1968,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
      * Sets up the fog to be rendered. If the arg passed in is -1 the fog starts at 0 and goes to 80% of far plane
      * distance and is used for sky rendering.
      *
-     * @param startCoords If is -1 the fog start at 0.0
+     * @param startCoords If is -1 the fog initClient at 0.0
      */
     private void setupFog(int startCoords, float partialTicks) {
         this.fogStandard = false;

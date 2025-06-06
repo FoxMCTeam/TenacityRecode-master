@@ -1,42 +1,33 @@
 package dev.tenacity.module;
 
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import dev.tenacity.Client;
-import dev.tenacity.commands.CommandHandler;
-import dev.tenacity.commands.impl.*;
-import dev.tenacity.config.ConfigManager;
-import dev.tenacity.config.DragManager;
 import dev.tenacity.module.impl.combat.*;
 import dev.tenacity.module.impl.display.*;
 import dev.tenacity.module.impl.exploit.*;
 import dev.tenacity.module.impl.misc.*;
 import dev.tenacity.module.impl.movement.*;
-import dev.tenacity.module.impl.player.Timer;
 import dev.tenacity.module.impl.player.*;
 import dev.tenacity.module.impl.render.*;
 import dev.tenacity.module.impl.render.killeffects.KillEffects;
 import dev.tenacity.module.impl.render.wings.DragonWings;
-import dev.tenacity.utils.client.addons.api.ScriptManager;
-import dev.tenacity.ui.altmanager.GuiAltManager;
-import dev.tenacity.utils.client.addons.viamcp.vialoadingbase.ViaLoadingBase;
-import dev.tenacity.utils.client.addons.viamcp.viamcp.ViaMCP;
 import dev.tenacity.utils.render.EntityCulling;
-import dev.tenacity.utils.render.Theme;
-import dev.tenacity.utils.server.PingerUtils;
-import net.minecraft.client.Minecraft;
-import java.io.File;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
-
-public class ProtectedLaunch {
-
-    private static final HashMap<Object, Module> modules = new HashMap<>();
-
-    public static void start() {
-        // Setup Intent API access
-        Client.INSTANCE.setModuleCollection(new ModuleCollection());
-
+public class ModuleManager {
+    public static boolean reloadModules;
+    @Setter
+    private HashMap<Object, Module> modules = new HashMap<>();
+    @Getter
+    private final List<Class<? extends Module>> hiddenModules = new ArrayList<>(Arrays.asList(ArrayListMod.class, NotificationsMod.class));
+    public void init() {
+        Client.INSTANCE.setModuleManager(new ModuleManager());
         // Combat
         modules.put(KillAura.class, new KillAura());
         modules.put(Velocity.class, new Velocity());
@@ -133,57 +124,52 @@ public class ProtectedLaunch {
         modules.put(EntityEffects.class, new EntityEffects());
         modules.put(Chams.class, new Chams());
         modules.put(BrightPlayers.class, new BrightPlayers());
-
-        Client.INSTANCE.getModuleCollection().setModules(modules);
-
-        Theme.init();
-
-        Client.INSTANCE.setPingerUtils(new PingerUtils());
-
-        Client.INSTANCE.setScriptManager(new ScriptManager());
-
-        CommandHandler commandHandler = new CommandHandler();
-        commandHandler.commands.addAll(Arrays.asList(
-                new FriendCommand(), new CopyNameCommand(), new BindCommand(), new UnbindCommand(),
-                new ScriptCommand(), new SettingCommand(), new HelpCommand(),
-                new VClipCommand(), new ClearBindsCommand(), new ClearConfigCommand(),
-                new ToggleCommand()
-        ));
-        Client.INSTANCE.setCommandHandler(commandHandler);
-        Client.INSTANCE.getEventManager().register(new BackgroundProcess());
-
-        Client.INSTANCE.setConfigManager(new ConfigManager());
-        ConfigManager.defaultConfig = new File(Minecraft.getMinecraft().mcDataDir + "/Tenacity/Config.json");
-        Client.INSTANCE.getConfigManager().collectConfigs();
-        if (ConfigManager.defaultConfig.exists()) {
-            Client.INSTANCE.getConfigManager().loadConfig(Client.INSTANCE.getConfigManager().readConfigData(ConfigManager.defaultConfig.toPath()), true);
-        }
-
-        DragManager.loadDragData();
-
-        Client.INSTANCE.setAltManager(new GuiAltManager());
-        Client.LOGGER.info("Trying download Background Video");
-        Client.INSTANCE.downloadBackGroundVideo();
-
-        Client.LOGGER.info("Initializing background...");
-        Client.INSTANCE.initVideoBackground();
-        try {
-            Client.LOGGER.info("Starting ViaMCP...");
-            ViaMCP.create();
-            ViaMCP.INSTANCE.initAsyncSlider();
-            ViaLoadingBase.getInstance().reload(ProtocolVersion.v1_12_2);
-        } catch (Throwable ignored) {
-        }
     }
 
-    @SafeVarargs
-    private static void addModules(Class<? extends Module>... classes) {
-        for (Class<? extends Module> moduleClass : classes) {
-            try {
-                modules.put(moduleClass, moduleClass.newInstance());
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
+    public List<Module> getModules() {
+        return new ArrayList<>(this.modules.values());
     }
+
+    public HashMap<Object, Module> getModuleMap() {
+        return modules;
+    }
+
+    public List<Module> getModulesInCategory(Category c) {
+        return this.modules.values().stream().filter(m -> m.getCategory() == c).collect(Collectors.toList());
+    }
+
+    public Module get(Class<? extends Module> mod) {
+        return this.modules.get(mod);
+    }
+
+    public <T extends Module> T getModule(Class<T> mod) {
+        return (T) this.modules.get(mod);
+    }
+
+    public List<Module> getModulesThatContainText(String text) {
+        return this.getModules().stream().filter(m -> m.getName().toLowerCase().contains(text.toLowerCase())).collect(Collectors.toList());
+    }
+
+    public Module getModuleByName(String name) {
+        return this.modules.values().stream().filter(m -> m.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+    }
+
+    public List<Module> getModulesContains(String text) {
+        return this.modules.values().stream().filter(m -> m.getName().toLowerCase().contains(text.toLowerCase())).collect(Collectors.toList());
+    }
+
+    public final List<Module> getToggledModules() {
+        return this.modules.values().stream().filter(Module::isEnabled).collect(Collectors.toList());
+    }
+
+    public final List<Module> getArraylistModules(ArrayListMod arraylistMod, List<Module> modules) {
+        return modules.stream().filter(module -> module.isEnabled() &&
+                !((module.getCategory() == Category.RENDER && arraylistMod.hideModules.isEnabled("Render")) ||
+                        (module.getCategory() == Category.DISPLAY && arraylistMod.hideModules.isEnabled("Display")) ||
+                        (module.getCategory() == Category.MISC && arraylistMod.hideModules.isEnabled("Misc")) ||
+                        (module.getCategory() == Category.COMBAT && arraylistMod.hideModules.isEnabled("Combat") ||
+                                (module.getCategory() == Category.PLAYER && arraylistMod.hideModules.isEnabled("Player")) ||
+                                (module.getCategory() == Category.MOVEMENT && arraylistMod.hideModules.isEnabled("Movement"))))).collect(Collectors.toList());
+    }
+
 }

@@ -3,7 +3,7 @@ package dev.tenacity.ui.clickguis.modern;
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
-import dev.tenacity.module.ModuleCollection;
+import dev.tenacity.module.ModuleManager;
 import dev.tenacity.module.impl.movement.InventoryMove;
 import dev.tenacity.module.impl.display.ClickGUIMod;
 import dev.tenacity.module.settings.Setting;
@@ -92,7 +92,7 @@ public class ModernClickGui extends GuiScreen {
 
         Client.INSTANCE.getSideGui().initGui();
         Client.INSTANCE.getSearchBar().initGui();
-        ClickGUIMod clickMod = Client.INSTANCE.getModuleCollection().getModule(ClickGUIMod.class);
+        ClickGUIMod clickMod = Client.INSTANCE.getModuleManager().getModule(ClickGUIMod.class);
         currentCategory = clickMod.getActiveCategory();
         categories.forEach(Component::initGui);
         openingAnimation = new DecelerateAnimation(300, 1);
@@ -121,7 +121,7 @@ public class ModernClickGui extends GuiScreen {
 
             Client.INSTANCE.getSearchBar().getOpenAnimation().setDirection(Direction.BACKWARDS);
             openingAnimation.setDirection(Direction.BACKWARDS);
-            ClickGUIMod clickMod = Client.INSTANCE.getModuleCollection().getModule(ClickGUIMod.class);
+            ClickGUIMod clickMod = Client.INSTANCE.getModuleManager().getModule(ClickGUIMod.class);
             clickMod.setActiveCategory(currentCategory);
         }
 
@@ -135,13 +135,13 @@ public class ModernClickGui extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        if (ModuleCollection.reloadModules || moduleRects == null) {
+        if (ModuleManager.reloadModules || moduleRects == null) {
             if (moduleRects == null) {
                 moduleRects = new HashMap<>();
             } else moduleRects.clear();
             for (Category category : Category.values()) {
                 ArrayList<ModuleRect> modules = new ArrayList<>();
-                for (Module module : Client.INSTANCE.getModuleCollection().getModulesInCategory(category)) {
+                for (Module module : Client.INSTANCE.getModuleManager().getModulesInCategory(category)) {
                     modules.add(new ModuleRect(module));
                 }
 
@@ -149,7 +149,7 @@ public class ModernClickGui extends GuiScreen {
             }
             moduleRects.forEach((cat, list) -> list.forEach(ModuleRect::initGui));
             modpanel.refreshSettingMap();
-            ModuleCollection.reloadModules = false;
+            ModuleManager.reloadModules = false;
             return;
         }
 

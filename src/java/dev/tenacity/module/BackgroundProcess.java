@@ -23,12 +23,12 @@ import java.util.Arrays;
 
 public class BackgroundProcess implements Utils {
 
-    private final Scaffold scaffold = (Scaffold) Client.INSTANCE.getModuleCollection().get(Scaffold.class);
+    private final Scaffold scaffold = (Scaffold) Client.INSTANCE.getModuleManager().get(Scaffold.class);
 
     @EventTarget
     public void onKeyPressEvent(KeyPressEvent event) {
         // We should probably have a static arraylist of all the modules instead of creating a new on in getModules()
-        for (Module module : Client.INSTANCE.getModuleCollection().getModules()) {
+        for (Module module : Client.INSTANCE.getModuleManager().getModules()) {
             if (module.getKeybind().getCode() == event.getKey()) {
                 module.toggle();
             }

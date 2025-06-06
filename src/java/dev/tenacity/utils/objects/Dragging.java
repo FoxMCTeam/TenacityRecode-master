@@ -117,7 +117,7 @@ public class Dragging implements Utils {
     public final void onDrawArraylist(ArrayListMod arraylistMod, int mouseX, int mouseY) {
         ScaledResolution sr = new ScaledResolution(mc);
 
-        List<Module> modules = Client.INSTANCE.getModuleCollection().getArraylistModules(arraylistMod, arraylistMod.modules);
+        List<Module> modules = Client.INSTANCE.getModuleManager().getArraylistModules(arraylistMod, arraylistMod.modules);
 
         String longest = getLongestModule(arraylistMod);
 

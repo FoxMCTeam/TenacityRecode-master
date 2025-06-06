@@ -82,7 +82,7 @@ public class TargetHUDMod extends Module {
 
 
         if (killAura == null) {
-            killAura = (KillAura) Client.INSTANCE.getModuleCollection().get(KillAura.class);
+            killAura = (KillAura) Client.INSTANCE.getModuleManager().get(KillAura.class);
         }
 
         AutoDoxTargetHUD autoDoxTargetHud = TargetHUD.get(AutoDoxTargetHUD.class);

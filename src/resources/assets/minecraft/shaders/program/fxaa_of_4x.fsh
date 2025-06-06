@@ -154,7 +154,7 @@ FxaaFloat4 FxaaPixelShader(
     //   As colors that are mostly not-green
     //   will appear very dark in the green channel!
     //   Tune by looking at mostly non-green content,
-    //   then start at zero and increase until aliasing is a problem.
+    //   then initClient at zero and increase until aliasing is a problem.
     FxaaFloat fxaaConsoleEdgeThresholdMin
 ) {
 /*--------------------------------------------------------------------------*/

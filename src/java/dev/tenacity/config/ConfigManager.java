@@ -88,7 +88,7 @@ public class ConfigManager {
     }
 
     public String serialize() {
-        for (Module module : Client.INSTANCE.getModuleCollection().getModules()) {
+        for (Module module : Client.INSTANCE.getModuleManager().getModules()) {
             if (module.getCategory().equals(Category.SCRIPTS)) continue;
             List<ConfigSetting> settings = new ArrayList<>();
             for (Setting setting : module.getSettingsList()) {
@@ -99,7 +99,7 @@ public class ConfigManager {
             }
             module.cfgSettings = settings.toArray(new ConfigSetting[0]);
         }
-        return gson.toJson(Client.INSTANCE.getModuleCollection().getModules());
+        return gson.toJson(Client.INSTANCE.getModuleManager().getModules());
     }
 
     public String readConfigData(Path configPath) {
@@ -118,7 +118,7 @@ public class ConfigManager {
     public boolean loadConfig(String data, boolean keybinds) {
         Module[] modules = gson.fromJson(data, Module[].class);
 
-        for (Module module : Client.INSTANCE.getModuleCollection().getModules()) {
+        for (Module module : Client.INSTANCE.getModuleManager().getModules()) {
             if (!keybinds) {
                 if (!loadVisuals && module.getCategory().equals(Category.RENDER)) continue;
             }

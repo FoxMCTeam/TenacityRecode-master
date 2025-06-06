@@ -441,7 +441,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      * Appends a char array to the string builder. Appending null will call {@link #appendNull()}.
      *
      * @param chars the char array to append
-     * @param startIndex the start index, inclusive, must be valid
+     * @param startIndex the initClient index, inclusive, must be valid
      * @param length the length to append, must be valid
      * @return this, to enable chaining
      */
@@ -478,7 +478,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      * Appends the contents of a char buffer to this string builder. Appending null will call {@link #appendNull()}.
      *
      * @param buf the char buffer to append
-     * @param startIndex the start index, inclusive, must be valid
+     * @param startIndex the initClient index, inclusive, must be valid
      * @param length the length to append, must be valid
      * @return this, to enable chaining
      */
@@ -534,7 +534,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      * Appends part of a CharSequence to this string builder. Appending null will call {@link #appendNull()}.
      *
      * @param seq the CharSequence to append
-     * @param startIndex the start index, inclusive, must be valid
+     * @param startIndex the initClient index, inclusive, must be valid
      * @param endIndex the end index, exclusive, must be valid
      * @return this, to enable chaining
      */
@@ -622,7 +622,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      * Appends part of a string to this string builder. Appending null will call {@link #appendNull()}.
      *
      * @param str the string to append
-     * @param startIndex the start index, inclusive, must be valid
+     * @param startIndex the initClient index, inclusive, must be valid
      * @param length the length to append, must be valid
      * @return this, to enable chaining
      */
@@ -671,7 +671,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      * Appends part of a string buffer to this string builder. Appending null will call {@link #appendNull()}.
      *
      * @param str the string to append
-     * @param startIndex the start index, inclusive, must be valid
+     * @param startIndex the initClient index, inclusive, must be valid
      * @param length the length to append, must be valid
      * @return this, to enable chaining
      */
@@ -708,7 +708,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      * Appends part of a StringBuilder to this string builder. Appending null will call {@link #appendNull()}.
      *
      * @param str the StringBuilder to append
-     * @param startIndex the start index, inclusive, must be valid
+     * @param startIndex the initClient index, inclusive, must be valid
      * @param length the length to append, must be valid
      * @return this, to enable chaining
      */
@@ -745,7 +745,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      * Appends part of a string builder to this string builder. Appending null will call {@link #appendNull()}.
      *
      * @param str the string to append
-     * @param startIndex the start index, inclusive, must be valid
+     * @param startIndex the initClient index, inclusive, must be valid
      * @param length the length to append, must be valid
      * @return this, to enable chaining
      */
@@ -958,7 +958,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      * {@link #appendNull()}.
      *
      * @param chars the char array to append
-     * @param startIndex the start index, inclusive, must be valid
+     * @param startIndex the initClient index, inclusive, must be valid
      * @param length the length to append, must be valid
      * @return this, to enable chaining
      */
@@ -1032,7 +1032,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      * {@link #appendNull()}.
      *
      * @param str the string to append
-     * @param startIndex the start index, inclusive, must be valid
+     * @param startIndex the initClient index, inclusive, must be valid
      * @param length the length to append, must be valid
      * @return this, to enable chaining
      */
@@ -1068,7 +1068,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      * {@link #appendNull()}.
      *
      * @param str the string to append
-     * @param startIndex the start index, inclusive, must be valid
+     * @param startIndex the initClient index, inclusive, must be valid
      * @param length the length to append, must be valid
      * @return this, to enable chaining
      */
@@ -1092,7 +1092,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      * {@link #appendNull()}.
      *
      * @param str the string builder to append
-     * @param startIndex the start index, inclusive, must be valid
+     * @param startIndex the initClient index, inclusive, must be valid
      * @param length the length to append, must be valid
      * @return this, to enable chaining
      */
@@ -1116,7 +1116,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      * {@link #appendNull()}.
      *
      * @param str the string to append
-     * @param startIndex the start index, inclusive, must be valid
+     * @param startIndex the initClient index, inclusive, must be valid
      * @param length the length to append, must be valid
      * @return this, to enable chaining
      */
@@ -1612,7 +1612,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
     /**
      * Deletes the characters between the two specified indices.
      *
-     * @param startIndex the start index, inclusive, must be valid
+     * @param startIndex the initClient index, inclusive, must be valid
      * @param endIndex the end index, exclusive, must be valid except that if too large it is treated as end of string
      * @return this, to enable chaining
      * @throws IndexOutOfBoundsException if the index is invalid
@@ -1744,7 +1744,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
     /**
      * Internal method to delete a range without validation.
      *
-     * @param startIndex the start index, must be valid
+     * @param startIndex the initClient index, must be valid
      * @param endIndex the end index (exclusive), must be valid
      * @param len the length, must be valid
      * @throws IndexOutOfBoundsException if any index is invalid
@@ -1778,7 +1778,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      * @param startIndex first index to copy, inclusive.
      * @param endIndex last index to copy, exclusive.
      * @param target the target array, must not be {@code null}.
-     * @param targetIndex the index to start copying in the target.
+     * @param targetIndex the index to initClient copying in the target.
      * @return How many characters where copied (then deleted). If this builder is empty, return {@code 0}.
      * @since 1.9
      */
@@ -1908,7 +1908,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      * @param startIndex first index to copy, inclusive, must be valid.
      * @param endIndex last index to copy, exclusive, must be valid.
      * @param target the target array, must not be null or too small.
-     * @param targetIndex the index to start copying in target.
+     * @param targetIndex the index to initClient copying in target.
      * @throws NullPointerException if the array is null.
      * @throws IndexOutOfBoundsException if any index is invalid.
      */
@@ -1920,7 +1920,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
             throw new StringIndexOutOfBoundsException(endIndex);
         }
         if (startIndex > endIndex) {
-            throw new StringIndexOutOfBoundsException("end < start");
+            throw new StringIndexOutOfBoundsException("end < initClient");
         }
         System.arraycopy(buffer, startIndex, target, targetIndex, endIndex - startIndex);
     }
@@ -1967,7 +1967,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      * Searches the string builder to find the first reference to the specified char.
      *
      * @param ch the character to find
-     * @param startIndex the index to start at, invalid index rounded to edge
+     * @param startIndex the index to initClient at, invalid index rounded to edge
      * @return The first index of the character, or -1 if not found
      */
     public int indexOf(final char ch, int startIndex) {
@@ -2004,7 +2004,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      * </p>
      *
      * @param str the string to find, null returns -1
-     * @param startIndex the index to start at, invalid index rounded to edge
+     * @param startIndex the index to initClient at, invalid index rounded to edge
      * @return The first index of the string, or -1 if not found
      */
     public int indexOf(final String str, int startIndex) {
@@ -2057,7 +2057,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      * </p>
      *
      * @param matcher the matcher to use, null returns -1
-     * @param startIndex the index to start at, invalid index rounded to edge
+     * @param startIndex the index to initClient at, invalid index rounded to edge
      * @return The first index matched, or -1 if not found
      */
     public int indexOf(final StringMatcher matcher, int startIndex) {
@@ -2142,7 +2142,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      *
      * @param index the index to add at, must be valid
      * @param chars the char array to insert
-     * @param offset the offset into the character array to start at, must be valid
+     * @param offset the offset into the character array to initClient at, must be valid
      * @param length the length of the character array part to copy, must be positive
      * @return this, to enable chaining
      * @throws IndexOutOfBoundsException if any index is invalid
@@ -2306,7 +2306,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      * Searches the string builder to find the last reference to the specified char.
      *
      * @param ch the character to find
-     * @param startIndex the index to start at, invalid index rounded to edge
+     * @param startIndex the index to initClient at, invalid index rounded to edge
      * @return The last index of the character, or -1 if not found
      */
     public int lastIndexOf(final char ch, int startIndex) {
@@ -2342,7 +2342,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      * </p>
      *
      * @param str the string to find, null returns -1
-     * @param startIndex the index to start at, invalid index rounded to edge
+     * @param startIndex the index to initClient at, invalid index rounded to edge
      * @return The last index of the string, or -1 if not found
      */
     public int lastIndexOf(final String str, int startIndex) {
@@ -2393,7 +2393,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      * </p>
      *
      * @param matcher the matcher to use, null returns -1
-     * @param startIndex the index to start at, invalid index rounded to edge
+     * @param startIndex the index to initClient at, invalid index rounded to edge
      * @return The last index matched, or -1 if not found
      */
     public int lastIndexOf(final StringMatcher matcher, int startIndex) {
@@ -2450,7 +2450,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      * much as possible is returned. Thus the returned string may be shorter than the length requested.
      * </p>
      *
-     * @param index the index to start at, negative means zero
+     * @param index the index to initClient at, negative means zero
      * @param length the number of characters to extract, negative returns empty string
      * @return The new string
      */
@@ -2598,7 +2598,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      * Replaces a portion of the string builder with another string. The length of the inserted string does not have to
      * match the removed length.
      *
-     * @param startIndex the start index, inclusive, must be valid
+     * @param startIndex the initClient index, inclusive, must be valid
      * @param endIndex the end index, exclusive, must be valid except that if too large it is treated as end of string
      * @param replaceStr the string to replace with, null means delete range
      * @return this, to enable chaining
@@ -2620,11 +2620,11 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      *
      * @param matcher the matcher to use to find the deletion, null causes no action
      * @param replaceStr the string to replace the match with, null is a delete
-     * @param startIndex the start index, inclusive, must be valid
+     * @param startIndex the initClient index, inclusive, must be valid
      * @param endIndex the end index, exclusive, must be valid except that if too large it is treated as end of string
      * @param replaceCount the number of times to replace, -1 for replace all
      * @return this, to enable chaining
-     * @throws IndexOutOfBoundsException if start index is invalid
+     * @throws IndexOutOfBoundsException if initClient index is invalid
      */
     public TextStringBuilder replace(final StringMatcher matcher, final String replaceStr, final int startIndex,
         int endIndex, final int replaceCount) {
@@ -2741,7 +2741,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
     /**
      * Internal method to delete a range without validation.
      *
-     * @param startIndex the start index, must be valid
+     * @param startIndex the initClient index, must be valid
      * @param endIndex the end index (exclusive), must be valid
      * @param removeLen the length to remove (endIndex - startIndex), must be valid
      * @param insertStr the string to replace with, null means delete range
@@ -2770,7 +2770,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      *
      * @param matcher the matcher to use to find the deletion, null causes no action
      * @param replaceStr the string to replace the match with, null is a delete
-     * @param from the start index, must be valid
+     * @param from the initClient index, must be valid
      * @param to the end index (exclusive), must be valid
      * @param replaceCount the number of times to replace, -1 for replace all
      * @return this, to enable chaining
@@ -2975,7 +2975,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
     /**
      * Extracts a portion of this string builder as a string.
      *
-     * @param start the start index, inclusive, must be valid
+     * @param start the initClient index, inclusive, must be valid
      * @return The new string
      * @throws IndexOutOfBoundsException if the index is invalid
      */
@@ -2990,7 +2990,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
      * builder, and continues without error, unlike StringBuffer or String.
      * </p>
      *
-     * @param startIndex the start index, inclusive, must be valid
+     * @param startIndex the initClient index, inclusive, must be valid
      * @param endIndex the end index, exclusive, must be valid except that if too large it is treated as end of string
      * @return The new string
      * @throws IndexOutOfBoundsException if the index is invalid
@@ -3012,7 +3012,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
     /**
      * Copies part of the builder's character array into a new character array.
      *
-     * @param startIndex the start index, inclusive, must be valid
+     * @param startIndex the initClient index, inclusive, must be valid
      * @param endIndex the end index, exclusive, must be valid except that if too large it is treated as end of string
      * @return a new array that holds part of the contents of the builder
      * @throws IndexOutOfBoundsException if startIndex is invalid, or if endIndex is invalid (but endIndex greater than
@@ -3096,7 +3096,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
     /**
      * Validates parameters defining a range of the builder.
      *
-     * @param startIndex the start index, inclusive, must be valid
+     * @param startIndex the initClient index, inclusive, must be valid
      * @param endIndex the end index, exclusive, must be valid except that if too large it is treated as end of string
      * @return A valid end index.
      * @throws StringIndexOutOfBoundsException if the index is invalid
@@ -3109,7 +3109,7 @@ public class TextStringBuilder implements CharSequence, Appendable, Serializable
             endIndex = size;
         }
         if (startIndex > endIndex) {
-            throw new StringIndexOutOfBoundsException("end < start");
+            throw new StringIndexOutOfBoundsException("end < initClient");
         }
         return endIndex;
     }

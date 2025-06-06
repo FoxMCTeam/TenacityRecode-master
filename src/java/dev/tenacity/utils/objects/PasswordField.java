@@ -51,7 +51,7 @@ public class PasswordField extends Gui {
      */
     private boolean isEnabled = true;
     /**
-     * The current character index that should be used as start of the rendered text.
+     * The current character index that should be used as initClient of the rendered text.
      */
     private int lineScrollOffset;
     private int cursorPosition;

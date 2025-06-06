@@ -136,7 +136,7 @@ public class GuiAltManager extends GuiScreen {
         filterBanned.drawScreen(mouseX, mouseY);
         /* End filter banned button */
 
-        Client.INSTANCE.getModuleCollection().getModule(NotificationsMod.class).render();
+        Client.INSTANCE.getModuleManager().getModule(NotificationsMod.class).render();
         if (Alt.stage != 0) {
             AltPanel.loadingAltRect = null;
         }

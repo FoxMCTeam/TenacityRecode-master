@@ -3,7 +3,7 @@ package dev.tenacity.ui.clickguis.modern;
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
-import dev.tenacity.module.ModuleCollection;
+import dev.tenacity.module.ModuleManager;
 import dev.tenacity.module.impl.display.ClickGUIMod;
 import dev.tenacity.ui.clickguis.modern.components.ModuleRect;
 import dev.tenacity.utils.animations.Animation;
@@ -54,9 +54,9 @@ public class ModulesPanel extends Panel {
     }
 
     public void refreshSettingMap() {
-        if (settingsPanelHashMap == null || ModuleCollection.reloadModules) {
+        if (settingsPanelHashMap == null || ModuleManager.reloadModules) {
             settingsPanelHashMap = new HashMap<>();
-            for (Module module : Client.INSTANCE.getModuleCollection().getModules()) {
+            for (Module module : Client.INSTANCE.getModuleManager().getModules()) {
                 SettingsPanel settingsPanel = new SettingsPanel(module);
                 settingsPanel.initGui();
                 settingsPanelHashMap.put(module, settingsPanel);
@@ -79,9 +79,9 @@ public class ModulesPanel extends Panel {
     @Override
     public void drawScreen(int mouseX, int mouseY) {
         typing = false;
-        if (ModuleCollection.reloadModules) {
+        if (ModuleManager.reloadModules) {
             initGui();
-            ModuleCollection.reloadModules = false;
+            ModuleManager.reloadModules = false;
             return;
         }
 

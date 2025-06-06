@@ -35,7 +35,7 @@ public class ClientBinding {
     }
 
     public EntityLivingBase getAuraTarget() {
-        KillAura killAura = Client.INSTANCE.getModuleCollection().getModule(KillAura.class);
+        KillAura killAura = Client.INSTANCE.getModuleManager().getModule(KillAura.class);
         return KillAura.target;
     }
 
@@ -57,7 +57,7 @@ public class ClientBinding {
 
 
     public Module getModule(String moduleName) {
-        Module module = Client.INSTANCE.getModuleCollection().getModuleByName(moduleName);
+        Module module = Client.INSTANCE.getModuleManager().getModuleByName(moduleName);
         if (module != null) {
             return module;
         } else {

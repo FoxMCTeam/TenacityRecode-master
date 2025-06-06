@@ -57,7 +57,7 @@ public class CommandDebug extends CommandBase
         }
         else
         {
-            if (args[0].equals("start"))
+            if (args[0].equals("initClient"))
             {
                 if (args.length != 1)
                 {
@@ -188,6 +188,6 @@ public class CommandDebug extends CommandBase
 
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos)
     {
-        return args.length == 1 ? getListOfStringsMatchingLastWord(args, new String[] {"start", "stop"}): null;
+        return args.length == 1 ? getListOfStringsMatchingLastWord(args, new String[] {"initClient", "stop"}): null;
     }
 }

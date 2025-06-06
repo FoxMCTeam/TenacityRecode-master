@@ -2,7 +2,7 @@ package dev.tenacity.ui.clickguis.compact;
 
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
-import dev.tenacity.module.ModuleCollection;
+import dev.tenacity.module.ModuleManager;
 import dev.tenacity.ui.Screen;
 import dev.tenacity.ui.clickguis.compact.impl.ModuleRect;
 import dev.tenacity.utils.misc.HoveringUtil;
@@ -43,9 +43,9 @@ public class ModulePanel implements Screen {
     @Override
     public void drawScreen(int mouseX, int mouseY) {
         typing = false;
-        if (ModuleCollection.reloadModules) {
+        if (ModuleManager.reloadModules) {
             initGui();
-            ModuleCollection.reloadModules = false;
+            ModuleManager.reloadModules = false;
             return;
         }
 

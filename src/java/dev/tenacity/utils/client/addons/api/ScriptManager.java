@@ -3,7 +3,7 @@ package dev.tenacity.utils.client.addons.api;
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
-import dev.tenacity.module.ModuleCollection;
+import dev.tenacity.module.ModuleManager;
 import dev.tenacity.ui.notifications.NotificationManager;
 import dev.tenacity.ui.notifications.NotificationType;
 import dev.tenacity.utils.Utils;
@@ -28,7 +28,7 @@ public class ScriptManager implements Utils {
     }
 
     public void reloadScripts() {
-        HashMap<Object, Module> moduleList = Client.INSTANCE.getModuleCollection().getModuleMap();
+        HashMap<Object, Module> moduleList = Client.INSTANCE.getModuleManager().getModuleMap();
 
         scripts.removeIf(Script::isReloadable);
 
@@ -67,7 +67,7 @@ public class ScriptManager implements Utils {
         });
 
 
-        ModuleCollection.reloadModules = true;
+        ModuleManager.reloadModules = true;
         //ScriptPanel.reInit = true;
         NotificationManager.post(NotificationType.SUCCESS, "Script Manager", "Local scripts loaded");
     }

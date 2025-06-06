@@ -175,7 +175,7 @@ public class HUDMod extends Module {
         ScaledResolution sr = new ScaledResolution(mc);
         Pair<Color, Color> clientColors = getClientColors();
         String name = Client.NAME;
-        PostProcessing postProcessing = Client.INSTANCE.getModuleCollection().getModule(PostProcessing.class);
+        PostProcessing postProcessing = Client.INSTANCE.getModuleManager().getModule(PostProcessing.class);
         if (!postProcessing.isEnabled()) {
             version = false;
         }
@@ -539,14 +539,14 @@ public class HUDMod extends Module {
 
     public static void updateButtonStatus() {
         for (ModuleButton mb : ModuleButton.values()) {
-            mb.getButton().enabled = Client.INSTANCE.getModuleCollection().getModule(mb.getModule()).isEnabled();
+            mb.getButton().enabled = Client.INSTANCE.getModuleManager().getModule(mb.getModule()).isEnabled();
         }
     }
 
     public static void handleActionPerformed(GuiButton button) {
         for (ModuleButton mb : ModuleButton.values()) {
             if (mb.getButton() == button) {
-                Module m = Client.INSTANCE.getModuleCollection().getModule(mb.getModule());
+                Module m = Client.INSTANCE.getModuleManager().getModule(mb.getModule());
                 if (m.isEnabled()) {
                     m.toggle();
                 }

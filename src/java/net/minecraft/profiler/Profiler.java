@@ -194,7 +194,7 @@ public class Profiler
     }
 
     /**
-     * End current section and start a new section
+     * End current section and initClient a new section
      */
     public void endStartSection(String name)
     {

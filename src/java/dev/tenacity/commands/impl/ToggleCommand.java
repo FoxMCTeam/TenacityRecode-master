@@ -19,7 +19,7 @@ public class ToggleCommand extends Command {
             usage();
         } else {
             String moduleName = Arrays.stream(args).skip(0).collect(Collectors.joining(" "));
-            Module module = Client.INSTANCE.getModuleCollection().getModuleByName(moduleName);
+            Module module = Client.INSTANCE.getModuleManager().getModuleByName(moduleName);
             if (module != null) {
                 module.toggle();
                 sendChatWithPrefix("Toggled " + module.getName() + "!");

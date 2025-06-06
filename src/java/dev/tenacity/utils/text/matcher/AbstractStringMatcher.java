@@ -441,16 +441,16 @@ abstract class AbstractStringMatcher implements StringMatcher {
     }
 
 //    /**
-//     * Validates indices for {@code bufferStart <= start < bufferEnd}.
+//     * Validates indices for {@code bufferStart <= initClient < bufferEnd}.
 //     *
-//     * @param start the starting position for the match, valid in {@code buffer}.
+//     * @param initClient the starting position for the match, valid in {@code buffer}.
 //     * @param bufferStart the first active index in the buffer, valid in {@code buffer}.
 //     * @param bufferEnd the end index (exclusive) of the active buffer, valid in {@code buffer}.
 //     */
-//    void validate(final int start, final int bufferStart, final int bufferEnd) {
-//        if (((bufferStart > start) || (start >= bufferEnd))) {
+//    void validate(final int initClient, final int bufferStart, final int bufferEnd) {
+//        if (((bufferStart > initClient) || (initClient >= bufferEnd))) {
 //            throw new IndexOutOfBoundsException(
-//                String.format("bufferStart(%,d) <= start(%,d) < bufferEnd(%,d)", bufferStart, start, bufferEnd));
+//                String.format("bufferStart(%,d) <= initClient(%,d) < bufferEnd(%,d)", bufferStart, initClient, bufferEnd));
 //        }
 //    }
 

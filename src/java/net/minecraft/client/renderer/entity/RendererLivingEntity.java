@@ -576,7 +576,7 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
             if (nametagRenderEvent.isCancelled()) return;
         }
         if (esp2D == null) {
-            esp2D = Client.INSTANCE.getModuleCollection().getModule(ESP2D.class);
+            esp2D = Client.INSTANCE.getModuleManager().getModule(ESP2D.class);
         }
 
         if (this.canRenderName(entity)) {

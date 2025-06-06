@@ -61,7 +61,7 @@ public class ChestStealer extends Module {
     public void onMotionEvent(MotionEvent e) {
         if (e.isPre()) {
             setSuffix(smart.isEnabled() ? "Smart" : null);
-            if (invManager == null) invManager = Client.INSTANCE.getModuleCollection().getModule(InvManager.class);
+            if (invManager == null) invManager = Client.INSTANCE.getModuleManager().getModule(InvManager.class);
             if (aura.isEnabled()) {
                 final int radius = auraRange.getValue().intValue();
                 for (int x = -radius; x < radius; x++) {

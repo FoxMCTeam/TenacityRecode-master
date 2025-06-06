@@ -72,7 +72,7 @@ public class PostProcessing extends Module {
         RenderUtil.resetColor();
         mc.ingameGUI.renderScoreboardBlur(sr);
         RenderUtil.resetColor();
-        NotificationsMod notificationsMod = Client.INSTANCE.getModuleCollection().getModule(NotificationsMod.class);
+        NotificationsMod notificationsMod = Client.INSTANCE.getModuleManager().getModule(NotificationsMod.class);
         if (notificationsMod.isEnabled()) {
             notificationsMod.renderEffects(glowOptions.getSetting("Notifications").isEnabled());
         }

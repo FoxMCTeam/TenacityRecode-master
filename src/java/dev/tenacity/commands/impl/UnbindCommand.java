@@ -18,7 +18,7 @@ public final class UnbindCommand extends Command {
         } else {
             String stringMod = args[0];
             try {
-                Module module = Client.INSTANCE.getModuleCollection().getModuleByName(stringMod);
+                Module module = Client.INSTANCE.getModuleManager().getModuleByName(stringMod);
                 module.getKeybind().setCode(Keyboard.KEY_NONE);
                 sendChatWithPrefix("Set keybind for " + module.getName() + " to NONE");
             } catch (Exception e) {

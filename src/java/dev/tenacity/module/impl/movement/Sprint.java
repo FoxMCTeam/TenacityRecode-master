@@ -19,7 +19,7 @@ public class Sprint extends Module {
 
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
-        if (Client.INSTANCE.getModuleCollection().get(Scaffold.class).isEnabled() && (!Scaffold.sprint.isEnabled() || Scaffold.isDownwards())) {
+        if (Client.INSTANCE.getModuleManager().get(Scaffold.class).isEnabled() && (!Scaffold.sprint.isEnabled() || Scaffold.isDownwards())) {
             mc.gameSettings.keyBindSprint.pressed = false;
             mc.thePlayer.setSprinting(false);
             return;

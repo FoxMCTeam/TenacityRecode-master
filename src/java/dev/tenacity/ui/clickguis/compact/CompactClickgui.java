@@ -3,7 +3,7 @@ package dev.tenacity.ui.clickguis.compact;
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
-import dev.tenacity.module.ModuleCollection;
+import dev.tenacity.module.ModuleManager;
 import dev.tenacity.module.impl.movement.InventoryMove;
 import dev.tenacity.module.impl.display.ClickGUIMod;
 import dev.tenacity.module.settings.Setting;
@@ -102,20 +102,20 @@ public class CompactClickgui extends GuiScreen {
     private final List<ModuleRect> searchResults = new ArrayList<>();
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        if (ModuleCollection.reloadModules || moduleRects == null) {
+        if (ModuleManager.reloadModules || moduleRects == null) {
             if (moduleRects == null) {
                 moduleRects = new HashMap<>();
             } else moduleRects.clear();
             for (Category category : Category.values()) {
                 ArrayList<ModuleRect> modules = new ArrayList<>();
-                for (Module module : Client.INSTANCE.getModuleCollection().getModulesInCategory(category)) {
+                for (Module module : Client.INSTANCE.getModuleManager().getModulesInCategory(category)) {
                     modules.add(new ModuleRect(module));
                 }
 
                 moduleRects.put(category, modules);
             }
             moduleRects.forEach((cat, list) -> list.forEach(ModuleRect::initGui));
-            ModuleCollection.reloadModules = false;
+            ModuleManager.reloadModules = false;
             return;
         }
 
@@ -166,7 +166,7 @@ public class CompactClickgui extends GuiScreen {
         Gui.drawRect2(x + 5, y + rectHeight - (bannerHeight + 3), 80, .5, new Color(110, 110, 110).getRGB());
 
         float minus = (bannerHeight + 3) + 33;
-        ClickGUIMod clickGUIMod = Client.INSTANCE.getModuleCollection().getModule(ClickGUIMod.class);
+        ClickGUIMod clickGUIMod = Client.INSTANCE.getModuleManager().getModule(ClickGUIMod.class);
         float catHeight = ((rectHeight - minus) / (Category.values().length));
         float seperation = 0;
         for (Category category : Category.values()) {
@@ -218,7 +218,7 @@ public class CompactClickgui extends GuiScreen {
             float bannerWidth = 180 / 2f;
             float bannerHeight = 75 / 2f;
 
-            ClickGUIMod clickGUIMod = Client.INSTANCE.getModuleCollection().getModule(ClickGUIMod.class);
+            ClickGUIMod clickGUIMod = Client.INSTANCE.getModuleManager().getModule(ClickGUIMod.class);
 
             //If hovering the discord thing lol
             if (HoveringUtil.isHovering(drag.getX(), drag.getY() + rectHeight - bannerHeight, bannerWidth, bannerHeight, mouseX, mouseY)) {

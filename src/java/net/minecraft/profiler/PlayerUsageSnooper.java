@@ -45,7 +45,7 @@ public class PlayerUsageSnooper
     }
 
     /**
-     * Note issuing start multiple times is not an error.
+     * Note issuing initClient multiple times is not an error.
      */
     public void startSnooper()
     {

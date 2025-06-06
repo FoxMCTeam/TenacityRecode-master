@@ -64,7 +64,7 @@ public class AutoAuthenticate extends Module {
     public void onRender2DEvent(Render2DEvent event) {
         if ((this.runAt > System.currentTimeMillis() && this.runCommand != null) || !animation.isDone()) {
             if (hudMod == null) {
-                hudMod = Client.INSTANCE.getModuleCollection().getModule(HUDMod.class);
+                hudMod = Client.INSTANCE.getModuleManager().getModule(HUDMod.class);
             }
             ScaledResolution sr = new ScaledResolution(mc);
             float width = 120, height = 5, width2 = width / 2.0F;

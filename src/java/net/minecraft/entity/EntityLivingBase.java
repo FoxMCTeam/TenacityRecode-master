@@ -1201,7 +1201,7 @@ public abstract class EntityLivingBase extends Entity {
      * progress indicator. Takes dig speed enchantments into account.
      */
     private int getArmSwingAnimationEnd() {
-        return (Client.INSTANCE.getModuleCollection().get(Animations.class).isEnabled() ? Animations.slowdown.getValue().intValue() : 1)
+        return (Client.INSTANCE.getModuleManager().get(Animations.class).isEnabled() ? Animations.slowdown.getValue().intValue() : 1)
                 * (this.isPotionActive(Potion.digSpeed)
                 ? 6 - (1 + this.getActivePotionEffect(Potion.digSpeed).getAmplifier())
                 : (this.isPotionActive(Potion.digSlowdown) ? 6 + (1 + this.getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2 : 6));
@@ -1722,7 +1722,7 @@ public abstract class EntityLivingBase extends Entity {
 
     /**
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
+     * use this to react to sunlight and initClient to burn.
      */
     public void onLivingUpdate() {
         if (this.jumpTicks > 0) {

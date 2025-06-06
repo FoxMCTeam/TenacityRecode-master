@@ -18,7 +18,6 @@ import com.cubk.event.impl.player.BlockPlaceableEvent;
 import com.cubk.event.impl.player.ClickEvent;
 import com.cubk.event.impl.player.ClickEventRight;
 import dev.tenacity.module.impl.display.ClickGUIMod;
-import dev.tenacity.module.ProtectedLaunch;
 import dev.tenacity.ui.SplashScreen;
 import dev.tenacity.ui.clickguis.dropdown.DropdownClickGUI;
 import dev.tenacity.ui.mainmenu.CustomMainMenu;
@@ -522,7 +521,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         this.ingameGUI = new GuiIngame(this);
 
 
-        ProtectedLaunch.start();
+        Client.INSTANCE.initClient();
 
         SplashScreen.continueCount(false);
 

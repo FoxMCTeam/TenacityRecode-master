@@ -4,7 +4,7 @@ import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
-import dev.tenacity.module.ModuleCollection;
+import dev.tenacity.module.ModuleManager;
 import dev.tenacity.module.impl.display.ClickGUIMod;
 import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.module.impl.display.PostProcessing;
@@ -49,7 +49,7 @@ public class CategoryPanel implements Screen {
     public void initGui() {
         if (moduleRects == null) {
             moduleRects = new ArrayList<>();
-            for (Module module : Client.INSTANCE.getModuleCollection().getModulesInCategory(category).stream().sorted(Comparator.comparing(Module::getName)).collect(Collectors.toList())) {
+            for (Module module : Client.INSTANCE.getModuleManager().getModulesInCategory(category).stream().sorted(Comparator.comparing(Module::getName)).collect(Collectors.toList())) {
                 moduleRects.add(new ModuleRect(module));
             }
         }
@@ -79,12 +79,12 @@ public class CategoryPanel implements Screen {
             return;
         }
         
-        if (category.equals(Category.SCRIPTS) && ModuleCollection.reloadModules) {
+        if (category.equals(Category.SCRIPTS) && ModuleManager.reloadModules) {
             moduleRects.clear();
-            for (Module module : Client.INSTANCE.getModuleCollection().getModulesInCategory(category).stream().sorted(Comparator.comparing(Module::getName)).collect(Collectors.toList())) {
+            for (Module module : Client.INSTANCE.getModuleManager().getModulesInCategory(category).stream().sorted(Comparator.comparing(Module::getName)).collect(Collectors.toList())) {
                 moduleRects.add(new ModuleRect(module));
             }
-            ModuleCollection.reloadModules = false;
+            ModuleManager.reloadModules = false;
             return;
         }
 

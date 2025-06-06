@@ -662,7 +662,7 @@ public abstract class CommandBase implements ICommand
     }
 
     /**
-     * Returns true if the given substring is exactly equal to the start of the given string (case insensitive).
+     * Returns true if the given substring is exactly equal to the initClient of the given string (case insensitive).
      */
     public static boolean doesStringStartWith(String original, String region)
     {

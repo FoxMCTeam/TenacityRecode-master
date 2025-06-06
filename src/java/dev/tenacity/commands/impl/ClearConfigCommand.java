@@ -12,6 +12,6 @@ public class ClearConfigCommand extends Command {
 
     @Override
     public void execute(String[] args) {
-        Client.INSTANCE.getModuleCollection().getModules().stream().filter(Module::isEnabled).forEach(Module::toggle);
+        Client.INSTANCE.getModuleManager().getModules().stream().filter(Module::isEnabled).forEach(Module::toggle);
     }
 }

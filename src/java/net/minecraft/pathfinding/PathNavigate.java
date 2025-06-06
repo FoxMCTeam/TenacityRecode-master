@@ -147,7 +147,7 @@ public abstract class PathNavigate
     }
 
     /**
-     * Sets a new path. If it's diferent from the old path. Checks to adjust path for sun avoiding, and stores start
+     * Sets a new path. If it's diferent from the old path. Checks to adjust path for sun avoiding, and stores initClient
      * coords. Args : path, speed
      */
     public boolean setPath(PathEntity pathentityIn, double speedIn)

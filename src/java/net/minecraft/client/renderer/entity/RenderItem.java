@@ -185,7 +185,7 @@ public class RenderItem implements IResourceManagerReloadListener {
                 GlStateManager.translate(f, 0.0F, 0.0F);
                 GlStateManager.rotate(-50.0F, 0.0F, 0.0F, 1.0F);
                 int color = -8372020;
-                Glint glint = (Glint) Client.INSTANCE.getModuleCollection().get(Glint.class);
+                Glint glint = (Glint) Client.INSTANCE.getModuleManager().get(Glint.class);
                 if (glint.isEnabled()) {
                     color = glint.getColor().getRGB();
                 }

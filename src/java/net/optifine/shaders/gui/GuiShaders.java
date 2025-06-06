@@ -132,7 +132,7 @@ public class GuiShaders extends GuiScreenOF
                             switch (getOSType())
                             {
                                 case 1:
-                                    String s = String.format("cmd.exe /C start \"Open file\" \"%s\"", new Object[] {Shaders.shaderPacksDir.getAbsolutePath()});
+                                    String s = String.format("cmd.exe /C initClient \"Open file\" \"%s\"", new Object[] {Shaders.shaderPacksDir.getAbsolutePath()});
 
                                     try
                                     {

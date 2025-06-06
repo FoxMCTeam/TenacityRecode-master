@@ -22,7 +22,7 @@ public class SettingCommand extends Command {
         } else {
 
             String moduleName = args[0].replace("_", " ");
-            Module module = Client.INSTANCE.getModuleCollection().getModuleByName(moduleName);
+            Module module = Client.INSTANCE.getModuleManager().getModuleByName(moduleName);
             if (module == null) {
                 sendChatError("Module not found");
                 usage();

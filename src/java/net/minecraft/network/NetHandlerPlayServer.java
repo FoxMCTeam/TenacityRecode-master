@@ -779,7 +779,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
     }
 
     /**
-     * Handle commands that start with a /
+     * Handle commands that initClient with a /
      */
     private void handleSlashCommand(String command)
     {

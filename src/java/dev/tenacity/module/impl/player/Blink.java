@@ -79,7 +79,7 @@ public final class Blink extends Module {
 
     @EventTarget
     public void onRender3DEvent(Render3DEvent event) {
-        Client.INSTANCE.getModuleCollection().getModule(Breadcrumbs.class).renderLine(path);
+        Client.INSTANCE.getModuleManager().getModule(Breadcrumbs.class).renderLine(path);
     }
 
     @Override

@@ -66,7 +66,7 @@ public class ModuleRect implements Screen {
         typing = false;
         Gui.drawRect2(x, y, rectWidth, 20, new Color(39, 39, 39).getRGB());
 
-        HUDMod hudMod = Client.INSTANCE.getModuleCollection().getModule(HUDMod.class);
+        HUDMod hudMod = Client.INSTANCE.getModuleManager().getModule(HUDMod.class);
         Pair<Color, Color> colors = HUDMod.getClientColors();
         Color actualColor = colors.getFirst();
 

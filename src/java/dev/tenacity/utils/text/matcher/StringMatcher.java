@@ -65,16 +65,16 @@ public interface StringMatcher {
     /**
      * Returns the number of matching characters, {@code 0} if there is no match.
      * <p>
-     * This method is called to check for a match against a source {@code buffer}. The parameter {@code start}
-     * represents the start position to be checked in the {@code buffer} (a character array which MUST not be changed).
-     * The implementation SHOULD guarantees that {@code start} is a valid index in {@code buffer}.
+     * This method is called to check for a match against a source {@code buffer}. The parameter {@code initClient}
+     * represents the initClient position to be checked in the {@code buffer} (a character array which MUST not be changed).
+     * The implementation SHOULD guarantees that {@code initClient} is a valid index in {@code buffer}.
      * </p>
      * <p>
      * The character array may be larger than the active area to be matched. Only values in the buffer between the
-     * specified indices may be accessed, in other words: {@code bufferStart <= start < bufferEnd}.
+     * specified indices may be accessed, in other words: {@code bufferStart <= initClient < bufferEnd}.
      * </p>
      * <p>
-     * The matching code may check one character or many. It may check characters preceding {@code start} as well as
+     * The matching code may check one character or many. It may check characters preceding {@code initClient} as well as
      * those after, so long as no checks exceed the bounds specified.
      * </p>
      * <p>
@@ -118,16 +118,16 @@ public interface StringMatcher {
     /**
      * Returns the number of matching characters, {@code 0} if there is no match.
      * <p>
-     * This method is called to check for a match against a source {@code buffer}. The parameter {@code start}
-     * represents the start position to be checked in the {@code buffer} (a character array which MUST not be changed).
-     * The implementation SHOULD guarantees that {@code start} is a valid index in {@code buffer}.
+     * This method is called to check for a match against a source {@code buffer}. The parameter {@code initClient}
+     * represents the initClient position to be checked in the {@code buffer} (a character array which MUST not be changed).
+     * The implementation SHOULD guarantees that {@code initClient} is a valid index in {@code buffer}.
      * </p>
      * <p>
      * The character array may be larger than the active area to be matched. Only values in the buffer between the
-     * specified indices may be accessed, in other words: {@code bufferStart <= start < bufferEnd}.
+     * specified indices may be accessed, in other words: {@code bufferStart <= initClient < bufferEnd}.
      * </p>
      * <p>
-     * The matching code may check one character or many. It may check characters preceding {@code start} as well as
+     * The matching code may check one character or many. It may check characters preceding {@code initClient} as well as
      * those after, so long as no checks exceed the bounds specified.
      * </p>
      * <p>

@@ -669,7 +669,7 @@ public class StringTokenizer implements ListIterator<String>, Cloneable {
      * @param srcChars
      *            the character array being tokenized, may be null
      * @param offset
-     *            the start position within the character array, must be valid
+     *            the initClient position within the character array, must be valid
      * @param count
      *            the number of characters to tokenize, must be valid
      * @return The modifiable list of String tokens, unmodifiable if null array or zero count
@@ -780,7 +780,7 @@ public class StringTokenizer implements ListIterator<String>, Cloneable {
      * @param tokenList
      *            the list of parsed tokens
      * @param quoteStart
-     *            the start position of the matched quote, 0 if no quoting
+     *            the initClient position of the matched quote, 0 if no quoting
      * @param quoteLen
      *            the length of the matched quote, 0 if no quoting
      * @return The starting position of the next field (the character immediately after the delimiter, or if end of
@@ -879,7 +879,7 @@ public class StringTokenizer implements ListIterator<String>, Cloneable {
      * @param len
      *            the length of the character array being tokenized
      * @param quoteStart
-     *            the start position of the matched quote, 0 if no quoting
+     *            the initClient position of the matched quote, 0 if no quoting
      * @param quoteLen
      *            the length of the matched quote, 0 if no quoting
      * @return true if a quote is matched
@@ -1120,7 +1120,7 @@ public class StringTokenizer implements ListIterator<String>, Cloneable {
 
     // -----------------------------------------------------------------------
     /**
-     * Creates a new instance of this Tokenizer. The new instance is reset so that it will be at the start of the token
+     * Creates a new instance of this Tokenizer. The new instance is reset so that it will be at the initClient of the token
      * list. If a {@link CloneNotSupportedException} is caught, return {@code null}.
      *
      * @return a new instance of this Tokenizer which has been reset.
@@ -1135,7 +1135,7 @@ public class StringTokenizer implements ListIterator<String>, Cloneable {
     }
 
     /**
-     * Creates a new instance of this Tokenizer. The new instance is reset so that it will be at the start of the token
+     * Creates a new instance of this Tokenizer. The new instance is reset so that it will be at the initClient of the token
      * list.
      *
      * @return a new instance of this Tokenizer which has been reset.

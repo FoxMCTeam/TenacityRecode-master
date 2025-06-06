@@ -7,7 +7,7 @@ import com.cubk.event.impl.render.Render2DEvent;
 import com.cubk.event.impl.render.ShaderEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
-import dev.tenacity.module.ModuleCollection;
+import dev.tenacity.module.ModuleManager;
 import dev.tenacity.module.settings.ParentAttribute;
 import dev.tenacity.module.settings.impl.BooleanSetting;
 import dev.tenacity.module.settings.impl.ModeSetting;
@@ -64,9 +64,9 @@ public class ArrayListMod extends Module {
     }
 
     public void getModulesAndSort() {
-        if (modules == null || ModuleCollection.reloadModules) {
-            List<Class<? extends Module>> hiddenModules = Client.INSTANCE.getModuleCollection().getHiddenModules();
-            List<Module> moduleList = Client.INSTANCE.getModuleCollection().getModules();
+        if (modules == null || ModuleManager.reloadModules) {
+            List<Class<? extends Module>> hiddenModules = Client.INSTANCE.getModuleManager().getHiddenModules();
+            List<Module> moduleList = Client.INSTANCE.getModuleManager().getModules();
             moduleList.removeIf(module -> hiddenModules.stream().anyMatch(moduleClass -> moduleClass == module.getClass()));
             modules = moduleList;
         }

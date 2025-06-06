@@ -1,29 +1,37 @@
 package dev.tenacity;
 
 import com.cubk.event.EventManager;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import dev.tenacity.commands.CommandHandler;
+import dev.tenacity.commands.impl.*;
 import dev.tenacity.config.ConfigManager;
 import dev.tenacity.config.DragManager;
+import dev.tenacity.module.BackgroundProcess;
 import dev.tenacity.module.Module;
-import dev.tenacity.module.ModuleCollection;
+import dev.tenacity.module.ModuleManager;
 import dev.tenacity.utils.client.addons.api.ScriptManager;
 import dev.tenacity.ui.altmanager.GuiAltManager;
 import dev.tenacity.ui.searchbar.SearchBar;
 import dev.tenacity.ui.sidegui.SideGUI;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.client.ReleaseType;
+import dev.tenacity.utils.client.addons.viamcp.vialoadingbase.ViaLoadingBase;
+import dev.tenacity.utils.client.addons.viamcp.viamcp.ViaMCP;
 import dev.tenacity.utils.objects.Dragging;
 import dev.tenacity.utils.objects.HTTPUtil;
+import dev.tenacity.utils.render.Theme;
 import dev.tenacity.utils.render.WallpaperEngine;
 import dev.tenacity.utils.server.PingerUtils;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.client.Minecraft;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -44,7 +52,7 @@ public class Client implements Utils {
     private final SideGUI sideGui = new SideGUI();
     private final SearchBar searchBar = new SearchBar();
     public WallpaperEngine videoRenderer;
-    private ModuleCollection moduleCollection;
+    private ModuleManager moduleManager;
     private ScriptManager scriptManager;
     private ConfigManager configManager;
     private GuiAltManager altManager;
@@ -67,7 +75,7 @@ public class Client implements Utils {
     }
 
     public boolean isEnabled(Class<? extends Module> c) {
-        Module m = INSTANCE.moduleCollection.get(c);
+        Module m = INSTANCE.moduleManager.get(c);
         return m != null && m.isEnabled();
     }
 
@@ -76,6 +84,49 @@ public class Client implements Utils {
         return DragManager.draggables.get(name);
     }
 
+    public static void initClient() {
+        Client.INSTANCE.getModuleManager().init();
+
+        Theme.init();
+
+        Client.INSTANCE.setPingerUtils(new PingerUtils());
+
+        Client.INSTANCE.setScriptManager(new ScriptManager());
+
+        CommandHandler commandHandler = new CommandHandler();
+        commandHandler.commands.addAll(Arrays.asList(
+                new FriendCommand(), new CopyNameCommand(), new BindCommand(), new UnbindCommand(),
+                new ScriptCommand(), new SettingCommand(), new HelpCommand(),
+                new VClipCommand(), new ClearBindsCommand(), new ClearConfigCommand(),
+                new ToggleCommand()
+        ));
+        Client.INSTANCE.setCommandHandler(commandHandler);
+        Client.INSTANCE.getEventManager().register(new BackgroundProcess());
+
+        Client.INSTANCE.setConfigManager(new ConfigManager());
+        ConfigManager.defaultConfig = new File(Minecraft.getMinecraft().mcDataDir + "/Tenacity/Config.json");
+        Client.INSTANCE.getConfigManager().collectConfigs();
+        if (ConfigManager.defaultConfig.exists()) {
+            Client.INSTANCE.getConfigManager().loadConfig(Client.INSTANCE.getConfigManager().readConfigData(ConfigManager.defaultConfig.toPath()), true);
+        }
+
+        DragManager.loadDragData();
+
+        Client.INSTANCE.setAltManager(new GuiAltManager());
+        Client.LOGGER.info("Trying download Background Video");
+        Client.INSTANCE.downloadBackGroundVideo();
+
+        Client.LOGGER.info("Initializing background...");
+        Client.INSTANCE.initVideoBackground();
+        try {
+            Client.LOGGER.info("Starting ViaMCP...");
+            ViaMCP.create();
+            ViaMCP.INSTANCE.initAsyncSlider();
+            ViaLoadingBase.getInstance().reload(ProtocolVersion.v1_12_2);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public void downloadBackGroundVideo() {
         LOGGER.info("Downloading background video");

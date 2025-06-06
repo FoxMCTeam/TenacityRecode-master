@@ -42,7 +42,7 @@ public class IFontRenderer implements IResourceManagerReloadListener, AbstractFo
     public Random fontRandom = new Random();
 
     /**
-     * Array of the start/end column (in upper/lower nibble) for every glyph in the /font directory.
+     * Array of the initClient/end column (in upper/lower nibble) for every glyph in the /font directory.
      */
     private byte[] glyphWidth = new byte[65536];
 
@@ -427,7 +427,7 @@ public class IFontRenderer implements IResourceManagerReloadListener, AbstractFo
     }
 
     /**
-     * Reset all style flag fields in the class to false; called at the start of string rendering
+     * Reset all style flag fields in the class to false; called at the initClient of string rendering
      */
     private void resetStyles() {
         this.randomStyle = false;

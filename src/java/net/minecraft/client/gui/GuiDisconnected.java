@@ -102,7 +102,7 @@ public class GuiDisconnected extends GuiScreen {
             this.drawCenteredString(this.fontRendererObj, "Play time: §7" + str, this.width / 2, i + offset, 0xFFE3E3E3);
         }
 
-        Client.INSTANCE.getModuleCollection().getModule(NotificationsMod.class).render();
+        Client.INSTANCE.getModuleManager().getModule(NotificationsMod.class).render();
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 }

@@ -82,7 +82,7 @@ public class ModuleRect extends Component {
 
         Color clickModColor = Color.WHITE;
         Color clickModColor2 = Color.WHITE;
-        HUDMod hudMod = Client.INSTANCE.getModuleCollection().getModule(HUDMod.class);
+        HUDMod hudMod = Client.INSTANCE.getModuleManager().getModule(HUDMod.class);
         Pair<Color, Color> colors = HUDMod.getClientColors();
 
 

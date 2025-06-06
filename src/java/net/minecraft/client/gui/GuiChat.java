@@ -204,7 +204,7 @@ public class GuiChat extends GuiScreen {
             }
         });
 
-        HUDMod hudMod = (HUDMod) Client.INSTANCE.getModuleCollection().get(HUDMod.class);
+        HUDMod hudMod = (HUDMod) Client.INSTANCE.getModuleManager().get(HUDMod.class);
 
         Pair<Color, Color> colors = HUDMod.getClientColors();
 

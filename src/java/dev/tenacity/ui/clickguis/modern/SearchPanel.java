@@ -44,10 +44,10 @@ public class SearchPanel extends Panel {
         expandAnim2 = new DecelerateAnimation(300, 1, Direction.FORWARDS);
         expandAnim2.setDirection(Direction.BACKWARDS);
         moduleRects = new ArrayList<>();
-        modules = Client.INSTANCE.getModuleCollection().getModules();
+        modules = Client.INSTANCE.getModuleManager().getModules();
         if (settingsPanelHashMap == null) {
             settingsPanelHashMap = new HashMap<>();
-            for (Module module : Client.INSTANCE.getModuleCollection().getModules()) {
+            for (Module module : Client.INSTANCE.getModuleManager().getModules()) {
                 settingsPanelHashMap.put(module, new SettingsPanel(module));
             }
         }
@@ -66,7 +66,7 @@ public class SearchPanel extends Panel {
     public void drawScreen(int mouseX, int mouseY) {
         if (ModernClickGui.searching) {
             expandAnim2.setDirection(rightClicked ? Direction.FORWARDS : Direction.BACKWARDS);
-            List<Module> possibleMods = Client.INSTANCE.getModuleCollection().getModulesThatContainText(text);
+            List<Module> possibleMods = Client.INSTANCE.getModuleManager().getModulesThatContainText(text);
             if (!text.equals(searchBar.getText())) {
                 moduleRects.clear();
                 scroll = new Scroll();

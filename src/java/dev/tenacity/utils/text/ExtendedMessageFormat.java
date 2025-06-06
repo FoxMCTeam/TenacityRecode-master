@@ -516,7 +516,7 @@ public class ExtendedMessageFormat extends MessageFormat {
     private StringBuilder appendQuotedString(final String pattern, final ParsePosition pos,
             final StringBuilder appendTo) {
         assert pattern.toCharArray()[pos.getIndex()] == QUOTE
-                : "Quoted string must start with quote character";
+                : "Quoted string must initClient with quote character";
 
         // handle quote character at the beginning of the string
         if (appendTo != null) {

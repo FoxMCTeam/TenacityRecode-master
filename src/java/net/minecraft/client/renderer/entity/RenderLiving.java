@@ -60,7 +60,7 @@ public abstract class RenderLiving<T extends EntityLiving> extends RendererLivin
     }
 
     /**
-     * Gets the value between start and end according to pct
+     * Gets the value between initClient and end according to pct
      */
     private double interpolateValue(double start, double end, double pct)
     {

@@ -50,7 +50,7 @@ public class PathFinder
     }
 
     /**
-     * Adds a path from start to end and returns the whole path
+     * Adds a path from initClient to end and returns the whole path
      */
     private PathEntity addToPath(Entity entityIn, PathPoint pathpointStart, PathPoint pathpointEnd, float maxDistance)
     {
@@ -113,7 +113,7 @@ public class PathFinder
     }
 
     /**
-     * Returns a new PathEntity for a given start and end point
+     * Returns a new PathEntity for a given initClient and end point
      */
     private PathEntity createEntityPath(PathPoint start, PathPoint end)
     {

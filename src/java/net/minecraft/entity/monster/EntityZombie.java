@@ -194,7 +194,7 @@ public class EntityZombie extends EntityMob
 
     /**
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
+     * use this to react to sunlight and initClient to burn.
      */
     public void onLivingUpdate()
     {

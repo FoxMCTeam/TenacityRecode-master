@@ -31,7 +31,7 @@ public class MovementInputFromOptions extends MovementInput {
             --this.moveStrafe;
         }
 
-        this.jump = this.gameSettings.keyBindJump.isKeyDown() && !(Client.INSTANCE.getModuleCollection().getModule(Speed.class).shouldPreventJumping());
+        this.jump = this.gameSettings.keyBindJump.isKeyDown() && !(Client.INSTANCE.getModuleManager().getModule(Speed.class).shouldPreventJumping());
         this.sneak = this.gameSettings.keyBindSneak.isKeyDown();
 
         if (this.sneak) {

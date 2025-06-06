@@ -31,7 +31,7 @@ public abstract class EntityAIBase
     }
 
     /**
-     * Execute a one shot task or start executing a continuous task
+     * Execute a one shot task or initClient executing a continuous task
      */
     public void startExecuting()
     {

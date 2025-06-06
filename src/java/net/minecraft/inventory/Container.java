@@ -24,7 +24,7 @@ public abstract class Container
      */
     private int dragMode = -1;
 
-    /** The current drag event (0 : start, 1 : add slot : 2 : end) */
+    /** The current drag event (0 : initClient, 1 : add slot : 2 : end) */
     private int dragEvent;
     private final Set<Slot> dragSlots = Sets.<Slot>newHashSet();
     protected List<ICrafting> crafters = Lists.<ICrafting>newArrayList();
@@ -691,7 +691,7 @@ public abstract class Container
     }
 
     /**
-     * Args : clickedButton, Returns (0 : start drag, 1 : add slot, 2 : end drag)
+     * Args : clickedButton, Returns (0 : initClient drag, 1 : add slot, 2 : end drag)
      */
     public static int getDragEvent(int p_94532_0_)
     {

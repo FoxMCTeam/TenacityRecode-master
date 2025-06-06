@@ -136,7 +136,7 @@ public final class TargetStrafe extends Module {
     }
 
     public static boolean canStrafe() {
-        KillAura killAura = Client.INSTANCE.getModuleCollection().getModule(KillAura.class);
+        KillAura killAura = Client.INSTANCE.getModuleManager().getModule(KillAura.class);
         if (!Client.INSTANCE.isEnabled(TargetStrafe.class) || !killAura.isEnabled()
                 || !MovementUtils.isMoving() || (space.isEnabled() && !Keyboard.isKeyDown(Keyboard.KEY_SPACE))) {
             return false;

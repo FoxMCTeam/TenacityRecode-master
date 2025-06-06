@@ -34,7 +34,7 @@ public class AntiVoid extends Module {
 
     @EventTarget
     public void onPacketSendEvent(PacketSendEvent event) {
-        if(mode.is("Watchdog") && !Client.INSTANCE.getModuleCollection().getModule(Speed.class).isEnabled()) {
+        if(mode.is("Watchdog") && !Client.INSTANCE.getModuleManager().getModule(Speed.class).isEnabled()) {
             if(event.getPacket() instanceof C03PacketPlayer) {
                 if(!isBlockUnder()) {
                     if(mc.thePlayer.fallDistance < fallDist.getValue()) {
