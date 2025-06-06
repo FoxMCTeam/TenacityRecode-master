@@ -104,7 +104,7 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
      */
     public void doRender(T entity, double x, double y, double z, float entityYaw, float partialTicks) {
         RendererLivingEntityEvent event = new RendererLivingEntityEvent(entity, this, partialTicks, x, y, z);
-        Client.INSTANCE.getEventProtocol().register(event);
+        Client.INSTANCE.getEventProtocol().call(event);
         if (event.isCancelled()) return;
 
 
@@ -253,7 +253,7 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
         }
 
         event.setPost();
-        Client.INSTANCE.getEventProtocol().register(event);
+        Client.INSTANCE.getEventProtocol().call(event);
     }
 
     protected boolean setScoreTeamColor(T entityLivingBaseIn) {
@@ -317,14 +317,14 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
                     () -> this.renderLayers(entitylivingbaseIn, x, y, partialTicks, z, entityYaw, entityPitch, scaleFactor));
 
 
-            Client.INSTANCE.getEventProtocol().register(renderModelEvent);
+            Client.INSTANCE.getEventProtocol().call(renderModelEvent);
 
             GL11.glEnable(GL11.GL_ALPHA_TEST);
 
             renderModelEvent.drawModel();
 
             renderModelEvent.setPost();
-            Client.INSTANCE.getEventProtocol().register(renderModelEvent);
+            Client.INSTANCE.getEventProtocol().call(renderModelEvent);
 
 
             if (flag1) {
@@ -572,7 +572,7 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
     public void renderName(T entity, double x, double y, double z) {
         if (entity instanceof EntityPlayer) {
             NametagRenderEvent nametagRenderEvent = new NametagRenderEvent();
-            Client.INSTANCE.getEventProtocol().register(nametagRenderEvent);
+            Client.INSTANCE.getEventProtocol().call(nametagRenderEvent);
             if (nametagRenderEvent.isCancelled()) return;
         }
         if (esp2D == null) {

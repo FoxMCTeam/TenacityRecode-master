@@ -451,7 +451,7 @@ public abstract class MinecraftServer implements Runnable, ICommandSender, IThre
         if (!this.worldIsBeingDeleted)
         {
             logger.info("Stopping server");
-            Client.INSTANCE.getEventProtocol().register(new GameCloseEvent());
+            Client.INSTANCE.getEventProtocol().call(new GameCloseEvent());
 
             if (this.getNetworkSystem() != null)
             {

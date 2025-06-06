@@ -508,7 +508,7 @@ public class Block
 
         if(collidingEntity == Minecraft.getMinecraft().thePlayer) {
             BoundingBoxEvent boundingBoxEvent = new BoundingBoxEvent(this,pos,axisalignedbb);
-            Client.INSTANCE.getEventProtocol().register(boundingBoxEvent);
+            Client.INSTANCE.getEventProtocol().call(boundingBoxEvent);
             axisalignedbb = boundingBoxEvent.getBoundingBox();
         }
 

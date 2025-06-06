@@ -416,7 +416,7 @@ public class PlayerControllerMP {
         boolean cancelled = false;
         if (targetEntity instanceof EntityLivingBase) {
             AttackEvent attackEvent = new AttackEvent((EntityLivingBase) targetEntity);
-            Client.INSTANCE.getEventProtocol().register(attackEvent);
+            Client.INSTANCE.getEventProtocol().call(attackEvent);
             cancelled = attackEvent.isCancelled();
         }
         if (!cancelled) {

@@ -154,7 +154,7 @@ public class TileEntityChestRenderer extends TileEntitySpecialRenderer<TileEntit
 
             if (!renderingInInventory) {
                 RenderChestEvent renderChestEvent = new RenderChestEvent(te, modelchest::renderAll);
-                Client.INSTANCE.getEventProtocol().register(renderChestEvent);
+                Client.INSTANCE.getEventProtocol().call(renderChestEvent);
 
                 if(!renderChestEvent.isCancelled()) {
                     renderChestEvent.drawChest();

@@ -936,7 +936,7 @@ public abstract class EntityLivingBase extends Entity {
 
         if (entity != null) {
             if (entity instanceof EntityLivingBase) {
-                Client.INSTANCE.getEventProtocol().register(new LivingDeathEvent(this, cause));
+                Client.INSTANCE.getEventProtocol().call(new LivingDeathEvent(this, cause));
             }
             entity.onKillEntity(this);
         }
@@ -1412,7 +1412,7 @@ public abstract class EntityLivingBase extends Entity {
             JumpFixEvent jumpFixEvent = new JumpFixEvent(this.rotationYaw);
 
             if (this instanceof EntityPlayerSP) {
-                Client.INSTANCE.getEventProtocol().register(jumpFixEvent);
+                Client.INSTANCE.getEventProtocol().call(jumpFixEvent);
             }
 
             float f = jumpFixEvent.getYaw() * 0.017453292F;
