@@ -1,6 +1,6 @@
 package dev.tenacity.utils.client.addons.api.bindings;
 
-import dev.tenacity.module.impl.render.Statistics;
+import dev.tenacity.module.impl.display.Statistics;
 import dev.tenacity.utils.misc.MathUtils;
 
 

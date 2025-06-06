@@ -1,16 +1,12 @@
 package dev.tenacity.utils.font;
 
-import dev.tenacity.module.impl.render.HUDMod;
+import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.utils.render.GradientUtil;
 import dev.tenacity.utils.tuples.mutable.MutablePair;
-import dev.tenacity.module.impl.render.Streamer;
-import dev.tenacity.utils.misc.MathUtils;
-import dev.tenacity.utils.render.GLUtil;
 import dev.tenacity.utils.render.RenderUtil;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;

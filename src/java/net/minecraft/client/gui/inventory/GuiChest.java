@@ -1,6 +1,6 @@
 package net.minecraft.client.gui.inventory;
 
-import dev.tenacity.module.impl.render.HUDMod;
+import dev.tenacity.module.impl.display.HUDMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;

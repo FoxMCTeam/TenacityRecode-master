@@ -1,4 +1,4 @@
-package dev.tenacity.module.impl.render;
+package dev.tenacity.module.impl.display;
 
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -13,7 +13,7 @@ public class ScoreboardMod extends Module {
     public static final BooleanSetting redNumbers = new BooleanSetting("Red Numbers", false);
 
     public ScoreboardMod() {
-        super("Scoreboard", Category.RENDER, "Scoreboard preferences");
+        super("Scoreboard", Category.DISPLAY, "Scoreboard preferences");
         this.addSettings(yOffset, customFont, textShadow, redNumbers);
         this.setToggled(true);
     }

@@ -1,6 +1,6 @@
 package dev.tenacity.ui.sidegui.panels;
 
-import dev.tenacity.module.impl.render.HUDMod;
+import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.ui.Screen;
 import dev.tenacity.utils.render.ColorUtil;
 import lombok.Getter;

@@ -20,6 +20,7 @@ public class FontUtil implements Utils {
             PERSON = "e",
             WHEELCHAIR = "f",
             SCRIPT = "g",
+            DISPLAY = "g",
             SKIP_LEFT = "h",
             PAUSE = "i",
             PLAY = "j",

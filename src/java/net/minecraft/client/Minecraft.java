@@ -17,7 +17,7 @@ import dev.tenacity.event.impl.player.BlockEvent;
 import dev.tenacity.event.impl.player.BlockPlaceableEvent;
 import dev.tenacity.event.impl.player.ClickEvent;
 import dev.tenacity.event.impl.player.ClickEventRight;
-import dev.tenacity.module.impl.render.ClickGUIMod;
+import dev.tenacity.module.impl.display.ClickGUIMod;
 import dev.tenacity.module.ProtectedLaunch;
 import dev.tenacity.ui.SplashScreen;
 import dev.tenacity.ui.clickguis.dropdown.DropdownClickGUI;

@@ -2,7 +2,7 @@ package dev.tenacity.ui.clickguis.modern;
 
 import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.module.Module;
-import dev.tenacity.module.impl.render.HUDMod;
+import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.module.settings.Setting;
 import dev.tenacity.module.settings.impl.*;
 import dev.tenacity.ui.GuiEvents;

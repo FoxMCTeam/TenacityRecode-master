@@ -6,7 +6,7 @@ import dev.tenacity.Client;
 import dev.tenacity.config.ConfigSetting;
 import dev.tenacity.event.ListenerAdapter;
 import dev.tenacity.module.impl.render.GlowESP;
-import dev.tenacity.module.impl.render.NotificationsMod;
+import dev.tenacity.module.impl.display.NotificationsMod;
 import dev.tenacity.module.settings.Setting;
 import dev.tenacity.module.settings.impl.*;
 import dev.tenacity.ui.notifications.NotificationManager;

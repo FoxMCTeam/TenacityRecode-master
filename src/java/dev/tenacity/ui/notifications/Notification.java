@@ -1,7 +1,7 @@
 package dev.tenacity.ui.notifications;
 
 import dev.tenacity.Client;
-import dev.tenacity.module.impl.render.PostProcessing;
+import dev.tenacity.module.impl.display.PostProcessing;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.animations.Animation;
 import dev.tenacity.utils.animations.impl.DecelerateAnimation;

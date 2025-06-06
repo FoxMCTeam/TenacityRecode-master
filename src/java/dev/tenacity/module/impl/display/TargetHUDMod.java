@@ -1,4 +1,4 @@
-package dev.tenacity.module.impl.render;
+package dev.tenacity.module.impl.display;
 
 import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.Client;
@@ -43,7 +43,7 @@ public class TargetHUDMod extends Module {
     private final GradientColorWheel colorWheel = new GradientColorWheel();
 
     public TargetHUDMod() {
-        super("TargetHUD", Category.RENDER, "Displays info about the KillAura target");
+        super("TargetHUD", Category.DISPLAY, "Displays info about the KillAura target");
         trackingMode.addParent(trackTarget, ParentAttribute.BOOLEAN_CONDITION);
         addSettings(targetHud, trackTarget, trackingMode, colorWheel.createModeSetting("Color Mode", "Dark"), colorWheel.getColorSetting());
         TargetHUD.init();

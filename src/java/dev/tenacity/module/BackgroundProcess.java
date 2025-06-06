@@ -12,7 +12,7 @@ import dev.tenacity.event.impl.render.Render2DEvent;
 import dev.tenacity.event.impl.render.ShaderEvent;
 import dev.tenacity.module.impl.movement.Flight;
 import dev.tenacity.module.impl.movement.Scaffold;
-import dev.tenacity.module.impl.render.Statistics;
+import dev.tenacity.module.impl.display.Statistics;
 import dev.tenacity.ui.mainmenu.CustomMainMenu;
 import dev.tenacity.utils.Utils;
 import net.minecraft.client.gui.GuiDisconnected;

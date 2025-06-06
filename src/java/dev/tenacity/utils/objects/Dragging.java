@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import dev.tenacity.Client;
 import dev.tenacity.module.Module;
-import dev.tenacity.module.impl.render.ArrayListMod;
+import dev.tenacity.module.impl.display.ArrayListMod;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.animations.Animation;
 import dev.tenacity.utils.animations.Direction;

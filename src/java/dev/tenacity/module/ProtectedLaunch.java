@@ -7,6 +7,7 @@ import dev.tenacity.commands.impl.*;
 import dev.tenacity.config.ConfigManager;
 import dev.tenacity.config.DragManager;
 import dev.tenacity.module.impl.combat.*;
+import dev.tenacity.module.impl.display.*;
 import dev.tenacity.module.impl.exploit.*;
 import dev.tenacity.module.impl.misc.*;
 import dev.tenacity.module.impl.movement.*;
@@ -109,7 +110,6 @@ public class ProtectedLaunch {
         modules.put(ClickGUIMod.class, new ClickGUIMod());
         modules.put(Radar.class, new Radar());
         modules.put(Animations.class, new Animations());
-        modules.put(SpotifyMod.class, new SpotifyMod());
         modules.put(Ambience.class, new Ambience());
         modules.put(ChinaHat.class, new ChinaHat());
         modules.put(GlowESP.class, new GlowESP());
@@ -173,8 +173,7 @@ public class ProtectedLaunch {
             ViaMCP.create();
             ViaMCP.INSTANCE.initAsyncSlider();
             ViaLoadingBase.getInstance().reload(ProtocolVersion.v1_12_2);
-        } catch (Throwable e) {
-            // e.printStackTrace();
+        } catch (Throwable ignored) {
         }
     }
 

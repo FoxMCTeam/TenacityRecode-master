@@ -1,4 +1,4 @@
-package dev.tenacity.module.impl.render;
+package dev.tenacity.module.impl.display;
 
 import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.Client;
@@ -65,7 +65,7 @@ public class HUDMod extends Module {
             new BooleanSetting("Disable ChestStealer", true));
 
     public HUDMod() {
-        super("HUD", Category.RENDER, "customizes the client's appearance");
+        super("HUD", Category.DISPLAY, "customizes the client's appearance");
         color1.addParent(theme, modeSetting -> modeSetting.is("Custom Theme"));
         color2.addParent(theme, modeSetting -> modeSetting.is("Custom Theme") && !color1.isRainbow());
         this.addSettings(clientName, watermarkMode, theme, color1, color2, customFont, infoCustomization, hudCustomization, disableButtons);

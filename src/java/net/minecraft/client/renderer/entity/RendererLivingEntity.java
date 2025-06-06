@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import dev.tenacity.Client;
 import dev.tenacity.module.impl.render.CustomModel;
 import dev.tenacity.module.impl.render.ESP2D;
-import dev.tenacity.module.impl.render.TargetHUDMod;
+import dev.tenacity.module.impl.display.TargetHUDMod;
 import dev.tenacity.event.impl.render.NametagRenderEvent;
 import dev.tenacity.event.impl.render.RenderModelEvent;
 import dev.tenacity.event.impl.render.RendererLivingEntityEvent;

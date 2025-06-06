@@ -1,4 +1,4 @@
-package dev.tenacity.module.impl.render;
+package dev.tenacity.module.impl.display;
 
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -30,7 +30,7 @@ public class ClickGUIMod extends Module {
     public static int prevGuiScale;
 
     public ClickGUIMod() {
-        super("ClickGUI", Category.RENDER, "Displays modules");
+        super("ClickGUI", Category.DISPLAY, "Displays modules");
         clickHeight.addParent(scrollMode, selection -> selection.is("Value"));
 
         gradient.addParent(clickguiMode, selection -> selection.is("Dropdown") && !Theme.getCurrentTheme().isGradient());

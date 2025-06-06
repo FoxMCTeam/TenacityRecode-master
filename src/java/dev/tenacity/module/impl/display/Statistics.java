@@ -1,4 +1,4 @@
-package dev.tenacity.module.impl.render;
+package dev.tenacity.module.impl.display;
 
 import dev.tenacity.Client;
 import dev.tenacity.event.impl.player.MotionEvent;
@@ -40,7 +40,7 @@ public class Statistics extends Module {
 
 
     public Statistics() {
-        super("Statistics", Category.RENDER, "Displays statistics about your session");
+        super("Statistics", Category.DISPLAY, "Displays statistics about your session");
         seprateMotionGraph.addParent(motionGraph, ParentAttribute.BOOLEAN_CONDITION);
         addSettings(colorWheel.createModeSetting("Color Mode"), colorWheel.getColorSetting(), motionGraph, seprateMotionGraph);
     }

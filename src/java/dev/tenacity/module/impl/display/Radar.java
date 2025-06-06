@@ -1,4 +1,4 @@
-package dev.tenacity.module.impl.render;
+package dev.tenacity.module.impl.display;
 
 import dev.tenacity.Client;
 import dev.tenacity.event.impl.render.Render2DEvent;
@@ -45,7 +45,7 @@ public class Radar extends Module {
     private final GradientColorWheel colorWheel = new GradientColorWheel();
 
     public Radar() {
-        super("Radar", Category.RENDER, "Shows entites on a gui");
+        super("Radar", Category.DISPLAY, "Shows entites on a gui");
         playerColor.addParent(targets, targetsSetting -> targetsSetting.getSetting("Players").isEnabled());
         mobColor.addParent(targets, targetsSetting -> targetsSetting.getSetting("Mobs").isEnabled());
         animalColor.addParent(targets, targetsSetting -> targetsSetting.getSetting("Animals").isEnabled());

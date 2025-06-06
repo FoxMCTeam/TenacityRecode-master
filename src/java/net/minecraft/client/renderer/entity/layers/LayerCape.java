@@ -1,6 +1,6 @@
 package net.minecraft.client.renderer.entity.layers;
 
-import dev.tenacity.module.impl.render.HUDMod;
+import dev.tenacity.module.impl.display.HUDMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.GlStateManager;

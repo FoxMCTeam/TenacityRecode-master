@@ -2,7 +2,7 @@ package dev.tenacity.ui.sidegui.forms;
 
 import dev.tenacity.utils.tuples.Triplet;
 import dev.tenacity.Client;
-import dev.tenacity.module.impl.render.HUDMod;
+import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.ui.Screen;
 import dev.tenacity.utils.misc.HoveringUtil;
 import dev.tenacity.utils.render.ColorUtil;

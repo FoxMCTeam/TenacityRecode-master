@@ -1,6 +1,6 @@
 package dev.tenacity.ui.sidegui.utils;
 
-import dev.tenacity.module.impl.render.HUDMod;
+import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.ui.Screen;
 import dev.tenacity.ui.sidegui.SideGUI;
 import dev.tenacity.utils.animations.Animation;

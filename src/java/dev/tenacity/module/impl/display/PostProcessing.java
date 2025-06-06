@@ -1,4 +1,4 @@
-package dev.tenacity.module.impl.render;
+package dev.tenacity.module.impl.display;
 
 import dev.tenacity.Client;
 import dev.tenacity.event.impl.render.ShaderEvent;
@@ -40,7 +40,7 @@ public class PostProcessing extends Module {
 
 
     public PostProcessing() {
-        super("PostProcessing", Category.RENDER, "blurs shit");
+        super("PostProcessing", Category.DISPLAY, "blurs shit");
         shadowRadius.addParent(bloom, ParentAttribute.BOOLEAN_CONDITION);
         shadowOffset.addParent(bloom, ParentAttribute.BOOLEAN_CONDITION);
         glowOptions.addParent(bloom, ParentAttribute.BOOLEAN_CONDITION);

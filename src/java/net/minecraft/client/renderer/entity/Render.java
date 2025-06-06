@@ -1,6 +1,6 @@
 package net.minecraft.client.renderer.entity;
 
-import dev.tenacity.module.impl.render.TargetHUDMod;
+import dev.tenacity.module.impl.display.TargetHUDMod;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.IFontRenderer;

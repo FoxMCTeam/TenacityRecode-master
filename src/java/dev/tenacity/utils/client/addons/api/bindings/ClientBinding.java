@@ -4,7 +4,7 @@ import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.Client;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.combat.KillAura;
-import dev.tenacity.module.impl.render.HUDMod;
+import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.utils.player.ChatUtil;
 import dev.tenacity.utils.time.TimerUtil;
 import net.minecraft.client.Minecraft;

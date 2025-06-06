@@ -10,6 +10,7 @@ public enum Category {
     COMBAT("Combat", FontUtil.BOMB),
     MOVEMENT("Movement", FontUtil.WHEELCHAIR),
     RENDER("Render", FontUtil.EYE),
+    DISPLAY("Display", FontUtil.DISPLAY),
     PLAYER("Player", FontUtil.PERSON),
     EXPLOIT("Exploit", FontUtil.BUG),
     MISC("Misc", FontUtil.LIST),

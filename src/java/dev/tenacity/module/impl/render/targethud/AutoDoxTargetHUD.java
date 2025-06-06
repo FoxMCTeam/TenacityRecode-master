@@ -1,6 +1,6 @@
 package dev.tenacity.module.impl.render.targethud;
 
-import dev.tenacity.module.impl.render.TargetHUDMod;
+import dev.tenacity.module.impl.display.TargetHUDMod;
 import dev.tenacity.utils.animations.ContinualAnimation;
 import dev.tenacity.utils.font.CustomFont;
 import dev.tenacity.utils.objects.PlayerDox;

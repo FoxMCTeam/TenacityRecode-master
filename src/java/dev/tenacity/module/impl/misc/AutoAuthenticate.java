@@ -7,7 +7,7 @@ import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.event.impl.render.Render2DEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
-import dev.tenacity.module.impl.render.HUDMod;
+import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.module.settings.impl.NumberSetting;
 import dev.tenacity.module.settings.impl.StringSetting;
 import dev.tenacity.utils.animations.Animation;

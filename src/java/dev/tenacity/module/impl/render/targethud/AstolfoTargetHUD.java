@@ -1,6 +1,6 @@
 package dev.tenacity.module.impl.render.targethud;
 
-import dev.tenacity.module.impl.render.HUDMod;
+import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.utils.animations.ContinualAnimation;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.GLUtil;

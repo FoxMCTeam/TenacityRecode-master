@@ -1,6 +1,6 @@
 package dev.tenacity.utils.render;
 
-import dev.tenacity.module.impl.render.HUDMod;
+import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.module.settings.impl.ModeSetting;
 import dev.tenacity.utils.tuples.Pair;
 import lombok.Getter;

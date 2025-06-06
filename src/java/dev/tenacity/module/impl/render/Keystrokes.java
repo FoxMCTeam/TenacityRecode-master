@@ -5,6 +5,7 @@ import dev.tenacity.event.impl.render.Render2DEvent;
 import dev.tenacity.event.impl.render.ShaderEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
+import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.module.settings.impl.NumberSetting;
 import dev.tenacity.utils.animations.Animation;
 import dev.tenacity.utils.animations.Direction;

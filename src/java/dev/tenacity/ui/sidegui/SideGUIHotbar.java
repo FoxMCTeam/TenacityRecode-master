@@ -1,7 +1,7 @@
 package dev.tenacity.ui.sidegui;
 
 import dev.tenacity.Client;
-import dev.tenacity.module.impl.render.HUDMod;
+import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.ui.Screen;
 import dev.tenacity.ui.sidegui.utils.CarouselButtons;
 import dev.tenacity.ui.sidegui.utils.DropdownObject;

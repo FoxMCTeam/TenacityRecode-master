@@ -1,4 +1,4 @@
-package dev.tenacity.module.impl.render;
+package dev.tenacity.module.impl.display;
 
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -19,7 +19,7 @@ public class NotificationsMod extends Module {
     public static final BooleanSetting toggleNotifications = new BooleanSetting("Show Toggle", true);
 
     public NotificationsMod() {
-        super("Notifications", Category.RENDER, "Allows you to customize the client notifications");
+        super("Notifications", Category.DISPLAY, "Allows you to customize the client notifications");
         onlyTitle.addParent(mode, modeSetting -> modeSetting.is("Default"));
         this.addSettings(time, mode, onlyTitle, toggleNotifications);
         if (!enabled) this.toggleSilent();

@@ -1,7 +1,7 @@
 package dev.tenacity.ui.altmanager;
 
 import dev.tenacity.Client;
-import dev.tenacity.module.impl.render.NotificationsMod;
+import dev.tenacity.module.impl.display.NotificationsMod;
 import dev.tenacity.ui.Screen;
 import dev.tenacity.ui.altmanager.helpers.Alt;
 import dev.tenacity.ui.altmanager.helpers.AltManagerUtils;

@@ -5,7 +5,7 @@ import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.ModuleCollection;
 import dev.tenacity.module.impl.movement.InventoryMove;
-import dev.tenacity.module.impl.render.ClickGUIMod;
+import dev.tenacity.module.impl.display.ClickGUIMod;
 import dev.tenacity.module.settings.Setting;
 import dev.tenacity.ui.clickguis.modern.components.CategoryButton;
 import dev.tenacity.ui.clickguis.modern.components.ClickCircle;

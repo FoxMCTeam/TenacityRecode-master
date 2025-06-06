@@ -4,9 +4,8 @@ import com.google.common.collect.Lists;
 import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.Client;
 import dev.tenacity.config.DragManager;
-import dev.tenacity.module.impl.render.ArrayListMod;
-import dev.tenacity.module.impl.render.HUDMod;
-import dev.tenacity.module.impl.render.SpotifyMod;
+import dev.tenacity.module.impl.display.ArrayListMod;
+import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.utils.misc.HoveringUtil;
 import dev.tenacity.utils.objects.Dragging;
 import dev.tenacity.utils.render.ColorUtil;
@@ -136,10 +135,8 @@ public class GuiChat extends GuiScreen {
             this.mc2.ingameGUI.getChatGUI().scroll(i);
         }
     }
-
     Animation resetButtonHover;
 
-    SpotifyMod spotifyMod;
     ArrayListMod arraylistMod;
 
     public static Animation openingAnimation = new DecelerateAnimation(175, 1, Direction.BACKWARDS);
@@ -150,12 +147,6 @@ public class GuiChat extends GuiScreen {
      * window resizes, the buttonList is cleared beforehand.
      */
     public void initGui() {
-
-        if (spotifyMod == null) {
-            spotifyMod = (SpotifyMod) Client.INSTANCE.getModuleCollection().get(SpotifyMod.class);
-            arraylistMod = (ArrayListMod) Client.INSTANCE.getModuleCollection().get(ArrayListMod.class);
-        }
-
         for (Dragging dragging : DragManager.draggables.values()) {
             if (!dragging.hoverAnimation.getDirection().equals(Direction.BACKWARDS)) {
                 dragging.hoverAnimation.setDirection(Direction.BACKWARDS);

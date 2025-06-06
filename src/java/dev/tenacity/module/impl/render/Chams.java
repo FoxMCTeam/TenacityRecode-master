@@ -1,5 +1,6 @@
 package dev.tenacity.module.impl.render;
 
+import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.event.impl.render.RenderChestEvent;
 import dev.tenacity.event.impl.render.RenderModelEvent;

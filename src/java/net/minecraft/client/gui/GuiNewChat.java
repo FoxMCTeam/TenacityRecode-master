@@ -1,7 +1,7 @@
 package net.minecraft.client.gui;
 
 import com.google.common.collect.Lists;
-import dev.tenacity.module.impl.render.HUDMod;
+import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.font.AbstractFontRenderer;
 import dev.tenacity.utils.render.GLUtil;

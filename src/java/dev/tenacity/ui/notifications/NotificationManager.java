@@ -1,7 +1,7 @@
 package dev.tenacity.ui.notifications;
 
 import dev.tenacity.Client;
-import dev.tenacity.module.impl.render.NotificationsMod;
+import dev.tenacity.module.impl.display.NotificationsMod;
 import lombok.Getter;
 import lombok.Setter;
 

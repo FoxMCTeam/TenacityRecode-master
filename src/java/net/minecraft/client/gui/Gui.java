@@ -1,6 +1,6 @@
 package net.minecraft.client.gui;
 
-import dev.tenacity.module.impl.render.HUDMod;
+import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.utils.render.RenderUtil;
 import dev.tenacity.utils.font.AbstractFontRenderer;
 import dev.tenacity.utils.font.FontUtil;
@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.opengl.GL11.*;
 

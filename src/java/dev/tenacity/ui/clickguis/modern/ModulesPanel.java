@@ -4,7 +4,7 @@ import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.ModuleCollection;
-import dev.tenacity.module.impl.render.ClickGUIMod;
+import dev.tenacity.module.impl.display.ClickGUIMod;
 import dev.tenacity.ui.clickguis.modern.components.ModuleRect;
 import dev.tenacity.utils.animations.Animation;
 import dev.tenacity.utils.animations.Direction;

@@ -1,8 +1,8 @@
 package net.minecraft.client.gui;
 
 import dev.tenacity.Client;
-import dev.tenacity.module.impl.render.NotificationsMod;
-import dev.tenacity.module.impl.render.Statistics;
+import dev.tenacity.module.impl.display.NotificationsMod;
+import dev.tenacity.module.impl.display.Statistics;
 import dev.tenacity.ui.altmanager.helpers.Alt;
 import dev.tenacity.ui.mainmenu.CustomMainMenu;
 import dev.tenacity.utils.server.ServerUtils;

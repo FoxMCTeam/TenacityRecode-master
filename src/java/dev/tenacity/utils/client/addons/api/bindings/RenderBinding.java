@@ -1,6 +1,6 @@
 package dev.tenacity.utils.client.addons.api.bindings;
 
-import dev.tenacity.module.impl.render.HUDMod;
+import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.utils.client.addons.api.objects.ScriptFramebuffer;
 import dev.tenacity.utils.client.addons.api.objects.ScriptShaderUtil;
 import dev.tenacity.utils.Utils;

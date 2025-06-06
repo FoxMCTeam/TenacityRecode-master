@@ -1,7 +1,9 @@
 package dev.tenacity.module;
 
-import dev.tenacity.module.impl.render.ArrayListMod;
-import dev.tenacity.module.impl.render.NotificationsMod;
+import dev.tenacity.module.impl.display.ArrayListMod;
+import dev.tenacity.module.impl.display.NotificationsMod;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,12 +15,10 @@ public class ModuleCollection {
 
     public static boolean reloadModules;
 
+    @Setter
     private HashMap<Object, Module> modules = new HashMap<>();
+    @Getter
     private final List<Class<? extends Module>> hiddenModules = new ArrayList<>(Arrays.asList(ArrayListMod.class, NotificationsMod.class));
-
-    public List<Class<? extends Module>> getHiddenModules() {
-        return hiddenModules;
-    }
 
     public List<Module> getModules() {
         return new ArrayList<>(this.modules.values());
@@ -26,10 +26,6 @@ public class ModuleCollection {
 
     public HashMap<Object, Module> getModuleMap() {
         return modules;
-    }
-
-    public void setModules(HashMap<Object, Module> modules) {
-        this.modules = modules;
     }
 
     public List<Module> getModulesInCategory(Category c) {
@@ -61,8 +57,13 @@ public class ModuleCollection {
     }
 
     public final List<Module> getArraylistModules(ArrayListMod arraylistMod, List<Module> modules) {
-        return modules.stream().filter(module -> module.isEnabled() && !(arraylistMod.importantModules.isEnabled() && module.getCategory().equals(Category.RENDER))).collect(Collectors.toList());
+        return modules.stream().filter(module -> module.isEnabled() &&
+                !((module.getCategory() == Category.RENDER && arraylistMod.hideModules.isEnabled("Render")) ||
+                        (module.getCategory() == Category.DISPLAY && arraylistMod.hideModules.isEnabled("Display")) ||
+                        (module.getCategory() == Category.MISC && arraylistMod.hideModules.isEnabled("Misc")) ||
+                        (module.getCategory() == Category.COMBAT && arraylistMod.hideModules.isEnabled("Combat") ||
+                                (module.getCategory() == Category.PLAYER && arraylistMod.hideModules.isEnabled("Player")) ||
+                                (module.getCategory() == Category.MOVEMENT && arraylistMod.hideModules.isEnabled("Movement"))))).collect(Collectors.toList());
     }
-
 
 }

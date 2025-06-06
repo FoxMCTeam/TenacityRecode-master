@@ -1,4 +1,4 @@
-package dev.tenacity.module.impl.render;
+package dev.tenacity.module.impl.display;
 
 import dev.tenacity.Client;
 import dev.tenacity.event.impl.render.Render2DEvent;
@@ -22,7 +22,7 @@ public class PlayerList extends Module {
     private final Dragging pos = Client.INSTANCE.createDrag(this, "playerList", 4, 30);
 
     public PlayerList() {
-        super("PlayerList", Category.RENDER, "Displays a list of players in your world");
+        super("PlayerList", Category.DISPLAY, "Displays a list of players in your world");
     }
 
     @Override

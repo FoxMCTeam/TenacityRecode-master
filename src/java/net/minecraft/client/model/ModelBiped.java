@@ -1,10 +1,8 @@
 package net.minecraft.client.model;
 
-import dev.tenacity.module.impl.render.CustomModel;
-import dev.tenacity.module.impl.render.TargetHUDMod;
+import dev.tenacity.module.impl.display.TargetHUDMod;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
 
 public class ModelBiped extends ModelBase {
