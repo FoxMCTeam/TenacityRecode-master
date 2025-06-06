@@ -8,6 +8,7 @@ import dev.tenacity.ui.notifications.NotificationManager;
 import dev.tenacity.ui.notifications.NotificationType;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.misc.Multithreading;
+import dev.tenacity.utils.objects.FileUtils;
 import dev.tenacity.utils.objects.TextField;
 import dev.tenacity.utils.time.TimerUtil;
 import lombok.Getter;
@@ -35,20 +36,16 @@ public class AltManagerUtils implements Utils {
 
     public AltManagerUtils() {
         if (!altsFile.exists()) {
+            FileUtils.createFile(altsFile, false);
+        }
+        if (!FileUtils.getFileContent(altsFile).isEmpty()) {
             try {
-                if (altsFile.getParentFile().mkdirs()) {
-                    altsFile.createNewFile();
-                }
+                byte[] content = Files.readAllBytes(altsFile.toPath());
+                alts = new ArrayList<>(Arrays.asList(new Gson().fromJson(new String(content), Alt[].class)));
+                alts.forEach(this::getHead);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        try {
-            byte[] content = Files.readAllBytes(altsFile.toPath());
-            alts = new ArrayList<>(Arrays.asList(new Gson().fromJson(new String(content), Alt[].class)));
-            alts.forEach(this::getHead);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
