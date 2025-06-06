@@ -39,7 +39,6 @@ public class Enhancements {
             return false;
         }
 
-        return false;
     }
 
 }
