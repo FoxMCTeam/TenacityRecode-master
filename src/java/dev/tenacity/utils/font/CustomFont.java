@@ -284,10 +284,6 @@ public class CustomFont implements AbstractFontRenderer {
         GlStateManager.color(r, g, b, a);
         GL11.glPushMatrix();
         GL11.glScaled(0.5, 0.5, 0.5);
-
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-
         final char[] chars = str.toCharArray();
         for (int i = 0; i < chars.length; ++i) {
             final char chr = chars[i];
