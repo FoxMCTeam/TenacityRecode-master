@@ -1,12 +1,16 @@
 package net.minecraft.client.gui;
 
 import com.google.common.collect.Lists;
-import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.Client;
+import dev.tenacity.utils.tuples.Pair;
+import dev.tenacity.utils.tuples.mutable.MutablePair;
 import dev.tenacity.config.DragManager;
 import dev.tenacity.module.impl.display.ArrayListMod;
 import dev.tenacity.module.impl.display.HUDMod;
+import dev.tenacity.ui.Screen;
 import dev.tenacity.utils.misc.HoveringUtil;
+import dev.tenacity.utils.misc.MathUtils;
+import dev.tenacity.utils.misc.Multithreading;
 import dev.tenacity.utils.objects.Dragging;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.RoundedUtil;
@@ -14,14 +18,17 @@ import dev.tenacity.utils.animations.Animation;
 import dev.tenacity.utils.animations.Direction;
 import dev.tenacity.utils.animations.impl.DecelerateAnimation;
 import dev.tenacity.utils.font.AbstractFontRenderer;
+import dev.tenacity.utils.font.CustomFont;
 import dev.tenacity.utils.font.FontUtil;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.network.play.client.C14PacketTabComplete;
 import net.minecraft.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjglx.input.Keyboard;
-import org.lwjglx.input.Mouse;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import java.awt.*;
 import java.io.IOException;
@@ -137,7 +144,6 @@ public class GuiChat extends GuiScreen {
     }
 
     Animation resetButtonHover;
-
     ArrayListMod arraylistMod;
 
     public static Animation openingAnimation = new DecelerateAnimation(175, 1, Direction.BACKWARDS);
@@ -148,6 +154,7 @@ public class GuiChat extends GuiScreen {
      * window resizes, the buttonList is cleared beforehand.
      */
     public void initGui() {
+        arraylistMod = Client.INSTANCE.getModuleManager().getModule(ArrayListMod.class);
         for (Dragging dragging : DragManager.draggables.values()) {
             if (!dragging.hoverAnimation.getDirection().equals(Direction.BACKWARDS)) {
                 dragging.hoverAnimation.setDirection(Direction.BACKWARDS);
@@ -204,8 +211,6 @@ public class GuiChat extends GuiScreen {
                 }
             }
         });
-
-        HUDMod hudMod = (HUDMod) Client.INSTANCE.getModuleManager().get(HUDMod.class);
 
         Pair<Color, Color> colors = HUDMod.getClientColors();
 

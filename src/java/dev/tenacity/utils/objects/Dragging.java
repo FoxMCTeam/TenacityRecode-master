@@ -14,7 +14,6 @@ import dev.tenacity.utils.misc.MathUtils;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.RoundedUtil;
 import net.minecraft.client.gui.ScaledResolution;
-
 import java.awt.*;
 import java.util.List;
 
@@ -59,27 +58,27 @@ public class Dragging implements Utils {
         return name;
     }
 
-    
+
     public float getWidth() {
         return width;
     }
 
-    
+
     public void setWidth(float width) {
         this.width = width;
     }
 
-    
+
     public float getHeight() {
         return height;
     }
 
-    
+
     public void setHeight(float height) {
         this.height = height;
     }
 
-    
+
     public float getX() {
         return xPos;
     }
@@ -88,7 +87,7 @@ public class Dragging implements Utils {
         this.xPos = x;
     }
 
-    
+
 
     public float getY() {
         return yPos;
@@ -102,6 +101,9 @@ public class Dragging implements Utils {
     private String longestModule;
 
     public final void onDraw(int mouseX, int mouseY) {
+        if (module instanceof ArrayListMod) {
+            System.out.println("ARRAYLIST : X:" + xPos + " , Y:" + yPos + " , W:" + width + " ,H:" + height);
+        }
         boolean hovering = HoveringUtil.isHovering(xPos, yPos, width, height, mouseX, mouseY);
         if (dragging) {
             xPos = mouseX - startX;
@@ -160,7 +162,7 @@ public class Dragging implements Utils {
 
         String longest = getLongestModule(arraylistMod);
 
-        float textVal = arraylistMod.font.getStringWidth(longest);
+        float textVal = (float) arraylistMod.font.getStringWidth(longest);
         float xVal = sr.getScaledWidth() - (textVal + 8 + xPos);
 
         if (sr.getScaledWidth() - xPos <= sr.getScaledWidth() / 2f) {

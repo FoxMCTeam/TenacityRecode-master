@@ -55,7 +55,7 @@ public class ArrayListMod extends Module {
     public List<Module> modules;
 
     public ArrayListMod() {
-        super("ArrayList", Category.RENDER, "Displays your active modules");
+        super("ArrayList", Category.DISPLAY, "Displays your active modules");
         addSettings(hideModules, rectangle, partialGlow, textShadow, fontSettings, height, animation,
                 colorIndex, colorSpeed, background, backgroundColor, backgroundAlpha);
         backgroundAlpha.addParent(background, ParentAttribute.BOOLEAN_CONDITION);
