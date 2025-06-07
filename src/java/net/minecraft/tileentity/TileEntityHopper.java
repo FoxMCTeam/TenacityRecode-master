@@ -427,8 +427,8 @@ public class TileEntityHopper extends TileEntityLockable implements IHopper, ITi
                 ISidedInventory isidedinventory = (ISidedInventory)iinventory;
                 int[] aint = isidedinventory.getSlotsForFace(enumfacing);
 
-                for(int i = 0; i < aint.length; ++i) {
-                    if(pullItemFromSlot(hopper, iinventory, aint[i], enumfacing)) return true;
+                for (int j : aint) {
+                    if (pullItemFromSlot(hopper, iinventory, j, enumfacing)) return true;
                 }
             } else {
                 int j = iinventory.getSizeInventory();

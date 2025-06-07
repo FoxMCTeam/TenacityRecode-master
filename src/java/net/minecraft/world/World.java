@@ -3,7 +3,7 @@ package net.minecraft.world;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import dev.tenacity.utils.client.addons.viamcp.viamcp.fixes.FixedSoundEngine;
+import de.florianmichael.viamcp.fixes.FixedSoundEngine;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -339,20 +339,6 @@ public abstract class World implements IBlockAccess {
      * Sets a block to air, but also plays the sound and particles and can spawn drops
      */
     public boolean destroyBlock(BlockPos pos, boolean dropBlock) {
-//        IBlockState iblockstate = this.getBlockState(pos);
-//        Block block = iblockstate.getBlock();
-//
-//        if (block.getMaterial() == Material.air) {
-//            return false;
-//        } else {
-//            this.playAuxSFX(2001, pos, Block.getStateId(iblockstate));
-//
-//            if (dropBlock) {
-//                block.dropBlockAsItem(this, pos, iblockstate, 0);
-//            }
-//
-//            return this.setBlockState(pos, Blocks.air.getDefaultState(), 3);
-//        }
         return FixedSoundEngine.destroyBlock(this, pos, dropBlock);
     }
 

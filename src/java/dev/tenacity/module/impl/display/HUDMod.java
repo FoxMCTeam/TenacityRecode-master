@@ -65,7 +65,7 @@ public class HUDMod extends Module {
     public static int offsetValue = 0;
     public static float xOffset = 0;
     private final StringSetting clientName = new StringSetting("Client Name");
-    private final ModeSetting language = new ModeSetting("Language Mode", "en_US", "en_US", "ru_RU", "zh_CN", "zh_HK", "de_DE", "fr_fR");
+    public static final ModeSetting language = new ModeSetting("Language Mode", "en_US", "en_US", "ru_RU", "zh_CN", "zh_HK", "de_DE", "fr_fR");
     private final ModeSetting watermarkMode = new ModeSetting("Watermark Mode", "Tenacity", "Tenacity", "Plain Text", "Neverlose", "Tenasense", "Tenabition", "Logo", "None");
     private final Animation fadeInText = new DecelerateAnimation(500, 1);
     private final Map<String, String> bottomLeftText = new LinkedHashMap<>();
@@ -380,17 +380,6 @@ public class HUDMod extends Module {
         drawArmor(sr);
     }
 
-    @EventTarget
-    public void onUpdateEvent(UpdateEvent event) {
-        switch (language.getMode()) {
-            case "en_US" : Client.INSTANCE.setLocale(Locale.EN_US); break;
-            case "ru_RU" : Client.INSTANCE.setLocale(Locale.RU_RU); break;
-            case "zh_HK" : Client.INSTANCE.setLocale(Locale.ZH_HK); break;
-            case "zh_CN" : Client.INSTANCE.setLocale(Locale.ZH_CN); break;
-            case "de_DE" : Client.INSTANCE.setLocale(Locale.DE_DE); break;
-            case "fr_fR" : Client.INSTANCE.setLocale(Locale.FR_FR); break;
-        }
-    }
 
     private void drawBottomRight() {
         AbstractFontRenderer fr = customFont.isEnabled() ? duckSansFont20 : mc.fontRendererObj;

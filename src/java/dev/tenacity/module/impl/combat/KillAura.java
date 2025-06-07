@@ -20,7 +20,7 @@ import dev.tenacity.utils.client.addons.rise.MovementFix;
 import dev.tenacity.utils.client.addons.rise.component.RotationComponent;
 import dev.tenacity.utils.client.addons.vector.Vector2f;
 import dev.tenacity.utils.client.addons.vector.Vector3d;
-import dev.tenacity.utils.client.addons.viamcp.viamcp.fixes.AttackOrder;
+import de.florianmichael.viamcp.fixes.AttackOrder;
 import dev.tenacity.utils.misc.MathUtils;
 import dev.tenacity.utils.player.InventoryUtils;
 import dev.tenacity.utils.player.RotationUtils;

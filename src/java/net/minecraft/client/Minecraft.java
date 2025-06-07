@@ -21,7 +21,7 @@ import dev.tenacity.module.impl.display.ClickGUIMod;
 import dev.tenacity.ui.SplashScreen;
 import dev.tenacity.ui.clickguis.dropdown.DropdownClickGUI;
 import dev.tenacity.ui.mainmenu.CustomMainMenu;
-import dev.tenacity.utils.client.addons.viamcp.viamcp.fixes.AttackOrder;
+import de.florianmichael.viamcp.fixes.AttackOrder;
 import dev.tenacity.utils.font.FontUtil;
 import dev.tenacity.utils.misc.SoundUtils;
 import net.minecraft.block.Block;

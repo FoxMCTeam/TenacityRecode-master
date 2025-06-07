@@ -18,8 +18,8 @@ import dev.tenacity.utils.client.ReleaseType;
 import dev.tenacity.utils.client.addons.api.ScriptManager;
 import dev.tenacity.utils.client.addons.rise.component.RenderSlotComponent;
 import dev.tenacity.utils.client.addons.rise.component.RotationComponent;
-import dev.tenacity.utils.client.addons.viamcp.vialoadingbase.ViaLoadingBase;
-import dev.tenacity.utils.client.addons.viamcp.viamcp.ViaMCP;
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.viamcp.ViaMCP;
 import dev.tenacity.utils.objects.Dragging;
 import dev.tenacity.utils.objects.HTTPUtil;
 import dev.tenacity.utils.render.Theme;
@@ -37,6 +37,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import static dev.tenacity.module.impl.display.HUDMod.language;
 
 @Getter
 @Setter
@@ -106,9 +108,16 @@ public class Client implements Utils {
             LOGGER.info("Starting ViaMCP...");
             ViaMCP.create();
             ViaMCP.INSTANCE.initAsyncSlider();
-            ViaLoadingBase.getInstance().reload(ProtocolVersion.v1_12_2);
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+        switch (language.getMode()) {
+            case "en_US" : Client.INSTANCE.setLocale(Locale.EN_US); break;
+            case "ru_RU" : Client.INSTANCE.setLocale(Locale.RU_RU); break;
+            case "zh_HK" : Client.INSTANCE.setLocale(Locale.ZH_HK); break;
+            case "zh_CN" : Client.INSTANCE.setLocale(Locale.ZH_CN); break;
+            case "de_DE" : Client.INSTANCE.setLocale(Locale.DE_DE); break;
+            case "fr_fR" : Client.INSTANCE.setLocale(Locale.FR_FR); break;
         }
     }
 

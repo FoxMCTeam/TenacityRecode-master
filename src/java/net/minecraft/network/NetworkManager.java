@@ -6,10 +6,10 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import dev.tenacity.Client;
-import dev.tenacity.utils.client.addons.viamcp.vialoadingbase.ViaLoadingBase;
-import dev.tenacity.utils.client.addons.viamcp.vialoadingbase.netty.event.CompressionReorderEvent;
-import dev.tenacity.utils.client.addons.viamcp.viamcp.MCPVLBPipeline;
-import dev.tenacity.utils.client.addons.viamcp.viamcp.ViaMCP;
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.vialoadingbase.netty.event.CompressionReorderEvent;
+import de.florianmichael.viamcp.MCPVLBPipeline;
+import de.florianmichael.viamcp.ViaMCP;
 import com.cubk.event.impl.network.PacketReceiveEvent;
 import com.cubk.event.impl.network.PacketSendEvent;
 import io.netty.bootstrap.Bootstrap;
@@ -318,7 +318,12 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
                 }
 
 
-                p_initChannel_1_.pipeline().addLast("timeout", new ReadTimeoutHandler(30)).addLast("splitter", new MessageDeserializer2()).addLast("decoder", new MessageDeserializer(EnumPacketDirection.CLIENTBOUND)).addLast("prepender", new MessageSerializer2()).addLast("encoder", new MessageSerializer(EnumPacketDirection.SERVERBOUND)).addLast("packet_handler", networkmanager);
+                if (p_initChannel_1_ instanceof SocketChannel && ViaLoadingBase.getInstance().getTargetVersion().getVersion() != ViaMCP.NATIVE_VERSION) {
+                    final UserConnection user = new UserConnectionImpl(p_initChannel_1_, true);
+                    new ProtocolPipelineImpl(user);
+
+                    p_initChannel_1_.pipeline().addLast(new MCPVLBPipeline(user));
+                }
 
                 if (p_initChannel_1_ instanceof SocketChannel && ViaLoadingBase.getInstance().getTargetVersion().getVersion() != ViaMCP.NATIVE_VERSION) {
                     final UserConnection user = new UserConnectionImpl(p_initChannel_1_, true);

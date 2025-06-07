@@ -6,10 +6,12 @@ import com.cubk.event.impl.game.KeyPressEvent;
 import com.cubk.event.impl.game.TickEvent;
 import com.cubk.event.impl.game.WorldEvent;
 import com.cubk.event.impl.player.ChatReceivedEvent;
+import com.cubk.event.impl.player.UpdateEvent;
 import com.cubk.event.impl.render.Render2DEvent;
 import com.cubk.event.impl.render.ShaderEvent;
 import dev.tenacity.Client;
 import dev.tenacity.config.DragManager;
+import dev.tenacity.i18n.Locale;
 import dev.tenacity.module.impl.display.Statistics;
 import dev.tenacity.module.impl.movement.Flight;
 import dev.tenacity.module.impl.movement.Scaffold;
@@ -20,6 +22,8 @@ import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraft.util.StringUtils;
 
 import java.util.Arrays;
+
+import static dev.tenacity.module.impl.display.HUDMod.language;
 
 public class BackgroundProcess implements Utils {
 
@@ -83,6 +87,18 @@ public class BackgroundProcess implements Utils {
     public void onWorldEvent(WorldEvent event) {
         if (event instanceof WorldEvent.Load) {
             Flight.hiddenBlocks.clear();
+        }
+    }
+
+    @EventTarget
+    public void onUpdateEvent(UpdateEvent event) {
+        switch (language.getMode()) {
+            case "en_US" : Client.INSTANCE.setLocale(Locale.EN_US); break;
+            case "ru_RU" : Client.INSTANCE.setLocale(Locale.RU_RU); break;
+            case "zh_HK" : Client.INSTANCE.setLocale(Locale.ZH_HK); break;
+            case "zh_CN" : Client.INSTANCE.setLocale(Locale.ZH_CN); break;
+            case "de_DE" : Client.INSTANCE.setLocale(Locale.DE_DE); break;
+            case "fr_fR" : Client.INSTANCE.setLocale(Locale.FR_FR); break;
         }
     }
 
