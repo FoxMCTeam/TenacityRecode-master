@@ -32,6 +32,7 @@ import net.minecraft.world.World;
 public class EntityPlayerSP extends AbstractClientPlayer {
     public final NetHandlerPlayClient sendQueue;
     private final StatFileWriter statWriter;
+    public int offGroundTicks, onGroundTicks;
 
     /**
      * The last X position which was transmitted to the server, used to determine when the X position changes and needs
@@ -165,6 +166,13 @@ public class EntityPlayerSP extends AbstractClientPlayer {
      * called every tick when the player is on foot. Performs all the things that normally happen during movement.
      */
     public void onUpdateWalkingPlayer() {
+        if (this.onGround) {
+            offGroundTicks = 0;
+            onGroundTicks++;
+        } else {
+            onGroundTicks = 0;
+            offGroundTicks++;
+        }
         boolean flag = this.isSprinting();
 
         if (flag != serverSprintState) {

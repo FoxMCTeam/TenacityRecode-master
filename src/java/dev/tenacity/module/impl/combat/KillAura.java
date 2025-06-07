@@ -5,6 +5,11 @@ import com.cubk.event.impl.player.AttackEvent;
 import com.cubk.event.impl.player.KeepSprintEvent;
 import com.cubk.event.impl.player.MotionEvent;
 import com.cubk.event.impl.render.Render3DEvent;
+import com.viaversion.viaversion.api.Via;
+import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
+import com.viaversion.viaversion.api.type.Type;
+import com.viaversion.viaversion.api.type.Types;
+import com.viaversion.viaversion.protocols.v1_8to1_9.Protocol1_8To1_9;
 import dev.tenacity.Client;
 import dev.tenacity.commands.impl.FriendCommand;
 import dev.tenacity.module.Category;
@@ -33,13 +38,20 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.network.play.client.C02PacketUseEntity;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
+import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -66,6 +78,7 @@ public final class KillAura extends Module {
     private final NumberSetting reach = new NumberSetting("Reach", 4, 6, 3, 0.1);
     private final BooleanSetting autoblock = new BooleanSetting("Autoblock", false);
     private final ModeSetting autoblockMode = new ModeSetting("Autoblock Mode", "Watchdog", "Fake", "Verus", "Watchdog");
+    private final BooleanSetting swapPreBlock = new BooleanSetting("Swap-PreBlock", false);
     private final BooleanSetting rotations = new BooleanSetting("Rotations", true);
     private final ModeSetting rotationMode = new ModeSetting("Rotation Mode", "Vanilla", "HvH", "Vanilla", "Nearest", "TestA", "TestB", "TestC", "Smooth");
     private final NumberSetting rotationSpeed = new NumberSetting("Rotation speed", 5, 10, 2, 0.1);
@@ -86,6 +99,18 @@ public final class KillAura extends Module {
     private final float yaw = 0;
     private int cps;
     private EntityLivingBase auraESPTarget;
+    private final List<Item> throwableList = Arrays.asList(
+            Items.snowball,
+            Items.egg,
+            Items.ender_pearl,
+            Items.ender_eye,
+            Items.fire_charge,
+            Items.water_bucket,
+            Items.lava_bucket,
+            Items.prismarine_shard,
+            Items.fishing_rod,
+            Items.gunpowder
+    );
 
     public KillAura() {
         super("module.combat.killAura", Category.COMBAT, "Automatically attacks players");
@@ -96,7 +121,7 @@ public final class KillAura extends Module {
         maxTargetAmount.addParent(mode, m -> mode.is("Multi"));
         customColor.addParent(auraESP, r -> r.isEnabled("Custom Color"));
         movementFix.addParent(addons, r -> r.isEnabled("Movement Fix"));
-        this.addSettings(targetsSetting, mode, maxTargetAmount, switchDelay, minCPS, maxCPS, reach, autoblock, autoblockMode,
+        this.addSettings(targetsSetting, mode, maxTargetAmount, switchDelay, minCPS, maxCPS, reach, autoblock, autoblockMode, swapPreBlock,
                 rotations, rotationMode, rotationSpeed, sortMode, addons, movementFix, auraESP, customColor);
     }
 
@@ -217,22 +242,60 @@ public final class KillAura extends Module {
         if (blocking) {
             switch (autoblockMode.getMode()) {
                 case "Watchdog":
-                    if (event.isPre() && wasBlocking && mc.thePlayer.ticksExisted % 4 == 0) {
-                        PacketUtils.sendPacketNoEvent(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
-                        wasBlocking = false;
+                    for (int i = 0; i <= 8; i++) {
+                        if (mc.thePlayer.inventory.getStackInSlot(i) != null) {
+                            if (!throwableList.contains(mc.thePlayer.inventory.getStackInSlot(i).getItem()) && i != mc.thePlayer.inventory.currentItem) {
+                                mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(i));
+                                break;
+                            }
+                        }
+                    }
+                    mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
+
+                    if (addons.getSetting("Ray Cast").isEnabled() && !RotationUtils.isMouseOver(event.getYaw(), event.getPitch(), target, reach.getValue().floatValue()))
+                        return;
+
+                    if (attackTimer.hasTimeElapsed(cps, true)) {
+                        final int maxValue = (int) ((minCPS.getMaxValue() - maxCPS.getValue()) * 20);
+                        final int minValue = (int) ((minCPS.getMaxValue() - minCPS.getValue()) * 20);
+                        cps = MathUtils.getRandomInRange(minValue, maxValue);
+                        if (mode.is("Multi")) {
+                            for (EntityLivingBase entityLivingBase : targets) {
+                                AttackEvent attackEvent = new AttackEvent(entityLivingBase);
+                                Client.INSTANCE.getEventManager().register(attackEvent);
+
+                                if (!attackEvent.isCancelled()) {
+                                    AttackOrder.sendFixedAttack(mc.thePlayer, entityLivingBase);
+                                }
+                            }
+                        } else {
+                            AttackEvent attackEvent = new AttackEvent(target);
+                            Client.INSTANCE.getEventManager().register(attackEvent);
+
+                            if (!attackEvent.isCancelled()) {
+                                AttackOrder.sendFixedAttack(mc.thePlayer, target);
+                            }
+                        }
                     }
 
-                    if (event.isPost() && !wasBlocking) {
-                        PacketUtils.sendPacketNoEvent(new C08PacketPlayerBlockPlacement(BlockPos.ORIGIN, 255, mc.thePlayer.getHeldItem(), 255, 255, 255));
-                        wasBlocking = true;
+                    sendInteractPacket(target);
+                    mc.getNetHandler().addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.inventory.getCurrentItem()));
+                    if (!mc.isSingleplayer()) {
+                        PacketWrapper blockPlace = PacketWrapper.create(29, null, Via.getManager().getConnectionManager().getConnections().iterator().next());
+                        blockPlace.write(
+                                Types.VAR_INT,
+                                1
+                        );
+                        try {
+                            blockPlace.sendToServer(Protocol1_8To1_9.class,true);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
                     }
+                    wasBlocking = true;
                     break;
                 case "Verus":
                     if (event.isPre()) {
-                        if (wasBlocking) {
-                            PacketUtils.sendPacketNoEvent(new C07PacketPlayerDigging(C07PacketPlayerDigging.
-                                    Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
-                        }
                         PacketUtils.sendPacketNoEvent(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
                         wasBlocking = true;
                     }
@@ -241,8 +304,6 @@ public final class KillAura extends Module {
                     break;
             }
         } else if (wasBlocking && autoblockMode.is("Watchdog") && event.isPre()) {
-            PacketUtils.sendPacketNoEvent(new C07PacketPlayerDigging(C07PacketPlayerDigging.
-                    Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
             wasBlocking = false;
         }
     }
@@ -329,5 +390,67 @@ public final class KillAura extends Module {
                 RenderUtil.drawTracerLine(auraESPTarget, 2.5f, color, auraESPAnim.getOutput().floatValue());
             }
         }
+    }
+
+    private void sendInteractPacket(Entity target) {
+        if (KillAura.target != null) {
+            // 计算射线追踪
+            MovingObjectPosition hitObject = rayTrace(
+                    this.reach.getValue().floatValue(),
+                    mc.timer.renderPartialTicks,
+                    new float[]{RotationComponent.rotations.getX(), RotationComponent.rotations.getY()}
+            );
+            // 如果命中目标实体
+            if (hitObject != null &&
+                    hitObject.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY &&
+                    hitObject.entityHit == target) {
+                // 计算命中位置相对于实体的坐标
+                Vec3 hitVec = hitObject.hitVec;
+                Vec3 relativeHitVec = new Vec3(
+                        hitVec.xCoord - target.posX,
+                        hitVec.yCoord - target.posY,
+                        hitVec.zCoord - target.posZ
+                );
+                // 发送攻击数据包
+                PacketUtils.sendPacketNoEvent(
+                        new C02PacketUseEntity(target, relativeHitVec)
+                );
+            }
+        }
+
+    }
+
+    // 辅助方法 - 射线追踪
+    private MovingObjectPosition rayTrace(double range, float partialTicks, float[] rotations) {
+        Vec3 startVec = new Vec3(
+                mc.thePlayer.posX,
+                mc.thePlayer.posY + mc.thePlayer.getEyeHeight(),
+                mc.thePlayer.posZ
+        );
+
+        float yaw = rotations[0];
+        float pitch = rotations[1];
+
+        float yawRad = (float)Math.toRadians(-yaw);
+        float pitchRad = (float)Math.toRadians(-pitch);
+
+        float cosYaw = (float)Math.cos(yawRad);
+        float sinYaw = (float)Math.sin(yawRad);
+        float cosPitch = (float)Math.cos(pitchRad);
+        float sinPitch = (float)Math.sin(pitchRad);
+
+        Vec3 lookVec = new Vec3(
+                sinYaw * cosPitch,
+                sinPitch,
+                cosYaw * cosPitch
+        );
+
+        Vec3 endVec = startVec.addVector(
+                lookVec.xCoord * range,
+                lookVec.yCoord * range,
+                lookVec.zCoord * range
+        );
+
+        return mc.theWorld.rayTraceBlocks(startVec, endVec, false, false, true);
     }
 }

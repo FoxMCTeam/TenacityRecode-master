@@ -27,8 +27,10 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
+import org.lwjgl.opengl.GL11;
 import org.lwjglx.input.Keyboard;
 
 import java.awt.*;
@@ -62,6 +64,71 @@ public final class TargetStrafe extends Module {
         addSettings(adaptiveSettings, radius, points, space, auto3rdPerson, render, color);
         color.addParent(render, ParentAttribute.BOOLEAN_CONDITION);
     }
+
+    public static void glColor(Color color) {
+        GL11.glColor4f(
+                color.getRed() / 255.0f,
+                color.getGreen() / 255.0f,
+                color.getBlue() / 255.0f,
+                color.getAlpha() / 255.0f
+        );
+    }
+
+    private boolean checkVoid() {
+        for (int x = -1; x <= 1; x++) {
+            for (int z = -1; z <= 1; z++) {
+                if (isBlockUnder((double)x, (double)z)) {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean isBlockUnder(double x, double z) {
+        if (mc.thePlayer.posY < 0) return false;
+
+        int offset = 0;
+        while (offset < (int)mc.thePlayer.posY + 2) {
+            AxisAlignedBB bb = mc.thePlayer.getEntityBoundingBox()
+                    .offset(x, -offset, z);
+
+            if (!mc.theWorld.getCollidingBoundingBoxes(mc.thePlayer, bb).isEmpty()) {
+                return true;
+            }
+            offset += 2;
+        }
+        return false;
+    }
+
+    public static void strafe(double moveSpeed) {
+        strafe(moveSpeed, mc.thePlayer.getRotationYawHead());
+    }
+
+    public static void strafe(double moveSpeed,float yaw) {
+        float rotationYaw = yaw;
+
+        if (mc.thePlayer.moveForward < 0F)
+            rotationYaw += 180F;
+
+        float forward = 1F;
+        if (mc.thePlayer.moveForward < 0F)
+            forward = -0.5F;
+        else if (mc.thePlayer.moveForward > 0F)
+            forward = 0.5F;
+
+        if (mc.thePlayer.moveStrafing > 0F)
+            rotationYaw -= 90F * forward;
+
+        if (mc.thePlayer.moveStrafing < 0F)
+            rotationYaw += 90F * forward;
+
+
+        final double direction =  Math.toRadians(rotationYaw);
+        mc.thePlayer.motionX = -Math.sin(direction) * moveSpeed;
+        mc.thePlayer.motionZ = Math.cos(direction) * moveSpeed;
+    }
+
 
     public static boolean strafe(MoveEvent e) {
         return strafe(e, MovementUtils.getSpeed());

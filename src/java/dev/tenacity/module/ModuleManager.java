@@ -164,11 +164,12 @@ public class ModuleManager {
     public final List<Module> getArraylistModules(ArrayListMod arraylistMod, List<Module> modules) {
         return modules.stream().filter(module -> module.isEnabled() &&
                 !((module.getCategory() == Category.RENDER && arraylistMod.hideModules.isEnabled("Render")) ||
-                        (module.getCategory() == Category.DISPLAY && arraylistMod.hideModules.isEnabled("Display")) ||
-                        (module.getCategory() == Category.MISC && arraylistMod.hideModules.isEnabled("Misc")) ||
-                        (module.getCategory() == Category.COMBAT && arraylistMod.hideModules.isEnabled("Combat") ||
-                                (module.getCategory() == Category.PLAYER && arraylistMod.hideModules.isEnabled("Player")) ||
-                                (module.getCategory() == Category.MOVEMENT && arraylistMod.hideModules.isEnabled("Movement"))))).collect(Collectors.toList());
+                 (module.getCategory() == Category.DISPLAY && arraylistMod.hideModules.isEnabled("Display")) ||
+                 (module.getCategory() == Category.MISC && arraylistMod.hideModules.isEnabled("Misc")) ||
+                 (module.getCategory() == Category.COMBAT && arraylistMod.hideModules.isEnabled("Combat")) ||
+                 (module.getCategory() == Category.PLAYER && arraylistMod.hideModules.isEnabled("Player")) ||
+                 (module.getCategory() == Category.MOVEMENT && arraylistMod.hideModules.isEnabled("Movement"))
+                 )).collect(Collectors.toList());
     }
 
 }

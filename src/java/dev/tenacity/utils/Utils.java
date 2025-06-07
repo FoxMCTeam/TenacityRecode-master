@@ -60,6 +60,10 @@ public interface Utils {
             iconFont35 = iconFont.size(35),
             iconFont40 = iconFont.size(40);
 
+    static boolean nullCheck() {
+        return mc.thePlayer != null && mc.theWorld != null;
+    }
+
     static boolean isLobby() {
         if (mc.theWorld == null) {
             return true;

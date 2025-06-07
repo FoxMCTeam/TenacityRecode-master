@@ -4,13 +4,135 @@ import com.cubk.event.impl.player.MoveEvent;
 import com.cubk.event.impl.player.PlayerMoveUpdateEvent;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.server.PacketUtils;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerCapabilities;
+import net.minecraft.init.Blocks;
 import net.minecraft.network.play.client.C13PacketPlayerAbilities;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import org.lwjglx.util.vector.Vector2f;
 
 public class MovementUtils implements Utils {
+    public static final double WALK_SPEED = 0.221;
+    public static final double BUNNY_SLOPE = 0.66;
+    public static final double MOD_SPRINTING = 1.3;
+    public static final double MOD_SNEAK = 0.3;
+    public static final double MOD_ICE = 2.5;
+    public static final double MOD_WEB = 0.105 / WALK_SPEED;
+    public static final double JUMP_HEIGHT = 0.42;
+    public static final double BUNNY_FRICTION = 159.9;
+    public static final double Y_ON_GROUND_MIN = 0.00001;
+    public static final double Y_ON_GROUND_MAX = 0.0626;
+
+    public static final double AIR_FRICTION = 0.9800000190734863;
+    public static final double WATER_FRICTION = 0.800000011920929;
+    public static final double LAVA_FRICTION = 0.5;
+    public static final double MOD_SWIM = 0.115f / WALK_SPEED;
+    public static final double[] MOD_DEPTH_STRIDER = new double[] {
+            1.0,
+            0.1645f / MOD_SWIM / WALK_SPEED,
+            0.1995f / MOD_SWIM / WALK_SPEED,
+            1.0f / MOD_SWIM
+    };
+    public static double speedValue(double v0, double v1, double v2) {
+        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        if (player != null) {
+            PotionEffect speedEffect = player.getActivePotionEffect(Potion.moveSpeed); // Speed potion ID is 1
+            if (speedEffect != null) {
+                int amplifier = speedEffect.getAmplifier();
+                if (amplifier == 0) {
+                    return v1;
+                } else if (amplifier >= 1) {
+                    return v2;
+                }
+            }
+        }
+        return v0;
+    }
+    public static double getDistanceToGround() {
+
+        if (mc.thePlayer == null) {
+            return -1;
+        }
+
+
+        double playerX = mc.thePlayer.posX;
+        double playerY = mc.thePlayer.posY;
+        double playerZ = mc.thePlayer.posZ;
+
+
+        if (mc.thePlayer.isOnGround()) {
+            return 0;
+        }
+
+
+        for (int y = (int) Math.floor(playerY); y >= 0; y--) {
+            BlockPos blockPos = new BlockPos(playerX, y, playerZ);
+            IBlockState blockState = mc.theWorld.getBlockState(blockPos);
+
+
+            if (!(blockState.getBlock().equals(Blocks.air))) {
+                return playerY - (y + 1);
+            }
+        }
+
+
+        return playerY;
+    }
+
+    public static float getMotionDirection() {
+        float motionDir = (float) Math.toDegrees(Math.atan2(-mc.thePlayer.motionX, mc.thePlayer.motionZ));
+        return motionDir < 0 ? motionDir + 360 : motionDir;
+    }
+
+    public static double getAllowHorizontalDistance() {
+        Minecraft mc = Minecraft.getMinecraft();
+        EntityPlayer player = mc.thePlayer;
+
+        if (player == null) {
+            return 0;
+        }
+
+        double horizontalDistance;
+        boolean useBaseModifiers = false;
+
+        if (player.isInWater()) {
+            horizontalDistance = MOD_WEB * WALK_SPEED;
+        } else if (player.isInWater() || player.isInLava()) {
+            horizontalDistance = MOD_SWIM * WALK_SPEED;
+        } else if (player.isSneaking()) {
+            horizontalDistance = MOD_SNEAK * WALK_SPEED;
+        } else {
+            horizontalDistance = WALK_SPEED;
+            useBaseModifiers = true;
+        }
+
+        if (useBaseModifiers) {
+            // Apply sprinting modifier if moving and not sneaking
+            if (!player.isSneaking() && (player.moveForward != 0 || player.moveStrafing != 0)) {
+                horizontalDistance *= MOD_SPRINTING;
+            }
+
+            // Apply speed potion effect
+            PotionEffect speedEffect = player.getActivePotionEffect(Potion.moveSpeed);
+            if (speedEffect != null && speedEffect.getDuration() > 0) {
+                horizontalDistance *= (1 + (speedEffect.getAmplifier() + 1) * 0.2);
+            }
+
+            // Apply slowness effect (overrides other modifiers)
+            PotionEffect slownessEffect = player.getActivePotionEffect(Potion.moveSlowdown);
+            if (slownessEffect != null) {
+                horizontalDistance = 0.29 * WALK_SPEED; // Slowness reduces speed to about 29% of walking speed
+            }
+        }
+
+        return horizontalDistance;
+    }
 
     public static boolean isMoving() {
         if (mc.thePlayer == null) {
@@ -31,6 +153,9 @@ public class MovementUtils implements Utils {
         return yaw;
     }
 
+    public static Block getBlockAt(double x, double y, double z) {
+        return mc.theWorld.getBlockState(new BlockPos(x, y, z)).getBlock();
+    }
     public static void setSpeed(double moveSpeed, float yaw, double strafe, double forward) {
         if (forward != 0.0D) {
             if (strafe > 0.0D) {

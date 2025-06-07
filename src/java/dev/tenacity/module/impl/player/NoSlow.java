@@ -3,11 +3,15 @@ package dev.tenacity.module.impl.player;
 import com.cubk.event.annotations.EventTarget;
 import com.cubk.event.impl.player.MotionEvent;
 import com.cubk.event.impl.player.SlowDownEvent;
+import com.cubk.event.impl.player.UpdateEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.ModeSetting;
 import dev.tenacity.utils.player.MovementUtils;
 import dev.tenacity.utils.server.PacketUtils;
+import net.minecraft.client.settings.GameSettings;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.*;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
@@ -16,8 +20,8 @@ import net.minecraft.util.EnumFacing;
 
 public class NoSlow extends Module {
 
-    private final ModeSetting mode = new ModeSetting("Mode", "Watchdog", "Vanilla", "NCP", "Watchdog");
-    private boolean synced;
+    private final ModeSetting mode = new ModeSetting("Mode", "Watchdog", "Vanilla", "Watchdog");
+    private boolean onSlab;
 
     public NoSlow() {
         super("module.player.NoSlow", Category.PLAYER, "prevent item slowdown");
@@ -30,35 +34,70 @@ public class NoSlow extends Module {
     }
 
     @EventTarget
-    public void onMotionEvent(MotionEvent e) {
-        this.setSuffix(mode.getMode());
-        switch (mode.getMode()) {
-            case "Watchdog":
-                if (mc.thePlayer.onGround && mc.thePlayer.isUsingItem() && MovementUtils.isMoving()) {
-                    if (e.isPre()) {
-                        mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
-                        synced = true;
-                    } else {
-                        mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem < 8 ? mc.thePlayer.inventory.currentItem + 1 : mc.thePlayer.inventory.currentItem - 1));
-                        synced = false;
-                    }
-                }
-                if (!synced) {
-                    mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
-                    synced = true;
-                }
-                break;
-            case "NCP":
-                if (MovementUtils.isMoving() && mc.thePlayer.isUsingItem()) {
-                    if (e.isPre()) {
-                        PacketUtils.sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
-                    } else {
-                        PacketUtils.sendPacket(new C08PacketPlayerBlockPlacement(mc.thePlayer.getCurrentEquippedItem()));
-                    }
+    public void onMotionEvent(MotionEvent event) {
+        if (event.isPost()) return;
 
-                }
-                break;
+        if (mc.thePlayer.isUsingItem() && !(mc.thePlayer.getHeldItem().getItem() instanceof ItemSword)) {
+            if (mc.thePlayer.onGround && !onSlab) {
+                event.setY(event.getY() + 1E-3);
+            }
+        }
+
+        double y = event.getY();
+
+        if (MovementUtils.getBlockAt(0.0, mc.thePlayer.posY, 0.0) != Blocks.stone_slab
+                && MovementUtils.getBlockAt(0.0, mc.thePlayer.posY, 0.0) != Blocks.stone_stairs
+                && !mc.thePlayer.isUsingItem()) {
+            onSlab = false;
+        }
+
+        if (Math.abs(y - Math.round(y)) > 0.03 && mc.thePlayer.onGround) {
+            onSlab = true;
         }
     }
 
+    @EventTarget
+    public void onUpdateEvent(UpdateEvent event) {
+        setSuffix(mode.getMode());
+
+        if (mc.thePlayer == null || mc.thePlayer.getHeldItem() == null || mc.thePlayer.getHeldItem().getItem() == null) return;
+
+        if (mode.is("Watchdog")) {
+            if (isHoldingConsumable() && !onSlab) {
+                if (mc.thePlayer.offGroundTicks == 2) {
+                    if (GameSettings.isKeyDown(mc.gameSettings.keyBindUseItem)) {
+                        mc.gameSettings.keyBindUseItem.pressed = true;
+                    }
+                }
+            }
+
+            if (mc.thePlayer.isUsingItem() && isHoldingConsumable(mc.thePlayer.getItemInUse()) && !onSlab) {
+                if (mc.thePlayer.getItemInUseDuration() == 0 && mc.thePlayer.onGround) {
+                    mc.thePlayer.jump();
+                    mc.thePlayer.motionX *= 0.2;
+                    mc.thePlayer.motionZ *= 0.2;
+                    mc.gameSettings.keyBindUseItem.pressed = false;
+                }
+
+                if (mc.thePlayer.offGroundTicks == 2) {
+                    if (GameSettings.isKeyDown(mc.gameSettings.keyBindUseItem)) {
+                        mc.gameSettings.keyBindUseItem.pressed = true;
+                    }
+                }
+            }
+        }
+    }
+
+    public boolean isHoldingConsumable() {
+        return isHoldingConsumable(mc.thePlayer.getHeldItem());
+    }
+
+    public boolean isHoldingConsumable(ItemStack item) {
+        return item != null && !(item.getItem() instanceof ItemSword)
+                && (item.getItem() instanceof ItemFood
+                || item.getItem() instanceof ItemPotion
+                || item.getItem() instanceof ItemBow
+                || item.getItem() instanceof ItemSkull
+                || item.getItem() instanceof ItemBucketMilk);
+    }
 }
