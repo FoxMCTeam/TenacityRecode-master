@@ -6,7 +6,6 @@ import dev.tenacity.Client;
 import dev.tenacity.config.ConfigSetting;
 import dev.tenacity.i18n.Locale;
 import dev.tenacity.i18n.Localization;
-import dev.tenacity.module.impl.combat.KillAura;
 import dev.tenacity.module.impl.display.NotificationsMod;
 import dev.tenacity.module.impl.render.GlowESP;
 import dev.tenacity.module.settings.Setting;
@@ -20,15 +19,11 @@ import dev.tenacity.utils.animations.impl.DecelerateAnimation;
 import dev.tenacity.utils.misc.Multithreading;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.client.settings.KeyBinding;
 import org.lwjglx.input.Keyboard;
 
 import java.util.Arrays;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
-
-import static dev.tenacity.module.impl.combat.KillAura.targets;
-import static dev.tenacity.module.impl.combat.KillAura.wasBlocking;
 
 @Getter
 @Setter
@@ -151,23 +146,6 @@ public class Module implements Utils {
         if (this instanceof GlowESP) {
             GlowESP.fadeIn.setDirection(Direction.BACKWARDS);
             Multithreading.schedule(() -> Client.INSTANCE.getEventManager().unregister(this), 250, TimeUnit.MILLISECONDS);
-        } if (this instanceof KillAura sb) {
-            KillAura.target = null;
-            targets.clear();
-            KillAura.attacking = false;
-            KillAura.blocking = false;
-            if (wasBlocking) {
-                if (sb.autoBlockMode.is("Grim") || sb.autoBlockMode.is("Grimidk")) {
-                    mc.gameSettings.keyBindUseItem.pressed = false;
-                    mc.playerController.onStoppedUsingItem(KillAura.mc.thePlayer);
-                    KeyBinding.setKeyBindState(KillAura.mc.gameSettings.keyBindUseItem.getKeyCode(), false);
-                }
-            }
-            wasBlocking = false;
-            if (sb.auraESPAnim.finished(Direction.BACKWARDS)) {
-                sb.auraESPTarget = null;
-            }
-            Multithreading.schedule(() -> Client.INSTANCE.getEventManager().unregister(this), 650, TimeUnit.MILLISECONDS);
         } else {
             Client.INSTANCE.getEventManager().unregister(this);
         }

@@ -49,43 +49,7 @@ public class RenderUtil implements Utils {
     public static boolean needsNewFramebuffer(Framebuffer framebuffer) {
         return framebuffer == null || framebuffer.framebufferWidth != mc.displayWidth || framebuffer.framebufferHeight != mc.displayHeight;
     }
-    private static ResourceLocation getESPImage() {
-        return switch (KillAura.auraESP.getMode()) {
-            case "Capture" -> new ResourceLocation("Tenacity/capture.png");
-            case "Round" -> new ResourceLocation("Tenacity/round.png");
-            default -> null;
-        };
-    }
 
-    public static void drawTargetESP2D(float x, float y, Color color, Color color2, float scale, int index, float alpha) {
-        ResourceLocation resource = getESPImage();
-        if (resource == null) {
-            return;
-        }
-
-        long millis = System.currentTimeMillis() + (long) index * 400L;
-        double angle = MathHelper.clamp_double((Math.sin((double) millis / 150.0) + 1.0) / 2.0 * 30.0, 0.0, 30.0);
-        double scaled = MathHelper.clamp_double((Math.sin((double) millis / 500.0) + 1.0) / 2.0, 0.8, 1.0);
-        double rotate = MathHelper.clamp_double((Math.sin((double) millis / 1000.0) + 1.0) / 2.0 * 360.0, 0.0, 360.0);
-        rotate = (double) 45 - (angle - 15.0) + rotate;
-        float size = 128.0f * scale * (float) scaled;
-        float x2 = (x -= size / 2.0f) + size;
-        float y2 = (y -= size / 2.0f) + size;
-        GlStateManager.pushMatrix();
-        RenderUtil.customRotatedObject2D(x, y, size, size, (float) rotate);
-        GL11.glDisable(3008);
-        GlStateManager.depthMask(false);
-        GlStateManager.enableBlend();
-        GlStateManager.shadeModel(7425);
-        GlStateManager.tryBlendFuncSeparate(770, 1, 1, 0);
-        drawESPImage(resource, x, y, x2, y2, color, color2, alpha);
-        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-        GlStateManager.resetColor();
-        GlStateManager.shadeModel(7424);
-        GlStateManager.depthMask(true);
-        GL11.glEnable(3008);
-        GlStateManager.popMatrix();
-    }
 
     private static void drawESPImage(ResourceLocation resource, double x, double y, double x2, double y2, Color c, Color c2, float alpha) {
         mc.getTextureManager().bindTexture(resource);

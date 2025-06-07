@@ -3,6 +3,8 @@ package dev.tenacity.utils.player;
 import com.cubk.event.impl.player.MotionEvent;
 import com.google.common.base.Predicates;
 import dev.tenacity.utils.Utils;
+import dev.tenacity.utils.client.addons.rise.Location;
+import dev.tenacity.utils.client.addons.vector.Vector2f;
 import dev.tenacity.utils.misc.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -12,6 +14,9 @@ import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.util.*;
 
 import java.util.List;
+
+import static dev.tenacity.utils.client.addons.rise.RotationUtils.calculate;
+import static dev.tenacity.utils.client.addons.rise.RotationUtils.getNearestPointBB;
 
 public class RotationUtils implements Utils {
 
@@ -30,6 +35,25 @@ public class RotationUtils implements Utils {
 
     public static void setVisualRotations(MotionEvent e) {
         setVisualRotations(e.getYaw(), e.getPitch());
+    }
+
+    public static float[] getHVHRotation(final Entity entity) {
+        if (entity == null) {
+            return null;
+        }
+        double diffX = entity.posX - mc.thePlayer.posX;
+        double diffZ = entity.posZ - mc.thePlayer.posZ;
+        Vec3 BestPos = getNearestPointBB(mc.thePlayer.getPositionEyes(1.0f), entity.getEntityBoundingBox());
+        Location myEyePos = new Location(Minecraft.getMinecraft().thePlayer.posX, Minecraft.getMinecraft().thePlayer.posY + (double) mc.thePlayer.getEyeHeight(), Minecraft.getMinecraft().thePlayer.posZ);
+        double diffY = BestPos.yCoord - myEyePos.getY();
+        double dist = MathHelper.sqrt_double(diffX * diffX + diffZ * diffZ);
+        float yaw = (float) (Math.atan2(diffZ, diffX) * 180.0 / Math.PI) - 90.0f;
+        float pitch = (float) (-(Math.atan2(diffY, dist) * 180.0 / Math.PI));
+        return new float[]{yaw, pitch};
+    }
+
+    public static Vector2f getRotationFromEyeToPoint(dev.tenacity.utils.client.addons.vector.Vector3d point3d) {
+        return calculate(new dev.tenacity.utils.client.addons.vector.Vector3d(mc.thePlayer.posX, mc.thePlayer.getEntityBoundingBox().minY + (double) mc.thePlayer.getEyeHeight(), mc.thePlayer.posZ), point3d);
     }
 
     public static float clampRotation() {
