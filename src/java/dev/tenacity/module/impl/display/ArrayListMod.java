@@ -73,7 +73,7 @@ public class ArrayListMod extends Module {
             modules = moduleList;
         }
         modules.sort(Comparator.<Module>comparingDouble(m -> {
-            String name = HUDMod.get(m.getName() + (m.hasMode() ? " " + m.getSuffix() : ""));
+            String name = HUDMod.get(Localization.get(m.getName()) + (m.hasMode() ? " " + m.getSuffix() : ""));
             return font.getStringWidth(applyText(name));
         }).reversed());
     }
