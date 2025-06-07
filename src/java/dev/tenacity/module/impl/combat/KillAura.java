@@ -81,19 +81,19 @@ public final class KillAura extends Module {
     public static boolean wasBlocking;
     public static EntityLivingBase target;
     public final NumberSetting switchDelay = new NumberSetting("SwitchDelay", 170, 1000.0, 0.0, 1.0);
-    private final TimerUtil attackTimer = new TimerUtil();
-    private final TimerUtil switchTimer = new TimerUtil();
-    private final ModeSetting mode = new ModeSetting("Mode", "Single", "Single", "Switch");
-    private final BooleanSetting rotations = new BooleanSetting("Rotations", true);
-    private final NumberSetting rotationSpeed = new NumberSetting("Rotation speed", 5, 10, 2, 0.1);
-    private final ModeSetting rotationMode = new ModeSetting("Rotation Mode", "HvH", "HvH", "Vanilla", "Nearest", "TestA", "TestB", "TestC");
-    private final BooleanSetting autoBlock = new BooleanSetting("AutoBlock", false);
-    private final ModeSetting autoBlockMode = new ModeSetting("AutoBlock Mode", "Grim", "Fake", "Grim", "Watchdog", "Grimidk");
-    private final ModeSetting sortMode = new ModeSetting("Sort Mode", "Range", "Range", "Hurt Time", "Health", "Armor");
-    private final NumberSetting minCPS = new NumberSetting("Min CPS", 10, 20, 1, 1);
-    private final NumberSetting maxCPS = new NumberSetting("Max CPS", 20, 20, 1, 1);
-    private final BooleanSetting KeepSprint = new BooleanSetting("Keep Sprint", false);
-    private final BooleanSetting RayCast = new BooleanSetting("Ray Cast", false);
+    public final TimerUtil attackTimer = new TimerUtil();
+    public final TimerUtil switchTimer = new TimerUtil();
+    public final ModeSetting mode = new ModeSetting("Mode", "Single", "Single", "Switch");
+    public final BooleanSetting rotations = new BooleanSetting("Rotations", true);
+    public final NumberSetting rotationSpeed = new NumberSetting("Rotation speed", 5, 10, 2, 0.1);
+    public final ModeSetting rotationMode = new ModeSetting("Rotation Mode", "HvH", "HvH", "Vanilla", "Nearest", "TestA", "TestB", "TestC");
+    public final BooleanSetting autoBlock = new BooleanSetting("AutoBlock", false);
+    public final ModeSetting autoBlockMode = new ModeSetting("AutoBlock Mode", "Grim", "Fake", "Grim", "Watchdog", "Grimidk");
+    public final ModeSetting sortMode = new ModeSetting("Sort Mode", "Range", "Range", "Hurt Time", "Health", "Armor");
+    public final NumberSetting minCPS = new NumberSetting("Min CPS", 10, 20, 1, 1);
+    public final NumberSetting maxCPS = new NumberSetting("Max CPS", 20, 20, 1, 1);
+    public final BooleanSetting KeepSprint = new BooleanSetting("Keep Sprint", false);
+    public final BooleanSetting RayCast = new BooleanSetting("Ray Cast", false);
     public final Animation auraESPAnim = new SmoothStepAnimation(650, 1);
     private final String[] swapBlacklist = {"compass", "snowball", "spawn", "skull"};
     public BooleanSetting altSwitch = new BooleanSetting("LAlt Switch Strafe", false);
@@ -186,18 +186,8 @@ public final class KillAura extends Module {
 
     @Override
     public void onDisable() {
-        target = null;
-        targets.clear();
-        attacking = false;
-        blocking = false;
-        if (wasBlocking) {
-            if (autoBlockMode.is("Grim") || autoBlockMode.is("Grimidk")) {
-                mc.gameSettings.keyBindUseItem.pressed = false;
-                mc.playerController.onStoppedUsingItem(KillAura.mc.thePlayer);
-                KeyBinding.setKeyBindState(KillAura.mc.gameSettings.keyBindUseItem.getKeyCode(), false);
-            }
-        }
-        wasBlocking = false;
+
+
         super.onDisable();
     }
 
