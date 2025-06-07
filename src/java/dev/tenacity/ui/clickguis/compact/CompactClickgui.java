@@ -181,7 +181,7 @@ public class CompactClickgui extends GuiScreen {
             }
 
             RenderUtil.resetColor();
-            duckSansBoldFont22.drawString(category.name, x + 8, catY + duckSansFont22.getMiddleOfBox(catHeight), selectColor.getRGB());
+            duckSansBoldFont22.drawString(Localization.get(category.name), x + 8, catY + duckSansFont22.getMiddleOfBox(catHeight), selectColor.getRGB());
             RenderUtil.resetColor();
             seperation += catHeight;
         }
@@ -282,7 +282,7 @@ public class CompactClickgui extends GuiScreen {
             Module module = moduleRect.module;
 
             searchTerms.add(Localization.get(module.getName()));
-            searchTerms.add(module.getCategory().name);
+            searchTerms.add(Localization.get(module.getCategory().name));
             if (!module.getAuthor().isEmpty()) {
                 searchTerms.add(module.getAuthor());
             }

@@ -7,14 +7,14 @@ import lombok.Getter;
 
 public enum Category {
 
-    COMBAT("Combat", FontUtil.BOMB),
-    MOVEMENT("Movement", FontUtil.WHEELCHAIR),
-    RENDER("Render", FontUtil.EYE),
-    DISPLAY("Display", FontUtil.DISPLAY),
-    PLAYER("Player", FontUtil.PERSON),
-    EXPLOIT("Exploit", FontUtil.BUG),
-    MISC("Misc", FontUtil.LIST),
-    SCRIPTS("Scripts", FontUtil.SCRIPT);
+    COMBAT("module.combat", FontUtil.BOMB),
+    MOVEMENT("module.movement", FontUtil.WHEELCHAIR),
+    RENDER("module.render", FontUtil.EYE),
+    DISPLAY("module.display", FontUtil.DISPLAY),
+    PLAYER("module.player", FontUtil.PERSON),
+    EXPLOIT("module.exploit", FontUtil.BUG),
+    MISC("module.misc", FontUtil.LIST),
+    SCRIPTS("module.scripts", FontUtil.SCRIPT);
 
     public final String name;
     public final String icon;

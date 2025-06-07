@@ -1,5 +1,6 @@
 package dev.tenacity.ui.clickguis.modern.components;
 
+import dev.tenacity.i18n.Localization;
 import dev.tenacity.module.Category;
 import dev.tenacity.utils.animations.Animation;
 import dev.tenacity.utils.animations.Direction;
@@ -57,9 +58,7 @@ public class CategoryButton extends Component {
 
 
         float xDiff = 10 * expandAnimation.getOutput().floatValue();
-        duckSansFont24.drawString(category.name, x + 27 + xDiff, y, color);
-
-
+        duckSansFont24.drawString(Localization.get(category.name), x + 27 + xDiff, y, color);
     }
 
     @Override

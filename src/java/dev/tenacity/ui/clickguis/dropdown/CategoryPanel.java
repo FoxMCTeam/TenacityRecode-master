@@ -1,6 +1,7 @@
 package dev.tenacity.ui.clickguis.dropdown;
 
 import dev.tenacity.Client;
+import dev.tenacity.i18n.Locale;
 import dev.tenacity.i18n.Localization;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -192,7 +193,7 @@ public class CategoryPanel implements Screen {
 
 
         float yMovement;
-        switch (category.name) {
+        switch (Localization.get(category.name, Locale.EN_US)) {
             case "Movement":
             case "Player":
             case "Misc":
@@ -213,12 +214,12 @@ public class CategoryPanel implements Screen {
 
 
         RenderUtil.resetColor();
-        float textWidth = duckSansBoldFont22.getStringWidth(category.name + " ") / 2f;
+        float textWidth = duckSansBoldFont22.getStringWidth(Localization.get(category.name) + " ") / 2f;
         iconFont20.drawCenteredString(category.icon, x + rectWidth / 2f + textWidth,
                 y + iconFont20.getMiddleOfBox(categoryRectHeight) + yMovement, textColor);
 
         RenderUtil.resetColor();
-        duckSansBoldFont22.drawString(category.name, x + ((rectWidth / 2f - textWidth) - (iconFont20.getStringWidth(category.icon) / 2f)),
+        duckSansBoldFont22.drawString(Localization.get(category.name), x + ((rectWidth / 2f - textWidth) - (iconFont20.getStringWidth(category.icon) / 2f)),
                 y + duckSansBoldFont22.getMiddleOfBox(categoryRectHeight), textColor);
 
     }
