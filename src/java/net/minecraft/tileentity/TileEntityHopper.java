@@ -1,6 +1,6 @@
 package net.minecraft.tileentity;
 
-import dev.firm.utils.client.addons.betterfps.HopperLogic;
+import dev.tenacity.utils.client.addons.betterfps.HopperLogic;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockHopper;
