@@ -12,7 +12,8 @@ import java.util.HashMap;
 @Getter
 @RequiredArgsConstructor
 public enum Locale {
-    ZH_ZH("zh_ZH"),
+    ZH_HK("zh_HK"),
+    ZH_CN("zh_CN"),
     EN_US("en_US"),
     DE_DE("de_DE"),
     FR_FR("fr_FR"),

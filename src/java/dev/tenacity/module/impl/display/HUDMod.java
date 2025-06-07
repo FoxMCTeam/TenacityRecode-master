@@ -65,7 +65,7 @@ public class HUDMod extends Module {
     public static int offsetValue = 0;
     public static float xOffset = 0;
     private final StringSetting clientName = new StringSetting("Client Name");
-    private final ModeSetting language = new ModeSetting("Language Mode", "en_US", "en_US", "ru_RU", "zh_ZH", "de_DE", "fr_fR");
+    private final ModeSetting language = new ModeSetting("Language Mode", "en_US", "en_US", "ru_RU", "zh_CN", "zh_HK", "de_DE", "fr_fR");
     private final ModeSetting watermarkMode = new ModeSetting("Watermark Mode", "Tenacity", "Tenacity", "Plain Text", "Neverlose", "Tenasense", "Tenabition", "Logo", "None");
     private final Animation fadeInText = new DecelerateAnimation(500, 1);
     private final Map<String, String> bottomLeftText = new LinkedHashMap<>();
@@ -385,7 +385,8 @@ public class HUDMod extends Module {
         switch (language.getMode()) {
             case "en_US" : Client.INSTANCE.setLocale(Locale.EN_US); break;
             case "ru_RU" : Client.INSTANCE.setLocale(Locale.RU_RU); break;
-            case "zh_ZH" : Client.INSTANCE.setLocale(Locale.ZH_ZH); break;
+            case "zh_HK" : Client.INSTANCE.setLocale(Locale.ZH_HK); break;
+            case "zh_CN" : Client.INSTANCE.setLocale(Locale.ZH_CN); break;
             case "de_DE" : Client.INSTANCE.setLocale(Locale.DE_DE); break;
             case "fr_fR" : Client.INSTANCE.setLocale(Locale.FR_FR); break;
         }
