@@ -88,7 +88,7 @@ public final class KillAura extends Module {
     private EntityLivingBase auraESPTarget;
 
     public KillAura() {
-        super("KillAura", Category.COMBAT, "Automatically attacks players");
+        super("module.combat.killAura", Category.COMBAT, "Automatically attacks players");
         autoblockMode.addParent(autoblock, a -> autoblock.isEnabled());
         rotationMode.addParent(rotations, r -> rotations.isEnabled());
         rotationSpeed.addParent(rotations, r -> rotations.isEnabled());
@@ -182,7 +182,7 @@ public final class KillAura extends Module {
                     RotationComponent.setRotations(new Vector2f(rotations[0], rotations[1]), rotationSpeed, MovementFix.values()[movementFix.modes.indexOf(movementFix.getMode())]);
                 }
 
-                if (!RotationComponent.isRotationg || mc.thePlayer.getDistanceToEntity(target) > reach.getValue() || (addons.isEnabled("Ray Cast") && !RotationUtils.isMouseOver(event.getYaw(), event.getPitch(), target, reach.getValue().floatValue())))
+                if (addons.getSetting("Ray Cast").isEnabled() && !RotationUtils.isMouseOver(event.getYaw(), event.getPitch(), target, reach.getValue().floatValue()))
                     return;
 
                 if (attackTimer.hasTimeElapsed(cps, true)) {
