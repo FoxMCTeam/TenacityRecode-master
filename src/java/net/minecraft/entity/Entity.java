@@ -9,6 +9,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockPattern;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.command.CommandResultStats;
 import net.minecraft.command.ICommandSender;
@@ -2332,7 +2333,24 @@ public abstract class Entity implements ICommandSender {
         chatcomponenttext.getChatStyle().setInsertion(this.getUniqueID().toString());
         return chatcomponenttext;
     }
-
+    public float getSmoothDistanceToEntity(Entity entityIn) {
+        float pTicks = Minecraft.getMinecraft().timer.renderPartialTicks;
+        double xposme = this.lastTickPosX + (this.posX - this.lastTickPosX) * (double)pTicks;
+        double yposme = this.lastTickPosY + (this.posY - this.lastTickPosY) * (double)pTicks;
+        double zposme = this.lastTickPosZ + (this.posZ - this.lastTickPosZ) * (double)pTicks;
+        double xposent = 0.0;
+        double yposent = 0.0;
+        double zposent = 0.0;
+        if (entityIn != null) {
+            xposent = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX) * (double)pTicks;
+            yposent = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY) * (double)pTicks;
+            zposent = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ) * (double)pTicks;
+        }
+        float f = (float)(xposme - xposent);
+        float f1 = (float)(yposme - yposent);
+        float f2 = (float)(zposme - zposent);
+        return entityIn != null ? MathHelper.sqrt_double(f * f + f1 * f1 + f2 * f2) : 0.0f;
+    }
     /**
      * Sets the custom name tag for this entity
      */
