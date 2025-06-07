@@ -34,7 +34,7 @@ public class Velocity extends Module {
     private int stack;
 
     public Velocity() {
-        super("Velocity", Category.COMBAT, "Reduces your knockback");
+        super("module.combat.velocity", Category.COMBAT, "Reduces your knockback");
         Setting.addParent(mode, m -> m.is("Packet"), horizontal, vertical, staffCheck);
         this.addSettings(mode, horizontal, vertical, chance, onlyWhileMoving, staffCheck);
     }

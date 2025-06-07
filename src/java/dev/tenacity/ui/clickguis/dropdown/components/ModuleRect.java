@@ -1,5 +1,6 @@
 package dev.tenacity.ui.clickguis.dropdown.components;
 
+import dev.tenacity.i18n.Localization;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.Setting;
 import dev.tenacity.module.settings.impl.*;
@@ -146,7 +147,7 @@ public class ModuleRect implements Screen {
 
         RenderUtil.resetColor();
 
-        duckSansFont18.drawString((module.isEnabled() ? "§l" : "") + module.getName(), x + 5, y + duckSansFont18.getMiddleOfBox(height), moduleTextColor);
+        duckSansFont18.drawString((module.isEnabled() ? "§l" : "") + Localization.get(module.getName()), x + 5, y + duckSansFont18.getMiddleOfBox(height), moduleTextColor);
 
 
         Color settingRectColor = ColorUtil.tripleColor(32, alpha);

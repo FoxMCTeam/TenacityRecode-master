@@ -37,11 +37,10 @@ public class PostProcessing extends Module {
     private final BooleanSetting bloom = new BooleanSetting("Bloom", true);
     private final NumberSetting shadowRadius = new NumberSetting("Bloom Iterations", 3, 8, 1, 1);
     private final NumberSetting shadowOffset = new NumberSetting("Bloom Offset", 1, 10, 1, 1);
-    private String currentMode;
     private Framebuffer stencilFramebuffer = new Framebuffer(1, 1, false);
 
     public PostProcessing() {
-        super("PostProcessing", Category.DISPLAY, "blurs shit");
+        super("module.display.postProcessing", Category.DISPLAY, "blurs shit");
         shadowRadius.addParent(bloom, ParentAttribute.BOOLEAN_CONDITION);
         shadowOffset.addParent(bloom, ParentAttribute.BOOLEAN_CONDITION);
         glowOptions.addParent(bloom, ParentAttribute.BOOLEAN_CONDITION);

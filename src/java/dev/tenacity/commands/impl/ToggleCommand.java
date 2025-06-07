@@ -2,6 +2,7 @@ package dev.tenacity.commands.impl;
 
 import dev.tenacity.Client;
 import dev.tenacity.commands.Command;
+import dev.tenacity.i18n.Localization;
 import dev.tenacity.module.Module;
 
 import java.util.Arrays;
@@ -22,7 +23,7 @@ public class ToggleCommand extends Command {
             Module module = Client.INSTANCE.getModuleManager().getModuleByName(moduleName);
             if (module != null) {
                 module.toggle();
-                sendChatWithPrefix("Toggled " + module.getName() + "!");
+                sendChatWithPrefix("Toggled " + Localization.get(module.getName()) + "!");
             } else {
                 sendChatWithPrefix("The module \"" + moduleName + "\" does not exist!");
             }

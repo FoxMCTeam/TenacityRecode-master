@@ -29,7 +29,7 @@ public class ClickGUIMod extends Module {
     private Category activeCategory2 = Category.COMBAT;
 
     public ClickGUIMod() {
-        super("ClickGUI", Category.DISPLAY, "Displays modules");
+        super("module.display.clickGUI", Category.DISPLAY, "Displays modules");
         clickHeight.addParent(scrollMode, selection -> selection.is("Value"));
 
         gradient.addParent(clickguiMode, selection -> selection.is("Dropdown") && !Theme.getCurrentTheme().isGradient());

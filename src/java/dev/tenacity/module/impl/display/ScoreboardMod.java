@@ -13,7 +13,7 @@ public class ScoreboardMod extends Module {
     public static final BooleanSetting redNumbers = new BooleanSetting("Red Numbers", false);
 
     public ScoreboardMod() {
-        super("Scoreboard", Category.DISPLAY, "Scoreboard preferences");
+        super("module.display.scoreboard", Category.DISPLAY, "Scoreboard preferences");
         this.addSettings(yOffset, customFont, textShadow, redNumbers);
         this.setToggled(true);
     }

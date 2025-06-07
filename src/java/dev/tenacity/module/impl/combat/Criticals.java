@@ -30,7 +30,7 @@ public final class Criticals extends Module {
     private int groundTicks;
 
     public Criticals() {
-        super("Criticals", Category.COMBAT, "Crit attacks");
+        super("module.combat.criticals", Category.COMBAT, "Crit attacks");
         delay.addParent(mode, m -> !(m.is("Verus") || (m.is("Watchdog") && watchdogMode.is("Edit"))));
         watchdogMode.addParent(mode, m -> m.is("Watchdog"));
         this.addSettings(mode, watchdogMode, delay);

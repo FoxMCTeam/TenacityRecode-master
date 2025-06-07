@@ -19,7 +19,7 @@ public class NotificationsMod extends Module {
     private final NumberSetting time = new NumberSetting("Time on Screen", 2, 10, 1, .5);
 
     public NotificationsMod() {
-        super("Notifications", Category.DISPLAY, "Allows you to customize the client notifications");
+        super("module.display.notifications", Category.DISPLAY, "Allows you to customize the client notifications");
         onlyTitle.addParent(mode, modeSetting -> modeSetting.is("Default"));
         this.addSettings(time, mode, onlyTitle, toggleNotifications);
         if (!enabled) this.toggleSilent();

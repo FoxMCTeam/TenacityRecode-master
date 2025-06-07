@@ -1,6 +1,7 @@
 package dev.tenacity.ui.clickguis.modern;
 
 import dev.tenacity.Client;
+import dev.tenacity.i18n.Localization;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.display.ClickGUIMod;
 import dev.tenacity.ui.clickguis.modern.components.ModuleRect;
@@ -123,7 +124,7 @@ public class SearchPanel extends Panel {
                 float newX = x + 5 + 335;
                 RenderUtil.renderRoundedRect(newX, y - 15, 130, 255, 10, new Color(47, 49, 54).getRGB());
                 Gui.drawGradientRect2(newX, y + 5, 130, 8, new Color(0, 0, 0, 70).getRGB(), new Color(0, 0, 0, 1).getRGB());
-                duckSansFont24.drawCenteredString(currentlySelected.module.getName(), newX + 125 / 2f, y - 10, -1);
+                duckSansFont24.drawCenteredString(Localization.get(currentlySelected.module.getName()), newX + 125 / 2f, y - 10, -1);
 
                 GL11.glEnable(GL11.GL_SCISSOR_TEST);
                 RenderUtil.scissor(newX, y + 5.5, 135 * expandAnim2.getOutput().floatValue(), 255);

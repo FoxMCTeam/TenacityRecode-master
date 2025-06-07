@@ -58,7 +58,7 @@ public final class TargetStrafe extends Module {
     private boolean returnState;
 
     public TargetStrafe() {
-        super("TargetStrafe", Category.COMBAT, "strafe around targets");
+        super("module.combat.targetStrafe", Category.COMBAT, "strafe around targets");
         addSettings(adaptiveSettings, radius, points, space, auto3rdPerson, render, color);
         color.addParent(render, ParentAttribute.BOOLEAN_CONDITION);
     }

@@ -43,7 +43,7 @@ public class Statistics extends Module {
     private float width, height;
 
     public Statistics() {
-        super("Statistics", Category.DISPLAY, "Displays statistics about your session");
+        super("module.display.statistics", Category.DISPLAY, "Displays statistics about your session");
         seprateMotionGraph.addParent(motionGraph, ParentAttribute.BOOLEAN_CONDITION);
         addSettings(colorWheel.createModeSetting("Color Mode"), colorWheel.getColorSetting(), motionGraph, seprateMotionGraph);
     }

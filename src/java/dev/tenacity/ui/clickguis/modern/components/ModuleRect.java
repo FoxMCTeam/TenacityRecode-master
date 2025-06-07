@@ -1,6 +1,7 @@
 package dev.tenacity.ui.clickguis.modern.components;
 
 import dev.tenacity.Client;
+import dev.tenacity.i18n.Localization;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.display.HUDMod;
@@ -74,7 +75,7 @@ public class ModuleRect extends Component {
         //  RenderUtil.renderRoundedRect(x, y, rectWidth, 35, 5, new Color(47, 49, 54).getRGB());
 
         if (rectScaleAnimation == null) {
-            System.out.println("CRAZXy" + " " + module.getName());
+            System.out.println("CRAZXy" + " " + Localization.get(module.getName()));
         }
         rectScaleAnimation.setDirection(module.isEnabled() ? Direction.FORWARDS : Direction.BACKWARDS);
         checkScaleAnimation.setDirection(module.isEnabled() ? Direction.FORWARDS : Direction.BACKWARDS);
@@ -120,12 +121,12 @@ public class ModuleRect extends Component {
         hoverDescriptionAnimation.setDuration(hoverModule ? 300 : 400);
 
         GlStateManager.color(1, 1, 1, 1);
-        float xStart = x + 55 + duckSansFont24.getStringWidth(module.getName());
+        float xStart = x + 55 + duckSansFont24.getStringWidth(Localization.get(module.getName()));
         float yVal = y + 35 / 2f - duckSansFont18.getHeight() / 2f;
         if (module.getCategory().equals(Category.SCRIPTS)) yVal -= 6;
         if (binding != module && (!hoverDescriptionAnimation.isDone() || hoverDescriptionAnimation.finished(Direction.FORWARDS))) {
             float hover = hoverDescriptionAnimation.getOutput().floatValue();
-            float descWidth = 305 - ((55 + duckSansFont24.getStringWidth(module.getName())) + 15);
+            float descWidth = 305 - ((55 + duckSansFont24.getStringWidth(Localization.get(module.getName()))) + 15);
 
             duckSansFont18.drawWrappedText(module.getDescription(), xStart, yVal,
                     new Color(128, 134, 141, (int) (255 * hover)).getRGB(), descWidth, 3);
@@ -137,11 +138,11 @@ public class ModuleRect extends Component {
 
 
         if (module.getCategory().equals(Category.SCRIPTS)) {
-            duckSansFont24.drawString(module.getName(), x + 42, y + (35 / 2f - duckSansFont24.getHeight() / 2f) - 6, -1);
+            duckSansFont24.drawString(Localization.get(module.getName()), x + 42, y + (35 / 2f - duckSansFont24.getHeight() / 2f) - 6, -1);
             duckSansFont18.drawString(module.getAuthor(), x + 42, y + (35 / 2f - duckSansFont24.getHeight() / 2f) + 9,
                     new Color(255, 65, 65).getRGB());
         } else {
-            duckSansFont24.drawString(module.getName(), x + 42, y + 35 / 2f - duckSansFont24.getHeight() / 2f, -1);
+            duckSansFont24.drawString(Localization.get(module.getName()), x + 42, y + 35 / 2f - duckSansFont24.getHeight() / 2f, -1);
         }
         settingAnimation.setDirection(drawSettingThing ? Direction.FORWARDS : Direction.BACKWARDS);
 

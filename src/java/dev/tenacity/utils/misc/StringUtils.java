@@ -1,5 +1,6 @@
 package dev.tenacity.utils.misc;
 
+import dev.tenacity.i18n.Localization;
 import dev.tenacity.module.Module;
 
 import java.util.Base64;
@@ -10,7 +11,7 @@ import java.util.List;
 public class StringUtils {
 
     public static String findLongestModuleName(List<Module> modules) {
-        return Collections.max(modules, Comparator.comparing(module -> (module.getName() + (module.hasMode() ? " " + module.getSuffix() : "")).length())).getName();
+        return Collections.max(modules, Comparator.comparing(module -> (Localization.get(module.getName()) + (module.hasMode() ? " " + module.getSuffix() : "")).length())).getName();
     }
 
     public static String getLongestModeName(List<String> listOfWords) {

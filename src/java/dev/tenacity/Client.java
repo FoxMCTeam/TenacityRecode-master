@@ -6,6 +6,7 @@ import dev.tenacity.commands.CommandHandler;
 import dev.tenacity.commands.impl.*;
 import dev.tenacity.config.ConfigManager;
 import dev.tenacity.config.DragManager;
+import dev.tenacity.i18n.Locale;
 import dev.tenacity.module.BackgroundProcess;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.ModuleManager;
@@ -61,8 +62,9 @@ public class Client implements Utils {
     private GuiAltManager altManager;
     private CommandHandler commandHandler;
     private PingerUtils pingerUtils;
-
+    private Locale locale = Locale.EN_US;
     public static void initClient() {
+
         Client.INSTANCE.setModuleManager(new ModuleManager());
 
         Client.INSTANCE.getModuleManager().init();
@@ -154,6 +156,4 @@ public class Client implements Utils {
         videoFile = new File(Client.BACKGROUND, "background.mp4");
         videoRenderer.setup(videoFile, 60);
     }
-
-
 }

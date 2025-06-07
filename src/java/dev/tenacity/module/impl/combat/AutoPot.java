@@ -34,7 +34,7 @@ public class AutoPot extends Module {
     private float prevPitch;
 
     public AutoPot() {
-        super("AutoPot", Category.COMBAT, "auto splashes potions");
+        super("module.combat.autoPot", Category.COMBAT, "auto splashes potions");
         this.addSettings(delay, minHealHP, splashFrogPots);
     }
 

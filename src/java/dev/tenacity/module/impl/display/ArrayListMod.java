@@ -4,6 +4,7 @@ import com.cubk.event.annotations.EventTarget;
 import com.cubk.event.impl.render.Render2DEvent;
 import com.cubk.event.impl.render.ShaderEvent;
 import dev.tenacity.Client;
+import dev.tenacity.i18n.Localization;
 import dev.tenacity.module.ModuleManager;
 import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.module.Category;
@@ -55,7 +56,7 @@ public class ArrayListMod extends Module {
     public List<Module> modules;
 
     public ArrayListMod() {
-        super("ArrayList", Category.DISPLAY, "Displays your active modules");
+        super("module.display.arrayList", Category.DISPLAY, "Displays your active modules");
         addSettings(hideModules, rectangle, partialGlow, textShadow, fontSettings, height, animation,
                 colorIndex, colorSpeed, background, backgroundColor, backgroundAlpha);
         backgroundAlpha.addParent(background, ParentAttribute.BOOLEAN_CONDITION);
@@ -91,7 +92,7 @@ public class ArrayListMod extends Module {
             final Animation moduleAnimation = module.getAnimation();
             if (!module.isEnabled() && moduleAnimation.finished(Direction.BACKWARDS)) continue;
 
-            String displayText = HUDMod.get(module.getName() + (module.hasMode() ? " §7" + module.getSuffix() : ""));
+            String displayText = HUDMod.get(Localization.get(module.getName()) + (module.hasMode() ? " §7" + module.getSuffix() : ""));
             displayText = applyText(displayText);
             float textWidth = font.getStringWidth(displayText);
 
@@ -197,7 +198,7 @@ public class ArrayListMod extends Module {
             if (!module.isEnabled() && moduleAnimation.finished(Direction.BACKWARDS)) continue;
 
 
-            String displayText = HUDMod.get(module.getName() + (module.hasMode() ? (module.getCategory().equals(Category.SCRIPTS) ? " §c" : " §7") + module.getSuffix() : ""));
+            String displayText = HUDMod.get(Localization.get(module.getName()) + (module.hasMode() ? (module.getCategory().equals(Category.SCRIPTS) ? " §c" : " §7") + module.getSuffix() : ""));
             displayText = applyText(displayText);
             float textWidth = font.getStringWidth(displayText);
 
@@ -271,7 +272,7 @@ public class ArrayListMod extends Module {
                     break;
                 case "Outline":
                     if (count != 0) {
-                        String modText = applyText(HUDMod.get(lastModule.getName() + (lastModule.hasMode() ? " " + lastModule.getSuffix() : "")));
+                        String modText = applyText(HUDMod.get(Localization.get(lastModule.getName()) + (lastModule.hasMode() ? " " + lastModule.getSuffix() : "")));
                         float texWidth = font.getStringWidth(modText) - textWidth;
                         //Draws the difference of width rect and also the rect on the side of the text
                         if (flip) {

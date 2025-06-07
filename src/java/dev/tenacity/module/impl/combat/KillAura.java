@@ -78,7 +78,7 @@ public final class KillAura extends Module {
     private EntityLivingBase auraESPTarget;
 
     public KillAura() {
-        super("KillAura", Category.COMBAT, "Automatically attacks players");
+        super("module.combat.killAura", Category.COMBAT, "Automatically attacks players");
         autoblockMode.addParent(autoblock, a -> autoblock.isEnabled());
         rotationMode.addParent(rotations, r -> rotations.isEnabled());
         switchDelay.addParent(mode, m -> mode.is("Switch"));

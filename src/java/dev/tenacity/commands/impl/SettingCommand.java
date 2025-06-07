@@ -2,6 +2,7 @@ package dev.tenacity.commands.impl;
 
 import dev.tenacity.Client;
 import dev.tenacity.commands.Command;
+import dev.tenacity.i18n.Localization;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.Setting;
 import dev.tenacity.module.settings.impl.*;
@@ -36,7 +37,7 @@ public class SettingCommand extends Command {
 
             try {
                 if (args.length < 2) {
-                    sendChatError("No setting specified for the module " + module.getName());
+                    sendChatError("No setting specified for the module " + Localization.get(Localization.get(module.getName())));
                     usage();
                     return;
                 }
@@ -77,7 +78,7 @@ public class SettingCommand extends Command {
                             sendChatWithInfo(numberSetting.getValue() + " value");
 
                             settingName = settingName.replaceAll("_", " ");
-                            sendChatWithPrefix("Set " + module.getName() + " module's " + settingName + " to " + numberSetting.getValue());
+                            sendChatWithPrefix("Set " + Localization.get(module.getName()) + " module's " + settingName + " to " + numberSetting.getValue());
                             break;
                         }
 
@@ -103,7 +104,7 @@ public class SettingCommand extends Command {
                             booleanSetting.setState(Boolean.parseBoolean(inputBool[1]));
 
                             settingName = settingName.replaceAll("_", " ");
-                            sendChatWithPrefix("Set " + module.getName() + " module's " + settingName + "'s " + boolName + " to " + inputBool[1]);
+                            sendChatWithPrefix("Set " + Localization.get(module.getName()) + " module's " + settingName + "'s " + boolName + " to " + inputBool[1]);
                             break;
                         }
 
@@ -123,7 +124,7 @@ public class SettingCommand extends Command {
 
                         if (setValue) {
                             settingName = settingName.replaceAll("_", " ");
-                            sendChatWithPrefix("Set " + module.getName() + " " + settingName + " to " + value);
+                            sendChatWithPrefix("Set " + Localization.get(module.getName()) + " " + settingName + " to " + value);
                             break;
                         }
                     }

@@ -23,7 +23,7 @@ public class PlayerList extends Module {
     private final Dragging pos = Client.INSTANCE.createDrag(this, "playerList", 4, 30);
 
     public PlayerList() {
-        super("PlayerList", Category.DISPLAY, "Displays a list of players in your world");
+        super("module.display.playerList", Category.DISPLAY, "Displays a list of players in your world");
     }
 
     @EventTarget

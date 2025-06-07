@@ -24,11 +24,8 @@ public class ContinualAnimation {
         return output == endpoint || animation.isDone();
     }
 
-
     public float getOutput() {
         output = endpoint - animation.getOutput().floatValue();
         return output;
     }
-
-
 }

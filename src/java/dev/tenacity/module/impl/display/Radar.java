@@ -43,7 +43,7 @@ public class Radar extends Module {
     private final GradientColorWheel colorWheel = new GradientColorWheel();
 
     public Radar() {
-        super("Radar", Category.DISPLAY, "Shows entites on a gui");
+        super("module.display.radar", Category.DISPLAY, "Shows entites on a gui");
         playerColor.addParent(targets, targetsSetting -> targetsSetting.getSetting("Players").isEnabled());
         mobColor.addParent(targets, targetsSetting -> targetsSetting.getSetting("Mobs").isEnabled());
         animalColor.addParent(targets, targetsSetting -> targetsSetting.getSetting("Animals").isEnabled());

@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.internal.LinkedTreeMap;
 import dev.tenacity.Client;
+import dev.tenacity.i18n.Localization;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.Setting;
@@ -148,7 +149,7 @@ public class ConfigManager {
                                             ms.setCurrentMode(value);
                                         } else {
                                             ms.setCurrentMode(ms.modes.get(0));
-                                            Client.LOGGER.info(String.format("The value of setting %s in module %s was reset", ms.name, module.getName()));
+                                            Client.LOGGER.info(String.format("The value of setting %s in module %s was reset", ms.name, Localization.get(module.getName())));
                                         }
                                     }
                                     if (setting instanceof NumberSetting ss) {
@@ -157,7 +158,7 @@ public class ConfigManager {
                                             value = Double.parseDouble(String.valueOf(cfgSetting.value));
                                         } catch (NumberFormatException e) {
                                             value = ss.getDefaultValue();
-                                            Client.LOGGER.info(String.format("The value of setting %s in module %s was reset", ss.name, module.getName()));
+                                            Client.LOGGER.info(String.format("The value of setting %s in module %s was reset", ss.name, Localization.get(module.getName())));
                                         }
                                         ss.setValue(value);
                                     }

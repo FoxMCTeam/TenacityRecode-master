@@ -4,6 +4,7 @@ import com.cubk.event.annotations.EventTarget;
 import com.cubk.event.impl.render.Render2DEvent;
 import com.cubk.event.impl.render.ShaderEvent;
 import dev.tenacity.Client;
+import dev.tenacity.i18n.Locale;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.combat.KillAura;
@@ -63,6 +64,7 @@ public class HUDMod extends Module {
     public static int offsetValue = 0;
     public static float xOffset = 0;
     private final StringSetting clientName = new StringSetting("Client Name");
+    private final ModeSetting language = new ModeSetting("Language Mode", "en_US", "en_US", "ru_RU", "zh_ZH");
     private final ModeSetting watermarkMode = new ModeSetting("Watermark Mode", "Tenacity", "Tenacity", "Plain Text", "Neverlose", "Tenasense", "Tenabition", "Logo", "None");
     private final Animation fadeInText = new DecelerateAnimation(500, 1);
     private final Map<String, String> bottomLeftText = new LinkedHashMap<>();
@@ -71,10 +73,10 @@ public class HUDMod extends Module {
 
 
     public HUDMod() {
-        super("HUD", Category.DISPLAY, "customizes the client's appearance");
+        super("module.display.HUD", Category.DISPLAY, "customizes the client's appearance");
         color1.addParent(theme, modeSetting -> modeSetting.is("Custom Theme"));
         color2.addParent(theme, modeSetting -> modeSetting.is("Custom Theme") && !color1.isRainbow());
-        this.addSettings(clientName, watermarkMode, theme, color1, color2, customFont, infoCustomization, hudCustomization, disableButtons);
+        this.addSettings(language, clientName, watermarkMode, theme, color1, color2, customFont, infoCustomization, hudCustomization, disableButtons);
         if (!enabled) this.toggleSilent();
     }
 
@@ -219,6 +221,7 @@ public class HUDMod extends Module {
 
     @EventTarget
     public void onRender2DEvent(Render2DEvent e) {
+        Client.INSTANCE.setLocale(Locale.valueOf(language.getMode()));
         ScaledResolution sr = new ScaledResolution(mc);
         Pair<Color, Color> clientColors = getClientColors();
         String name = Client.NAME;

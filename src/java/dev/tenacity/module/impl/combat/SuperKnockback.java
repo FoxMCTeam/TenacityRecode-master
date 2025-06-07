@@ -10,7 +10,7 @@ import net.minecraft.network.play.client.C0BPacketEntityAction;
 public final class SuperKnockback extends Module {
 
     public SuperKnockback() {
-        super("SuperKnockback", Category.COMBAT, "Makes the player your attacking take extra knockback");
+        super("module.combat.superKB", Category.COMBAT, "Makes the player your attacking take extra knockback");
     }
 
     @EventTarget

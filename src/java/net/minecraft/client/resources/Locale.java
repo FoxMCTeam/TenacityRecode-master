@@ -19,7 +19,7 @@ public class Locale
     /** Splits on "=" */
     private static final Splitter splitter = Splitter.on('=').limit(2);
     private static final Pattern pattern = Pattern.compile("%(\\d+\\$)?[\\d\\.]*[df]");
-    Map<String, String> properties = Maps.<String, String>newHashMap();
+    public Map<String, String> properties = Maps.<String, String>newHashMap();
     private boolean unicode;
 
     /**

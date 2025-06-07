@@ -47,7 +47,7 @@ public class TargetHUDMod extends Module {
     private Vector4f targetVector;
 
     public TargetHUDMod() {
-        super("TargetHUD", Category.DISPLAY, "Displays info about the KillAura target");
+        super("module.display.targetHUD", Category.DISPLAY, "Displays info about the KillAura target");
         trackingMode.addParent(trackTarget, ParentAttribute.BOOLEAN_CONDITION);
         addSettings(targetHud, trackTarget, trackingMode, colorWheel.createModeSetting("Color Mode", "Dark"), colorWheel.getColorSetting());
         TargetHUD.init();

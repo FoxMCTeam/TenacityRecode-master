@@ -20,7 +20,7 @@ public final class FastBow extends Module {
     private final TimerUtil delayTimer = new TimerUtil();
 
     public FastBow() {
-        super("FastBow", Category.COMBAT, "shoot bows faster");
+        super("module.combat.fastBow", Category.COMBAT, "shoot bows faster");
         this.addSettings(mode, shotDelay);
     }
 

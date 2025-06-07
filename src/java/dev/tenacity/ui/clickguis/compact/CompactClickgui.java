@@ -1,6 +1,7 @@
 package dev.tenacity.ui.clickguis.compact;
 
 import dev.tenacity.Client;
+import dev.tenacity.i18n.Localization;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.ModuleManager;
@@ -280,7 +281,7 @@ public class CompactClickgui extends GuiScreen {
             searchTerms.clear();
             Module module = moduleRect.module;
 
-            searchTerms.add(module.getName());
+            searchTerms.add(Localization.get(module.getName()));
             searchTerms.add(module.getCategory().name);
             if (!module.getAuthor().isEmpty()) {
                 searchTerms.add(module.getAuthor());

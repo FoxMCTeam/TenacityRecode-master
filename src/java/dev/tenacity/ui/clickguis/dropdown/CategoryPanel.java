@@ -1,6 +1,7 @@
 package dev.tenacity.ui.clickguis.dropdown;
 
 import dev.tenacity.Client;
+import dev.tenacity.i18n.Localization;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.ModuleManager;
@@ -81,7 +82,7 @@ public class CategoryPanel implements Screen {
 
         if (category.equals(Category.SCRIPTS) && ModuleManager.reloadModules) {
             moduleRects.clear();
-            for (Module module : Client.INSTANCE.getModuleManager().getModulesInCategory(category).stream().sorted(Comparator.comparing(Module::getName)).collect(Collectors.toList())) {
+            for (Module module : Client.INSTANCE.getModuleManager().getModulesInCategory(category).stream().sorted(Comparator.comparing((Module::getName))).collect(Collectors.toList())) {
                 moduleRects.add(new ModuleRect(module));
             }
             ModuleManager.reloadModules = false;
@@ -294,7 +295,7 @@ public class CategoryPanel implements Screen {
             searchTerms.clear();
             Module module = moduleRect.module;
 
-            searchTerms.add(module.getName());
+            searchTerms.add(Localization.get(module.getName()));
             searchTerms.add(module.getCategory().name);
             if (!module.getAuthor().isEmpty()) {
                 searchTerms.add(module.getAuthor());

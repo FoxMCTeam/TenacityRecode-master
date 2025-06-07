@@ -21,7 +21,7 @@ public class AutoHead extends Module {
     private final TimerUtil timer = new TimerUtil();
 
     public AutoHead() {
-        super("AutoHead", Category.COMBAT, "auto consume heads");
+        super("module.combat.autoHead", Category.COMBAT, "auto consume heads");
         this.addSettings(delay, healPercent);
     }
 

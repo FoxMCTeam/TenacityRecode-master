@@ -4,6 +4,8 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import dev.tenacity.Client;
 import dev.tenacity.config.ConfigSetting;
+import dev.tenacity.i18n.Locale;
+import dev.tenacity.i18n.Localization;
 import dev.tenacity.module.impl.display.NotificationsMod;
 import dev.tenacity.module.impl.render.GlowESP;
 import dev.tenacity.module.settings.Setting;
@@ -97,18 +99,18 @@ public class Module implements Utils {
         toggleSilent();
         if (NotificationsMod.toggleNotifications.isEnabled()) {
             String titleToggle = "Module toggled";
-            String descriptionToggleOn = this.getName() + " was " + "§aenabled\r";
-            String descriptionToggleOff = this.getName() + " was " + "§cdisabled\r";
+            String descriptionToggleOn = Localization.get(this.getName(), Locale.EN_US) + " was " + "§aenabled\r";
+            String descriptionToggleOff = Localization.get(this.getName(), Locale.EN_US) + " was " + "§cdisabled\r";
 
             switch (NotificationsMod.mode.getMode()) {
                 case "Default":
-                    if (NotificationsMod.onlyTitle.isEnabled()) titleToggle = this.getName() + " toggled";
+                    if (NotificationsMod.onlyTitle.isEnabled()) titleToggle = Localization.get(this.getName()) + " toggled";
                     break;
                 case "SuicideX":
                     if (this.isEnabled()) {
-                        titleToggle = "Enabled Module " + this.getName() + ". PogO";
+                        titleToggle = "Enabled Module " + Localization.get(this.getName()) + ". PogO";
                     } else {
-                        titleToggle = "Disabled Module " + this.getName() + ". :/";
+                        titleToggle = "Disabled Module " + Localization.get(this.getName()) + ". :/";
                     }
                     descriptionToggleOff = "";
                     descriptionToggleOn = "";
