@@ -14,6 +14,8 @@ import java.util.HashMap;
 public enum Locale {
     ZH_ZH("zh_ZH"),
     EN_US("en_US"),
+    DE_DE("de_DE"),
+    FR_FR("fr_FR"),
     RU_RU("ru_RU");
 
     private final String file;

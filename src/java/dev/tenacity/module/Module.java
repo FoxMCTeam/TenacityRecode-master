@@ -98,16 +98,16 @@ public class Module implements Utils {
     public void toggle() {
         toggleSilent();
         if (NotificationsMod.toggleNotifications.isEnabled()) {
-            String titleToggle = "module.toggle.title";
+            String titleToggle = Localization.get("module.toggle.title");
             String descriptionToggleOn = Localization.get(this.getName(), Locale.EN_US) + " was " + "§aenabled\r";
             String descriptionToggleOff = Localization.get(this.getName(), Locale.EN_US) + " was " + "§cdisabled\r";
 
             switch (NotificationsMod.mode.getMode()) {
                 case "Default":
                     if (this.isEnabled()) {
-                        descriptionToggleOn = Localization.get(this.getName()) + Localization.get("module.toggle.default.enable");
+                        descriptionToggleOn = Localization.get(this.getName()) + " " + Localization.get("module.toggle.default.enable");
                     } else {
-                        descriptionToggleOff = Localization.get(this.getName()) + Localization.get("module.toggle.default.disable");
+                        descriptionToggleOff = Localization.get(this.getName()) + " " +  Localization.get("module.toggle.default.disable");
                     }
 
                     if (NotificationsMod.onlyTitle.isEnabled()) {

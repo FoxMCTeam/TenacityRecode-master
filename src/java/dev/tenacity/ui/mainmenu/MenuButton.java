@@ -1,5 +1,6 @@
 package dev.tenacity.ui.mainmenu;
 
+import dev.tenacity.i18n.Localization;
 import dev.tenacity.ui.Screen;
 import dev.tenacity.utils.animations.Animation;
 import dev.tenacity.utils.animations.Direction;
@@ -27,11 +28,6 @@ public class MenuButton implements Screen {
     }
 
     @Override
-    public void keyTyped(char typedChar, int keyCode) {
-
-    }
-
-    @Override
     public void drawScreen(int mouseX, int mouseY) {
 
         boolean hovered = HoveringUtil.isHovering(x, y, width, height, mouseX, mouseY);
@@ -41,7 +37,7 @@ public class MenuButton implements Screen {
         RenderUtil.color(-1);
         RenderUtil.drawImage(rs, x, y, width, height);
 
-        duckSansFont22.drawCenteredString(text, x + width / 2f, y + duckSansFont22.getMiddleOfBox(height), -1);
+        duckSansFont22.drawCenteredString(Localization.get(text), x + width / 2f, y + duckSansFont22.getMiddleOfBox(height), -1);
     }
 
     public void drawOutline() {
@@ -54,11 +50,6 @@ public class MenuButton implements Screen {
         if (hovered) {
             clickAction.run();
         }
-
-    }
-
-    @Override
-    public void mouseReleased(int mouseX, int mouseY, int state) {
 
     }
 }

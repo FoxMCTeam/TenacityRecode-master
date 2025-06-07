@@ -20,11 +20,11 @@ public class CustomMainMenu extends GuiScreen {
     public static boolean animatedOpen = false;
     private static boolean firstInit = false;
     private final List<MenuButton> buttons = new ArrayList<>() {{
-        add(new MenuButton("Singleplayer"));
-        add(new MenuButton("Multiplayer"));
-        add(new MenuButton("Alt Manager"));
-        add(new MenuButton("Settings"));
-        add(new MenuButton("Exit"));
+        add(new MenuButton("mainmenu.Singleplayer"));
+        add(new MenuButton("mainmenu.Multiplayer"));
+        add(new MenuButton("mainmenu.AltManager"));
+        add(new MenuButton("mainmenu.Settings"));
+        add(new MenuButton("mainmenu.Exit"));
     }};
     private final ResourceLocation blurredRect = new ResourceLocation("Tenacity/MainMenu/rect-test.png");
 
@@ -105,19 +105,19 @@ public class CustomMainMenu extends GuiScreen {
             button.height = buttonHeight;
             button.clickAction = () -> {
                 switch (button.text) {
-                    case "Singleplayer":
+                    case "mainmenu.Singleplayer":
                         mc.displayGuiScreen(new GuiSelectWorld(this));
                         break;
-                    case "Multiplayer":
+                    case "mainmenu.Multiplayer":
                         mc.displayGuiScreen(new GuiMultiplayer(this));
                         break;
-                    case "Alt Manager":
+                    case "mainmenu.AltManager":
                         mc.displayGuiScreen(Client.INSTANCE.getAltManager());
                         break;
-                    case "Settings":
+                    case "mainmenu.Settings":
                         mc.displayGuiScreen(new GuiOptions(this, mc.gameSettings));
                         break;
-                    case "Exit":
+                    case "mainmenu.Exit":
                         mc.shutdown();
                         break;
                 }

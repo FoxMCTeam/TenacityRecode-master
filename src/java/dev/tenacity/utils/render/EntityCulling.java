@@ -55,7 +55,7 @@ public class EntityCulling extends Module {
     public static boolean shouldPerformCulling = false;
     private int destroyTimer;
     public EntityCulling() {
-        super("Entity Culling", Category.RENDER, "Culls entities that are out of range");
+        super("module.render.EntityCulling", Category.RENDER, "Culls entities that are out of range");
         entityCullingDis.addParent(cullingMode, modeSetting -> modeSetting.is("Grouped"));
         playerCullingDis.addParent(cullingMode, modeSetting -> modeSetting.is("Custom"));
         mobCullingDis.addParent(cullingMode, modeSetting -> modeSetting.is("Custom"));
