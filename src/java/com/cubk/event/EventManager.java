@@ -6,6 +6,7 @@ import com.cubk.event.annotations.EventTarget;
 import com.cubk.event.impl.Event;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,6 +40,7 @@ public class EventManager {
      * @param obj The object to register.
      */
     public void register(Object obj) {
+
         Class<?> clazz = obj.getClass();
         Method[] methods = clazz.getDeclaredMethods();
 
@@ -64,6 +66,7 @@ public class EventManager {
      */
     public void unregister(Object obj) {
         Class<?> clazz = obj.getClass();
+        System.out.println(obj.getClass().getSimpleName() + " has unregister");
         Method[] methods = clazz.getDeclaredMethods();
         for (Method method : methods) {
             if (registeredMethodMap.containsKey(method)) {
@@ -99,9 +102,12 @@ public class EventManager {
                 method.setAccessible(true);
                 try {
                     method.invoke(obj, event);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                } catch (InvocationTargetException e) {
+                    throw new RuntimeException(e);
                 }
+
             }
         }
 

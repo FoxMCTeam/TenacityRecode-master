@@ -94,12 +94,12 @@ public final class KillAura extends Module {
     private final NumberSetting maxCPS = new NumberSetting("Max CPS", 20, 20, 1, 1);
     private final BooleanSetting KeepSprint = new BooleanSetting("Keep Sprint", false);
     private final BooleanSetting RayCast = new BooleanSetting("Ray Cast", false);
-    private final Animation auraESPAnim = new SmoothStepAnimation(650, 1);
+    public final Animation auraESPAnim = new SmoothStepAnimation(650, 1);
     private final String[] swapBlacklist = {"compass", "snowball", "spawn", "skull"};
     public BooleanSetting altSwitch = new BooleanSetting("LAlt Switch Strafe", false);
     private int cps;
     private int targetIndex = 0;
-    private EntityLivingBase auraESPTarget;
+    public EntityLivingBase auraESPTarget;
 
     public KillAura() {
         super("module.combat.killAura", Category.COMBAT, "Automatically attacks players");
@@ -165,6 +165,9 @@ public final class KillAura extends Module {
     }
 
     private void attackEntity(final Entity target) {
+        AttackEvent attackEvent = new AttackEvent((EntityLivingBase) target);
+        Client.INSTANCE.getEventManager().call(attackEvent);
+
         AttackOrder.sendFixedAttack(mc.thePlayer, target);
         attackTimer.reset();
     }
@@ -293,11 +296,7 @@ public final class KillAura extends Module {
                     final int maxValue = (int) ((minCPS.getMaxValue() - maxCPS.getValue()) * 5.0);
                     final int minValue = (int) ((minCPS.getMaxValue() - minCPS.getValue()) * 5.0);
                     cps = MathUtils.getRandomInRange(minValue, maxValue);
-                    AttackEvent attackEvent = new AttackEvent(target);
-                    Client.INSTANCE.getEventManager().call(attackEvent);
                     attack();
-                    AttackEvent attackEvent2 = new AttackEvent(target);
-                    Client.INSTANCE.getEventManager().call(attackEvent2);
                 }
 
             } else {
@@ -521,6 +520,7 @@ public final class KillAura extends Module {
                 if (auraESPAnim.finished(Direction.BACKWARDS)) {
                     auraESPTarget = null;
                 }
+                throw new RuntimeException(e);
             }
         }
     }

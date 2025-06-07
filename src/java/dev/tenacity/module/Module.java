@@ -6,6 +6,7 @@ import dev.tenacity.Client;
 import dev.tenacity.config.ConfigSetting;
 import dev.tenacity.i18n.Locale;
 import dev.tenacity.i18n.Localization;
+import dev.tenacity.module.impl.combat.KillAura;
 import dev.tenacity.module.impl.display.NotificationsMod;
 import dev.tenacity.module.impl.render.GlowESP;
 import dev.tenacity.module.settings.Setting;
@@ -146,6 +147,11 @@ public class Module implements Utils {
         if (this instanceof GlowESP) {
             GlowESP.fadeIn.setDirection(Direction.BACKWARDS);
             Multithreading.schedule(() -> Client.INSTANCE.getEventManager().unregister(this), 250, TimeUnit.MILLISECONDS);
+        } if (this instanceof KillAura) {
+            if (((KillAura) this).auraESPAnim.finished(Direction.BACKWARDS)) {
+                ((KillAura) this).auraESPTarget = null;
+            }
+            Multithreading.schedule(() -> Client.INSTANCE.getEventManager().unregister(this), 650, TimeUnit.MILLISECONDS);
         } else {
             Client.INSTANCE.getEventManager().unregister(this);
         }
