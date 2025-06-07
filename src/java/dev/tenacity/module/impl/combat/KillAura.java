@@ -67,7 +67,7 @@ public final class KillAura extends Module {
     private final BooleanSetting autoblock = new BooleanSetting("Autoblock", false);
     private final ModeSetting autoblockMode = new ModeSetting("Autoblock Mode", "Watchdog", "Fake", "Verus", "Watchdog");
     private final BooleanSetting rotations = new BooleanSetting("Rotations", true);
-    private final ModeSetting rotationMode = new ModeSetting("Rotation Mode", "Vanilla", "Vanilla", "Smooth");
+    private final ModeSetting rotationMode = new ModeSetting("Rotation Mode", "Vanilla", "HvH", "Vanilla", "Nearest", "TestA", "TestB", "TestC", "Smooth");
     private final NumberSetting rotationSpeed = new NumberSetting("Rotation speed", 5, 10, 2, 0.1);
     private final ModeSetting sortMode = new ModeSetting("Sort Mode", "Range", "Range", "Hurt Time", "Health", "Armor");
     private final MultipleBoolSetting addons = new MultipleBoolSetting("Addons",
