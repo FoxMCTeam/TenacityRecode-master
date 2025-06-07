@@ -1,5 +1,6 @@
 package net.minecraft.client.multiplayer;
 
+import com.cubk.event.impl.player.SyncCurrentItemEvent;
 import dev.tenacity.Client;
 import dev.tenacity.module.impl.combat.KillAura;
 import dev.tenacity.module.impl.movement.Flight;
@@ -16,6 +17,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
@@ -324,7 +326,13 @@ public class PlayerControllerMP {
      * Syncs the current player item with the server
      */
     public void syncCurrentPlayItem() {
-        int i = this.mc.thePlayer.inventory.currentItem;
+        InventoryPlayer inventoryPlayer = this.mc.thePlayer.inventory;
+        int i = inventoryPlayer.currentItem;
+
+        final SyncCurrentItemEvent event = new SyncCurrentItemEvent(i);
+        Client.INSTANCE.getEventManager().call(event);
+
+        i = event.getSlot();
 
         if (i != this.currentPlayerItem) {
             this.currentPlayerItem = i;

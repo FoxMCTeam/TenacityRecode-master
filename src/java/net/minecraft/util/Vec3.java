@@ -3,13 +3,14 @@ package net.minecraft.util;
 public class Vec3
 {
     /** X coordinate of Vec3D */
-    public final double xCoord;
+    public double xCoord;
 
     /** Y coordinate of Vec3D */
-    public final double yCoord;
+    public double yCoord;
 
     /** Z coordinate of Vec3D */
-    public final double zCoord;
+    public double zCoord;
+    public static final Vec3 ZERO = new Vec3(0.0, 0.0, 0.0);
 
     public Vec3(double x, double y, double z)
     {
@@ -33,11 +34,26 @@ public class Vec3
         this.zCoord = z;
     }
 
+    public double getX() {
+        return xCoord;
+    }
+
+    public double getY() {
+        return yCoord;
+    }
+
+    public double getZ() {
+        return zCoord;
+    }
+
     public Vec3(Vec3i p_i46377_1_)
     {
         this((double)p_i46377_1_.getX(), (double)p_i46377_1_.getY(), (double)p_i46377_1_.getZ());
     }
 
+    public Vec3 floor() {
+        return new Vec3(Math.floor(this.xCoord), Math.floor(this.yCoord), Math.floor(this.zCoord));
+    }
     /**
      * Returns a new vector with the result of the specified vector minus this.
      */
@@ -58,6 +74,11 @@ public class Vec3
     public double dotProduct(Vec3 vec)
     {
         return this.xCoord * vec.xCoord + this.yCoord * vec.yCoord + this.zCoord * vec.zCoord;
+    }
+
+
+    public Vec3 flat() {
+        return new Vec3(this.xCoord, 0.0, this.zCoord);
     }
 
     /**
@@ -112,6 +133,10 @@ public class Vec3
         double d1 = vec.yCoord - this.yCoord;
         double d2 = vec.zCoord - this.zCoord;
         return d0 * d0 + d1 * d1 + d2 * d2;
+    }
+    public double lengthSquared()
+    {
+        return this.xCoord * this.xCoord + this.yCoord * this.yCoord + this.zCoord * this.zCoord;
     }
 
     /**
@@ -208,5 +233,13 @@ public class Vec3
         double d1 = this.yCoord;
         double d2 = this.zCoord * (double)f - this.xCoord * (double)f1;
         return new Vec3(d0, d1, d2);
+    }
+
+    public Vec3 scale(double factor) {
+        return this.mul(factor, factor, factor);
+    }
+
+    public Vec3 mul(double factorX, double factorY, double factorZ) {
+        return new Vec3(this.xCoord * factorX, this.yCoord * factorY, this.zCoord * factorZ);
     }
 }

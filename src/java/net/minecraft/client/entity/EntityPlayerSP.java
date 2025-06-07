@@ -3,6 +3,7 @@ package net.minecraft.client.entity;
 import dev.tenacity.Client;
 import dev.tenacity.commands.CommandHandler;
 import com.cubk.event.impl.player.*;
+import dev.tenacity.utils.client.addons.vector.Vector2f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -789,6 +790,8 @@ public class EntityPlayerSP extends AbstractClientPlayer {
     public void jump() {
         JumpEvent jumpEvent = new JumpEvent();
         Client.INSTANCE.getEventManager().call(jumpEvent);
+        this.movementYaw = jumpEvent.getYaw();
+        this.velocityYaw = jumpEvent.getYaw();
         if (!jumpEvent.isCancelled()) {
             super.jump();
         }
@@ -796,5 +799,8 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 
     public void silentJump() {
         super.jump();
+    }
+    public Vector2f getPreviousRotation() {
+        return new Vector2f(lastReportedYaw, lastReportedPitch);
     }
 }

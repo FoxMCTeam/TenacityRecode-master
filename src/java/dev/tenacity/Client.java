@@ -16,6 +16,8 @@ import dev.tenacity.ui.sidegui.SideGUI;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.client.ReleaseType;
 import dev.tenacity.utils.client.addons.api.ScriptManager;
+import dev.tenacity.utils.client.addons.rise.component.RenderSlotComponent;
+import dev.tenacity.utils.client.addons.rise.component.RotationComponent;
 import dev.tenacity.utils.client.addons.viamcp.vialoadingbase.ViaLoadingBase;
 import dev.tenacity.utils.client.addons.viamcp.viamcp.ViaMCP;
 import dev.tenacity.utils.objects.Dragging;
@@ -52,7 +54,7 @@ public class Client implements Utils {
     public static boolean updateGuiScale;
     public static int prevGuiScale;
     private final EventManager eventManager = new EventManager();
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final SideGUI sideGui = new SideGUI();
     private final SearchBar searchBar = new SearchBar();
     public WallpaperEngine videoRenderer;
@@ -65,14 +67,14 @@ public class Client implements Utils {
     private Locale locale = Locale.EN_US;
     public static void initClient() {
 
-        Client.INSTANCE.setModuleManager(new ModuleManager());
+        INSTANCE.setModuleManager(new ModuleManager());
 
-        Client.INSTANCE.getModuleManager().init();
+        INSTANCE.getModuleManager().init();
         Theme.init();
 
-        Client.INSTANCE.setPingerUtils(new PingerUtils());
+        INSTANCE.setPingerUtils(new PingerUtils());
 
-        Client.INSTANCE.setScriptManager(new ScriptManager());
+        INSTANCE.setScriptManager(new ScriptManager());
 
         CommandHandler commandHandler = new CommandHandler();
         commandHandler.commands.addAll(Arrays.asList(
@@ -81,26 +83,27 @@ public class Client implements Utils {
                 new VClipCommand(), new ClearBindsCommand(), new ClearConfigCommand(),
                 new ToggleCommand()
         ));
-        Client.INSTANCE.setCommandHandler(commandHandler);
-        Client.INSTANCE.getEventManager().register(new BackgroundProcess());
-
-        Client.INSTANCE.setConfigManager(new ConfigManager());
+        INSTANCE.setCommandHandler(commandHandler);
+        executorService.execute(() -> INSTANCE.getEventManager().register(new BackgroundProcess()));
+        executorService.execute(() -> INSTANCE.getEventManager().register(new RotationComponent()));
+        executorService.execute(() -> INSTANCE.getEventManager().register(new RenderSlotComponent()));
+        INSTANCE.setConfigManager(new ConfigManager());
         ConfigManager.defaultConfig = new File(Minecraft.getMinecraft().mcDataDir + "/Tenacity/Config.json");
-        Client.INSTANCE.getConfigManager().collectConfigs();
+        INSTANCE.getConfigManager().collectConfigs();
         if (ConfigManager.defaultConfig.exists()) {
-            Client.INSTANCE.getConfigManager().loadConfig(Client.INSTANCE.getConfigManager().readConfigData(ConfigManager.defaultConfig.toPath()), true);
+            INSTANCE.getConfigManager().loadConfig(INSTANCE.getConfigManager().readConfigData(ConfigManager.defaultConfig.toPath()), true);
         }
 
         DragManager.loadDragData();
 
-        Client.INSTANCE.setAltManager(new GuiAltManager());
-        Client.LOGGER.info("Trying download Background Video");
-        Client.INSTANCE.downloadBackGroundVideo();
+        INSTANCE.setAltManager(new GuiAltManager());
+        LOGGER.info("Trying download Background Video");
+        INSTANCE.downloadBackGroundVideo();
 
-        Client.LOGGER.info("Initializing background...");
-        Client.INSTANCE.initVideoBackground();
+        LOGGER.info("Initializing background...");
+        INSTANCE.initVideoBackground();
         try {
-            Client.LOGGER.info("Starting ViaMCP...");
+            LOGGER.info("Starting ViaMCP...");
             ViaMCP.create();
             ViaMCP.INSTANCE.initAsyncSlider();
             ViaLoadingBase.getInstance().reload(ProtocolVersion.v1_12_2);
@@ -133,7 +136,7 @@ public class Client implements Utils {
 
     public void downloadBackGroundVideo() {
         LOGGER.info("Downloading background video");
-        backGroundFile = new File(Client.BACKGROUND, "background.mp4");
+        backGroundFile = new File(BACKGROUND, "background.mp4");
         if (!backGroundFile.exists()) {
             try {
                 if (backGroundFile.getParentFile().mkdirs()) {
@@ -153,7 +156,7 @@ public class Client implements Utils {
         }
         videoRenderer = new WallpaperEngine();
         File videoFile;
-        videoFile = new File(Client.BACKGROUND, "background.mp4");
+        videoFile = new File(BACKGROUND, "background.mp4");
         videoRenderer.setup(videoFile, 60);
     }
 }

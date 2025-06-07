@@ -7,6 +7,7 @@ import dev.tenacity.Client;
 import com.cubk.event.impl.player.JumpFixEvent;
 import com.cubk.event.impl.player.LivingDeathEvent;
 import dev.tenacity.module.impl.render.Animations;
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -104,7 +105,9 @@ public abstract class EntityLivingBase extends Entity {
     /**
      * Entity head rotation yaw
      */
+    @Getter
     public float rotationYawHead;
+    public float renderPitchHead;
 
     /**
      * Entity head rotation yaw at previous tick

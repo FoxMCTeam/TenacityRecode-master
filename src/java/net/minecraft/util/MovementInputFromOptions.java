@@ -1,5 +1,6 @@
 package net.minecraft.util;
 
+import com.cubk.event.impl.player.EventMoveInput;
 import dev.tenacity.Client;
 import dev.tenacity.module.impl.movement.Speed;
 import net.minecraft.client.settings.GameSettings;
@@ -14,7 +15,6 @@ public class MovementInputFromOptions extends MovementInput {
     public void updatePlayerMoveState() {
         this.moveStrafe = 0.0F;
         this.moveForward = 0.0F;
-
         if (this.gameSettings.keyBindForward.isKeyDown()) {
             ++this.moveForward;
         }
@@ -30,13 +30,22 @@ public class MovementInputFromOptions extends MovementInput {
         if (this.gameSettings.keyBindRight.isKeyDown()) {
             --this.moveStrafe;
         }
-
-        this.jump = this.gameSettings.keyBindJump.isKeyDown() && !(Client.INSTANCE.getModuleManager().getModule(Speed.class).shouldPreventJumping());
+        this.jump = this.gameSettings.keyBindJump.isKeyDown();
         this.sneak = this.gameSettings.keyBindSneak.isKeyDown();
 
+
+        final EventMoveInput moveInputEvent = new EventMoveInput(moveForward, moveStrafe, jump, sneak, 0.3D);
+        Client.INSTANCE.getEventManager().call(moveInputEvent);
+
+        final double sneakMultiplier = moveInputEvent.getSneakSlowDownMultiplier();
+        this.moveForward = moveInputEvent.getForward();
+        this.moveStrafe = moveInputEvent.getStrafe();
+        this.jump = moveInputEvent.isJump();
+        this.sneak = moveInputEvent.isSneak();
+
         if (this.sneak) {
-            this.moveStrafe = (float) ((double) this.moveStrafe * 0.3D);
-            this.moveForward = (float) ((double) this.moveForward * 0.3D);
+            this.moveStrafe = (float) ((double) this.moveStrafe * sneakMultiplier);
+            this.moveForward = (float) ((double) this.moveForward * sneakMultiplier);
         }
     }
 }

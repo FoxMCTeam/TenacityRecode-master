@@ -324,7 +324,10 @@ public abstract class Entity implements ICommandSender {
     protected EnumFacing teleportDirection;
     private boolean invulnerable;
     protected UUID entityUniqueID;
-
+    public double threadDistance;
+    public double lastMotionX;
+    public double lastMotionZ;
+    public float movementYaw, velocityYaw;
     /**
      * The command result statistics for this Entity.
      */
@@ -2279,6 +2282,20 @@ public abstract class Entity implements ICommandSender {
     public boolean doesEntityNotTriggerPressurePlate() {
         return false;
     }
+    public Vec3 getLookCustom(float yaw, float pitch) {
+        return this.getVectorForRotation(pitch, yaw);
+    }
+    public dev.tenacity.utils.client.addons.vector.Vector3d getCustomPositionVector() {
+        return new dev.tenacity.utils.client.addons.vector.Vector3d(posX, posY, posZ);
+    }
+
+    public MovingObjectPosition rayTraceCustom(double blockReachDistance, float yaw, float pitch) {
+        final Vec3 vec3 = this.getPositionEyes(1.0F);
+        final Vec3 vec31 = this.getLookCustom(yaw, pitch);
+        final Vec3 vec32 = vec3.addVector(vec31.xCoord * blockReachDistance, vec31.yCoord * blockReachDistance, vec31.zCoord * blockReachDistance);
+        return this.worldObj.rayTraceBlocks(vec3, vec32, false, false, true);
+    }
+
 
     public void addEntityCrashInfo(CrashReportCategory category) {
         category.addCrashSectionCallable("Entity Type", () -> EntityList.getEntityString(Entity.this) + " (" + Entity.this.getClass().getCanonicalName() + ")");
