@@ -8,6 +8,7 @@ import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.display.HUDMod;
+import dev.tenacity.module.impl.exploit.Disabler;
 import dev.tenacity.module.settings.ParentAttribute;
 import dev.tenacity.module.settings.impl.BooleanSetting;
 import dev.tenacity.module.settings.impl.NumberSetting;
@@ -115,6 +116,7 @@ public class ChestStealer extends Module {
                             items.add(is.getItem());
                         }
                         mc.playerController.windowClick(chest.windowId, s, 0, 1, mc.thePlayer);
+                        Disabler.slotTimer.reset();
                     }
                 });
 
