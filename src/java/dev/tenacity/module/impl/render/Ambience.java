@@ -24,7 +24,7 @@ public class Ambience extends Module {
     String mode = "";
 
     public Ambience() {
-        super("Ambience", Category.RENDER, "world time");
+        super("module.render.Ambience", Category.RENDER, "world time");
         this.addSettings(time, weather);
     }
 

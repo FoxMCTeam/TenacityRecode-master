@@ -43,7 +43,7 @@ public class EntityEffects extends Module {
     private Framebuffer entityFramebuffer = new Framebuffer(1, 1, false);
 
     public EntityEffects() {
-        super("Entity Effects", Category.RENDER, "Very unnecessary blur of entities");
+        super("module.render.EntityEffects", Category.RENDER, "Very unnecessary blur of entities");
         blackBloom.addParent(bloom, ParentAttribute.BOOLEAN_CONDITION);
         addSettings(validEntities, blur, bloom, blackBloom);
     }

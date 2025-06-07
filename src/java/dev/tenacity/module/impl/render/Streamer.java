@@ -20,7 +20,7 @@ public class Streamer extends Module {
     public static boolean enabled;
 
     public Streamer() {
-        super("Streamer", Category.RENDER, "features for content creators");
+        super("module.render.Streamer", Category.RENDER, "features for content creators");
         customName.addParent(hideUsername, ParentAttribute.BOOLEAN_CONDITION);
         this.addSettings(hideIP, hideServerId, hideUsername, customName);
     }

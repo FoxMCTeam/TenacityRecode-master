@@ -46,7 +46,7 @@ public class Hitmarkers extends Module {
     private Entity lastAttackedEntity;
 
     public Hitmarkers() {
-        super("Hitmarkers", Category.RENDER, "Entity attack indicators");
+        super("module.render.Hitmarkers", Category.RENDER, "Entity attack indicators");
         sound.addParent(playSound, ParentAttribute.BOOLEAN_CONDITION);
         volume.addParent(playSound, ParentAttribute.BOOLEAN_CONDITION);
         color.addParent(colorMode, modeSetting -> modeSetting.is("Custom"));

@@ -15,7 +15,7 @@ public final class Jesus extends Module {
     private boolean shouldJesus;
 
     public Jesus() {
-        super("Jesus", Category.MOVEMENT, "Walks on water, like jesus");
+        super("module.movement.Jesus", Category.MOVEMENT, "Walks on water, like jesus");
         this.addSettings(mode);
     }
 

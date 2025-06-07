@@ -30,7 +30,7 @@ public class CustomModel extends Module {
     public static boolean enabled = false;
 
     public CustomModel() {
-        super("Custom Model", Category.RENDER, "Renders an custom model on every player");
+        super("module.render.CustomModel", Category.RENDER, "Renders an custom model on every player");
         mogusColorMode.addParent(model, modeSetting -> modeSetting.is("Among Us"));
         amongusColor.addParent(mogusColorMode, modeSetting -> modeSetting.is("Custom"));
         addSettings(model, mogusColorMode, amongusColor);

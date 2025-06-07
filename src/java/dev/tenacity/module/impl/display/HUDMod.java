@@ -1,6 +1,7 @@
 package dev.tenacity.module.impl.display;
 
 import com.cubk.event.annotations.EventTarget;
+import com.cubk.event.impl.player.UpdateEvent;
 import com.cubk.event.impl.render.Render2DEvent;
 import com.cubk.event.impl.render.ShaderEvent;
 import dev.tenacity.Client;
@@ -221,7 +222,6 @@ public class HUDMod extends Module {
 
     @EventTarget
     public void onRender2DEvent(Render2DEvent e) {
-        Client.INSTANCE.setLocale(Locale.valueOf(language.getMode()));
         ScaledResolution sr = new ScaledResolution(mc);
         Pair<Color, Color> clientColors = getClientColors();
         String name = Client.NAME;
@@ -378,6 +378,11 @@ public class HUDMod extends Module {
         drawInfo(clientColors);
 
         drawArmor(sr);
+    }
+
+    @EventTarget
+    public void onUpdateEvent(UpdateEvent event) {
+        
     }
 
     private void drawBottomRight() {

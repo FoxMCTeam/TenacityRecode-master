@@ -50,7 +50,7 @@ public class XRay extends Module {
 
 
     public XRay() {
-        super("XRay", Category.RENDER, "Shows blocks through the world");
+        super("module.render.XRay", Category.RENDER, "Shows blocks through the world");
         addSettings(ores, opacity, bypass);
     }
 

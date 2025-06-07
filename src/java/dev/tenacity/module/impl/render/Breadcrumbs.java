@@ -37,7 +37,7 @@ public final class Breadcrumbs extends Module {
     private final List<Vec3> path = new ArrayList<>();
 
     public Breadcrumbs() {
-        super("Breadcrumbs", Category.RENDER, "shows where you've walked");
+        super("module.render.Breadcrumbs", Category.RENDER, "shows where you've walked");
         color.addParent(colorMode, modeSetting -> modeSetting.is("Custom"));
         seeThroughWalls.addParent(mode, mode -> mode.getMode().equals("Rise"));
         addSettings(mode, particleAmount, seeThroughWalls, colorMode, color);

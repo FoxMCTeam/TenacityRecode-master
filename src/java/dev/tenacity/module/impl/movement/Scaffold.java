@@ -90,7 +90,7 @@ public class Scaffold extends Module {
     private float[] cachedRots = new float[2];
 
     public Scaffold() {
-        super("Scaffold", Category.MOVEMENT, "Automatically places blocks under you");
+        super("module.movement.Scaffold", Category.MOVEMENT, "Automatically places blocks under you");
         this.addSettings(countMode, rotations, rotationMode, placeType, keepYMode, sprintMode, towerMode, swingMode, delay, timer,
                 auto3rdPerson, speedSlowdown, speedSlowdownAmount, itemSpoof, downwards, safewalk, sprint, sneak, tower, towerTimer,
                 swing, autoJump, hideJump, baseSpeed, keepY);

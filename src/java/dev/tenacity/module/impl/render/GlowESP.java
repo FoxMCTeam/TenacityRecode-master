@@ -76,7 +76,7 @@ public class GlowESP extends Module {
     public Framebuffer glowFrameBuffer;
 
     public GlowESP() {
-        super("GlowESP", Category.RENDER, "ESP that glows on players");
+        super("module.render.GlowESP", Category.RENDER, "ESP that glows on players");
         playerColor.addParent(colorMode, modeSetting -> modeSetting.is("Custom") && validEntities.getSetting("Players").isEnabled());
         animalColor.addParent(colorMode, modeSetting -> modeSetting.is("Custom") && validEntities.getSetting("Animals").isEnabled());
         mobColor.addParent(colorMode, modeSetting -> modeSetting.is("Custom") && validEntities.getSetting("Mobs").isEnabled());

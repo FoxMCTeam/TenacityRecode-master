@@ -13,7 +13,7 @@ public class Sprint extends Module {
     private final BooleanSetting omniSprint = new BooleanSetting("Omni Sprint", false);
 
     public Sprint() {
-        super("Sprint", Category.MOVEMENT, "Sprints automatically");
+        super("module.movement.Sprint", Category.MOVEMENT, "Sprints automatically");
         this.addSettings(omniSprint);
     }
 

@@ -8,7 +8,7 @@ import dev.tenacity.module.Module;
 public final class Brightness extends Module {
 
     public Brightness() {
-        super("Brightness", Category.RENDER, "changes the game brightness");
+        super("module.render.Brightness", Category.RENDER, "changes the game brightness");
     }
 
     @EventTarget

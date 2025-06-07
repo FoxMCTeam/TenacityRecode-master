@@ -1,4 +1,4 @@
-package dev.tenacity.module.impl.render;
+package dev.tenacity.module.impl.display;
 
 import com.cubk.event.annotations.EventTarget;
 import com.cubk.event.impl.render.Render2DEvent;
@@ -39,7 +39,7 @@ public class Keystrokes extends Module {
     private Button keyBindRight;
     private Button keyBindJump;
     public Keystrokes() {
-        super("Keystrokes", Category.RENDER, "Shows keystrokes");
+        super("module.display.Keystrokes", Category.DISPLAY, "Shows keystrokes");
         addSettings(sizeValue, offsetValue, opacity, radius);
     }
 

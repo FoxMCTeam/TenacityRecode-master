@@ -20,7 +20,7 @@ public final class NoFall extends Module {
     private boolean c04;
 
     public NoFall() {
-        super("NoFall", Category.PLAYER, "prevents fall damage");
+        super("module.player.NoFall", Category.PLAYER, "prevents fall damage");
         this.addSettings(mode);
     }
 

@@ -33,7 +33,7 @@ public class AutoAuthenticate extends Module {
     private HUDMod hudMod;
 
     public AutoAuthenticate() {
-        super("AutoAuthenticate", Category.MISC, "Auto login/register on cracked servers");
+        super("module.misc.autoAuthenticate", Category.MISC, "Auto login/register on cracked servers");
         this.addSettings(delay, password);
     }
 

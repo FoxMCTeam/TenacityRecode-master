@@ -12,7 +12,7 @@ public final class Timer extends Module {
     private final NumberSetting amount = new NumberSetting("Amount", 1, 10, 0.1, 0.1);
 
     public Timer() {
-        super("Timer", Category.PLAYER, "changes game speed");
+        super("module.player.Timer", Category.PLAYER, "changes game speed");
         this.addSettings(amount);
     }
 

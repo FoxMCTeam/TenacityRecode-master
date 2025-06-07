@@ -20,7 +20,7 @@ public class NoSlow extends Module {
     private boolean synced;
 
     public NoSlow() {
-        super("NoSlow", Category.PLAYER, "prevent item slowdown");
+        super("module.player.NoSlow", Category.PLAYER, "prevent item slowdown");
         this.addSettings(mode);
     }
 

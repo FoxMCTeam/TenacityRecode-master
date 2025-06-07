@@ -70,7 +70,7 @@ public class ESP2D extends Module {
     private Color firstColor = Color.BLACK, secondColor = Color.BLACK, thirdColor = Color.BLACK, fourthColor = Color.BLACK;
 
     public ESP2D() {
-        super("2D ESP", Category.RENDER, "Draws a box in 2D space around entitys");
+        super("module.render.ESP", Category.RENDER, "Draws a box in 2D space around entitys");
         boxColorMode.addParent(boxEsp, ParentAttribute.BOOLEAN_CONDITION);
         boxColor.addParent(boxColorMode, modeSetting -> modeSetting.is("Custom"));
 

@@ -16,7 +16,7 @@ public final class NoRotate extends Module {
     private final BooleanSetting fakeUpdate = new BooleanSetting("Fake Update", false);
 
     public NoRotate() {
-        super("NoRotate", Category.MISC, "Prevents servers from rotating you");
+        super("module.misc.noRotate", Category.MISC, "Prevents servers from rotating you");
         this.addSettings(fakeUpdate);
     }
 

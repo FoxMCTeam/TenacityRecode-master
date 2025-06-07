@@ -47,7 +47,7 @@ public final class LongJump extends Module {
     private int stage;
 
     public LongJump() {
-        super("LongJump", Category.MOVEMENT, "jump further");
+        super("module.movement.LongJump", Category.MOVEMENT, "jump further");
         watchdogMode.addParent(mode, m -> m.is("Watchdog"));
         damageSpeed.addParent(mode, m -> m.is("Watchdog") && watchdogMode.is("Damage"));
         this.addSettings(mode, watchdogMode, damageSpeed, spoofY);

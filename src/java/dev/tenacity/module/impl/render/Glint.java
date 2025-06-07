@@ -16,7 +16,7 @@ public class Glint extends Module {
     public final ColorSetting color = new ColorSetting("Color", Color.PINK);
 
     public Glint() {
-        super("Glint", Category.RENDER, "Colors the enchantment glint");
+        super("module.render.Glint", Category.RENDER, "Colors the enchantment glint");
         color.addParent(colorMode, modeSetting -> modeSetting.is("Custom"));
         addSettings(colorMode, color);
     }

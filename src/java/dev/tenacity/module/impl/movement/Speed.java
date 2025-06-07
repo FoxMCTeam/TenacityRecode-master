@@ -48,7 +48,7 @@ public final class Speed extends Module {
     private int inAirTicks;
 
     public Speed() {
-        super("Speed", Category.MOVEMENT, "Makes you go faster");
+        super("module.movement.Speed", Category.MOVEMENT, "Makes you go faster");
         watchdogMode.addParent(mode, modeSetting -> modeSetting.is("Watchdog"));
         verusMode.addParent(mode, modeSetting -> modeSetting.is("Verus"));
         viperMode.addParent(mode, modeSetting -> modeSetting.is("Viper"));

@@ -14,7 +14,7 @@ public final class AntiDesync extends Module {
     private int slot;
 
     public AntiDesync() {
-        super("AntiDesync", Category.MISC, "pervents desync client side");
+        super("module.misc.antiDesync", Category.MISC, "pervents desync client side");
     }
 
     @EventTarget

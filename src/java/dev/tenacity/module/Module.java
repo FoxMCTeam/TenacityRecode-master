@@ -98,19 +98,28 @@ public class Module implements Utils {
     public void toggle() {
         toggleSilent();
         if (NotificationsMod.toggleNotifications.isEnabled()) {
-            String titleToggle = "Module toggled";
+            String titleToggle = "module.toggle.title";
             String descriptionToggleOn = Localization.get(this.getName(), Locale.EN_US) + " was " + "§aenabled\r";
             String descriptionToggleOff = Localization.get(this.getName(), Locale.EN_US) + " was " + "§cdisabled\r";
 
             switch (NotificationsMod.mode.getMode()) {
                 case "Default":
-                    if (NotificationsMod.onlyTitle.isEnabled()) titleToggle = Localization.get(this.getName()) + " toggled";
+                    if (this.isEnabled()) {
+                        descriptionToggleOn = Localization.get(this.getName()) + Localization.get("module.toggle.default.enable");
+                    } else {
+                        descriptionToggleOff = Localization.get(this.getName()) + Localization.get("module.toggle.default.disable");
+                    }
+
+                    if (NotificationsMod.onlyTitle.isEnabled()) {
+                        titleToggle = Localization.get(this.getName()) + Localization.get("module.toggle.default.onlyTitle");
+                    }
+
                     break;
                 case "SuicideX":
                     if (this.isEnabled()) {
-                        titleToggle = "Enabled Module " + Localization.get(this.getName()) + ". PogO";
+                        titleToggle = Localization.get("module.toggle.suicideX.enable") + " " + Localization.get(this.getName()) + ". PogO";
                     } else {
-                        titleToggle = "Disabled Module " + Localization.get(this.getName()) + ". :/";
+                        titleToggle = Localization.get("module.toggle.suicideX.disable") + " "  + Localization.get(this.getName()) + ". :/";
                     }
                     descriptionToggleOff = "";
                     descriptionToggleOn = "";

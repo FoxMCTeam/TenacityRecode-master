@@ -36,7 +36,7 @@ public class Sniper extends Module {
     boolean reset = false;
 
     public Sniper() {
-        super("Sniper", Category.MISC, "Joins new games until you join a game with the specified username in it.");
+        super("module.misc.sniper", Category.MISC, "Joins new games until you join a game with the specified username in it.");
         skywarsMode.addParent(gameType, modeSetting -> modeSetting.is("Skywars"));
         skywarsType.addParent(gameType, modeSetting -> modeSetting.is("Skywars"));
         bedwarsMode.addParent(gameType, modeSetting -> modeSetting.is("Bedwars"));

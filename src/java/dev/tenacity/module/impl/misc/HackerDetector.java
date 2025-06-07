@@ -25,7 +25,7 @@ public class HackerDetector extends Module {
             new BooleanSetting("Reach A", true));
 
     public HackerDetector() {
-        super("HackerDetector", Category.MISC, "Detects people using cheats inside your game");
+        super("module.misc.hackDetector", Category.MISC, "Detects people using cheats inside your game");
         this.addSettings(detections);
     }
 

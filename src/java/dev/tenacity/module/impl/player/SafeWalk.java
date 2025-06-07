@@ -7,7 +7,7 @@ import dev.tenacity.module.Module;
 
 public final class SafeWalk extends Module {
     public SafeWalk() {
-        super("SafeWalk", Category.PLAYER, "prevents walking off blocks");
+        super("module.player.SafeWalk", Category.PLAYER, "prevents walking off blocks");
     }
 
     @EventTarget

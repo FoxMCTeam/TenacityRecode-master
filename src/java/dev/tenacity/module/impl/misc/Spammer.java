@@ -21,7 +21,7 @@ public final class Spammer extends Module {
     private final TimerUtil delayTimer = new TimerUtil();
 
     public Spammer() {
-        super("Spammer", Category.MISC, "Spams in chat");
+        super("module.misc.spammer", Category.MISC, "Spams in chat");
         this.addSettings(text, delay, settings);
     }
 

@@ -11,7 +11,7 @@ import net.minecraft.network.play.client.C03PacketPlayer;
 public final class Freecam extends Module {
 
     public Freecam() {
-        super("Freecam", Category.PLAYER, "allows you to look around freely");
+        super("module.player.Freecam", Category.PLAYER, "allows you to look around freely");
     }
 
     @EventTarget

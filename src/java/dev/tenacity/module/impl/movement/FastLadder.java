@@ -14,7 +14,7 @@ public class FastLadder extends Module {
     private final NumberSetting speed = new NumberSetting("Speed", 1.5, 5, 0.1, 0.01);
 
     public FastLadder() {
-        super("FastLadder", Category.MOVEMENT, "Climbs up ladders faster than normal");
+        super("module.movement.FastLadder", Category.MOVEMENT, "Climbs up ladders faster than normal");
         this.addSettings(mode, speed);
     }
 

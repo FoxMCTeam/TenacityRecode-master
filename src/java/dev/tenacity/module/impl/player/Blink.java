@@ -29,7 +29,7 @@ public final class Blink extends Module {
     private EntityOtherPlayerMP blinkEntity;
 
     public Blink() {
-        super("Blink", Category.PLAYER, "holds movement packets");
+        super("module.player.Blink", Category.PLAYER, "holds movement packets");
         delayPulse.addParent(pulse, ParentAttribute.BOOLEAN_CONDITION);
         this.addSettings(pulse, delayPulse);
     }

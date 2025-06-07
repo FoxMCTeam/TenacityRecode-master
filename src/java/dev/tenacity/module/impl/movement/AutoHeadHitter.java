@@ -20,7 +20,7 @@ public class AutoHeadHitter extends Module {
     private final TimerUtil timer = new TimerUtil();
 
     public AutoHeadHitter() {
-        super("AutoHeadHitter", Category.MOVEMENT, "Automatically jumps when there is a block above you");
+        super("module.movement.AutoHeadHitter", Category.MOVEMENT, "Automatically jumps when there is a block above you");
         addSettings(onlyWhileJumping, ignoreIfSneaking, jps);
     }
 

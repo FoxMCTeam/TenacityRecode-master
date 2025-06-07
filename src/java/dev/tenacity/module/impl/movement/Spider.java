@@ -11,7 +11,7 @@ public final class Spider extends Module {
     private final ModeSetting mode = new ModeSetting("Mode", "Vanilla", "Vanilla", "Verus");
 
     public Spider() {
-        super("Spider", Category.MOVEMENT, "Climbs you up walls like a spider");
+        super("module.movement.Spider", Category.MOVEMENT, "Climbs you up walls like a spider");
         addSettings(mode);
     }
 

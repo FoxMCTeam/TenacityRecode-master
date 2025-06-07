@@ -71,7 +71,7 @@ public class InvManager extends Module {
     private boolean isInvOpen;
 
     public InvManager() {
-        super("InvManager", Category.PLAYER, "cleans up your inventory");
+        super("module.player.InvManager", Category.PLAYER, "cleans up your inventory");
         inventoryPackets.addParent(inventoryOnly, ParentAttribute.BOOLEAN_CONDITION.negate());
         moveArrows.addParent(dropArchery, ParentAttribute.BOOLEAN_CONDITION.negate());
         slotGapple.addParent(dropFood, ParentAttribute.BOOLEAN_CONDITION.negate());

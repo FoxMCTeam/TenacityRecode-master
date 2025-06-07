@@ -20,7 +20,7 @@ public final class Animations extends Module {
     public static final NumberSetting size = new NumberSetting("Size", 0, 50, -50, 1);
 
     public Animations() {
-        super("Animations", Category.RENDER, "changes animations");
+        super("module.render.Animations", Category.RENDER, "changes animations");
         this.addSettings(x, y, size, smallSwing, mode, slowdown, oldDamage);
     }
 

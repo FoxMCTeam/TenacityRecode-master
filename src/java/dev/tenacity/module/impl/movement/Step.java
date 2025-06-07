@@ -21,7 +21,7 @@ public final class Step extends Module {
     private boolean hasStepped;
 
     public Step() {
-        super("Step", Category.MOVEMENT, "step up blocks");
+        super("module.movement.Step", Category.MOVEMENT, "step up blocks");
         this.addSettings(mode, height, timer);
     }
 

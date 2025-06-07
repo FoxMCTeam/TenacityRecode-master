@@ -10,7 +10,7 @@ import net.minecraft.network.play.server.S29PacketSoundEffect;
 public final class LightningTracker extends Module {
 
     public LightningTracker() {
-        super("LightningTracker", Category.MISC, "detects lightning");
+        super("module.misc.lightningTracker", Category.MISC, "detects lightning");
     }
 
     @EventTarget

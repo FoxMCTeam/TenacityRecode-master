@@ -27,7 +27,7 @@ public class KillEffects extends Module {
     private final EffectManager effectManager = new EffectManager();
 
     public KillEffects() {
-        super("KillEffects", Category.RENDER, "Plays animation on killing another player");
+        super("module.render.KillEffects", Category.RENDER, "Plays animation on killing another player");
         addSettings(killEffect);
     }
 

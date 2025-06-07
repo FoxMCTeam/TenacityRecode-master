@@ -25,7 +25,7 @@ public class AutoHypixel extends Module {
     private final BooleanSetting autoHubOnBan = new BooleanSetting("Auto /l on ban", false);
 
     public AutoHypixel() {
-        super("AutoHypixel", Category.MISC, "stuff for hypixel");
+        super("module.misc.autoHypixel", Category.MISC, "stuff for hypixel");
         autoGGMessage.addParent(autoGG, ParentAttribute.BOOLEAN_CONDITION);
         autoPlayDelay.addParent(autoPlay, ParentAttribute.BOOLEAN_CONDITION);
         this.addSettings(autoGG, autoGGMessage, autoPlay, autoPlayDelay, autoHubOnBan);

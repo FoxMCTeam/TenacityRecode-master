@@ -27,7 +27,7 @@ public class AntiVoid extends Module {
     private double lastGroundY;
 
     public AntiVoid() {
-        super("AntiVoid", Category.PLAYER, "saves you from the void");
+        super("module.player.AntiVoid", Category.PLAYER, "saves you from the void");
         this.addSettings(mode, fallDist);
     }
 

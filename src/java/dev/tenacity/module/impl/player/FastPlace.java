@@ -18,7 +18,7 @@ public final class FastPlace extends Module {
     private final BooleanSetting projectiles = new BooleanSetting("Projectiles", true);
 
     public FastPlace() {
-        super("FastPlace", Category.PLAYER, "place blocks fast");
+        super("module.player.FastPlace", Category.PLAYER, "place blocks fast");
         this.addSettings(ticks, blocks, projectiles);
     }
 

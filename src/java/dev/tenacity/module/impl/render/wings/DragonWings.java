@@ -20,7 +20,7 @@ public class DragonWings extends Module {
     private final WingModel model = new WingModel();
 
     public DragonWings() {
-        super("DragonWings", Category.RENDER, "gives you dragon wings");
+        super("module.render.DragonWings", Category.RENDER, "gives you dragon wings");
         addSettings(scale, color);
     }
 

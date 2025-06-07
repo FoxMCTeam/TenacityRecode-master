@@ -12,7 +12,7 @@ import net.minecraft.network.play.server.S3APacketTabComplete;
 public final class AntiTabComplete extends Module {
 
     public AntiTabComplete() {
-        super("AntiTabComplete", Category.MISC, "prevents you from tab completing");
+        super("module.misc.antiTabComplete", Category.MISC, "prevents you from tab completing");
     }
 
     @EventTarget

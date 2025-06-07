@@ -13,7 +13,7 @@ public final class AntiFreeze extends Module {
     private final ModeSetting mode = new ModeSetting("Mode", "Normal", "Normal", "Teleport");
 
     public AntiFreeze() {
-        super("AntiFreeze", Category.MISC, "prevents server plugins from freezing you");
+        super("module.misc.antiFreeze", Category.MISC, "prevents server plugins from freezing you");
     }
 
     @EventTarget

@@ -10,7 +10,7 @@ import net.minecraft.network.play.client.C16PacketClientStatus;
 public final class AutoRespawn extends Module {
 
     public AutoRespawn() {
-        super("AutoRespawn", Category.MISC, "automatically respawn");
+        super("module.misc.autoRespawn", Category.MISC, "automatically respawn");
     }
 
     @EventTarget

@@ -75,7 +75,7 @@ public final class Flight extends Module {
     private boolean adjustSpeed, canSpeed, hasBeenDamaged;
 
     public Flight() {
-        super("Flight", Category.MOVEMENT, "Makes you hover in the air");
+        super("module.movement.Flight", Category.MOVEMENT, "Makes you hover in the air");
         horizontalSpeed.addParent(mode, m -> m.is("Vanilla"));
         verticalSpeed.addParent(mode, m -> m.is("Vanilla"));
         antiKick.addParent(mode, m -> m.is("Vanilla"));

@@ -34,7 +34,7 @@ public class ChinaHat extends Module {
     private final ColorSetting color = new ColorSetting("Color", Color.WHITE);
 
     public ChinaHat() {
-        super("ChinaHat", Category.RENDER, "epic hat");
+        super("module.render.ChinaHat", Category.RENDER, "epic hat");
         color.addParent(colorMode, modeSetting -> modeSetting.is("Custom"));
         this.addSettings(firstPerson, allPlayers, colorMode, color);
     }

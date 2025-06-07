@@ -8,7 +8,7 @@ import dev.tenacity.module.Module;
 public class NoHurtCam extends Module {
 
     public NoHurtCam() {
-        super("NoHurtCam", Category.RENDER, "removes shaking after being hit");
+        super("module.render.NoHurtCam", Category.RENDER, "removes shaking after being hit");
     }
 
     @EventTarget

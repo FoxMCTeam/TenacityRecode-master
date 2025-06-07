@@ -38,7 +38,7 @@ public class Chams extends Module {
 
 
     public Chams() {
-        super("Chams", Category.RENDER, "See people through walls");
+        super("module.render.Chams", Category.RENDER, "See people through walls");
         wallColor.addParent(behindWalls, behindWalls -> behindWalls.is("Custom"));
         visibleColorMode.addParent(onlyBehindWalls, ParentAttribute.BOOLEAN_CONDITION.negate());
         visibleColor.addParent(visibleColorMode, modeSetting -> modeSetting.is("Custom"));

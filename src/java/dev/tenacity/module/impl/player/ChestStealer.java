@@ -50,7 +50,7 @@ public class ChestStealer extends Module {
     private boolean clear;
 
     public ChestStealer() {
-        super("ChestStealer", Category.PLAYER, "auto loot chests");
+        super("module.player.ChestStealer", Category.PLAYER, "auto loot chests");
         auraRange.addParent(aura, ParentAttribute.BOOLEAN_CONDITION);
         stealingIndicator.addParent(silent, ParentAttribute.BOOLEAN_CONDITION);
         this.addSettings(delay, aura, auraRange, stealingIndicator, titleCheck, freeLook, reverse, silent, smart);

@@ -29,7 +29,7 @@ public class JumpCircle extends Module {
     private final List<Circle> toRemove = new ArrayList<>();
     private boolean inAir = false;
     public JumpCircle() {
-        super("JumpCircle", Category.RENDER, "Draws a circle when you land on the ground.");
+        super("module.render.JumpCircle", Category.RENDER, "Draws a circle when you land on the ground.");
         addSettings(radius);
     }
 
