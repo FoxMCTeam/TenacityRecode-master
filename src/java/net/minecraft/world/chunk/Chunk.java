@@ -139,6 +139,17 @@ public class Chunk {
         Arrays.fill(this.blockBiomeArray, (byte) -1);
     }
 
+
+
+    public class ChunkLogic extends Chunk {
+        public ChunkLogic(World worldIn, int x, int z) {
+            super(worldIn, x, z); // 调用父类 Chunk 的构造函数
+        }
+
+        public boolean shouldTick = true;
+    }
+
+
     public Chunk(World worldIn, ChunkPrimer primer, int x, int z) {
         this(worldIn, x, z);
         int i = 256;

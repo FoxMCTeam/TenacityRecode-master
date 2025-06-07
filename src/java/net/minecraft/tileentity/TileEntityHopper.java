@@ -1,5 +1,6 @@
 package net.minecraft.tileentity;
 
+import dev.firm.utils.client.addons.betterfps.HopperLogic;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockHopper;
@@ -24,6 +25,10 @@ public class TileEntityHopper extends TileEntityLockable implements IHopper, ITi
     private ItemStack[] inventory = new ItemStack[5];
     private String customName;
     private int transferCooldown = -1;
+    public IInventory topInventory = null;
+    public int topBlockUpdate = 1;
+    public boolean canPickupDrops = true;
+    public boolean isOnTransferCooldown = false;
 
     public void readFromNBT(NBTTagCompound compound)
     {
@@ -219,14 +224,18 @@ public class TileEntityHopper extends TileEntityLockable implements IHopper, ITi
      */
     public void update()
     {
-        if (this.worldObj != null && !this.worldObj.isRemote)
-        {
-            --this.transferCooldown;
+        if(this.worldObj != null && !this.worldObj.isRemote) {
+            --transferCooldown;
+            isOnTransferCooldown = transferCooldown > 0;
 
-            if (!this.isOnTransferCooldown())
-            {
-                this.setTransferCooldown(0);
+            if(!this.isOnTransferCooldown()) {
+                this.setTransferCooldown(2); // Let the server breathe
                 this.updateHopper();
+
+                if(topBlockUpdate-- <= 0) {
+                    checkBlockOnTop();
+                    topBlockUpdate = 120;
+                }
             }
         }
     }
@@ -372,7 +381,7 @@ public class TileEntityHopper extends TileEntityLockable implements IHopper, ITi
     /**
      * Returns false if the specified IInventory contains any items
      */
-    private static boolean isInventoryEmpty(IInventory inventoryIn, EnumFacing side)
+    protected static boolean isInventoryEmpty(IInventory inventoryIn, EnumFacing side)
     {
         if (inventoryIn instanceof ISidedInventory)
         {
@@ -403,54 +412,39 @@ public class TileEntityHopper extends TileEntityLockable implements IHopper, ITi
         return true;
     }
 
-    public static boolean captureDroppedItems(IHopper p_145891_0_)
+    public static boolean captureDroppedItems(IHopper hopper)
     {
-        IInventory iinventory = getHopperInventory(p_145891_0_);
+        HopperLogic hopperTE = hopper.getClass() == TileEntityHopper.class ? (HopperLogic)hopper : null;
 
-        if (iinventory != null)
-        {
+        IInventory iinventory = hopperTE == null ? getHopperInventory(hopper) : hopperTE.topInventory;
+
+        if(iinventory != null) {
             EnumFacing enumfacing = EnumFacing.DOWN;
 
-            if (isInventoryEmpty(iinventory, enumfacing))
-            {
-                return false;
-            }
+            if(isInventoryEmpty(iinventory, enumfacing)) return false;
 
-            if (iinventory instanceof ISidedInventory)
-            {
+            if(iinventory instanceof ISidedInventory) {
                 ISidedInventory isidedinventory = (ISidedInventory)iinventory;
                 int[] aint = isidedinventory.getSlotsForFace(enumfacing);
 
-                for (int i = 0; i < aint.length; ++i)
-                {
-                    if (pullItemFromSlot(p_145891_0_, iinventory, aint[i], enumfacing))
-                    {
-                        return true;
-                    }
+                for(int i = 0; i < aint.length; ++i) {
+                    if(pullItemFromSlot(hopper, iinventory, aint[i], enumfacing)) return true;
                 }
-            }
-            else
-            {
+            } else {
                 int j = iinventory.getSizeInventory();
 
-                for (int k = 0; k < j; ++k)
-                {
-                    if (pullItemFromSlot(p_145891_0_, iinventory, k, enumfacing))
-                    {
-                        return true;
-                    }
+                for(int k = 0; k < j; ++k) {
+                    if(pullItemFromSlot(hopper, iinventory, k, enumfacing)) return true;
                 }
             }
-        }
-        else
-        {
-            for (EntityItem entityitem : func_181556_a(p_145891_0_.getWorld(), p_145891_0_.getXPos(), p_145891_0_.getYPos() + 1.0D, p_145891_0_.getZPos()))
-            {
-                if (putDropInInventoryAllSlots(p_145891_0_, entityitem))
-                {
+        } else if(hopperTE == null || hopperTE.canPickupDrops) {
+
+            for(EntityItem entityitem : func_181556_a(hopper.getWorld(), hopper.getXPos(), hopper.getYPos() + 1.0D, hopper.getZPos())) {
+                if(putDropInInventoryAllSlots(hopper, entityitem)) {
                     return true;
                 }
             }
+
         }
 
         return false;
@@ -460,7 +454,7 @@ public class TileEntityHopper extends TileEntityLockable implements IHopper, ITi
      * Pulls from the specified slot in the inventory and places in any available slot in the hopper. Returns true if
      * the entire stack was moved
      */
-    private static boolean pullItemFromSlot(IHopper hopper, IInventory inventoryIn, int index, EnumFacing direction)
+    protected static boolean pullItemFromSlot(IHopper hopper, IInventory inventoryIn, int index, EnumFacing direction)
     {
         ItemStack itemstack = inventoryIn.getStackInSlot(index);
 
@@ -744,5 +738,11 @@ public class TileEntityHopper extends TileEntityLockable implements IHopper, ITi
         {
             this.inventory[i] = null;
         }
+    }
+
+    public void checkBlockOnTop() {
+        BlockPos topPos = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
+        canPickupDrops = !worldObj.getBlockState(topPos).getBlock().isOpaqueCube();
+        topInventory = getHopperInventory(this);
     }
 }

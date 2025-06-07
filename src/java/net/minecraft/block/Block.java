@@ -18,6 +18,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -698,7 +699,7 @@ public class Block
     }
 
     /**
-     * Ray traces through the blocks collision from initClient vector to end vector returning a ray trace hit.
+     * Ray traces through the blocks collision from start vector to end vector returning a ray trace hit.
      */
     public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end)
     {
@@ -1524,6 +1525,13 @@ public class Block
     private static void registerBlock(int id, String textualID, Block block_)
     {
         registerBlock(id, new ResourceLocation(textualID), block_);
+    }
+
+    public boolean isBeaconBase(IBlockAccess world, BlockPos blockPos,BlockPos pos) {
+        return this == Blocks.iron_block ||
+                this == Blocks.gold_block ||
+                this == Blocks.diamond_block ||
+                this == Blocks.emerald_block;
     }
 
     public static enum EnumOffsetType

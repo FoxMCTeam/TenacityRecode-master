@@ -1,6 +1,7 @@
 package net.minecraft.client.model;
 
 import net.minecraft.client.renderer.WorldRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class ModelBox
 {
@@ -34,6 +35,32 @@ public class ModelBox
     public ModelBox(ModelRenderer renderer, int p_i46359_2_, int p_i46359_3_, float p_i46359_4_, float p_i46359_5_, float p_i46359_6_, int p_i46359_7_, int p_i46359_8_, int p_i46359_9_, float p_i46359_10_)
     {
         this(renderer, p_i46359_2_, p_i46359_3_, p_i46359_4_, p_i46359_5_, p_i46359_6_, p_i46359_7_, p_i46359_8_, p_i46359_9_, p_i46359_10_, renderer.mirror);
+    }
+
+    public class ModelBoxLogic extends ModelBox {
+
+        // 构造函数（与父类保持一致）
+        public ModelBoxLogic(ModelRenderer renderer, int i1, int i2, float f1, float f2, float f3, int i3, int i4, int i5, float f4) {
+            super(renderer, i1, i2, f1, f2, f3, i3, i4, i5, f4);
+        }
+
+        // 覆盖渲染方法，处理 GL_CULL_FACE 状态
+        @Override
+        public void render(WorldRenderer renderer, float scale) {
+            boolean wasCullFaceEnabled = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+
+            if (!wasCullFaceEnabled) {
+                GL11.glEnable(GL11.GL_CULL_FACE); // 临时启用 CULL_FACE
+            }
+
+            // 调用父类渲染逻辑
+            super.render(renderer, scale);
+
+            // 恢复原始状态
+            if (!wasCullFaceEnabled) {
+                GL11.glDisable(GL11.GL_CULL_FACE);
+            }
+        }
     }
 
     public ModelBox(ModelRenderer p_i0_1_, int[][] p_i0_2_, float p_i0_3_, float p_i0_4_, float p_i0_5_, float p_i0_6_, float p_i0_7_, float p_i0_8_, float p_i0_9_, boolean p_i0_10_)
@@ -158,6 +185,7 @@ public class ModelBox
             }
         }
     }
+
 
     public void render(WorldRenderer renderer, float scale)
     {
