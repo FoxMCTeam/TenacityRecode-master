@@ -424,6 +424,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
      */
 
     private void startGame() throws LWJGLException {
+        long start = System.currentTimeMillis();
         this.gameSettings = new GameSettings(this, this.mcDataDir);
         this.defaultResourcePacks.add(this.mcDefaultResourcePack);
         this.startTimerHackThread();
@@ -452,6 +453,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         this.mcResourceManager.registerReloadListener(this.renderEngine);
 
         FontUtil.setupFonts();
+
+        Client.INSTANCE.intiVars();
 
         SplashScreen.continueCount();
         this.skinManager = new SkinManager(this.renderEngine, new File(this.fileAssets, "skins"), this.sessionService);
@@ -504,6 +507,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         this.mcResourceManager.registerReloadListener(this.modelManager);
         this.renderItem = new RenderItem(this.renderEngine, this.modelManager);
         this.renderManager = new RenderManager(this.renderEngine, this.renderItem);
+        Client.initClient();
         SplashScreen.continueCount();
         this.itemRenderer = new ItemRenderer(this);
         this.mcResourceManager.registerReloadListener(this.renderItem);
@@ -513,6 +517,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         this.mcResourceManager.registerReloadListener(this.blockRenderDispatcher);
         this.renderGlobal = new RenderGlobal(this);
         this.mcResourceManager.registerReloadListener(this.renderGlobal);
+
         SplashScreen.continueCount();
         this.guiAchievement = new GuiAchievement(this);
         GlStateManager.viewport(0, 0, this.displayWidth, this.displayHeight);
@@ -521,15 +526,14 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         this.ingameGUI = new GuiIngame(this);
 
 
-        Client.INSTANCE.initClient();
+
 
         SplashScreen.continueCount(false);
+        logger.info("Finished loading in {} seconds.", (System.currentTimeMillis() - start) / 1000f);
 
         this.gameSettings.guiScale = 2;
         SoundUtils.playSound(new ResourceLocation("Tenacity/Sounds/opening.wav"), .8f);
-        SplashScreen.drawScreen();
-
-
+        //SplashScreen.drawScreen();
         if (this.serverName != null) {
             this.displayGuiScreen(new GuiConnecting(new CustomMainMenu(), this, this.serverName, this.serverPort));
         } else {
@@ -547,6 +551,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         Display.setVSyncEnabled(this.gameSettings.enableVsync);
 
         this.renderGlobal.makeEntityOutlineShader();
+
     }
 
 
@@ -561,7 +566,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
 
     private void createDisplay() throws LWJGLException {
         Display.setResizable(true);
-        Display.setTitle("Minecraft 1.8.9");
+        Display.setTitle("Minecraft 1.8.9 - lwjgl " + Sys.getVersion());
 
         Display.create((new PixelFormat()).withDepthBits(24));
     }

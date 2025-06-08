@@ -43,11 +43,11 @@ public class SideGUI implements Screen {
     private final Color greenEnabledColor = new Color(70, 220, 130);
     private final Color redBadColor = new Color(209, 56, 56);
     private final Animation formFadeAnimation = new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
+    private final SideGUIHotbar hotbar = new SideGUIHotbar();
     public boolean typing = false;
     @Setter
     private boolean focused;
     private float rectWidth, rectHeight;
-    private final SideGUIHotbar hotbar = new SideGUIHotbar();
     private HashMap<String, Panel> panels;
     private HashMap<String, Form> forms;
     private Drag drag;

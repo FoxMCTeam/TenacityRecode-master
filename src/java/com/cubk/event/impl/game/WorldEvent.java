@@ -6,7 +6,7 @@ import net.minecraft.world.World;
 
 /**
  * WorldEvent is fired when an event involving the world occurs.
- * If a method utilizes this {@link Event} as its parameter, the method will
+ * If a method utilizes this {@link CancellableEvent} as its parameter, the method will
  * receive every child event of this class.
  * {@link #world} contains the World this event is occuring in.
  **/

@@ -34,6 +34,7 @@ public class ConfigPanel extends Panel {
     private String sortingSelection = "Relevance";
     @Setter
     private boolean refresh = false;
+
     public ConfigPanel() {
         toggleButtons = new ArrayList<>();
         toggleButtons.add(new ToggleButton("Load visuals"));

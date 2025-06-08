@@ -36,11 +36,13 @@ public class DropdownObject implements Screen {
     private boolean opened = false;
     @Setter
     private boolean bypass = false;
+
     public DropdownObject(String name, String... options) {
         this.name = name;
         selection = options[0];
         this.options = Arrays.asList(options);
     }
+
     public DropdownObject(String name) {
         this.name = name;
     }

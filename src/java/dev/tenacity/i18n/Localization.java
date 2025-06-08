@@ -1,7 +1,6 @@
 package dev.tenacity.i18n;
 
 import dev.tenacity.Client;
-import dev.tenacity.utils.font.CustomFont;
 import lombok.SneakyThrows;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
@@ -16,13 +15,13 @@ import java.nio.charset.StandardCharsets;
  */
 public class Localization {
 
+    // 是否已经加载资源
+    private static boolean populated = false;
+
     static {
         // 类加载时尝试初始化语言资源
         populate();
     }
-
-    // 是否已经加载资源
-    private static boolean populated = false;
 
     /**
      * 获取当前语言下某个 key 的翻译文本

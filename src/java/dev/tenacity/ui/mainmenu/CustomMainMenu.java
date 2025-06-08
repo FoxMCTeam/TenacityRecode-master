@@ -43,6 +43,7 @@ public class CustomMainMenu extends GuiScreen {
             mc.resize(mc.displayWidth + 1, mc.displayHeight);
         }
         buttons.forEach(MenuButton::initGui);
+        Client.INSTANCE.updateLanguage();
     }
 
     @Override

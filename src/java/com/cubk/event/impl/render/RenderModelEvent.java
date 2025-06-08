@@ -2,10 +2,12 @@ package com.cubk.event.impl.render;
 
 
 import com.cubk.event.impl.CancellableEvent;
+import lombok.Getter;
 import net.minecraft.entity.EntityLivingBase;
 
 public class RenderModelEvent extends CancellableEvent.StateEvent {
 
+    @Getter
     private final EntityLivingBase entity;
     private final Runnable modelRenderer;
     private final Runnable layerRenderer;
@@ -16,12 +18,7 @@ public class RenderModelEvent extends CancellableEvent.StateEvent {
         this.layerRenderer = layerRenderer;
     }
 
-    
-    public EntityLivingBase getEntity() {
-        return entity;
-    }
 
-    
     public void drawModel() {
         this.modelRenderer.run();
     }

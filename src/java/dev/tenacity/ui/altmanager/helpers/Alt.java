@@ -1,15 +1,8 @@
 package dev.tenacity.ui.altmanager.helpers;
 
-import com.altening.auth.SSLController;
-import com.altening.auth.TheAlteningAuthentication;
-import com.altening.auth.service.AlteningServiceType;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.mojang.authlib.Agent;
-import com.mojang.authlib.exceptions.AuthenticationException;
-import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
-import com.mojang.authlib.yggdrasil.YggdrasilUserAuthentication;
 import dev.tenacity.Client;
 import dev.tenacity.ui.notifications.NotificationManager;
 import dev.tenacity.ui.notifications.NotificationType;
@@ -23,7 +16,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Session;
 
 import java.io.IOException;
-import java.net.Proxy;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.UUID;
@@ -34,8 +26,6 @@ public class Alt {
     public static Minecraft mc = Minecraft.getMinecraft();
     public static int stage = -1;
     public static AltType currentLoginMethod = AltType.MOJANG;
-    private final SSLController ssl = new SSLController();
-    private final TheAlteningAuthentication alteningAuthentication = TheAlteningAuthentication.mojang();
     @Expose
     @SerializedName("uuid")
     public String uuid;
@@ -131,29 +121,8 @@ public class Alt {
                 }
             });
             return future.join();
-        } else {
-            YggdrasilAuthenticationService service = new YggdrasilAuthenticationService(Proxy.NO_PROXY, "");
-            YggdrasilUserAuthentication auth = (YggdrasilUserAuthentication) service.createUserAuthentication(Agent.MINECRAFT);
-            auth.setUsername(username);
-            auth.setPassword(password);
-            try {
-                if (username.endsWith("@alt.com")) {
-                    ssl.disableCertificateValidation();
-                    alteningAuthentication.updateService(AlteningServiceType.THEALTENING);
-                    auth.setPassword("sample pass");
-                } else if (alteningAuthentication.getService() == AlteningServiceType.THEALTENING) {
-                    ssl.enableCertificateValidation();
-                    alteningAuthentication.updateService(AlteningServiceType.MOJANG);
-                }
-                auth.logIn();
-                currentLoginMethod = AltType.MOJANG;
-                return new Session(auth.getSelectedProfile().getName(), auth.getSelectedProfile().getId().toString(),
-                        auth.getAuthenticatedToken(), "mojang");
-            } catch (AuthenticationException e) {
-                e.printStackTrace();
-                return null;
-            }
         }
+        return null;
     }
 
     public String getType() {

@@ -41,12 +41,12 @@ public class CompactClickgui extends GuiScreen {
     private final ModulePanel modulePanel = new ModulePanel();
     private final List<ModuleRect> searchResults = new ArrayList<>();
     private final List<String> searchTerms = new ArrayList<>();
+    private final Color firstColor = Color.BLACK;
+    private final Color secondColor = Color.BLACK;
     public boolean typing;
     private float rectWidth = 400;
     private float rectHeight = 300;
     private HashMap<Category, ArrayList<ModuleRect>> moduleRects;
-    private final Color firstColor = Color.BLACK;
-    private final Color secondColor = Color.BLACK;
     private String searchText;
 
     @Override

@@ -2,6 +2,7 @@ package com.cubk.event.impl.player;
 
 
 import com.cubk.event.impl.CancellableEvent;
+import lombok.Getter;
 import net.minecraft.util.IChatComponent;
 
 public class ChatReceivedEvent extends CancellableEvent {
@@ -14,6 +15,7 @@ public class ChatReceivedEvent extends CancellableEvent {
      */
     public final byte type;
     public IChatComponent message;
+    @Getter
     private final String rawMessage;
 
     public ChatReceivedEvent(byte type, IChatComponent message) {
@@ -22,9 +24,5 @@ public class ChatReceivedEvent extends CancellableEvent {
         this.rawMessage = message.getUnformattedText();
     }
 
-    
-    public String getRawMessage() {
-        return rawMessage;
-    }
 
 }

@@ -15,8 +15,8 @@ import java.util.List;
 public class InfoRect implements Screen {
 
     public final List<InfoButton> faqButtons;
-    public float x, y, width, height, alpha;
     private final Scroll infoScroll = new Scroll();
+    public float x, y, width, height, alpha;
 
 
     public InfoRect() {

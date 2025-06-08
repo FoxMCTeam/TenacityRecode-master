@@ -14,15 +14,14 @@ import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author cedo
- * @since 05/12/2022
+ * @author d3Ck
+ * @since 06/08/2025
  */
 public class CustomFont implements AbstractFontRenderer {
     private static final int[] colorCode;
@@ -79,19 +78,6 @@ public class CustomFont implements AbstractFontRenderer {
         this.fontHeight = (int) Math.ceil(maxBounds.getHeight());
         this.textureWidth = this.resizeToOpenGLSupportResolution(this.fontWidth * 16);
         this.textureHeight = this.resizeToOpenGLSupportResolution(this.fontHeight * 16);
-    }
-
-    public static Font getFont(final String fontName, final float fontSize) {
-        Font font;
-        try {
-            final InputStream inputStream = CustomFont.class.getResourceAsStream("/assets/minecraft/Maple/Fonts/" + fontName);
-            assert inputStream != null;
-            font = Font.createFont(0, inputStream);
-            font = font.deriveFont(fontSize);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return font;
     }
 
     private static ByteBuffer imageToBuffer(final BufferedImage img) {
@@ -353,10 +339,9 @@ public class CustomFont implements AbstractFontRenderer {
     }
 
     private int generateCharTexture(final int id) {
-        final int textureId = GL11.glGenTextures(); // 生成一个 OpenGL 纹理 ID
-        final int offset = id << 8; // id * 256，即该区块的起始 Unicode 编码
+        final int textureId = GL11.glGenTextures();
+        final int offset = id << 8;
 
-        // 创建 BufferedImage，准备将字体绘制进去
         final BufferedImage img = new BufferedImage(this.textureWidth, this.textureHeight, BufferedImage.TYPE_INT_ARGB);
         final Graphics2D g = img.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -365,7 +350,6 @@ public class CustomFont implements AbstractFontRenderer {
         g.setFont(this.font);
         g.setColor(Color.WHITE);
 
-        // 绘制字符到图片
         FontMetrics fontMetrics = g.getFontMetrics();
         for (int i = 0; i < 256; i++) {
             char c = (char) (offset + i);
@@ -373,13 +357,11 @@ public class CustomFont implements AbstractFontRenderer {
             int y = (i >> 4) * fontHeight;
             g.drawString(String.valueOf(c), x, y + fontMetrics.getAscent());
 
-            // 记录字符宽度
             this.charWidth[id][i] = (byte) fontMetrics.charWidth(c);
         }
 
-        g.dispose(); // 释放图形上下文资源
+        g.dispose();
 
-        // 上传图像到 OpenGL 纹理
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureId);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
@@ -390,17 +372,14 @@ public class CustomFont implements AbstractFontRenderer {
         return textureId;
     }
 
-    // 获取或生成字符宽度表
     private byte[] getOrGenerateCharWidthMap(int id) {
         if (this.charWidth[id] == null) {
             this.charWidth[id] = new byte[256];
-            // 生成纹理的同时也会填充宽度表
             this.textures[id] = generateCharTexture(id);
         }
         return this.charWidth[id];
     }
 
-    // 获取或生成字符纹理
     private int getOrGenerateCharTexture(int id) {
         if (this.textures[id] == -1) {
             this.textures[id] = generateCharTexture(id);
@@ -408,12 +387,10 @@ public class CustomFont implements AbstractFontRenderer {
         return this.textures[id];
     }
 
-    // 将 OpenGL 坐标映射限制在 0~1 范围（贴图坐标系归一化）
     private float wrapTextureCoord(int value, int max) {
         return (float) value / (float) max;
     }
 
-    // 返回最近的 OpenGL 支持纹理大小（一般为2的幂）
     private int resizeToOpenGLSupportResolution(int size) {
         int result = 1;
         while (result < size) {

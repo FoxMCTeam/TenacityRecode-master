@@ -56,7 +56,7 @@ public class Client implements Utils {
     public static boolean updateGuiScale;
     public static int prevGuiScale;
     private final EventManager eventManager = new EventManager();
-    private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    public static final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final SideGUI sideGui = new SideGUI();
     private final SearchBar searchBar = new SearchBar();
     public WallpaperEngine videoRenderer;
@@ -68,28 +68,15 @@ public class Client implements Utils {
     private PingerUtils pingerUtils;
     private Locale locale = Locale.EN_US;
     public static void initClient() {
-
-        INSTANCE.setModuleManager(new ModuleManager());
+        executorService.execute(INSTANCE::intiViaMCP);
 
         INSTANCE.getModuleManager().init();
         Theme.init();
 
-        INSTANCE.setPingerUtils(new PingerUtils());
-
-        INSTANCE.setScriptManager(new ScriptManager());
-
-        CommandHandler commandHandler = new CommandHandler();
-        commandHandler.commands.addAll(Arrays.asList(
-                new FriendCommand(), new CopyNameCommand(), new BindCommand(), new UnbindCommand(),
-                new ScriptCommand(), new SettingCommand(), new HelpCommand(),
-                new VClipCommand(), new ClearBindsCommand(), new ClearConfigCommand(),
-                new ToggleCommand()
-        ));
-        INSTANCE.setCommandHandler(commandHandler);
         executorService.execute(() -> INSTANCE.getEventManager().register(new BackgroundProcess()));
         executorService.execute(() -> INSTANCE.getEventManager().register(new RotationComponent()));
         executorService.execute(() -> INSTANCE.getEventManager().register(new RenderSlotComponent()));
-        INSTANCE.setConfigManager(new ConfigManager());
+
         ConfigManager.defaultConfig = new File(Minecraft.getMinecraft().mcDataDir + "/Tenacity/Config.json");
         INSTANCE.getConfigManager().collectConfigs();
         if (ConfigManager.defaultConfig.exists()) {
@@ -104,13 +91,10 @@ public class Client implements Utils {
 
         LOGGER.info("Initializing background...");
         INSTANCE.initVideoBackground();
-        try {
-            LOGGER.info("Starting ViaMCP...");
-            ViaMCP.create();
-            ViaMCP.INSTANCE.initAsyncSlider();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+
+    }
+
+    public void updateLanguage() {
         switch (language.getMode()) {
             case "en_US" : Client.INSTANCE.setLocale(Locale.EN_US); break;
             case "ru_RU" : Client.INSTANCE.setLocale(Locale.RU_RU); break;
@@ -119,6 +103,31 @@ public class Client implements Utils {
             case "de_DE" : Client.INSTANCE.setLocale(Locale.DE_DE); break;
             case "fr_fR" : Client.INSTANCE.setLocale(Locale.FR_FR); break;
         }
+    }
+
+    public void intiViaMCP() {
+        try {
+            LOGGER.info("Starting ViaMCP...");
+            ViaMCP.create();
+            ViaMCP.INSTANCE.initAsyncSlider();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void intiVars() {
+        INSTANCE.setModuleManager(new ModuleManager());
+        INSTANCE.setPingerUtils(new PingerUtils());
+        INSTANCE.setConfigManager(new ConfigManager());
+        INSTANCE.setScriptManager(new ScriptManager());
+        CommandHandler commandHandler = new CommandHandler();
+        commandHandler.commands.addAll(Arrays.asList(
+                new FriendCommand(), new CopyNameCommand(), new BindCommand(), new UnbindCommand(),
+                new ScriptCommand(), new SettingCommand(), new HelpCommand(),
+                new VClipCommand(), new ClearBindsCommand(), new ClearConfigCommand(),
+                new ToggleCommand()
+        ));
+        INSTANCE.setCommandHandler(commandHandler);
     }
 
     public String getVersion() {

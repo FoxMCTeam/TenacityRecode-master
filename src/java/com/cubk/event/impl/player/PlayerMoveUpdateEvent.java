@@ -19,7 +19,7 @@ public class PlayerMoveUpdateEvent extends CancellableEvent {
     public void applyMotion(double speed, float strafeMotion) {
         float remainder = 1 - strafeMotion;
         EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
-        strafeMotion *= 0.91;
+        strafeMotion *= 0.91F;
         if (player.onGround) {
             MovementUtils.setSpeed(speed);
         } else {

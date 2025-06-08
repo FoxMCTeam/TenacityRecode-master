@@ -4,7 +4,6 @@ import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.network.play.client.C19PacketResourcePackStatus;
 import net.minecraft.network.play.server.S48PacketResourcePackSend;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;

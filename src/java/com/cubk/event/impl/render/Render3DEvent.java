@@ -2,7 +2,11 @@ package com.cubk.event.impl.render;
 
 
 import com.cubk.event.impl.CancellableEvent;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 public class Render3DEvent extends CancellableEvent {
 
     private float ticks;
@@ -11,13 +15,5 @@ public class Render3DEvent extends CancellableEvent {
         this.ticks = ticks;
     }
 
-    
-    public float getTicks() {
-        return ticks;
-    }
-
-    public void setTicks(float ticks) {
-        this.ticks = ticks;
-    }
 
 }

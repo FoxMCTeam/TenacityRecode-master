@@ -3,7 +3,9 @@ package com.cubk.event.impl.render;
 
 import com.cubk.event.impl.CancellableEvent;
 import dev.tenacity.module.settings.impl.MultipleBoolSetting;
+import lombok.Getter;
 
+@Getter
 public class ShaderEvent extends CancellableEvent {
 
     private final boolean bloom;
@@ -15,11 +17,5 @@ public class ShaderEvent extends CancellableEvent {
         this.bloomOptions = bloomOptions;
     }
 
-    
-    public boolean isBloom() {
-        return bloom;
-    }
-
-    public MultipleBoolSetting getBloomOptions() { return bloomOptions; }
 
 }
