@@ -14,9 +14,9 @@ public class ChatReceivedEvent extends CancellableEvent {
      * 2 : 'Status' message, displayed above action bar, where song notifications are.
      */
     public final byte type;
-    public IChatComponent message;
     @Getter
     private final String rawMessage;
+    public IChatComponent message;
 
     public ChatReceivedEvent(byte type, IChatComponent message) {
         this.type = type;

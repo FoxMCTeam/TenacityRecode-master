@@ -12,7 +12,7 @@ public class ShaderEvent extends CancellableEvent {
 
     private final MultipleBoolSetting bloomOptions;
 
-    public ShaderEvent(boolean bloom, MultipleBoolSetting bloomOptions){
+    public ShaderEvent(boolean bloom, MultipleBoolSetting bloomOptions) {
         this.bloom = bloom;
         this.bloomOptions = bloomOptions;
     }

@@ -18,7 +18,6 @@ import dev.tenacity.utils.client.ReleaseType;
 import dev.tenacity.utils.client.addons.api.ScriptManager;
 import dev.tenacity.utils.client.addons.rise.component.RenderSlotComponent;
 import dev.tenacity.utils.client.addons.rise.component.RotationComponent;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.viamcp.ViaMCP;
 import dev.tenacity.utils.objects.Dragging;
 import dev.tenacity.utils.objects.HTTPUtil;

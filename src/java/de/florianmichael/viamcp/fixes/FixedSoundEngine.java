@@ -18,7 +18,6 @@
 
 package de.florianmichael.viamcp.fixes;
 
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.viamcp.ViaMCP;
 import net.minecraft.block.Block;
@@ -48,14 +47,10 @@ public class FixedSoundEngine {
         // This should also function correctly on 1.8.x protocol, so no need for base version checks
         world.playAuxSFX(2001, pos, Block.getStateId(iblockstate));
 
-        if (block.getMaterial() == Material.air)
-        {
+        if (block.getMaterial() == Material.air) {
             return false;
-        }
-        else
-        {
-            if (dropBlock)
-            {
+        } else {
+            if (dropBlock) {
                 block.dropBlockAsItem(world, pos, iblockstate, 0);
             }
 
@@ -66,56 +61,42 @@ public class FixedSoundEngine {
     /**
      * Fix for block placing sounds on protocols above 1.8.x
      */
-    public static boolean onItemUse(ItemBlock iblock, ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
-    {
+    public static boolean onItemUse(ItemBlock iblock, ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
         IBlockState iblockstate = worldIn.getBlockState(pos);
         Block block = iblockstate.getBlock();
 
-        if (!block.isReplaceable(worldIn, pos))
-        {
+        if (!block.isReplaceable(worldIn, pos)) {
             pos = pos.offset(side);
         }
 
-        if (stack.stackSize == 0)
-        {
+        if (stack.stackSize == 0) {
             return false;
-        }
-        else if (!playerIn.canPlayerEdit(pos, side, stack))
-        {
+        } else if (!playerIn.canPlayerEdit(pos, side, stack)) {
             return false;
-        }
-        else if (worldIn.canBlockBePlaced(iblock.getBlock(), pos, false, side, (Entity)null, stack))
-        {
+        } else if (worldIn.canBlockBePlaced(iblock.getBlock(), pos, false, side, null, stack)) {
             int i = iblock.getMetadata(stack.getMetadata());
             IBlockState iblockstate1 = iblock.getBlock().onBlockPlaced(worldIn, pos, side, hitX, hitY, hitZ, i, playerIn);
 
-            if (worldIn.setBlockState(pos, iblockstate1, 3))
-            {
+            if (worldIn.setBlockState(pos, iblockstate1, 3)) {
                 iblockstate1 = worldIn.getBlockState(pos);
 
-                if (iblockstate1.getBlock() == iblock.getBlock())
-                {
+                if (iblockstate1.getBlock() == iblock.getBlock()) {
                     ItemBlock.setTileEntityNBT(worldIn, playerIn, pos, stack);
                     iblock.getBlock().onBlockPlacedBy(worldIn, pos, iblockstate1, playerIn, stack);
                 }
 
-                if (ViaLoadingBase.getInstance().getTargetVersion().getOriginalVersion() != ViaMCP.NATIVE_VERSION)
-                {
+                if (ViaLoadingBase.getInstance().getTargetVersion().getOriginalVersion() != ViaMCP.NATIVE_VERSION) {
                     // Using playSoundAtPos instead of playSoundEffect (I have no understanding as to why playSoundEffect is not functioning properly on 1.9+ protocols)
                     mc.theWorld.playSoundAtPos(pos.add(0.5, 0.5, 0.5), iblock.getBlock().stepSound.getPlaceSound(), (iblock.getBlock().stepSound.getVolume() + 1.0F) / 2.0F, iblock.getBlock().stepSound.getFrequency() * 0.8F, false);
-                }
-                else
-                {
-                    worldIn.playSoundEffect((double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F), iblock.getBlock().stepSound.getPlaceSound(), (iblock.getBlock().stepSound.getVolume() + 1.0F) / 2.0F, iblock.getBlock().stepSound.getFrequency() * 0.8F);
+                } else {
+                    worldIn.playSoundEffect((float) pos.getX() + 0.5F, (float) pos.getY() + 0.5F, (float) pos.getZ() + 0.5F, iblock.getBlock().stepSound.getPlaceSound(), (iblock.getBlock().stepSound.getVolume() + 1.0F) / 2.0F, iblock.getBlock().stepSound.getFrequency() * 0.8F);
                 }
 
                 --stack.stackSize;
             }
 
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }

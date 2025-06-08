@@ -23,7 +23,7 @@ public class RenderModelEvent extends CancellableEvent.StateEvent {
         this.modelRenderer.run();
     }
 
-    
+
     public void drawLayers() {
         this.layerRenderer.run();
     }

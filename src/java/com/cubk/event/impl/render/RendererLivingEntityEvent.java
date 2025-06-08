@@ -17,5 +17,5 @@ public class RendererLivingEntityEvent extends CancellableEvent.StateEvent {
     private final EntityLivingBase entity;
     private final RendererLivingEntity<?> renderer;
     private final float partialTicks;
-    private final double x,y,z;
+    private final double x, y, z;
 }

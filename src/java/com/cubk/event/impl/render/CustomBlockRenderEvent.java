@@ -20,7 +20,7 @@ public class CustomBlockRenderEvent extends CancellableEvent {
         this.transformFirstPersonItem.accept(equipProgress, swingProgress);
     }
 
-    
+
     public void doBlockTransformations() {
         this.doBlockTransformations.run();
     }

@@ -8,6 +8,8 @@ import lombok.Getter;
 public class ClickEvent extends CancellableEvent {
     final boolean fake;
 
-    public ClickEvent(boolean fake) { this.fake = fake; }
+    public ClickEvent(boolean fake) {
+        this.fake = fake;
+    }
 
 }

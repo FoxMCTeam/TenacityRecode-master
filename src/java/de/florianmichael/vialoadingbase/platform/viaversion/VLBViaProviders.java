@@ -33,7 +33,8 @@ public class VLBViaProviders implements ViaPlatformLoader {
         final ViaProviders providers = Via.getManager().getProviders();
         providers.use(VersionProvider.class, new VLBBaseVersionProvider());
 
-        if (ViaLoadingBase.getInstance().getProviders() != null) ViaLoadingBase.getInstance().getProviders().accept(providers);
+        if (ViaLoadingBase.getInstance().getProviders() != null)
+            ViaLoadingBase.getInstance().getProviders().accept(providers);
     }
 
     @Override

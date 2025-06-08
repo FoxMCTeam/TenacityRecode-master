@@ -12,8 +12,12 @@ public interface Event {
     class StateEvent extends CancellableEvent {
         private boolean pre = true;
 
-        public boolean isPost() { return !pre;}
+        public boolean isPost() {
+            return !pre;
+        }
 
-        public void setPost() { pre = false; }
+        public void setPost() {
+            pre = false;
+        }
     }
 }

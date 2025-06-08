@@ -255,15 +255,16 @@ public class CustomFont implements AbstractFontRenderer {
     }
 
     public final int drawString(String str, float x, float y, int color, final boolean darken) {
-        str = str.replace("▬", "=");
+        str = str.replace("▬", "="); // 字符替换（兼容处理）
         y -= 2.0f;
         x *= 2.0f;
         y *= 2.0f;
-        y -= 0.0f;
+
         int offset = 0;
         if (darken) {
-            color = ((color & 0xFCFCFC) >> 2 | (color & 0xFF000000));
+            color = ((color & 0xFCFCFC) >> 2 | (color & 0xFF000000)); // 调暗颜色
         }
+
         float r = (color >> 16 & 0xFF) / 255.0f;
         float g = (color >> 8 & 0xFF) / 255.0f;
         float b = (color & 0xFF) / 255.0f;
@@ -271,32 +272,43 @@ public class CustomFont implements AbstractFontRenderer {
         if (a == 0.0f) {
             a = 1.0f;
         }
+
         GlStateManager.color(r, g, b, a);
         GL11.glPushMatrix();
         GL11.glScaled(0.5, 0.5, 0.5);
-        final char[] chars = str.toCharArray();
+
+        char[] chars = str.toCharArray();
         for (int i = 0; i < chars.length; ++i) {
-            final char chr = chars[i];
-            if (chr == '§' && i != chars.length - 1) {
-                ++i;
-                color = "0123456789abcdef".indexOf(chars[i]);
-                if (color != -1) {
-                    if (darken) {
-                        color |= 0x10;
-                    }
-                    color = CustomFont.colorCode[color];
+            char chr = chars[i];
+
+            if (chr == '§' && i + 1 < chars.length) {
+                int code = "0123456789abcdefklmnor".indexOf(Character.toLowerCase(chars[i + 1]));
+                if (code < 16) {
+                    // 设置颜色码
+                    int col = colorCode[code];
+                    r = (col >> 16 & 0xFF) / 255.0f;
+                    g = (col >> 8 & 0xFF) / 255.0f;
+                    b = (col & 0xFF) / 255.0f;
+                    GlStateManager.color(r, g, b, a);
+                } else if (code == 21) {
+                    // §r 重置颜色
                     r = (color >> 16 & 0xFF) / 255.0f;
                     g = (color >> 8 & 0xFF) / 255.0f;
                     b = (color & 0xFF) / 255.0f;
                     GlStateManager.color(r, g, b, a);
                 }
-            } else {
-                offset += this.drawChar(chr, x + offset, y);
+                i++; // 跳过颜色码字符
+                continue;
             }
+
+            offset += drawChar(chr, x + offset, y);
         }
+
         GL11.glPopMatrix();
-        return offset;
+        GlStateManager.resetColor();
+        return offset / 2;
     }
+
 
     public void drawStringDynamic(String text, double x2, double y2, int tick1, int tick2) {
         GradientUtil.applyGradientHorizontal((float) x2, (float) y2, this.getStringWidth(text), this.fontHeight, 1.0f, HUDMod.color(tick1), HUDMod.color(tick2), () -> {
