@@ -63,19 +63,19 @@ public class MicrosoftLogin {
         URI authLink = getMSAuthLink(state);
 
         NotificationManager.post(NotificationType.INFO, "Microsoft Auth",
-                "Opening browser for authentication...", 5);
+                "Opening browser for authentication...", 2);
         SystemUtils.setClipboard(authLink != null ? authLink.toString() : "");
         SystemUtils.openWebLink(authLink);
         CompletableFuture<String> authCodeFuture = acquireMSAuthCode(state);
 
         authCodeFuture.thenCompose(authCode -> {
                     NotificationManager.post(NotificationType.INFO, "Microsoft Auth",
-                            "Authenticating with Microsoft...", 5);
+                            "Authenticating with Microsoft...", 3);
                     return acquireMSAccessTokens(authCode);
                 })
                 .thenCompose(tokens -> {
                     NotificationManager.post(NotificationType.INFO, "Microsoft Auth",
-                            "Authenticating with Xbox Live...", 5);
+                            "Authenticating with Xbox Live...", 2);
                     return acquireXboxAccessToken(tokens.get("access_token"));
                 })
                 .thenCompose(xboxToken -> {
@@ -85,12 +85,12 @@ public class MicrosoftLogin {
                 })
                 .thenCompose(xstsData -> {
                     NotificationManager.post(NotificationType.INFO, "Microsoft Auth",
-                            "Authenticating with Minecraft...", 5);
+                            "Authenticating with Minecraft...", 3);
                     return acquireMCAccessToken(xstsData.get("Token"), xstsData.get("uhs"));
                 })
                 .thenCompose(mcToken -> {
                     NotificationManager.post(NotificationType.INFO, "Microsoft Auth",
-                            "Fetching Minecraft profile...", 5);
+                            "Fetching Minecraft profile...", 2);
                     return login(mcToken);
                 })
                 .thenAccept(session -> {
@@ -104,7 +104,7 @@ public class MicrosoftLogin {
                 })
                 .exceptionally(e -> {
                     NotificationManager.post(NotificationType.WARNING, "Microsoft Auth",
-                            "Login failed: " + e.getCause().getMessage(), 5);
+                            "Login failed: " + e.getCause().getMessage(), 8);
                     return null;
                 });
     }

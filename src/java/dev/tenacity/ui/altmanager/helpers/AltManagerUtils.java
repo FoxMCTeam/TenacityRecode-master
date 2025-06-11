@@ -110,7 +110,6 @@ public class AltManagerUtils implements Utils {
 
 
     public void microsoftLoginAsync(Alt alt, String email, String password) {
-        NotificationManager.post(NotificationType.INFO, "Alt Manager", "Opening browser to complete Microsoft authentication...", 12);
         if (alt == null) {
             alt = new Alt(email, password);
         }
@@ -122,9 +121,7 @@ public class AltManagerUtils implements Utils {
                     CompletableFuture<Session> login = MicrosoftLogin.login(refreshToken.mcToken);
                     try {
                         future.complete(login.get());
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    } catch (ExecutionException e) {
+                    } catch (InterruptedException | ExecutionException e) {
                         throw new RuntimeException(e);
                     }
                 }

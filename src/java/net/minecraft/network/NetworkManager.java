@@ -275,7 +275,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
      * Closes the channel, the parameter can be used for an exit message (not certain how it gets sent)
      */
     public void closeChannel(IChatComponent message) {
-        if (this.channel.isOpen()) {
+        if (this.channel.isOpen()) {//sb
             this.channel.close().awaitUninterruptibly();
             this.terminationReason = message;
         }
