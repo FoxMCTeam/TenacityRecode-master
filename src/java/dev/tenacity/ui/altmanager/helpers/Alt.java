@@ -20,6 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class Alt {
 
@@ -97,14 +98,41 @@ public class Alt {
 
     public void loginAsync(boolean microsoft) {
         new Thread(() -> {
-            login(microsoft);
-            new Thread(() -> {
-                try {
-                    Files.write(AltManagerUtils.altsFile.toPath(), new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create().toJson(AltManagerUtils.getAlts().toArray(new Alt[0])).getBytes(StandardCharsets.UTF_8));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }).start();
+            if (microsoft) {
+                MicrosoftLogin.getRefreshToken(loginData -> {
+                    if (loginData != null) {
+                        mc.session = new Session(loginData.username, loginData.uuid, loginData.mcToken, "microsoft");
+                        this.username = loginData.username;
+                        this.uuid = loginData.uuid;
+                        this.altType = AltType.MICROSOFT;
+                        this.altState = AltState.LOGIN_SUCCESS;
+                        stage = 2;
+                        Client.INSTANCE.getAltManager().currentSessionAlt = this;
+                    } else {
+                        stage = 1;
+                        altState = AltState.LOGIN_FAIL;
+                    }
+                    saveAltsAsync();
+                });
+            } else {
+                login(false);
+                saveAltsAsync();
+            }
+        }).start();
+    }
+
+    private void saveAltsAsync() {
+        new Thread(() -> {
+            try {
+                Files.write(AltManagerUtils.altsFile.toPath(),
+                        new GsonBuilder().setPrettyPrinting()
+                                .excludeFieldsWithoutExposeAnnotation()
+                                .create()
+                                .toJson(AltManagerUtils.getAlts())
+                                .getBytes(StandardCharsets.UTF_8));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }).start();
     }
 
@@ -115,9 +143,13 @@ public class Alt {
             MicrosoftLogin.getRefreshToken(refreshToken -> {
                 if (refreshToken != null) {
                     System.out.println("Refresh token: " + refreshToken);
-                    MicrosoftLogin.LoginData login = MicrosoftLogin.login(refreshToken);
+                    CompletableFuture<Session> login = MicrosoftLogin.login(refreshToken.mcToken);
                     currentLoginMethod = AltType.MICROSOFT;
-                    future.complete(new Session(login.username, login.uuid, login.mcToken, "microsoft"));
+                    try {
+                        future.complete(login.get());
+                    } catch (InterruptedException | ExecutionException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             });
             return future.join();

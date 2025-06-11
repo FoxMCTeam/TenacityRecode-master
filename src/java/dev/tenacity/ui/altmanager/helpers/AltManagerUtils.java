@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class AltManagerUtils implements Utils {
 
@@ -118,8 +119,14 @@ public class AltManagerUtils implements Utils {
             CompletableFuture<Session> future = new CompletableFuture<>();
             MicrosoftLogin.getRefreshToken(refreshToken -> {
                 if (refreshToken != null) {
-                    MicrosoftLogin.LoginData login = MicrosoftLogin.login(refreshToken);
-                    future.complete(new Session(login.username, login.uuid, login.mcToken, "microsoft"));
+                    CompletableFuture<Session> login = MicrosoftLogin.login(refreshToken.mcToken);
+                    try {
+                        future.complete(login.get());
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    } catch (ExecutionException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             });
             Session auth = future.join();
