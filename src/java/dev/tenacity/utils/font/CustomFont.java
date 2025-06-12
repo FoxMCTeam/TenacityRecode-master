@@ -1,5 +1,6 @@
 package dev.tenacity.utils.font;
 
+import dev.tenacity.Client;
 import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.utils.render.GradientUtil;
 import dev.tenacity.utils.render.RenderUtil;
@@ -24,10 +25,9 @@ import java.util.List;
  * @since 06/08/2025
  */
 public class CustomFont implements AbstractFontRenderer {
-    private static final int[] colorCode;
+    private static final int[] colorCode = new int[32];
 
     static {
-        colorCode = new int[32];
         for (int i = 0; i < 32; ++i) {
             final int base = (i >> 3 & 0x1) * 85;
             int r = (i >> 2 & 0x1) * 170 + base;
@@ -62,8 +62,8 @@ public class CustomFont implements AbstractFontRenderer {
     private int textureHeight;
 
     public CustomFont(final Font font) {
-        this.charWidth = new byte[256][];
-        this.textures = new int[256];
+        this.charWidth = new byte[65536 / 256][]; // 支持 0-65535
+        this.textures = new int[65536 / 256];
         FontRenderContext context = new FontRenderContext(new AffineTransform(), true, true);
         this.size = 0.0f;
         this.fontWidth = 0;
@@ -419,6 +419,20 @@ public class CustomFont implements AbstractFontRenderer {
             result *= 2;
         }
         return result;
+    }
+
+    public void drawStringWithOutline(String text, float x, float y, int color, int outlineColor) {
+        drawString(text, x-1, y, outlineColor); // 左
+        drawString(text, x+1, y, outlineColor); // 右
+        drawString(text, x, y-1, outlineColor); // 上
+        drawString(text, x, y+1, outlineColor); // 下
+        drawString(text, x, y, color); // 中心
+    }
+
+    public void destroy() {
+        for (int texture : textures) {
+            if (texture != -1) GL11.glDeleteTextures(texture);
+        }
     }
 
     @Override
