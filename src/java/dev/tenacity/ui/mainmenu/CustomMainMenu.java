@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomMainMenu extends GuiScreen {
-
-    public static boolean animatedOpen = false;
     private static boolean firstInit = false;
     private final List<MenuButton> buttons = new ArrayList<>() {{
         add(new MenuButton("mainmenu.Singleplayer"));

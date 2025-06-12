@@ -254,48 +254,58 @@ public class CustomFont implements AbstractFontRenderer {
         return this.drawString(str, x, y, color, false);
     }
 
+
     public final int drawString(String str, float x, float y, int color, final boolean darken) {
-        str = str.replace("▬", "="); // 字符替换（兼容处理）
+        if (str == null) {
+            return 0;
+        }
+
+        str = str.replace("▬", "="); // Character replacement (compatibility handling)
         y -= 2.0f;
         x *= 2.0f;
         y *= 2.0f;
 
         int offset = 0;
+
         if (darken) {
-            color = ((color & 0xFCFCFC) >> 2 | (color & 0xFF000000)); // 调暗颜色
+            color = ((color & 0xFCFCFC) >> 2) | (color & 0xFF000000); // Darken color
         }
 
-        float r = (color >> 16 & 0xFF) / 255.0f;
-        float g = (color >> 8 & 0xFF) / 255.0f;
-        float b = (color & 0xFF) / 255.0f;
-        float a = (color >> 24 & 0xFF) / 255.0f;
-        if (a == 0.0f) {
-            a = 1.0f;
-        }
-
-        GlStateManager.color(r, g, b, a);
+        RenderUtil.resetColor();
+        RenderUtil.color(color);
         GL11.glPushMatrix();
         GL11.glScaled(0.5, 0.5, 0.5);
 
         char[] chars = str.toCharArray();
         for (int i = 0; i < chars.length; ++i) {
             char chr = chars[i];
-
             if (chr == '§' && i + 1 < chars.length) {
                 int code = "0123456789abcdefklmnor".indexOf(Character.toLowerCase(chars[i + 1]));
+                float r;
+                float g;
+                float b;
+                float a = (color >> 24 & 0xFF) / 255.0f;
+
+                if (a == 0.0f) {
+                    a = 1.0f;
+                }
+
                 if (code < 16) {
                     // 设置颜色码
                     int col = colorCode[code];
                     r = (col >> 16 & 0xFF) / 255.0f;
                     g = (col >> 8 & 0xFF) / 255.0f;
                     b = (col & 0xFF) / 255.0f;
-                    GlStateManager.color(r, g, b, a);
+
+                    RenderUtil.resetColor();
+                    RenderUtil.color(new Color(r, g, b, a).getRGB());
                 } else if (code == 21) {
                     // §r 重置颜色
                     r = (color >> 16 & 0xFF) / 255.0f;
                     g = (color >> 8 & 0xFF) / 255.0f;
                     b = (color & 0xFF) / 255.0f;
-                    GlStateManager.color(r, g, b, a);
+                    RenderUtil.resetColor();
+                    RenderUtil.color(new Color(r, g, b, a).getRGB());
                 }
                 i++; // 跳过颜色码字符
                 continue;
@@ -305,7 +315,7 @@ public class CustomFont implements AbstractFontRenderer {
         }
 
         GL11.glPopMatrix();
-        GlStateManager.resetColor();
+        RenderUtil.resetColor();
         return offset / 2;
     }
 
@@ -413,15 +423,17 @@ public class CustomFont implements AbstractFontRenderer {
 
     @Override
     public final int drawStringWithShadow(final String name, final float i, final float i1, final int rgb) {
-        this.drawString(name, i + 0.5f, i1 + 0.5f, rgb, true);
-        drawString(name, i, i1, rgb, false);
-        return (int) getStringWidth(name) + 1;
+        int shadowColor = (rgb & 0xFCFCFC) >> 2 | (rgb & 0xFF000000); // Darken for shadow
+        this.drawString(name, i + 0.5f, i1 + 0.5f, shadowColor, false);
+        return drawString(name, i, i1, rgb, false);
     }
 
     @Override
     public void drawStringWithShadow(String name, float x, float y, Color color) {
-        this.drawString(name, x + 0.5f, y + 0.5f, color.getRGB(), true);
-        drawString(name, x, y, color.getRGB(), false);
+        int rgb = color.getRGB();
+        int shadowColor = (rgb & 0xFCFCFC) >> 2 | (rgb & 0xFF000000); // Darken for shadow
+        this.drawString(name, x + 0.5f, y + 0.5f, shadowColor, false);
+        drawString(name, x, y, rgb, false);
     }
 
     public void drawStringWithShadow(final String z, final double x, final double positionY, final int mainTextColor) {
