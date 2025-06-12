@@ -14,6 +14,10 @@ public class RoundedUtil {
     public static ShaderUtil roundedShader = new ShaderUtil("roundedRect");
     public static ShaderUtil roundedOutlineShader = new ShaderUtil("roundRectOutline");
 
+    public static void drawRound(float x, float y, float width, float height, float radius, int color) {
+        drawRound(x, y, width, height, radius, false, new Color(color));
+    }
+
     public static void drawRound(float x, float y, float width, float height, float radius, Color color) {
         drawRound(x, y, width, height, radius, false, color);
     }

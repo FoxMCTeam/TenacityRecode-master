@@ -10,6 +10,7 @@ import dev.tenacity.module.settings.impl.MultipleBoolSetting;
 import dev.tenacity.module.settings.impl.NumberSetting;
 import dev.tenacity.ui.clickguis.modern.ModernClickGui;
 import dev.tenacity.utils.render.RenderUtil;
+import dev.tenacity.utils.render.blur.GaussianBlur;
 import dev.tenacity.utils.render.blur.KawaseBloom;
 import dev.tenacity.utils.render.blur.KawaseBlur;
 import net.minecraft.client.gui.Gui;
@@ -37,7 +38,7 @@ public class PostProcessing extends Module {
     private final BooleanSetting bloom = new BooleanSetting("Bloom", true);
     private final NumberSetting shadowRadius = new NumberSetting("Bloom Iterations", 3, 8, 1, 1);
     private final NumberSetting shadowOffset = new NumberSetting("Bloom Offset", 1, 10, 1, 1);
-    private Framebuffer stencilFramebuffer = new Framebuffer(1, 1, false);
+    private static Framebuffer stencilFramebuffer = new Framebuffer(1, 1, false);
 
     public PostProcessing() {
         super("module.display.postProcessing", Category.DISPLAY, "blurs shit");
@@ -45,6 +46,23 @@ public class PostProcessing extends Module {
         shadowOffset.addParent(bloom, ParentAttribute.BOOLEAN_CONDITION);
         glowOptions.addParent(bloom, ParentAttribute.BOOLEAN_CONDITION);
         addSettings(blur, iterations, offset, bloom, glowOptions, shadowRadius, shadowOffset);
+    }
+
+    public static void runBloom(Runnable runnable, boolean blur, boolean bloom, int bloomRadius) {
+        if (blur) {
+            GaussianBlur.startBlur();
+            runnable.run();
+            GaussianBlur.endBlur(20, 2);
+        }
+
+        if (bloom) {
+            stencilFramebuffer = RenderUtil.createFrameBuffer(stencilFramebuffer);
+            stencilFramebuffer.framebufferClear();
+            stencilFramebuffer.bindFramebuffer(false);
+            runnable.run();
+            stencilFramebuffer.unbindFramebuffer();
+            KawaseBloom.renderBlur(stencilFramebuffer.framebufferTexture, bloomRadius, 1);
+        }
     }
 
     public void stuffToBlur(boolean bloom) {

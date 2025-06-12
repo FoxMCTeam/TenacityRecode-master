@@ -67,6 +67,107 @@ public class RenderUtil implements Utils {
         GlStateManager.shadeModel(7424);
     }
 
+    /**
+     * 渲染一个带淡出透明度的圆形 Ripple 效果（通常用于点击动画）
+     */
+    public static void renderRipple(boolean state, float x, float y, float w, float h, float radius, int color) {
+        if (!state) return;
+
+        // 提取颜色通道
+        float alpha = (color >> 24 & 0xFF) / 255.0F;
+        float red   = (color >> 16 & 0xFF) / 255.0F;
+        float green = (color >> 8  & 0xFF) / 255.0F;
+        float blue  = (color       & 0xFF) / 255.0F;
+
+        // 计算中心点
+        float centerX = x + w / 2.0f;
+        float centerY = y + h / 2.0f;
+
+        GL11.glPushMatrix();
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_LINE_SMOOTH);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+        // 渐变透明外圈
+        GL11.glColor4f(red, green, blue, alpha * 0.4f); // 外圈弱透明度
+        drawCircle(centerX, centerY, radius, 64);
+
+        GL11.glDisable(GL11.GL_LINE_SMOOTH);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glPopMatrix();
+    }
+
+    /**
+     * 渲染 Ripple 波纹，从点击位置扩散，且使用 glScissor 限制绘制区域
+     * @param state    是否渲染
+     * @param x        按钮左上角X
+     * @param y        按钮左上角Y
+     * @param w        按钮宽度
+     * @param h        按钮高度
+     * @param clickX   点击相对按钮左上角X
+     * @param clickY   点击相对按钮左上角Y
+     * @param radius   ripple 当前半径
+     * @param color    ripple 颜色（含透明度）
+     */
+    public static void renderRipple(
+            boolean state,
+            float x, float y, float w, float h,
+            float clickX, float clickY,
+            float radius, int color) {
+
+        if (!state) return;
+
+        // 开启裁剪区域，注意Minecraft窗口左下角为(0,0)
+        // 所以需要将y坐标转换为 OpenGL 坐标系：窗口高度 - y - h
+        int windowHeight = mc.displayHeight;
+        GL11.glEnable(GL11.GL_SCISSOR_TEST);
+        GL11.glScissor(
+                (int) x,
+                windowHeight - (int) y - (int) h,
+                (int) w,
+                (int) h
+        );
+
+        // 颜色分解
+        float alpha = (color >> 24 & 0xFF) / 255.0F;
+        float red   = (color >> 16 & 0xFF) / 255.0F;
+        float green = (color >> 8  & 0xFF) / 255.0F;
+        float blue  = (color       & 0xFF) / 255.0F;
+
+        float cx = x + clickX;
+        float cy = y + clickY;
+
+        GL11.glPushMatrix();
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_LINE_SMOOTH);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+        GL11.glColor4f(red, green, blue, alpha);
+        drawCircle(cx, cy, radius, 64);
+
+        GL11.glDisable(GL11.GL_LINE_SMOOTH);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glPopMatrix();
+
+        GL11.glDisable(GL11.GL_SCISSOR_TEST);
+    }
+
+    public static void drawCircle(float cx, float cy, float r, int segments) {
+        GL11.glBegin(GL11.GL_TRIANGLE_FAN);
+        GL11.glVertex2f(cx, cy);
+        for (int i = 0; i <= segments; i++) {
+            double angle = 2 * Math.PI * i / segments;
+            float dx = (float) (Math.cos(angle) * r);
+            float dy = (float) (Math.sin(angle) * r);
+            GL11.glVertex2f(cx + dx, cy + dy);
+        }
+        GL11.glEnd();
+    }
+
     private static void drawESPImage(ResourceLocation resource, double x, double y, double x2, double y2, Color c, Color c2, Color c3, Color c4, float alpha) {
         mc.getTextureManager().bindTexture(resource);
         Tessellator tessellator = Tessellator.getInstance();
