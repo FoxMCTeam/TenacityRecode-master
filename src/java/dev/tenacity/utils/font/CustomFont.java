@@ -256,7 +256,7 @@ public class CustomFont implements AbstractFontRenderer {
 
 
     public final int drawString(String str, float x, float y, int color, final boolean darken) {
-        if (str == null) {
+        if (str == null || str.isEmpty()) {
             return 0;
         }
 
@@ -270,45 +270,33 @@ public class CustomFont implements AbstractFontRenderer {
         if (darken) {
             color = ((color & 0xFCFCFC) >> 2) | (color & 0xFF000000); // Darken color
         }
-
-        RenderUtil.resetColor();
-        RenderUtil.color(color);
         GL11.glPushMatrix();
         GL11.glScaled(0.5, 0.5, 0.5);
-
+        int currentColor = color;
+        RenderUtil.resetColor();
+        RenderUtil.color(currentColor);
         char[] chars = str.toCharArray();
         for (int i = 0; i < chars.length; ++i) {
             char chr = chars[i];
             if (chr == '§' && i + 1 < chars.length) {
-                int code = "0123456789abcdefklmnor".indexOf(Character.toLowerCase(chars[i + 1]));
-                float r;
-                float g;
-                float b;
-                float a = (color >> 24 & 0xFF) / 255.0f;
-
-                if (a == 0.0f) {
-                    a = 1.0f;
+                char codeChar = Character.toLowerCase(chars[i + 1]);
+                int codeIndex = "0123456789abcdefklmnor".indexOf(codeChar);
+                if (codeIndex >= 0) {
+                    if (codeIndex < 16) {
+                        int newColor = colorCode[codeIndex];
+                        float alpha = (currentColor >> 24 & 0xFF) / 255.0f;
+                        if (alpha == 0.0f) alpha = 1.0f;
+                        currentColor = (newColor & 0x00FFFFFF) | ((int)(alpha * 255) << 24);
+                        RenderUtil.resetColor();
+                        RenderUtil.color(currentColor);
+                    } else if (codeChar == 'r') {
+                        currentColor = color;
+                        RenderUtil.resetColor();
+                        RenderUtil.color(currentColor);
+                    }
+                    i++;
+                    continue;
                 }
-
-                if (code < 16) {
-                    // 设置颜色码
-                    int col = colorCode[code];
-                    r = (col >> 16 & 0xFF) / 255.0f;
-                    g = (col >> 8 & 0xFF) / 255.0f;
-                    b = (col & 0xFF) / 255.0f;
-
-                    RenderUtil.resetColor();
-                    RenderUtil.color(new Color(r, g, b, a).getRGB());
-                } else if (code == 21) {
-                    // §r 重置颜色
-                    r = (color >> 16 & 0xFF) / 255.0f;
-                    g = (color >> 8 & 0xFF) / 255.0f;
-                    b = (color & 0xFF) / 255.0f;
-                    RenderUtil.resetColor();
-                    RenderUtil.color(new Color(r, g, b, a).getRGB());
-                }
-                i++; // 跳过颜色码字符
-                continue;
             }
 
             offset += drawChar(chr, x + offset, y);
