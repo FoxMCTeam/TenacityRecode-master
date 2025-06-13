@@ -106,4 +106,20 @@ This project uses a Custom Non-Commercial License v1.2, prohibiting any commerci
 
 Please see the `LICENSE` file in the root directory for details.
 
+
+### 📘 Additional Enforcement Terms
+
+- ❗Forking, cloning, or redistributing this repository without **keeping it open-source** is strictly prohibited.  
+  Any redistributed or derived version must remain **fully open-source and publicly accessible**.
+
+- ❗Commercial use in any form (e.g. sale, monetization, ads, use in paid services) is strictly forbidden.
+
+- ❗Removal or modification of this LICENSE, README, or developer attribution is prohibited and constitutes a violation.
+
+- 🔁 If you **redistribute or publish** any version of this project (even modified), you must:
+  - Keep the entire source code public and accessible;
+  - Clearly state it's a modified version;
+  - Include this LICENSE and the link to the original repository;
+  - Fully comply with all the terms in this license.
+
 🎉 Thanks to all open source projects for their support.
