@@ -85,4 +85,18 @@ public class ExampleEvent extends CancellableEvent {
 ExampleEvent event = new ExampleEvent();
 Client.INSTANCE.getEventManager().call(event);
 ```
+
+## 📜 许可证说明 / License Notice
+
+本项目采用自定义非商业许可证（Custom Non-Commercial License v1.2），禁止任何商业使用，包括但不限于销售、转售、授权或将本项目及其衍生作品用于任何形式的盈利活动。  
+
+- 允许无限制的个人和非商业用途使用、复制、修改和分发。  
+- 任何重新分发（包括发布衍生作品）必须事先获得开发者或仓库所有者书面许可。  
+- 重新分发时必须提供完整源代码，并且修改必须遵守同样的许可证条款。  
+- 保留原作者署名，禁止移除或篡改版权信息。  
+- 违反规定者须支付违约金人民币50元，并被剥夺本仓库使用权。  
+- 本软件按“现状”提供，不承担因使用本软件导致的任何损失责任。  
+
+详情请参见仓库根目录下的 `LICENSE` 文件。
+
 🎉 感谢所有开源项目的支持。
