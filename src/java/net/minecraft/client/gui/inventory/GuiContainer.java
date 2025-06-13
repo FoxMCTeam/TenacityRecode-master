@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import dev.tenacity.module.impl.movement.InventoryMove;
 import dev.tenacity.module.impl.player.ChestStealer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -27,47 +28,40 @@ public abstract class GuiContainer extends GuiScreen {
      * The location of the inventory background texture
      */
     protected static final ResourceLocation inventoryBackground = new ResourceLocation("textures/gui/container/inventory.png");
-
-    /**
-     * The X size of the inventory window in pixels.
-     */
-    protected int xSize = 176;
-
-    /**
-     * The Y size of the inventory window in pixels.
-     */
-    protected int ySize = 166;
-
+    protected final Set<Slot> dragSplittingSlots = Sets.newHashSet();
     /**
      * A list of the players inventory slots
      */
     public Container inventorySlots;
-
+    /**
+     * The X size of the inventory window in pixels.
+     */
+    protected int xSize = 176;
+    /**
+     * The Y size of the inventory window in pixels.
+     */
+    protected int ySize = 166;
     /**
      * Starting X position for the Gui. Inconsistent use for Gui backgrounds.
      */
     protected int guiLeft;
-
     /**
      * Starting Y position for the Gui. Inconsistent use for Gui backgrounds.
      */
     protected int guiTop;
-
+    protected boolean dragSplitting;
     /**
      * holds the slot currently hovered
      */
     private Slot theSlot;
-
     /**
      * Used when touchscreen is enabled.
      */
     private Slot clickedSlot;
-
     /**
      * Used when touchscreen is enabled.
      */
     private boolean isRightMouseClick;
-
     /**
      * Used when touchscreen is enabled
      */
@@ -76,15 +70,12 @@ public abstract class GuiContainer extends GuiScreen {
     private int touchUpY;
     private Slot returningStackDestSlot;
     private long returningStackTime;
-
     /**
      * Used when touchscreen is enabled
      */
     private ItemStack returningStack;
     private Slot currentDragTargetSlot;
     private long dragItemDropDelay;
-    protected final Set<Slot> dragSplittingSlots = Sets.<Slot>newHashSet();
-    protected boolean dragSplitting;
     private int dragSplittingLimit;
     private int dragSplittingButton;
     private boolean ignoreMouseUp;
@@ -145,11 +136,11 @@ public abstract class GuiContainer extends GuiScreen {
         this.theSlot = null;
         int k = 240;
         int l = 240;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) k / 1.0F, (float) l / 1.0F);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) k, (float) l);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
         for (int i1 = 0; i1 < this.inventorySlots.inventorySlots.size(); ++i1) {
-            Slot slot = (Slot) this.inventorySlots.inventorySlots.get(i1);
+            Slot slot = this.inventorySlots.inventorySlots.get(i1);
             this.drawSlot(slot);
 
             if (this.isMouseOverSlot(slot, mouseX, mouseY) && slot.canBeHovered()) {
@@ -185,7 +176,7 @@ public abstract class GuiContainer extends GuiScreen {
                 itemstack.stackSize = this.dragSplittingRemnant;
 
                 if (itemstack.stackSize == 0) {
-                    s = "" + EnumChatFormatting.YELLOW + "0";
+                    s = EnumChatFormatting.YELLOW + "0";
                 }
             }
 
@@ -204,7 +195,7 @@ public abstract class GuiContainer extends GuiScreen {
             int i3 = this.returningStackDestSlot.yDisplayPosition - this.touchUpY;
             int l1 = this.touchUpX + (int) ((float) l2 * f);
             int i2 = this.touchUpY + (int) ((float) i3 * f);
-            this.drawItemStack(this.returningStack, l1, i2, (String) null);
+            this.drawItemStack(this.returningStack, l1, i2, null);
         }
 
         GlStateManager.popMatrix();
@@ -224,11 +215,11 @@ public abstract class GuiContainer extends GuiScreen {
      */
     private void drawItemStack(ItemStack stack, int x, int y, String altText) {
         GlStateManager.translate(0.0F, 0.0F, 32.0F);
-        this.zLevel = 200.0F;
+        zLevel = 200.0F;
         this.itemRender.zLevel = 200.0F;
         this.itemRender.renderItemAndEffectIntoGUI(stack, x, y);
         this.itemRender.renderItemOverlayIntoGUI(this.fontRendererObj, stack, x, y - (this.draggedStack == null ? 0 : 8), altText);
-        this.zLevel = 0.0F;
+        zLevel = 0.0F;
         this.itemRender.zLevel = 0.0F;
     }
 
@@ -280,7 +271,7 @@ public abstract class GuiContainer extends GuiScreen {
             }
         }
 
-        this.zLevel = 100.0F;
+        zLevel = 100.0F;
         this.itemRender.zLevel = 100.0F;
 
         if (itemstack == null) {
@@ -307,7 +298,7 @@ public abstract class GuiContainer extends GuiScreen {
         }
 
         this.itemRender.zLevel = 0.0F;
-        this.zLevel = 0.0F;
+        zLevel = 0.0F;
     }
 
     private void updateDragSplitting() {
@@ -339,7 +330,7 @@ public abstract class GuiContainer extends GuiScreen {
      */
     private Slot getSlotAtPosition(int x, int y) {
         for (int i = 0; i < this.inventorySlots.inventorySlots.size(); ++i) {
-            Slot slot = (Slot) this.inventorySlots.inventorySlots.get(i);
+            Slot slot = this.inventorySlots.inventorySlots.get(i);
 
             if (this.isMouseOverSlot(slot, x, y)) {
                 return slot;
@@ -379,7 +370,7 @@ public abstract class GuiContainer extends GuiScreen {
             }
 
             if (this.mc2.gameSettings.touchscreen && flag1 && this.mc2.thePlayer.inventory.getItemStack() == null) {
-                this.mc2.displayGuiScreen((GuiScreen) null);
+                this.mc2.displayGuiScreen(null);
                 return;
             }
 
@@ -488,7 +479,7 @@ public abstract class GuiContainer extends GuiScreen {
             k = -999;
         }
 
-        if (this.doubleClick && slot != null && state == 0 && this.inventorySlots.canMergeSlot((ItemStack) null, slot)) {
+        if (this.doubleClick && slot != null && state == 0 && this.inventorySlots.canMergeSlot(null, slot)) {
             if (isShiftKeyDown()) {
                 if (slot != null && slot.inventory != null && this.shiftClickedSlot != null) {
                     for (Slot slot2 : this.inventorySlots.inventorySlots) {
@@ -550,13 +541,13 @@ public abstract class GuiContainer extends GuiScreen {
                     this.clickedSlot = null;
                 }
             } else if (this.dragSplitting && !this.dragSplittingSlots.isEmpty()) {
-                this.handleMouseClick((Slot) null, -999, Container.func_94534_d(0, this.dragSplittingLimit), 5);
+                this.handleMouseClick(null, -999, Container.func_94534_d(0, this.dragSplittingLimit), 5);
 
                 for (Slot slot1 : this.dragSplittingSlots) {
                     this.handleMouseClick(slot1, slot1.slotNumber, Container.func_94534_d(1, this.dragSplittingLimit), 5);
                 }
 
-                this.handleMouseClick((Slot) null, -999, Container.func_94534_d(2, this.dragSplittingLimit), 5);
+                this.handleMouseClick(null, -999, Container.func_94534_d(2, this.dragSplittingLimit), 5);
             } else if (this.mc2.thePlayer.inventory.getItemStack() != null) {
                 if (state == this.mc2.gameSettings.keyBindPickBlock.getKeyCode() + 100) {
                     this.handleMouseClick(slot, k, state, 3);

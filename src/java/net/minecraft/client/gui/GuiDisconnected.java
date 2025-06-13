@@ -17,8 +17,8 @@ import java.util.List;
 public class GuiDisconnected extends GuiScreen {
     private final String reason;
     private final IChatComponent message;
-    private List<String> multilineMessage;
     private final GuiScreen parentScreen;
+    private List<String> multilineMessage;
     private int field_175353_i;
 
     public GuiDisconnected(GuiScreen screen, String reasonLocalizationKey, IChatComponent chatComp) {

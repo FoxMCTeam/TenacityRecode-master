@@ -46,32 +46,27 @@ import java.util.Set;
 
 public abstract class GuiScreen extends Gui implements GuiYesNoCallback, Utils {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final Set<String> PROTOCOLS = Sets.newHashSet(new String[]{"http", "https"});
+    private static final Set<String> PROTOCOLS = Sets.newHashSet("http", "https");
     private static final Splitter NEWLINE_SPLITTER = Splitter.on('\n');
-
-    /**
-     * Reference to the Minecraft object.
-     */
-    protected Minecraft mc2;
-
-    /**
-     * Holds a instance of RenderItem, used to draw the achievement icons on screen (is based on ItemStack)
-     */
-    protected RenderItem itemRender;
-
     /**
      * The width of the screen object.
      */
     public int width;
-
     /**
      * The height of the screen object.
      */
     public int height;
-    protected List<GuiButton> buttonList = Lists.<GuiButton>newArrayList();
-    protected List<GuiLabel> labelList = Lists.<GuiLabel>newArrayList();
     public boolean allowUserInput;
-
+    /**
+     * Reference to the Minecraft object.
+     */
+    protected Minecraft mc2;
+    /**
+     * Holds a instance of RenderItem, used to draw the achievement icons on screen (is based on ItemStack)
+     */
+    protected RenderItem itemRender;
+    protected List<GuiButton> buttonList = Lists.newArrayList();
+    protected List<GuiLabel> labelList = Lists.newArrayList();
     /**
      * The FontRenderer used by GuiScreen
      */
@@ -90,48 +85,17 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback, Utils {
     private int touchValue;
     private URI clickedLinkURI;
 
-    public void onDrag(int mouseX, int mouseY) {
-    }
-
-    /**
-     * Draws the screen and all the components in it. Args : mouseX, mouseY, renderPartialTicks
-     */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        for (int i = 0; i < this.buttonList.size(); ++i) {
-            ((GuiButton) this.buttonList.get(i)).drawButton(this.mc2, mouseX, mouseY);
-        }
-
-        for (int j = 0; j < this.labelList.size(); ++j) {
-            ((GuiLabel) this.labelList.get(j)).drawLabel(this.mc2, mouseX, mouseY);
-        }
-    }
-
-    /**
-     * Fired when a key is typed (except F11 which toggles full screen). This is the equivalent of
-     * KeyListener.keyTyped(KeyEvent e). Args : character (character on the key), keyCode (lwjgl Keyboard key code)
-     */
-    protected void keyTyped(char typedChar, int keyCode) throws IOException {
-        if (keyCode == 1) {
-            this.mc2.displayGuiScreen((GuiScreen) null);
-
-            if (this.mc2.currentScreen == null) {
-                this.mc2.setIngameFocus();
-            }
-        }
-    }
-
     /**
      * Returns a string stored in the system clipboard.
      */
     public static String getClipboardString() {
         try {
-            Transferable transferable = Toolkit.getDefaultToolkit().getSystemClipboard().getContents((Object) null);
+            Transferable transferable = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
 
             if (transferable != null && transferable.isDataFlavorSupported(DataFlavor.stringFlavor)) {
                 return (String) transferable.getTransferData(DataFlavor.stringFlavor);
             }
         } catch (Exception var1) {
-            ;
         }
 
         return "";
@@ -144,9 +108,75 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback, Utils {
         if (!StringUtils.isEmpty(copyText)) {
             try {
                 StringSelection stringselection = new StringSelection(copyText);
-                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringselection, (ClipboardOwner) null);
+                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringselection, null);
             } catch (Exception var2) {
-                ;
+            }
+        }
+    }
+
+    /**
+     * Returns true if either windows ctrl key is down or if either mac meta key is down
+     */
+    public static boolean isCtrlKeyDown() {
+        return Minecraft.isRunningOnMac ? Keyboard.isKeyDown(219) || Keyboard.isKeyDown(220) : Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157);
+    }
+
+    /**
+     * Returns true if either shift key is down
+     */
+    public static boolean isShiftKeyDown() {
+        return Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54);
+    }
+
+    /**
+     * Returns true if either alt key is down
+     */
+    public static boolean isAltKeyDown() {
+        return Keyboard.isKeyDown(56) || Keyboard.isKeyDown(184);
+    }
+
+    public static boolean isKeyComboCtrlX(int keyID) {
+        return keyID == 45 && isCtrlKeyDown() && !isShiftKeyDown() && !isAltKeyDown();
+    }
+
+    public static boolean isKeyComboCtrlV(int keyID) {
+        return keyID == 47 && isCtrlKeyDown() && !isShiftKeyDown() && !isAltKeyDown();
+    }
+
+    public static boolean isKeyComboCtrlC(int keyID) {
+        return keyID == 46 && isCtrlKeyDown() && !isShiftKeyDown() && !isAltKeyDown();
+    }
+
+    public static boolean isKeyComboCtrlA(int keyID) {
+        return keyID == 30 && isCtrlKeyDown() && !isShiftKeyDown() && !isAltKeyDown();
+    }
+
+    public void onDrag(int mouseX, int mouseY) {
+    }
+
+    /**
+     * Draws the screen and all the components in it. Args : mouseX, mouseY, renderPartialTicks
+     */
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        for (int i = 0; i < this.buttonList.size(); ++i) {
+            this.buttonList.get(i).drawButton(this.mc2, mouseX, mouseY);
+        }
+
+        for (int j = 0; j < this.labelList.size(); ++j) {
+            this.labelList.get(j).drawLabel(this.mc2, mouseX, mouseY);
+        }
+    }
+
+    /**
+     * Fired when a key is typed (except F11 which toggles full screen). This is the equivalent of
+     * KeyListener.keyTyped(KeyEvent e). Args : character (character on the key), keyCode (lwjgl Keyboard key code)
+     */
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        if (keyCode == 1) {
+            this.mc2.displayGuiScreen(null);
+
+            if (this.mc2.currentScreen == null) {
+                this.mc2.setIngameFocus();
             }
         }
     }
@@ -156,9 +186,9 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback, Utils {
 
         for (int i = 0; i < list.size(); ++i) {
             if (i == 0) {
-                list.set(i, stack.getRarity().rarityColor + (String) list.get(i));
+                list.set(i, stack.getRarity().rarityColor + list.get(i));
             } else {
-                list.set(i, EnumChatFormatting.GRAY + (String) list.get(i));
+                list.set(i, EnumChatFormatting.GRAY + list.get(i));
             }
         }
 
@@ -170,7 +200,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback, Utils {
      * mouse x position, current mouse y position.
      */
     protected void drawCreativeTabHoveringText(String tabName, int mouseX, int mouseY) {
-        this.drawHoveringText(Arrays.<String>asList(new String[]{tabName}), mouseX, mouseY);
+        this.drawHoveringText(Arrays.asList(tabName), mouseX, mouseY);
     }
 
     /**
@@ -208,23 +238,23 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback, Utils {
                 i2 = this.height - k - 6;
             }
 
-            this.zLevel = 300.0F;
+            zLevel = 300.0F;
             this.itemRender.zLevel = 300.0F;
             int l = -267386864;
-            this.drawGradientRect(l1 - 3, i2 - 4, l1 + i + 3, i2 - 3, l, l);
-            this.drawGradientRect(l1 - 3, i2 + k + 3, l1 + i + 3, i2 + k + 4, l, l);
-            this.drawGradientRect(l1 - 3, i2 - 3, l1 + i + 3, i2 + k + 3, l, l);
-            this.drawGradientRect(l1 - 4, i2 - 3, l1 - 3, i2 + k + 3, l, l);
-            this.drawGradientRect(l1 + i + 3, i2 - 3, l1 + i + 4, i2 + k + 3, l, l);
+            drawGradientRect(l1 - 3, i2 - 4, l1 + i + 3, i2 - 3, l, l);
+            drawGradientRect(l1 - 3, i2 + k + 3, l1 + i + 3, i2 + k + 4, l, l);
+            drawGradientRect(l1 - 3, i2 - 3, l1 + i + 3, i2 + k + 3, l, l);
+            drawGradientRect(l1 - 4, i2 - 3, l1 - 3, i2 + k + 3, l, l);
+            drawGradientRect(l1 + i + 3, i2 - 3, l1 + i + 4, i2 + k + 3, l, l);
             int i1 = 1347420415;
             int j1 = (i1 & 16711422) >> 1 | i1 & -16777216;
-            this.drawGradientRect(l1 - 3, i2 - 3 + 1, l1 - 3 + 1, i2 + k + 3 - 1, i1, j1);
-            this.drawGradientRect(l1 + i + 2, i2 - 3 + 1, l1 + i + 3, i2 + k + 3 - 1, i1, j1);
-            this.drawGradientRect(l1 - 3, i2 - 3, l1 + i + 3, i2 - 3 + 1, i1, i1);
-            this.drawGradientRect(l1 - 3, i2 + k + 2, l1 + i + 3, i2 + k + 3, j1, j1);
+            drawGradientRect(l1 - 3, i2 - 3 + 1, l1 - 3 + 1, i2 + k + 3 - 1, i1, j1);
+            drawGradientRect(l1 + i + 2, i2 - 3 + 1, l1 + i + 3, i2 + k + 3 - 1, i1, j1);
+            drawGradientRect(l1 - 3, i2 - 3, l1 + i + 3, i2 - 3 + 1, i1, i1);
+            drawGradientRect(l1 - 3, i2 + k + 2, l1 + i + 3, i2 + k + 3, j1, j1);
 
             for (int k1 = 0; k1 < textLines.size(); ++k1) {
-                String s1 = (String) textLines.get(k1);
+                String s1 = textLines.get(k1);
                 this.fontRendererObj.drawStringWithShadow(s1, (float) l1, (float) i2, -1);
 
                 if (k1 == 0) {
@@ -234,7 +264,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback, Utils {
                 i2 += 10;
             }
 
-            this.zLevel = 0.0F;
+            zLevel = 0.0F;
             this.itemRender.zLevel = 0.0F;
             GlStateManager.enableLighting();
             GlStateManager.enableDepth();
@@ -264,7 +294,6 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback, Utils {
                         itemstack = ItemStack.loadItemStackFromNBT((NBTTagCompound) nbtbase);
                     }
                 } catch (NBTException var11) {
-                    ;
                 }
 
                 if (itemstack != null) {
@@ -277,9 +306,8 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback, Utils {
                     try {
                         NBTBase nbtbase1 = JsonToNBT.getTagFromJson(hoverevent.getValue().getUnformattedText());
 
-                        if (nbtbase1 instanceof NBTTagCompound) {
-                            List<String> list1 = Lists.<String>newArrayList();
-                            NBTTagCompound nbttagcompound = (NBTTagCompound) nbtbase1;
+                        if (nbtbase1 instanceof NBTTagCompound nbttagcompound) {
+                            List<String> list1 = Lists.newArrayList();
                             list1.add(nbttagcompound.getString("name"));
 
                             if (nbttagcompound.hasKey("type", 8)) {
@@ -303,10 +331,10 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback, Utils {
 
                 if (statbase != null) {
                     IChatComponent ichatcomponent = statbase.getStatName();
-                    IChatComponent ichatcomponent1 = new ChatComponentTranslation("stats.tooltip.type." + (statbase.isAchievement() ? "achievement" : "statistic"), new Object[0]);
+                    IChatComponent ichatcomponent1 = new ChatComponentTranslation("stats.tooltip.type." + (statbase.isAchievement() ? "achievement" : "statistic"));
                     ichatcomponent1.getChatStyle().setItalic(Boolean.valueOf(true));
                     String s1 = statbase instanceof Achievement ? ((Achievement) statbase).getDescription() : null;
-                    List<String> list = Lists.newArrayList(new String[]{ichatcomponent.getFormattedText(), ichatcomponent1.getFormattedText()});
+                    List<String> list = Lists.newArrayList(ichatcomponent.getFormattedText(), ichatcomponent1.getFormattedText());
 
                     if (s1 != null) {
                         list.addAll(this.fontRendererObj.listFormattedStringToWidth(s1, 150));
@@ -368,7 +396,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback, Utils {
                             this.openWebLink(uri);
                         }
                     } catch (URISyntaxException urisyntaxexception) {
-                        LOGGER.error((String) ("Can\'t open url for " + clickevent), (Throwable) urisyntaxexception);
+                        LOGGER.error("Can't open url for " + clickevent, urisyntaxexception);
                     }
                 } else if (clickevent.getAction() == ClickEvent.Action.OPEN_FILE) {
                     URI uri1 = (new File(clickevent.getValue())).toURI();
@@ -409,7 +437,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback, Utils {
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         if (mouseButton == 0) {
             for (int i = 0; i < this.buttonList.size(); ++i) {
-                GuiButton guibutton = (GuiButton) this.buttonList.get(i);
+                GuiButton guibutton = this.buttonList.get(i);
 
                 if (guibutton.mousePressed(this.mc2, mouseX, mouseY)) {
                     this.selectedButton = guibutton;
@@ -547,7 +575,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback, Utils {
 
     public void drawWorldBackground(int tint) {
         if (this.mc2.theWorld != null) {
-            this.drawGradientRect(0, 0, this.width, this.height, -1072689136, -804253680);
+            drawGradientRect(0, 0, this.width, this.height, -1072689136, -804253680);
         } else {
             this.drawBackground(tint);
         }
@@ -565,10 +593,10 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback, Utils {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         float f = 32.0F;
         worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-        worldrenderer.pos(0.0D, (double) this.height, 0.0D).tex(0.0D, (double) ((float) this.height / 32.0F + (float) tint)).color(64, 64, 64, 255).endVertex();
-        worldrenderer.pos((double) this.width, (double) this.height, 0.0D).tex((double) ((float) this.width / 32.0F), (double) ((float) this.height / 32.0F + (float) tint)).color(64, 64, 64, 255).endVertex();
-        worldrenderer.pos((double) this.width, 0.0D, 0.0D).tex((double) ((float) this.width / 32.0F), (double) tint).color(64, 64, 64, 255).endVertex();
-        worldrenderer.pos(0.0D, 0.0D, 0.0D).tex(0.0D, (double) tint).color(64, 64, 64, 255).endVertex();
+        worldrenderer.pos(0.0D, this.height, 0.0D).tex(0.0D, (float) this.height / 32.0F + (float) tint).color(64, 64, 64, 255).endVertex();
+        worldrenderer.pos(this.width, this.height, 0.0D).tex((float) this.width / 32.0F, (float) this.height / 32.0F + (float) tint).color(64, 64, 64, 255).endVertex();
+        worldrenderer.pos(this.width, 0.0D, 0.0D).tex((float) this.width / 32.0F, tint).color(64, 64, 64, 255).endVertex();
+        worldrenderer.pos(0.0D, 0.0D, 0.0D).tex(0.0D, tint).color(64, 64, 64, 255).endVertex();
         tessellator.draw();
     }
 
@@ -593,48 +621,11 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback, Utils {
     private void openWebLink(URI url) {
         try {
             Class<?> oclass = Class.forName("java.awt.Desktop");
-            Object object = oclass.getMethod("getDesktop", new Class[0]).invoke((Object) null, new Object[0]);
-            oclass.getMethod("browse", new Class[]{URI.class}).invoke(object, new Object[]{url});
+            Object object = oclass.getMethod("getDesktop").invoke(null);
+            oclass.getMethod("browse", URI.class).invoke(object, url);
         } catch (Throwable throwable) {
-            LOGGER.error("Couldn\'t open link", throwable);
+            LOGGER.error("Couldn't open link", throwable);
         }
-    }
-
-    /**
-     * Returns true if either windows ctrl key is down or if either mac meta key is down
-     */
-    public static boolean isCtrlKeyDown() {
-        return Minecraft.isRunningOnMac ? Keyboard.isKeyDown(219) || Keyboard.isKeyDown(220) : Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157);
-    }
-
-    /**
-     * Returns true if either shift key is down
-     */
-    public static boolean isShiftKeyDown() {
-        return Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54);
-    }
-
-    /**
-     * Returns true if either alt key is down
-     */
-    public static boolean isAltKeyDown() {
-        return Keyboard.isKeyDown(56) || Keyboard.isKeyDown(184);
-    }
-
-    public static boolean isKeyComboCtrlX(int keyID) {
-        return keyID == 45 && isCtrlKeyDown() && !isShiftKeyDown() && !isAltKeyDown();
-    }
-
-    public static boolean isKeyComboCtrlV(int keyID) {
-        return keyID == 47 && isCtrlKeyDown() && !isShiftKeyDown() && !isAltKeyDown();
-    }
-
-    public static boolean isKeyComboCtrlC(int keyID) {
-        return keyID == 46 && isCtrlKeyDown() && !isShiftKeyDown() && !isAltKeyDown();
-    }
-
-    public static boolean isKeyComboCtrlA(int keyID) {
-        return keyID == 30 && isCtrlKeyDown() && !isShiftKeyDown() && !isAltKeyDown();
     }
 
     /**

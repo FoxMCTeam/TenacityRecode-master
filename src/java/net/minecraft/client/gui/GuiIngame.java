@@ -1,18 +1,18 @@
 package net.minecraft.client.gui;
 
+import com.cubk.event.impl.render.PreRenderEvent;
+import com.cubk.event.impl.render.Render2DEvent;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import dev.tenacity.Client;
-import com.cubk.event.impl.render.PreRenderEvent;
 import dev.tenacity.module.impl.display.NotificationsMod;
 import dev.tenacity.module.impl.display.PostProcessing;
 import dev.tenacity.module.impl.display.ScoreboardMod;
-import dev.tenacity.utils.render.ColorUtil;
-import dev.tenacity.utils.render.RenderUtil;
-import com.cubk.event.impl.render.Render2DEvent;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.font.AbstractFontRenderer;
+import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.GLUtil;
+import dev.tenacity.utils.render.RenderUtil;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -61,41 +61,34 @@ public class GuiIngame extends Gui implements Utils {
      * ChatGUI instance that retains all previous chat data
      */
     private final GuiNewChat persistantChatGUI;
-    private int updateCounter;
-
-    /**
-     * The string specifying which record music is playing
-     */
-    private String recordPlaying = "";
-
-    /**
-     * How many ticks the record playing message will be displayed
-     */
-    private int recordPlayingUpFor;
-    private boolean recordIsPlaying;
-
-    /**
-     * Previous frame vignette brightness (slowly changes by 1% each frame)
-     */
-    public float prevVignetteBrightness = 1.0F;
-
-    /**
-     * Remaining ticks the item highlight should be visible
-     */
-    private int remainingHighlightTicks;
-
-    /**
-     * The ItemStack that is currently being highlighted
-     */
-    private ItemStack highlightingItemStack;
     private final GuiOverlayDebug overlayDebug;
-
     /**
      * The spectator GUI for this in-game GUI instance
      */
     private final GuiSpectator spectatorGui;
     private final GuiPlayerTabOverlay overlayPlayerList;
-
+    /**
+     * Previous frame vignette brightness (slowly changes by 1% each frame)
+     */
+    public float prevVignetteBrightness = 1.0F;
+    private int updateCounter;
+    /**
+     * The string specifying which record music is playing
+     */
+    private String recordPlaying = "";
+    /**
+     * How many ticks the record playing message will be displayed
+     */
+    private int recordPlayingUpFor;
+    private boolean recordIsPlaying;
+    /**
+     * Remaining ticks the item highlight should be visible
+     */
+    private int remainingHighlightTicks;
+    /**
+     * The ItemStack that is currently being highlighted
+     */
+    private ItemStack highlightingItemStack;
     /**
      * A timer for the current title and subtitle displayed
      */
@@ -302,7 +295,7 @@ public class GuiIngame extends Gui implements Utils {
                     l = MathHelper.hsvToRGB(f2 / 50.0F, 0.7F, 0.6F) & 16777215;
                 }
 
-                this.getFontRenderer().drawStringWithShadow(this.recordPlaying, -this.getFontRenderer().getStringWidth(this.recordPlaying) / 2, (float) (-4 - 15 * GuiChat.openingAnimation.getOutput().floatValue()), l + (l1 << 24 & -16777216));
+                this.getFontRenderer().drawStringWithShadow(this.recordPlaying, -this.getFontRenderer().getStringWidth(this.recordPlaying) / 2, -4 - 15 * GuiChat.openingAnimation.getOutput().floatValue(), l + (l1 << 24 & -16777216));
                 GLUtil.endBlend();
                 GlStateManager.popMatrix();
             }
@@ -333,11 +326,11 @@ public class GuiIngame extends Gui implements Utils {
                 GlStateManager.pushMatrix();
                 GlStateManager.scale(4.0F, 4.0F, 4.0F);
                 int j2 = i2 << 24 & -16777216;
-                this.getFontRenderer().drawString(this.displayedTitle, (float) (-this.getFontRenderer().getStringWidth(this.displayedTitle) / 2), -10.0F, 16777215 | j2, true);
+                this.getFontRenderer().drawString(this.displayedTitle, -this.getFontRenderer().getStringWidth(this.displayedTitle) / 2, -10.0F, 16777215 | j2, true);
                 GlStateManager.popMatrix();
                 GlStateManager.pushMatrix();
                 GlStateManager.scale(2.0F, 2.0F, 2.0F);
-                this.getFontRenderer().drawString(this.displayedSubTitle, (float) (-this.getFontRenderer().getStringWidth(this.displayedSubTitle) / 2), 5.0F, 16777215 | j2, true);
+                this.getFontRenderer().drawString(this.displayedSubTitle, -this.getFontRenderer().getStringWidth(this.displayedSubTitle) / 2, 5.0F, 16777215 | j2, true);
                 GlStateManager.popMatrix();
                 GlStateManager.disableBlend();
                 GlStateManager.popMatrix();
@@ -389,16 +382,15 @@ public class GuiIngame extends Gui implements Utils {
 
 
     protected void renderTooltip(ScaledResolution sr, float partialTicks) {
-        if (this.mc.getRenderViewEntity() instanceof EntityPlayer) {
+        if (this.mc.getRenderViewEntity() instanceof EntityPlayer entityplayer) {
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             this.mc.getTextureManager().bindTexture(widgetsTexPath);
-            EntityPlayer entityplayer = (EntityPlayer) this.mc.getRenderViewEntity();
             int i = sr.getScaledWidth() / 2;
 
             GlStateManager.enableBlend();
             GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
             drawTexturedModalRect(i - 91, sr.getScaledHeight() - (22 + 15 * GuiChat.openingAnimation.getOutput().floatValue()), 0, 0, 182, 22);
-            drawTexturedModalRect(i - 91 - 1 + entityplayer.inventory.currentItem * 20, (float) (sr.getScaledHeight() - (22 + 15 * GuiChat.openingAnimation.getOutput().floatValue())), 0, 22, 24, 22);
+            drawTexturedModalRect(i - 91 - 1 + entityplayer.inventory.currentItem * 20, sr.getScaledHeight() - (22 + 15 * GuiChat.openingAnimation.getOutput().floatValue()), 0, 22, 24, 22);
 
             GlStateManager.enableRescaleNormal();
             GlStateManager.enableBlend();
@@ -515,7 +507,7 @@ public class GuiIngame extends Gui implements Utils {
         }
 
         float i = this.getFontRenderer().getStringWidth(s);
-        this.getFontRenderer().drawStringWithShadow(s, (float) (scaledRes.getScaledWidth() - i - 10), 5.0F, 16777215);
+        this.getFontRenderer().drawStringWithShadow(s, scaledRes.getScaledWidth() - i - 10, 5.0F, 16777215);
         this.mc.mcProfiler.endSection();
     }
 
@@ -652,8 +644,7 @@ public class GuiIngame extends Gui implements Utils {
     }
 
     private void renderPlayerStats(ScaledResolution scaledRes) {
-        if (this.mc.getRenderViewEntity() instanceof EntityPlayer) {
-            EntityPlayer entityplayer = (EntityPlayer) this.mc.getRenderViewEntity();
+        if (this.mc.getRenderViewEntity() instanceof EntityPlayer entityplayer) {
             int i = MathHelper.ceiling_float_int(entityplayer.getHealth());
             boolean flag = this.healthUpdateCounter > (long) this.updateCounter && (this.healthUpdateCounter - (long) this.updateCounter) / 3L % 2L == 1L;
 
@@ -805,10 +796,9 @@ public class GuiIngame extends Gui implements Utils {
                         this.drawTexturedModalRect(j9, j7, l7 + 45, 27, 9, 9);
                     }
                 }
-            } else if (entity instanceof EntityLivingBase) {
+            } else if (entity instanceof EntityLivingBase entitylivingbase) {
                 this.mc.mcProfiler.endStartSection("mountHealth");
-                EntityLivingBase entitylivingbase = (EntityLivingBase) entity;
-                int i7 = (int) Math.ceil((double) entitylivingbase.getHealth());
+                int i7 = (int) Math.ceil(entitylivingbase.getHealth());
                 float f3 = entitylivingbase.getMaxHealth();
                 int j8 = (int) (f3 + 0.5F) / 2;
 
@@ -896,9 +886,9 @@ public class GuiIngame extends Gui implements Utils {
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
         worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-        worldrenderer.pos(0.0D, (double) scaledRes.getScaledHeight(), -90.0D).tex(0.0D, 1.0D).endVertex();
-        worldrenderer.pos((double) scaledRes.getScaledWidth(), (double) scaledRes.getScaledHeight(), -90.0D).tex(1.0D, 1.0D).endVertex();
-        worldrenderer.pos((double) scaledRes.getScaledWidth(), 0.0D, -90.0D).tex(1.0D, 0.0D).endVertex();
+        worldrenderer.pos(0.0D, scaledRes.getScaledHeight(), -90.0D).tex(0.0D, 1.0D).endVertex();
+        worldrenderer.pos(scaledRes.getScaledWidth(), scaledRes.getScaledHeight(), -90.0D).tex(1.0D, 1.0D).endVertex();
+        worldrenderer.pos(scaledRes.getScaledWidth(), 0.0D, -90.0D).tex(1.0D, 0.0D).endVertex();
         worldrenderer.pos(0.0D, 0.0D, -90.0D).tex(0.0D, 0.0D).endVertex();
         tessellator.draw();
         GlStateManager.depthMask(true);
@@ -923,7 +913,7 @@ public class GuiIngame extends Gui implements Utils {
             WorldBorder worldborder = this.mc.theWorld.getWorldBorder();
             float f = (float) worldborder.getClosestDistance(this.mc.thePlayer);
             double d0 = Math.min(worldborder.getResizeSpeed() * (double) worldborder.getWarningTime() * 1000.0D, Math.abs(worldborder.getTargetSize() - worldborder.getDiameter()));
-            double d1 = Math.max((double) worldborder.getWarningDistance(), d0);
+            double d1 = Math.max(worldborder.getWarningDistance(), d0);
 
             if ((double) f < d1) {
                 f = 1.0F - (float) ((double) f / d1);
@@ -946,9 +936,9 @@ public class GuiIngame extends Gui implements Utils {
             Tessellator tessellator = Tessellator.getInstance();
             WorldRenderer worldrenderer = tessellator.getWorldRenderer();
             worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-            worldrenderer.pos(0.0D, (double) scaledRes.getScaledHeight(), -90.0D).tex(0.0D, 1.0D).endVertex();
-            worldrenderer.pos((double) scaledRes.getScaledWidth(), (double) scaledRes.getScaledHeight(), -90.0D).tex(1.0D, 1.0D).endVertex();
-            worldrenderer.pos((double) scaledRes.getScaledWidth(), 0.0D, -90.0D).tex(1.0D, 0.0D).endVertex();
+            worldrenderer.pos(0.0D, scaledRes.getScaledHeight(), -90.0D).tex(0.0D, 1.0D).endVertex();
+            worldrenderer.pos(scaledRes.getScaledWidth(), scaledRes.getScaledHeight(), -90.0D).tex(1.0D, 1.0D).endVertex();
+            worldrenderer.pos(scaledRes.getScaledWidth(), 0.0D, -90.0D).tex(1.0D, 0.0D).endVertex();
             worldrenderer.pos(0.0D, 0.0D, -90.0D).tex(0.0D, 0.0D).endVertex();
             tessellator.draw();
             GlStateManager.depthMask(true);
@@ -979,10 +969,10 @@ public class GuiIngame extends Gui implements Utils {
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
         worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-        worldrenderer.pos(0.0D, (double) scaledRes.getScaledHeight(), -90.0D).tex((double) f, (double) f3).endVertex();
-        worldrenderer.pos((double) scaledRes.getScaledWidth(), (double) scaledRes.getScaledHeight(), -90.0D).tex((double) f2, (double) f3).endVertex();
-        worldrenderer.pos((double) scaledRes.getScaledWidth(), 0.0D, -90.0D).tex((double) f2, (double) f1).endVertex();
-        worldrenderer.pos(0.0D, 0.0D, -90.0D).tex((double) f, (double) f1).endVertex();
+        worldrenderer.pos(0.0D, scaledRes.getScaledHeight(), -90.0D).tex(f, f3).endVertex();
+        worldrenderer.pos(scaledRes.getScaledWidth(), scaledRes.getScaledHeight(), -90.0D).tex(f2, f3).endVertex();
+        worldrenderer.pos(scaledRes.getScaledWidth(), 0.0D, -90.0D).tex(f2, f1).endVertex();
+        worldrenderer.pos(0.0D, 0.0D, -90.0D).tex(f, f1).endVertex();
         tessellator.draw();
         GlStateManager.depthMask(true);
         GlStateManager.enableDepth();
@@ -1051,7 +1041,7 @@ public class GuiIngame extends Gui implements Utils {
     }
 
     public void setRecordPlayingMessage(String recordName) {
-        this.setRecordPlaying(I18n.format("record.nowPlaying", new Object[]{recordName}), true);
+        this.setRecordPlaying(I18n.format("record.nowPlaying", recordName), true);
     }
 
     public void setRecordPlaying(String message, boolean isPlaying) {

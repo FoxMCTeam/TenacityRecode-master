@@ -16,16 +16,14 @@ import java.awt.*;
 public class GuiTextField extends Gui {
 
     private final int id;
-    public AbstractFontRenderer font;
-    public int xPosition;
-    public float yPosition;
-
     /**
      * The width of this text field.
      */
     private final int width;
     private final int height;
-
+    public AbstractFontRenderer font;
+    public int xPosition;
+    public float yPosition;
     /**
      * Has the current text being edited on the textbox.
      */
@@ -90,6 +88,13 @@ public class GuiTextField extends Gui {
     }
 
     /**
+     * Returns the contents of the textbox
+     */
+    public String getText() {
+        return this.text;
+    }
+
+    /**
      * Sets the text of the textbox
      */
     public void setText(String p_146180_1_) {
@@ -102,13 +107,6 @@ public class GuiTextField extends Gui {
 
             this.setCursorPositionEnd();
         }
-    }
-
-    /**
-     * Returns the contents of the textbox
-     */
-    public String getText() {
-        return this.text;
     }
 
     /**
@@ -265,16 +263,6 @@ public class GuiTextField extends Gui {
      */
     public void moveCursorBy(int p_146182_1_) {
         this.setCursorPosition(this.selectionEnd + p_146182_1_);
-    }
-
-    /**
-     * sets the position of the cursor to the provided index
-     */
-    public void setCursorPosition(int p_146190_1_) {
-        this.cursorPosition = p_146190_1_;
-        int i = this.text.length();
-        this.cursorPosition = MathHelper.clamp_int(this.cursorPosition, 0, i);
-        this.setSelectionPos(this.cursorPosition);
     }
 
     /**
@@ -452,7 +440,7 @@ public class GuiTextField extends Gui {
 
             if (s.length() > 0) {
                 String s1 = flag ? s.substring(0, j) : s;
-                j1 = this.font.drawStringWithShadow(s1, (float) l, (float) i1, i);
+                j1 = this.font.drawStringWithShadow(s1, (float) l, i1, i);
             }
 
             boolean flag2 = this.cursorPosition < this.text.length() || this.text.length() >= this.getMaxStringLength();
@@ -462,20 +450,20 @@ public class GuiTextField extends Gui {
                 k1 = j > 0 ? l + this.width : l;
             } else if (flag2) {
                 k1 = j1 + 2;
-                if(font != Minecraft.getMinecraft().fontRendererObj){
+                if (font != Minecraft.getMinecraft().fontRendererObj) {
                     j1 += 3.5f;
                 }
             }
 
             if (s.length() > 0 && flag && j < s.length()) {
-                j1 = this.font.drawStringWithShadow(s.substring(j), (float) j1, (float) i1, i);
+                j1 = this.font.drawStringWithShadow(s.substring(j), (float) j1, i1, i);
             }
 
             if (flag1) {
                 if (flag2) {
                     Gui.drawRect(k1, i1 - 1, k1 + 1, i1 + 1 + this.font.getHeight(), -3092272);
                 } else {
-                    this.font.drawStringWithShadow("_", (float) k1, (float) i1, i);
+                    this.font.drawStringWithShadow("_", (float) k1, i1, i);
                 }
             }
 
@@ -517,13 +505,20 @@ public class GuiTextField extends Gui {
         GlStateManager.enableColorLogic();
         GlStateManager.colorLogicOp(5387);
         worldrenderer.begin(7, DefaultVertexFormats.POSITION);
-        worldrenderer.pos((double) p_146188_1_, (double) p_146188_4_, 0.0D).endVertex();
-        worldrenderer.pos((double) p_146188_3_, (double) p_146188_4_, 0.0D).endVertex();
-        worldrenderer.pos((double) p_146188_3_, (double) p_146188_2_, 0.0D).endVertex();
-        worldrenderer.pos((double) p_146188_1_, (double) p_146188_2_, 0.0D).endVertex();
+        worldrenderer.pos(p_146188_1_, p_146188_4_, 0.0D).endVertex();
+        worldrenderer.pos(p_146188_3_, p_146188_4_, 0.0D).endVertex();
+        worldrenderer.pos(p_146188_3_, p_146188_2_, 0.0D).endVertex();
+        worldrenderer.pos(p_146188_1_, p_146188_2_, 0.0D).endVertex();
         tessellator.draw();
         GlStateManager.disableColorLogic();
         GlStateManager.enableTexture2D();
+    }
+
+    /**
+     * returns the maximum number of character that can be contained in this textbox
+     */
+    public int getMaxStringLength() {
+        return this.maxStringLength;
     }
 
     public void setMaxStringLength(int p_146203_1_) {
@@ -535,17 +530,20 @@ public class GuiTextField extends Gui {
     }
 
     /**
-     * returns the maximum number of character that can be contained in this textbox
-     */
-    public int getMaxStringLength() {
-        return this.maxStringLength;
-    }
-
-    /**
      * returns the current position of the cursor
      */
     public int getCursorPosition() {
         return this.cursorPosition;
+    }
+
+    /**
+     * sets the position of the cursor to the provided index
+     */
+    public void setCursorPosition(int p_146190_1_) {
+        this.cursorPosition = p_146190_1_;
+        int i = this.text.length();
+        this.cursorPosition = MathHelper.clamp_int(this.cursorPosition, 0, i);
+        this.setSelectionPos(this.cursorPosition);
     }
 
     /**
@@ -574,6 +572,13 @@ public class GuiTextField extends Gui {
     }
 
     /**
+     * Getter for the focused field
+     */
+    public boolean isFocused() {
+        return this.isFocused;
+    }
+
+    /**
      * Sets focus to this gui element
      */
     public void setFocused(boolean p_146195_1_) {
@@ -582,13 +587,6 @@ public class GuiTextField extends Gui {
         }
 
         this.isFocused = p_146195_1_;
-    }
-
-    /**
-     * Getter for the focused field
-     */
-    public boolean isFocused() {
-        return this.isFocused;
     }
 
     public void setEnabled(boolean p_146184_1_) {

@@ -1,11 +1,6 @@
 package net.minecraft.client.gui;
 
 import com.google.common.collect.Lists;
-
-import java.awt.*;
-import java.util.Iterator;
-import java.util.List;
-
 import dev.tenacity.utils.font.AbstractFontRenderer;
 import dev.tenacity.utils.objects.MathUtils;
 import dev.tenacity.utils.render.ColorUtil;
@@ -19,8 +14,13 @@ import net.minecraft.util.MathHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.awt.*;
+import java.util.Iterator;
+import java.util.List;
+
 public class GuiNewChat extends Gui {
     private static final Logger logger = LogManager.getLogger();
+    public static int chatPos = 20;
     private final Minecraft mc;
     @Getter
     private final List<String> sentMessages = Lists.newArrayList();
@@ -30,10 +30,21 @@ public class GuiNewChat extends Gui {
     private boolean isScrolled;
     private float percentComplete;
     private long prevMillis = System.currentTimeMillis();
-    public static int chatPos = 20;
 
     public GuiNewChat(Minecraft mcIn) {
         this.mc = mcIn;
+    }
+
+    public static int calculateChatboxWidth(float scale) {
+        int i = 320;
+        int j = 40;
+        return MathHelper.floor_float(scale * (float) (i - j) + (float) j);
+    }
+
+    public static int calculateChatboxHeight(float scale) {
+        int i = 180;
+        int j = 20;
+        return MathHelper.floor_float(scale * (float) (i - j) + (float) j);
     }
 
     private void updatePercentage(long diff) {
@@ -362,7 +373,7 @@ public class GuiNewChat extends Gui {
         Iterator<ChatLine> iterator = this.drawnChatLines.iterator();
 
         while (iterator.hasNext()) {
-            ChatLine chatline =     iterator.next();
+            ChatLine chatline = iterator.next();
 
             if (chatline.getChatLineID() == id) {
                 iterator.remove();
@@ -380,6 +391,7 @@ public class GuiNewChat extends Gui {
             }
         }
     }
+
     public int getChatWidth() {
         return calculateChatboxWidth(this.mc.gameSettings.chatWidth);
     }
@@ -393,18 +405,6 @@ public class GuiNewChat extends Gui {
      */
     public float getChatScale() {
         return this.mc.gameSettings.chatScale;
-    }
-
-    public static int calculateChatboxWidth(float scale) {
-        int i = 320;
-        int j = 40;
-        return MathHelper.floor_float(scale * (float) (i - j) + (float) j);
-    }
-
-    public static int calculateChatboxHeight(float scale) {
-        int i = 180;
-        int j = 20;
-        return MathHelper.floor_float(scale * (float) (i - j) + (float) j);
     }
 
     public int getLineCount() {

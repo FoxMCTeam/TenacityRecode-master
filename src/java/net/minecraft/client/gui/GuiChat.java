@@ -2,26 +2,19 @@ package net.minecraft.client.gui;
 
 import com.google.common.collect.Lists;
 import dev.tenacity.Client;
-import dev.tenacity.utils.tuples.Pair;
-import dev.tenacity.utils.tuples.mutable.MutablePair;
 import dev.tenacity.config.DragManager;
 import dev.tenacity.module.impl.display.ArrayListMod;
 import dev.tenacity.module.impl.display.HUDMod;
-import dev.tenacity.ui.Screen;
-import dev.tenacity.utils.misc.HoveringUtil;
-import dev.tenacity.utils.misc.MathUtils;
-import dev.tenacity.utils.misc.Multithreading;
-import dev.tenacity.utils.objects.Dragging;
-import dev.tenacity.utils.render.ColorUtil;
-import dev.tenacity.utils.render.RoundedUtil;
 import dev.tenacity.utils.animations.Animation;
 import dev.tenacity.utils.animations.Direction;
 import dev.tenacity.utils.animations.impl.DecelerateAnimation;
 import dev.tenacity.utils.font.AbstractFontRenderer;
-import dev.tenacity.utils.font.CustomFont;
 import dev.tenacity.utils.font.FontUtil;
-import lombok.Getter;
-import lombok.Setter;
+import dev.tenacity.utils.misc.HoveringUtil;
+import dev.tenacity.utils.objects.Dragging;
+import dev.tenacity.utils.render.ColorUtil;
+import dev.tenacity.utils.render.RoundedUtil;
+import dev.tenacity.utils.tuples.Pair;
 import net.minecraft.network.play.client.C14PacketTabComplete;
 import net.minecraft.util.*;
 import org.apache.commons.lang3.StringUtils;
@@ -36,8 +29,14 @@ import java.util.List;
 
 public class GuiChat extends GuiScreen {
     private static final Logger logger = LogManager.getLogger();
+    public static Animation openingAnimation = new DecelerateAnimation(175, 1, Direction.BACKWARDS);
+    /**
+     * Chat entry field
+     */
+    protected GuiTextField inputField;
+    Animation resetButtonHover;
+    ArrayListMod arraylistMod;
     private String historyBuffer = "";
-
     /**
      * keeps position of which chat message you will select when you press up, (does not increase for duplicated
      * messages sent immediately after each other)
@@ -46,13 +45,7 @@ public class GuiChat extends GuiScreen {
     private boolean playerNamesFound;
     private boolean waitingOnAutocomplete;
     private int autocompleteIndex;
-    private List<String> foundPlayerNames = Lists.<String>newArrayList();
-
-    /**
-     * Chat entry field
-     */
-    protected GuiTextField inputField;
-
+    private final List<String> foundPlayerNames = Lists.newArrayList();
     /**
      * is the text that appears when you press the chat key and the input box appears pre-filled
      */
@@ -143,12 +136,6 @@ public class GuiChat extends GuiScreen {
         }
     }
 
-    Animation resetButtonHover;
-    ArrayListMod arraylistMod;
-
-    public static Animation openingAnimation = new DecelerateAnimation(175, 1, Direction.BACKWARDS);
-
-
     /**
      * Adds the buttons (and other controls) to the screen in question. Called when the GUI is displayed and when the
      * window resizes, the buttonList is cleared beforehand.
@@ -182,7 +169,7 @@ public class GuiChat extends GuiScreen {
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         if (openingAnimation.finished(Direction.BACKWARDS)) {
-            this.mc2.displayGuiScreen((GuiScreen) null);
+            this.mc2.displayGuiScreen(null);
             return;
         }
 
@@ -194,7 +181,7 @@ public class GuiChat extends GuiScreen {
         }
         inputField.font = abstractFontRenderer;
 
-        inputField.yPosition = (float) (this.height - (12 * openingAnimation.getOutput().floatValue()));
+        inputField.yPosition = this.height - (12 * openingAnimation.getOutput().floatValue());
         this.inputField.drawTextBox();
         IChatComponent ichatcomponent = this.mc2.ingameGUI.getChatGUI().getChatComponent(Mouse.getX(), Mouse.getY());
 
@@ -325,7 +312,7 @@ public class GuiChat extends GuiScreen {
             this.mc2.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(new ChatComponentText(stringbuilder.toString()), 1);
         }
 
-        this.inputField.writeText((String) this.foundPlayerNames.get(this.autocompleteIndex++));
+        this.inputField.writeText(this.foundPlayerNames.get(this.autocompleteIndex++));
     }
 
     private void sendAutocompleteRequest(String p_146405_1_, String p_146405_2_) {
@@ -359,7 +346,7 @@ public class GuiChat extends GuiScreen {
                     this.historyBuffer = this.inputField.getText();
                 }
 
-                this.inputField.setText((String) this.mc2.ingameGUI.getChatGUI().getSentMessages().get(i));
+                this.inputField.setText(this.mc2.ingameGUI.getChatGUI().getSentMessages().get(i));
                 this.sentHistoryCursor = i;
             }
         }

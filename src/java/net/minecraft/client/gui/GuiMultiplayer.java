@@ -3,7 +3,6 @@ package net.minecraft.client.gui;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import de.florianmichael.viamcp.ViaMCP;
-import de.florianmichael.viamcp.gui.AsyncVersionSlider;
 import dev.tenacity.utils.server.ServerUtils;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerData;
@@ -279,7 +278,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback {
                 } else if (keyCode != 28 && keyCode != 156) {
                     super.keyTyped(typedChar, keyCode);
                 } else {
-                    this.actionPerformed((GuiButton) this.buttonList.get(2));
+                    this.actionPerformed(this.buttonList.get(2));
                 }
             } else {
                 super.keyTyped(typedChar, keyCode);
