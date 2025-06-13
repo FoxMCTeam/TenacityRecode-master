@@ -99,7 +99,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.LWJGLException;
 import org.lwjglx.Sys;
 import org.lwjglx.input.Keyboard;
 import org.lwjglx.input.Mouse;
@@ -423,7 +422,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
      * Starts the game: initializes the canvas, the title, the settings, etcetera.
      */
 
-    private void startGame() throws LWJGLException {
+    private void startGame()  {
         long start = System.currentTimeMillis();
         this.gameSettings = new GameSettings(this, this.mcDataDir);
         this.defaultResourcePacks.add(this.mcDefaultResourcePack);
@@ -564,14 +563,14 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         this.metadataSerializer_.registerMetadataSectionType(new LanguageMetadataSectionSerializer(), LanguageMetadataSection.class);
     }
 
-    private void createDisplay() throws LWJGLException {
+    private void createDisplay() {
         Display.setResizable(true);
         Display.setTitle("Minecraft 1.8.9 - lwjgl " + Sys.getVersion());
 
         Display.create((new PixelFormat()).withDepthBits(24));
     }
 
-    private void setInitialDisplayMode() throws LWJGLException {
+    private void setInitialDisplayMode() {
         if (this.fullscreen) {
             Display.setFullscreen(true);
             DisplayMode displaymode = Display.getDisplayMode();
@@ -720,7 +719,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         return bytebuffer;
     }
 
-    private void updateDisplayMode() throws LWJGLException {
+    private void updateDisplayMode() {
         Set<DisplayMode> set = Sets.newHashSet();
         Collections.addAll(set, Display.getAvailableDisplayModes());
         DisplayMode displaymode = Display.getDesktopDisplayMode();
@@ -958,7 +957,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         this.mcProfiler.endStartSection("preRenderErrors");
         long i1 = System.nanoTime() - l;
         this.checkGLError("Pre render");
-        this.mcProfiler.endStartSection("sound");
+        this.mcProfiler.endStartSection("paulscode/sound");
         this.mcSoundHandler.setListener(this.thePlayer, this.timer.renderPartialTicks);
         this.mcProfiler.endSection();
         this.mcProfiler.startSection("render");

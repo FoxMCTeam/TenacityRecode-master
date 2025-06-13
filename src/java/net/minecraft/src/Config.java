@@ -28,7 +28,7 @@ import net.optifine.util.TimedEvent;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.LWJGLException;
+import org.lwjglx.LWJGLException;
 import org.lwjglx.Sys;
 import org.lwjglx.opengl.Display;
 import org.lwjglx.opengl.DisplayMode;

@@ -7,7 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
-import org.lwjgl.input.Mouse;
+import org.lwjglx.input.Mouse;
 
 import java.awt.*;
 
