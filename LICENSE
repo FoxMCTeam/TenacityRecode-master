@@ -1,21 +1,49 @@
-MIT License
+Custom Non-Commercial License v1.2
 
 Copyright (c) 2025 JiejueAwA
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+of this software (the "Software"), to use, copy, modify, and distribute
+the Software for unlimited personal or non-commercial purposes, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+1. Grant of License  
+   You are allowed to use, copy, modify, and distribute the Software without limitation for personal and non-commercial purposes only. This includes, but is not limited to, use in private projects, educational activities, research, and experimentation.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+2. Prohibition of Commercial Use  
+   The Software, including any modified or unmodified copies, may not be used, sold, licensed, leased, or otherwise exploited for commercial purposes, whether directly or indirectly. Commercial purposes include, but are not limited to, selling the Software or any derivative works, incorporating it into commercial products, offering it as part of paid services, or generating any form of revenue from its use.
+
+3. Redistribution and Publishing  
+   Redistribution, publishing, or any form of public sharing of the Software or its derivatives (modified or unmodified) requires explicit prior written permission from the original developer or repository owner. Permission requests must be made in writing (e.g., via email) to the contact information provided in the repository. Unauthorized redistribution is strictly prohibited.
+
+4. Source Code Availability  
+   When redistributing the Software or derivative works, the complete corresponding source code must be provided or made readily accessible under the same terms as this License.
+
+5. License Propagation (Copyleft)  
+   Any modifications to existing files in the Software must be licensed under this same License or a license that is deemed compatible and equally restrictive with respect to the prohibitions on commercial use.
+
+6. Attribution  
+   Any redistribution or derivative works must retain the original copyright notice, license terms, and attribution to the original author ("d3Ck"). Removing or altering author information is forbidden.
+
+7. No Sublicensing  
+   You are not permitted to grant sublicenses or transfer rights of the Software to any third party for any purpose, especially commercial exploitation.
+
+8. Violation and Penalty  
+   Any breach of the above terms, particularly unauthorized commercial use or redistribution without consent, will result in the immediate termination of all rights granted under this License.  
+   Furthermore, the violator agrees to pay a penalty fee of 50 Chinese Yuan (CNY) as liquidated damages for breach of license terms.  
+   The repository owner reserves the right to pursue further legal action if necessary.
+
+9. Disclaimer of Warranty  
+   The Software is provided "AS IS", without warranty of any kind, either express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or non-infringement.  
+   The original Software has been verified to contain no viruses, malware, or harmful code; however, the repository owner cannot guarantee the integrity or safety of redistributed, forked, or modified versions created by others.  
+   Use of the Software is at your own risk. The repository owner shall not be liable for any damages arising from the use or inability to use the Software, including any direct, indirect, incidental, or consequential damages.
+
+10. Severability  
+    If any provision of this License is held to be invalid or unenforceable under applicable law, such provision shall be deemed modified to the extent necessary to make it valid and enforceable. All other provisions shall remain in full effect.
+
+11. Governing Law and Jurisdiction  
+    This License shall be governed by and construed in accordance with the laws of the People's Republic of China. Any disputes arising from this License shall be subject to the exclusive jurisdiction of the courts located within the territory of the People's Republic of China.
+
+12. No Commercial Use Summary  
+    In summary, this repository and its contents are strictly prohibited from being used for any commercial activities, including but not limited to sale, resale, licensing, sublicensing, or bundling within commercial software products or services.
+
+By using, copying, modifying, or distributing this Software, you acknowledge that you have read, understood, and agree to be bound by the terms and conditions of this License.
