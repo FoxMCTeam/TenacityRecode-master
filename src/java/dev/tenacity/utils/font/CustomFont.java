@@ -231,12 +231,12 @@ public class CustomFont implements AbstractFontRenderer {
         GlStateManager.bindTexture(this.getOrGenerateCharTexture(region));
         GlStateManager.enableTexture2D();
         GlStateManager.enableBlend();
-        GlStateManager.blendFunc(770, 771);
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 
-        GL11.glBegin(7);
+        GL11.glBegin(GL11.GL_QUADS);
         GL11.glTexCoord2d(this.wrapTextureCoord(xTexCoord, this.textureWidth), this.wrapTextureCoord(yTexCoord, this.textureHeight));
         GL11.glVertex2f(x, y);
         GL11.glTexCoord2d(this.wrapTextureCoord(xTexCoord, this.textureWidth), this.wrapTextureCoord(yTexCoord + this.fontHeight, this.textureHeight));
@@ -397,8 +397,8 @@ public class CustomFont implements AbstractFontRenderer {
         return this.textures[id];
     }
 
-    private float wrapTextureCoord(int value, int max) {
-        return (float) value / (float) max;
+    private float wrapTextureCoord(float value, float max) {
+        return value / max;
     }
 
     private int resizeToOpenGLSupportResolution(int size) {
