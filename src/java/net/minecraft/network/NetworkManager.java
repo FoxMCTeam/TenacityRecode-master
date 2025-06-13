@@ -155,6 +155,71 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         sendPacket(packetIn, false);
     }
 
+    private void dispatchUnregisteredPacket(final Packet inPacket, final GenericFutureListener<? extends Future<? super Void>>[] futureListeners) {
+        final EnumConnectionState enumconnectionstate = EnumConnectionState.getFromPacket(inPacket);
+        final EnumConnectionState enumconnectionstate1 = (EnumConnectionState)((Object)this.channel.attr(attrKeyConnectionState).get());
+        if (enumconnectionstate1 != enumconnectionstate) {
+            logger.debug("Disabled auto read");
+            this.channel.config().setAutoRead(false);
+        }
+        if (this.channel.eventLoop().inEventLoop()) {
+            if (enumconnectionstate != enumconnectionstate1) {
+                this.setConnectionState(enumconnectionstate);
+            }
+            ChannelFuture channelfuture = this.channel.writeAndFlush((Object)inPacket);
+            if (futureListeners != null) {
+                channelfuture.addListeners(futureListeners);
+            }
+            channelfuture.addListener((GenericFutureListener)ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
+        } else {
+            this.channel.eventLoop().execute(new Runnable(){
+
+                @Override
+                public void run() {
+                    if (enumconnectionstate != enumconnectionstate1) {
+                        NetworkManager.this.setConnectionState(enumconnectionstate);
+                    }
+                    ChannelFuture channelfuture1 = NetworkManager.this.channel.writeAndFlush((Object)inPacket);
+                    if (futureListeners != null) {
+                        channelfuture1.addListeners(futureListeners);
+                    }
+                    channelfuture1.addListener((GenericFutureListener)ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
+                }
+            });
+        }
+    }
+
+    public void sendUnregisteredPacketWithoutEvent(Packet packetIn) {
+        if (this.isChannelOpen()) {
+            this.flushOutboundQueue();
+            this.dispatchUnregisteredPacket(packetIn, null);
+        } else {
+            this.readWriteLock.writeLock().lock();
+            try {
+                this.outboundPacketsQueue.add(new InboundHandlerTuplePacketListener(packetIn, null));
+            }
+            finally {
+                this.readWriteLock.writeLock().unlock();
+            }
+        }
+    }
+
+    public void sendUnregisteredPacket(Packet packetIn) {
+        if (this.isChannelOpen()) {
+            this.flushOutboundQueue();
+            this.dispatchUnregisteredPacket(packetIn, null);
+        } else {
+            this.readWriteLock.writeLock().lock();
+            try {
+                this.outboundPacketsQueue.add(new InboundHandlerTuplePacketListener(packetIn, null));
+            }
+            finally {
+                this.readWriteLock.writeLock().unlock();
+            }
+        }
+    }
+
+
     public void sendPacket(Packet packetIn, boolean silent) {
         if (this.isChannelOpen()) {
             if (!silent) {

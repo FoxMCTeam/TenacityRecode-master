@@ -1,5 +1,8 @@
 package dev.tenacity.module;
 
+import dev.tenacity.Client;
+import dev.tenacity.i18n.Locale;
+import dev.tenacity.i18n.Localization;
 import dev.tenacity.module.impl.combat.*;
 import dev.tenacity.module.impl.display.*;
 import dev.tenacity.module.impl.exploit.*;
@@ -22,7 +25,8 @@ import java.util.stream.Collectors;
 public class ModuleManager {
     public static boolean reloadModules;
     @Getter
-    private final List<Class<? extends Module>> hiddenModules = new ArrayList<>(Arrays.asList(ArrayListMod.class, NotificationsMod.class));
+    public final List<Class<? extends Module>> hiddenModules = new ArrayList<>(Arrays.asList(ArrayListMod.class, NotificationsMod.class));
+    public final List<Module> commandHiddenModules = new ArrayList<>();
     @Setter
     private HashMap<Object, Module> modules = new HashMap<>();
 
@@ -150,7 +154,7 @@ public class ModuleManager {
     }
 
     public Module getModuleByName(String name) {
-        return this.modules.values().stream().filter(m -> m.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+        return this.modules.values().stream().filter(module -> Localization.get(module.getName()).replace(" ", "").equalsIgnoreCase(name.replace(" ", ""))).findFirst().orElse(null);
     }
 
     public List<Module> getModulesContains(String text) {
@@ -163,13 +167,24 @@ public class ModuleManager {
 
     public final List<Module> getArraylistModules(ArrayListMod arraylistMod, List<Module> modules) {
         return modules.stream().filter(module -> module.isEnabled() &&
-                !((module.getCategory() == Category.RENDER && arraylistMod.hideModules.isEnabled("Render")) ||
-                 (module.getCategory() == Category.DISPLAY && arraylistMod.hideModules.isEnabled("Display")) ||
-                 (module.getCategory() == Category.MISC && arraylistMod.hideModules.isEnabled("Misc")) ||
-                 (module.getCategory() == Category.COMBAT && arraylistMod.hideModules.isEnabled("Combat")) ||
-                 (module.getCategory() == Category.PLAYER && arraylistMod.hideModules.isEnabled("Player")) ||
-                 (module.getCategory() == Category.MOVEMENT && arraylistMod.hideModules.isEnabled("Movement"))
-                 )).collect(Collectors.toList());
+            !(
+                (module.getCategory() == Category.COMBAT && arraylistMod.hideModules.isEnabled("Combat")) ||
+                (module.getCategory() == Category.MOVEMENT && arraylistMod.hideModules.isEnabled("Movement")) ||
+                (module.getCategory() == Category.RENDER && arraylistMod.hideModules.isEnabled("Render")) ||
+                (module.getCategory() == Category.DISPLAY && arraylistMod.hideModules.isEnabled("Display")) ||
+                (module.getCategory() == Category.PLAYER && arraylistMod.hideModules.isEnabled("Player")) ||
+                (module.getCategory() == Category.MISC && arraylistMod.hideModules.isEnabled("Misc")) ||
+                (module.getCategory() == Category.SCRIPTS && arraylistMod.hideModules.isEnabled("Scripts"))
+            )).collect(Collectors.toList());
     }
-
+    public boolean canRender(ArrayListMod arraylistMod, Module module) {
+        return !((module.getCategory() == Category.COMBAT && arraylistMod.hideModules.isEnabled("Combat")) ||
+                (module.getCategory() == Category.MOVEMENT && arraylistMod.hideModules.isEnabled("Movement")) ||
+                (module.getCategory() == Category.RENDER && arraylistMod.hideModules.isEnabled("Render")) ||
+                (module.getCategory() == Category.DISPLAY && arraylistMod.hideModules.isEnabled("Display")) ||
+                (module.getCategory() == Category.PLAYER && arraylistMod.hideModules.isEnabled("Player")) ||
+                (module.getCategory() == Category.MISC && arraylistMod.hideModules.isEnabled("Misc")) ||
+                (module.getCategory() == Category.SCRIPTS && arraylistMod.hideModules.isEnabled("Scripts"))
+        );
+    }
 }

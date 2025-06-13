@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 /**
  * 本地化工具类，用于根据语言加载字符串资源
@@ -40,6 +41,37 @@ public class Localization {
         return translated == null ? key : translated;
     }
 
+    /**
+     * Gets a localized string using lowercase key matching (useful for module names)
+     * @param key The lowercase key to look up
+     * @param locale The locale to use for translation
+     * @return The translated string or the original key if not found
+     */
+    public static String getLopper(String key, Locale locale) {
+        if (!populated) populate();
+
+        // Convert the key to lowercase for matching
+        String lowerKey = key.toLowerCase();
+
+        // First try the requested locale with lowercase matching
+        String translated = locale.getStrings().entrySet().stream()
+                .filter(entry -> entry.getKey().toLowerCase().equals(lowerKey))
+                .map(Map.Entry::getValue)
+                .findFirst()
+                .orElse(null);
+
+        // If not found, try English locale with lowercase matching
+        if (translated == null) {
+            translated = Locale.EN_US.getStrings().entrySet().stream()
+                    .filter(entry -> entry.getKey().toLowerCase().equals(lowerKey))
+                    .map(Map.Entry::getValue)
+                    .findFirst()
+                    .orElse(null);
+        }
+
+        // If still not found, return the original key
+        return translated == null ? key : translated;
+    }
     /**
      * 读取所有语言文件并解析 key-value
      */

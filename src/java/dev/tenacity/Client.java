@@ -124,7 +124,7 @@ public class Client implements Utils {
                 new FriendCommand(), new CopyNameCommand(), new BindCommand(), new UnbindCommand(),
                 new ScriptCommand(), new SettingCommand(), new HelpCommand(),
                 new VClipCommand(), new ClearBindsCommand(), new ClearConfigCommand(),
-                new ToggleCommand()
+                new ToggleCommand(), new HideCommand()
         ));
         INSTANCE.setCommandHandler(commandHandler);
     }

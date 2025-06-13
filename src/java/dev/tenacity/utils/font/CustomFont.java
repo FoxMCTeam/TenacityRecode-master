@@ -1,6 +1,5 @@
 package dev.tenacity.utils.font;
 
-import dev.tenacity.Client;
 import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.utils.render.GradientUtil;
 import dev.tenacity.utils.render.RenderUtil;

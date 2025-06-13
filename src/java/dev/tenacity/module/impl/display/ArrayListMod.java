@@ -5,10 +5,9 @@ import com.cubk.event.impl.render.Render2DEvent;
 import com.cubk.event.impl.render.ShaderEvent;
 import dev.tenacity.Client;
 import dev.tenacity.i18n.Localization;
-import dev.tenacity.module.ModuleManager;
-import dev.tenacity.utils.tuples.Pair;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
+import dev.tenacity.module.ModuleManager;
 import dev.tenacity.module.settings.ParentAttribute;
 import dev.tenacity.module.settings.impl.BooleanSetting;
 import dev.tenacity.module.settings.impl.ModeSetting;
@@ -20,6 +19,7 @@ import dev.tenacity.utils.font.AbstractFontRenderer;
 import dev.tenacity.utils.objects.Dragging;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.RenderUtil;
+import dev.tenacity.utils.tuples.Pair;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.StringUtils;
@@ -36,7 +36,9 @@ public class ArrayListMod extends Module {
             new BooleanSetting("Render", false),
             new BooleanSetting("Display", true),
             new BooleanSetting("Player", false),
-            new BooleanSetting("Misc", false));
+            new BooleanSetting("Misc", false),
+            new BooleanSetting("Scripts", false));
+    public final NumberSetting height = new NumberSetting("Height", 11, 20, 9, .5f);
     private final ModeSetting textShadow = new ModeSetting("Text Shadow", "Black", "Colored", "Black", "None");
     private final ModeSetting rectangle = new ModeSetting("Rectangle", "Top", "None", "Top", "Side", "Outline");
     private final BooleanSetting partialGlow = new BooleanSetting("Partial Glow", true);
@@ -44,9 +46,8 @@ public class ArrayListMod extends Module {
     private final MultipleBoolSetting fontSettings = new MultipleBoolSetting("Font Settings",
             new BooleanSetting("Bold", false),
             new BooleanSetting("Small Font", false), minecraftFont);
-    public final NumberSetting height = new NumberSetting("Height", 11, 20, 9, .5f);
     private final ModeSetting animation = new ModeSetting("Animation", "Scale in", "Move in", "Scale in");
-    private final NumberSetting colorIndex = new NumberSetting("Color Seperation", 20, 100, 5, 1);
+    private final NumberSetting colorIndex = new NumberSetting("Color Separation", 20, 100, 5, 1);
     private final NumberSetting colorSpeed = new NumberSetting("Color Speed", 15, 30, 2, 1);
     private final BooleanSetting background = new BooleanSetting("Background", true);
     private final BooleanSetting backgroundColor = new BooleanSetting("Background Color", false);
@@ -54,6 +55,10 @@ public class ArrayListMod extends Module {
 
     public AbstractFontRenderer font = duckSansFont.size(20);
     public List<Module> modules;
+    public Dragging arraylistDrag = Client.INSTANCE.createDrag(this, "arraylist", 2, 1);
+    public String longest = "";
+    Module lastModule;
+    int lastCount;
 
     public ArrayListMod() {
         super("module.display.arrayList", Category.DISPLAY, "Displays your active modules");
@@ -67,10 +72,7 @@ public class ArrayListMod extends Module {
 
     public void getModulesAndSort() {
         if (modules == null || ModuleManager.reloadModules) {
-            List<Class<? extends Module>> hiddenModules = Client.INSTANCE.getModuleManager().getHiddenModules();
-            List<Module> moduleList = Client.INSTANCE.getModuleManager().getModules();
-            moduleList.removeIf(module -> hiddenModules.stream().anyMatch(moduleClass -> moduleClass == module.getClass()));
-            modules = moduleList;
+            modules = getModules();
         }
         modules.sort(Comparator.<Module>comparingDouble(m -> {
             String name = HUDMod.get(Localization.get(m.getName()) + (m.hasMode() ? " " + m.getSuffix() : ""));
@@ -78,9 +80,14 @@ public class ArrayListMod extends Module {
         }).reversed());
     }
 
-    public Dragging arraylistDrag = Client.INSTANCE.createDrag(this, "arraylist", 2, 1);
-
-    public String longest = "";
+    private static List<Module> getModules() {
+        List<Class<? extends Module>> hiddenModules = Client.INSTANCE.getModuleManager().hiddenModules;
+        List<Module> commandHiddenModules = Client.INSTANCE.getModuleManager().commandHiddenModules;
+        List<Module> moduleList = Client.INSTANCE.getModuleManager().getModules();
+        moduleList.removeIf(module -> hiddenModules.stream().anyMatch(moduleClass -> moduleClass == module.getClass()));
+        moduleList.removeIf(module -> commandHiddenModules.stream().anyMatch(moduleClass -> moduleClass == module));
+        return moduleList;
+    }
 
     @EventTarget
     public void onShaderEvent(ShaderEvent e) {
@@ -90,6 +97,7 @@ public class ArrayListMod extends Module {
         int count = 0;
         for (Module module : modules) {
             final Animation moduleAnimation = module.getAnimation();
+            if (!Client.INSTANCE.getModuleManager().canRender(this, module)) continue;
             if (!module.isEnabled() && moduleAnimation.finished(Direction.BACKWARDS)) continue;
 
             String displayText = HUDMod.get(Localization.get(module.getName()) + (module.hasMode() ? " §7" + module.getSuffix() : ""));
@@ -115,7 +123,7 @@ public class ArrayListMod extends Module {
                     break;
                 case "Scale in":
                     if (!moduleAnimation.isDone()) {
-                        RenderUtil.scaleStart((float) (x + font.getStringWidth(displayText) / 2f), (float) (y + heightVal / 2 - font.getHeight() / 2f), (float) moduleAnimation.getOutput().floatValue());
+                        RenderUtil.scaleStart(x + font.getStringWidth(displayText) / 2f, y + heightVal / 2 - font.getHeight() / 2f, moduleAnimation.getOutput().floatValue());
                     }
                     scaleIn = true;
                     break;
@@ -148,6 +156,7 @@ public class ArrayListMod extends Module {
                 }
 
                 switch (rectangle.getMode()) {
+                    case "Outline":
                     default:
                         break;
                     case "Top":
@@ -162,8 +171,6 @@ public class ArrayListMod extends Module {
                             Gui.drawRect2(x + textWidth - 7, y, 9, heightVal, rectangleColor);
                         }
                         break;
-                    case "Outline":
-                        break;
                 }
             }
 
@@ -177,9 +184,6 @@ public class ArrayListMod extends Module {
         }
     }
 
-    Module lastModule;
-    int lastCount;
-
     @EventTarget
     public void onRender2DEvent(Render2DEvent e) {
         font = getFont();
@@ -192,11 +196,9 @@ public class ArrayListMod extends Module {
         int count = 0;
         for (Module module : modules) {
             final Animation moduleAnimation = module.getAnimation();
-
             moduleAnimation.setDirection(module.isEnabled() ? Direction.FORWARDS : Direction.BACKWARDS);
-
             if (!module.isEnabled() && moduleAnimation.finished(Direction.BACKWARDS)) continue;
-
+            if (!Client.INSTANCE.getModuleManager().canRender(this, module)) continue;
 
             String displayText = HUDMod.get(Localization.get(module.getName()) + (module.hasMode() ? (module.getCategory().equals(Category.SCRIPTS) ? " §c" : " §7") + module.getSuffix() : ""));
             displayText = applyText(displayText);
@@ -230,9 +232,9 @@ public class ArrayListMod extends Module {
                     break;
                 case "Scale in":
                     if (!moduleAnimation.isDone()) {
-                        RenderUtil.scaleStart(x + font.getStringWidth(displayText) / 2f, y + heightVal / 2 - font.getHeight() / 2f, (float) moduleAnimation.getOutput().floatValue());
+                        RenderUtil.scaleStart(x + font.getStringWidth(displayText) / 2f, y + heightVal / 2 - font.getHeight() / 2f, moduleAnimation.getOutput().floatValue());
                     }
-                    alphaAnimation = (float) moduleAnimation.getOutput().floatValue();
+                    alphaAnimation = moduleAnimation.getOutput().floatValue();
                     break;
             }
 

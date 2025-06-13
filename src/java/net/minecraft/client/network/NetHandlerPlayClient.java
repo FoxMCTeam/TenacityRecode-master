@@ -1435,6 +1435,15 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
         }
     }
 
+    public void addToSendQueueUnregisteredNoEvent(Packet p_147297_1_) {
+        this.netManager.sendUnregisteredPacketWithoutEvent(p_147297_1_);
+    }
+
+
+    public void addToSendQueueUnregistered(Packet p_147297_1_) {
+        this.netManager.sendUnregisteredPacket(p_147297_1_);
+    }
+
     /**
      * May create a scoreboard objective, remove an objective from the scoreboard or update an objectives' displayname
      */
