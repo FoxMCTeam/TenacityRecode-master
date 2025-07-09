@@ -52,6 +52,10 @@ public class Alt {
     @SerializedName("favorite")
     public boolean favorite;
 
+    @Expose
+    @SerializedName("token")
+    public String token;
+
     public ResourceLocation head;
     public boolean headTexture;
     public int headTries;
@@ -71,6 +75,8 @@ public class Alt {
             mc.session = new Session(this.email, uuid, "", "mojang");
             this.username = this.email;
             this.uuid = uuid;
+            Client.INSTANCE.getAltManager().currentSessionAlt = this;
+            AltManagerUtils.getConfigAlt().setLatestAlt(this);
             this.altState = AltState.LOGIN_SUCCESS;
             altType = AltType.CRACKED;
             stage = 2;
@@ -86,6 +92,8 @@ public class Alt {
             uuid = auth.getPlayerID();
             username = auth.getUsername();
             stage = 2;
+            Client.INSTANCE.getAltManager().currentSessionAlt = this;
+            AltManagerUtils.getConfigAlt().setLatestAlt(this);
             altState = AltState.LOGIN_SUCCESS;
             altType = currentLoginMethod;
             Client.INSTANCE.getAltManager().currentSessionAlt = this;
@@ -99,21 +107,11 @@ public class Alt {
     public void loginAsync(boolean microsoft) {
         new Thread(() -> {
             if (microsoft) {
-                MicrosoftLogin.getRefreshToken(loginData -> {
-                    if (loginData != null) {
-                        mc.session = new Session(loginData.username, loginData.uuid, loginData.mcToken, "microsoft");
-                        this.username = loginData.username;
-                        this.uuid = loginData.uuid;
-                        this.altType = AltType.MICROSOFT;
-                        this.altState = AltState.LOGIN_SUCCESS;
-                        stage = 2;
-                        Client.INSTANCE.getAltManager().currentSessionAlt = this;
-                    } else {
-                        stage = 1;
-                        altState = AltState.LOGIN_FAIL;
-                    }
-                    saveAltsAsync();
-                });
+                mc.session = new Session(username, uuid, token, "microsoft");
+                this.altType = AltType.MICROSOFT;
+                this.altState = AltState.LOGIN_SUCCESS;
+                stage = 2;
+                Client.INSTANCE.getAltManager().currentSessionAlt = this;
             } else {
                 login(false);
                 saveAltsAsync();
@@ -122,18 +120,7 @@ public class Alt {
     }
 
     private void saveAltsAsync() {
-        new Thread(() -> {
-            try {
-                Files.write(AltManagerUtils.altsFile.toPath(),
-                        new GsonBuilder().setPrettyPrinting()
-                                .excludeFieldsWithoutExposeAnnotation()
-                                .create()
-                                .toJson(AltManagerUtils.getAlts())
-                                .getBytes(StandardCharsets.UTF_8));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
+        AltManagerUtils.writeAlts();
     }
 
     private Session createSession(String username, String password, boolean microsoft) {

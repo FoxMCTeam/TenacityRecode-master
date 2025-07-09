@@ -2,6 +2,8 @@ package dev.tenacity.ui.altmanager.helpers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import dev.tenacity.Client;
 import dev.tenacity.ui.notifications.NotificationManager;
 import dev.tenacity.ui.notifications.NotificationType;
@@ -12,6 +14,8 @@ import dev.tenacity.utils.objects.FileUtils;
 import dev.tenacity.utils.objects.TextField;
 import dev.tenacity.utils.time.TimerUtil;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.val;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.util.Session;
 
@@ -23,14 +27,18 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicReference;
+
 
 public class AltManagerUtils implements Utils {
 
     public static File altsFile = new File(Client.DIRECTORY, "Alts.json");
+    @Getter
+    private static ConfigAlt configAlt;
     @Getter
     private static List<Alt> alts = new ArrayList<>();
     private final TimerUtil timerUtil = new TimerUtil();
@@ -38,32 +46,37 @@ public class AltManagerUtils implements Utils {
     public AltManagerUtils() {
         if (!altsFile.exists()) {
             FileUtils.createFile(altsFile, false);
+            configAlt = new ConfigAlt(alts);
         }
         if (!FileUtils.getFileContent(altsFile).isEmpty()) {
-            try {
-                byte[] content = Files.readAllBytes(altsFile.toPath());
-                alts = new ArrayList<>(Arrays.asList(new Gson().fromJson(new String(content), Alt[].class)));
-                alts.forEach(this::getHead);
-            } catch (IOException e) {
-                e.printStackTrace();
+            Gson gson = new Gson();
+            String contents = FileUtils.readFile(altsFile);
+            ConfigAlt configAlt1 = gson.fromJson(contents, ConfigAlt.class);
+            configAlt = configAlt1;
+            alts = configAlt1.alts;
+            if (configAlt1.alts != null) {
+                configAlt1.alts.forEach(this::getHead);
+            } else {
+                configAlt1.alts = new ArrayList<>();
             }
         }
     }
 
     public static void removeAlt(Alt alt) {
         if (alt != null) {
-            alts.remove(alt);
+            configAlt.alts.remove(alt);
         }
     }
 
     public static void writeAlts() {
         Multithreading.runAsync(() -> {
+            val gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
             try {
-                Files.write(altsFile.toPath(), new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create().toJson(alts.toArray(new Alt[0])).getBytes(StandardCharsets.UTF_8));
-                //Show success message
+                Files.write(
+                        altsFile.toPath(),gson.toJson(AltManagerUtils.getConfigAlt()).getBytes(StandardCharsets.UTF_8)
+                );
             } catch (IOException e) {
-                e.printStackTrace();
-                //    Notification.post(NotificationType.WARNING, "Failed to save", "Failed to save alt list due to an IOException");
+                throw new RuntimeException(e);
             }
         });
     }
@@ -77,7 +90,8 @@ public class AltManagerUtils implements Utils {
                             altsFile.createNewFile();
                         }
                     }
-                    Files.write(altsFile.toPath(), new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create().toJson(alts.toArray(new Alt[0])).getBytes(StandardCharsets.UTF_8));
+                    val gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
+                    FileUtils.writeFile(altsFile, gson.toJson(configAlt));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -96,7 +110,6 @@ public class AltManagerUtils implements Utils {
             usernameS = username.getText();
             passwordS = password.getText();
         }
-        boolean microsoft = Alt.currentLoginMethod == Alt.AltType.MICROSOFT;
 
         if (usernameS.isEmpty() && passwordS.isEmpty()) return;
 
@@ -113,6 +126,7 @@ public class AltManagerUtils implements Utils {
         if (alt == null) {
             alt = new Alt(email, password);
         }
+        AtomicReference<String> refreshTokenSTR = new AtomicReference<>("");
         Alt finalAlt = alt;
         Multithreading.runAsync(() -> {
             CompletableFuture<Session> future = new CompletableFuture<>();
@@ -121,6 +135,7 @@ public class AltManagerUtils implements Utils {
                     CompletableFuture<Session> login = MicrosoftLogin.login(refreshToken.mcToken);
                     try {
                         future.complete(login.get());
+                        refreshTokenSTR.set(refreshToken.mcToken);
                     } catch (InterruptedException | ExecutionException e) {
                         throw new RuntimeException(e);
                     }
@@ -132,13 +147,20 @@ public class AltManagerUtils implements Utils {
                 finalAlt.uuid = auth.getPlayerID();
                 finalAlt.altType = Alt.AltType.MICROSOFT;
                 finalAlt.username = auth.getUsername();
+                finalAlt.token = refreshTokenSTR.get();
                 if (auth.getUsername() == null) {
                     NotificationManager.post(NotificationType.WARNING, "Alt Manager", "Please set an username on your Minecraft account!", 12);
                 }
                 Alt.stage = 2;
                 finalAlt.altState = Alt.AltState.LOGIN_SUCCESS;
-                AltManagerUtils.getAlts().add(finalAlt);
-                writeAlts();
+                for (Alt alt1 : configAlt.getAlts()) {
+                    if (!(Objects.equals(alt1.username, finalAlt.username))) {
+                        continue;
+                    }
+                    configAlt.alts.remove(alt1);
+                }
+                AltManagerUtils.getConfigAlt().getAlts().add(finalAlt);
+                AltManagerUtils.writeAlts();
                 Client.INSTANCE.getAltManager().currentSessionAlt = finalAlt;
                 Client.INSTANCE.getAltManager().getAltPanel().refreshAlts();
             } else {
@@ -150,7 +172,7 @@ public class AltManagerUtils implements Utils {
     }
 
     public void loginWithString(String username, String password, boolean microsoft) {
-        for (Alt alt : alts) {
+        for (Alt alt : configAlt.getAlts()) {
             if (alt.email.equals(username) && alt.password.equals(password)) {
                 Alt.stage = 0;
                 alt.loginAsync(microsoft);
@@ -158,7 +180,7 @@ public class AltManagerUtils implements Utils {
             }
         }
         Alt alt = new Alt(username, password);
-        alts.add(alt);
+        configAlt.getAlts().add(alt);
         Alt.stage = 0;
         alt.loginAsync(microsoft);
     }
@@ -181,4 +203,24 @@ public class AltManagerUtils implements Utils {
         });
     }
 
+    @Getter
+    @Setter
+    public static class ConfigAlt {
+        @Expose
+        @SerializedName("alts")
+        List<Alt> alts;
+
+        public void setLatestAlt(Alt latestAlt) {
+            this.latestAlt = latestAlt;
+            AltManagerUtils.writeAlts();
+        }
+
+        @Expose
+        @SerializedName("latestAlt")
+        Alt latestAlt;
+
+        ConfigAlt(List<Alt> alts) {
+            this.alts = alts;
+        }
+    }
 }

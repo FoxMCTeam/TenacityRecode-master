@@ -44,7 +44,7 @@ import static dev.tenacity.module.impl.display.HUDMod.language;
 public class Client implements Utils {
     public static final Client INSTANCE = new Client();
     public static final String NAME = "Tenacity";
-    public static final String VERSION = "5.2";
+    public static final String VERSION = "5.3";
     public static final String THANKS = "d3Ck, bzdhyp";
     public static String userName = "d3Ck";
     public static final ReleaseType RELEASE = ReleaseType.DEV;
