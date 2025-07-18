@@ -15,6 +15,10 @@ import java.util.List;
 
 import static org.lwjgl.opengl.GL11.GL_LINEAR;
 
+/**
+ * @author Duck
+ * @since 19/07/2025
+ */
 public class MipmapKawaseBlur implements Utils {
 
     private static final List<Framebuffer> framebufferList = new ArrayList<>();
