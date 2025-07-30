@@ -3,6 +3,7 @@ package net.minecraft.client.entity;
 import dev.tenacity.Client;
 import dev.tenacity.commands.CommandHandler;
 import dev.tenacity.event.impl.player.*;
+import dev.tenacity.module.impl.exploit.Disabler;
 import dev.tenacity.utils.client.addons.vector.Vector2f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
@@ -227,6 +228,11 @@ public class EntityPlayerSP extends AbstractClientPlayer {
                 } else {
                     this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(this.motionX, -999.0D, this.motionZ, rotationYaw, rotationPitch, onGround));
                     flag2 = false;
+                }
+
+                Disabler dis = Client.INSTANCE.getModuleManager().getModule(Disabler.class);
+                if (Disabler.modeValue.is("GrimAC")) {
+                    dis.processPackets();
                 }
 
                 ++this.positionUpdateTicks;

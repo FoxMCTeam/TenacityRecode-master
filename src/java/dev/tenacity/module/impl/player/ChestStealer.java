@@ -116,7 +116,6 @@ public class ChestStealer extends Module {
                             items.add(is.getItem());
                         }
                         mc.playerController.windowClick(chest.windowId, s, 0, 1, mc.thePlayer);
-                        Disabler.slotTimer.reset();
                     }
                 });
 

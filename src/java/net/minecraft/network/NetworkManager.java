@@ -12,6 +12,7 @@ import de.florianmichael.viamcp.MCPVLBPipeline;
 import de.florianmichael.viamcp.ViaMCP;
 import dev.tenacity.event.impl.network.PacketEvent;
 
+import dev.tenacity.module.impl.exploit.Disabler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.epoll.Epoll;
@@ -28,6 +29,7 @@ import io.netty.handler.timeout.TimeoutException;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
+import net.minecraft.network.play.server.S3FPacketCustomPayload;
 import net.minecraft.util.*;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
@@ -41,6 +43,8 @@ import java.net.InetAddress;
 import java.net.SocketAddress;
 import java.util.Queue;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+import static dev.tenacity.utils.Utils.mc;
 
 public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     private static final Logger logger = LogManager.getLogger();
@@ -132,12 +136,24 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     protected void channelRead0(ChannelHandlerContext p_channelRead0_1_, Packet p_channelRead0_2_) throws Exception {
         if (this.channel.isOpen()) {
             try {
-                PacketEvent e = new PacketEvent(p_channelRead0_2_, PacketEvent.PacketEventType.RECEIVE);
-                Client.INSTANCE.getEventManager().call(e);
-                if (e.isCancelled()) return;
-                p_channelRead0_2_.processPacket(this.packetListener);
-            } catch (ThreadQuickExitException ignored) {
-            }
+                Disabler dis = Client.INSTANCE.getModuleManager().getModule(Disabler.class);
+
+                if (p_channelRead0_2_ instanceof S3FPacketCustomPayload) {
+                    PacketEvent e = new PacketEvent(p_channelRead0_2_, PacketEvent.PacketEventType.RECEIVE);
+                    Client.INSTANCE.getEventManager().call(e);
+                    if (e.isCancelled()) return;
+                    p_channelRead0_2_.processPacket(this.packetListener);
+                } else
+                if (dis.getGrimPost() && dis.grimPostDelay(p_channelRead0_2_) && Disabler.modeValue.is("GrimAC")) {
+                    mc.addScheduledTask(() -> dis.storedPackets.add(p_channelRead0_2_));
+                }
+                else {
+                    PacketEvent e = new PacketEvent(p_channelRead0_2_, PacketEvent.PacketEventType.RECEIVE);
+                    Client.INSTANCE.getEventManager().call(e);
+                    if (e.isCancelled()) return;
+                    p_channelRead0_2_.processPacket(this.packetListener);
+                }
+            } catch (ThreadQuickExitException ignored) {}
         }
     }
 

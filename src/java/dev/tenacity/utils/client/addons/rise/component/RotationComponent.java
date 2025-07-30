@@ -4,6 +4,7 @@ import dev.tenacity.event.annotations.EventTarget;
 
 import dev.tenacity.event.impl.network.PacketEvent;
 import dev.tenacity.event.impl.player.*;
+import dev.tenacity.module.impl.exploit.Disabler;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.client.addons.rise.MovementFix;
 import dev.tenacity.utils.client.addons.rise.RotationUtil;
@@ -139,7 +140,11 @@ public final class RotationComponent implements Utils {
                 final float yaw = rotations.x;
                 final float pitch = rotations.y;
 
-                event.setYaw(yaw);
+                if (!Disabler.duplicateRotPlace.isEnabled()) {
+                    event.setYaw(yaw);
+                } else {
+                    event.setYaw(getRandomYaw(yaw, count));
+                }
                 event.setPitch(pitch);
 
                 mc.thePlayer.renderYawOffset = yaw;

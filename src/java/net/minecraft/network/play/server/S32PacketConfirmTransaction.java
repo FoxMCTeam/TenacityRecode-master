@@ -2,6 +2,8 @@ package net.minecraft.network.play.server;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import dev.tenacity.Client;
+import dev.tenacity.module.impl.exploit.Disabler;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayClient;
@@ -43,6 +45,11 @@ public class S32PacketConfirmTransaction implements Packet<INetHandlerPlayClient
             this.windowId = buf.readUnsignedByte();
             this.actionNumber = buf.readShort();
             this.field_148893_c = buf.readBoolean();
+        }
+
+        Disabler disabler = Client.INSTANCE.getModuleManager().getModule(Disabler.class);
+        if (disabler.getGrimPost() && this.actionNumber < 0 && Disabler.modeValue.is("GrimAC")) {
+            disabler.pingPackets.add((int)this.actionNumber);
         }
     }
 

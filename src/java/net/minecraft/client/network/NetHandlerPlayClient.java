@@ -8,6 +8,7 @@ import com.mojang.authlib.GameProfile;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import dev.tenacity.Client;
+import dev.tenacity.module.impl.exploit.Disabler;
 import dev.tenacity.module.impl.movement.Flight;
 import dev.tenacity.event.impl.player.ChatReceivedEvent;
 import dev.tenacity.utils.misc.Enhancements;
@@ -910,7 +911,13 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
         }
 
         if (container != null && !packetIn.func_148888_e()) {
-            this.addToSendQueue(new C0FPacketConfirmTransaction(packetIn.getWindowId(), packetIn.getActionNumber(), true));
+            Disabler dis = Client.INSTANCE.getModuleManager().getModule(Disabler.class);
+            final C0FPacketConfirmTransaction packet = new C0FPacketConfirmTransaction(packetIn.getWindowId(), packetIn.getActionNumber(), true);
+            if (dis.getGrimPost() && Disabler.modeValue.is("GrimAC")) {
+                dis.fixC0F(packet);
+            } else {
+                this.addToSendQueue(packet);
+            }
         }
     }
 
