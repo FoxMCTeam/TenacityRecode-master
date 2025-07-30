@@ -1,6 +1,7 @@
 package dev.tenacity.ui.mainmenu;
 
 import dev.tenacity.Client;
+import dev.tenacity.module.impl.display.PostProcessing;
 import dev.tenacity.utils.misc.NetworkingUtils;
 import dev.tenacity.utils.render.*;
 import dev.tenacity.utils.render.blur.GaussianBlur;
@@ -56,10 +57,8 @@ public class CustomMainMenu extends GuiScreen {
         float rectWidth = 277;
         float rectHeight = 275.5f;
 
-        GaussianBlur.startBlur();
-        RoundedUtil.drawRound(width / 2f - rectWidth / 2f, height / 2f - rectHeight / 2f,
-                rectWidth, rectHeight, 10, Color.WHITE);
-        GaussianBlur.endBlur(40, 2);
+        PostProcessing.runBloom(() -> RoundedUtil.drawRound(width / 2f - rectWidth / 2f, height / 2f - rectHeight / 2f,
+                rectWidth, rectHeight, 10, Color.WHITE), true, false, 1);
 
 
         float outlineImgWidth = 688 / 2f;
