@@ -134,7 +134,6 @@ public class ModuleManager {
         modules.put(Camera.class, new Camera());
         modules.put(SkinLayers3D.class, new SkinLayers3D());
         modules.put(ZoomMod.class, new ZoomMod());
-        modules.put(DynamicIsland.class, new DynamicIsland());
     }
 
     public List<Module> getModules() {
