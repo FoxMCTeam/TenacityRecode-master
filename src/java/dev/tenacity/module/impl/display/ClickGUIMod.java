@@ -46,11 +46,11 @@ public class ClickGUIMod extends Module {
     }
 
     public void onEnable() {
-        if (rescale.isEnabled()) {
+        if (rescale.get()) {
             prevGuiScale = mc.gameSettings.guiScale;
             mc.gameSettings.guiScale = 2;
         }
-        switch (clickguiMode.getMode()) {
+        switch (clickguiMode.get()) {
             case "Dropdown":
                 mc.displayGuiScreen(dropdownClickGui);
                 break;

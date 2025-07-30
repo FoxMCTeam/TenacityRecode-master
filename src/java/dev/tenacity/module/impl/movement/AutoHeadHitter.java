@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.movement;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.MotionEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.BooleanSetting;
@@ -27,15 +27,15 @@ public class AutoHeadHitter extends Module {
     @EventTarget
     public void onMotionEvent(MotionEvent e) {
         if (e.isPre()) {
-            if ((onlyWhileJumping.isEnabled() && !mc.gameSettings.keyBindJump.isKeyDown())
-                    || (ignoreIfSneaking.isEnabled() && mc.thePlayer.isSneaking())
+            if ((onlyWhileJumping.get() && !mc.gameSettings.keyBindJump.isKeyDown())
+                    || (ignoreIfSneaking.get() && mc.thePlayer.isSneaking())
                     || mc.currentScreen != null
                     || !mc.thePlayer.onGround
                     || !MovementUtils.isMoving()
                     || !isUnderBlock()) {
                 return;
             }
-            if (timer.hasTimeElapsed(1000 / jps.getValue())) {
+            if (timer.hasTimeElapsed(1000 / jps.get())) {
                 mc.thePlayer.jump();
                 timer.reset();
             }

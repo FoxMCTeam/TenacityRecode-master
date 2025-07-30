@@ -1,9 +1,9 @@
 package dev.tenacity.module.impl.movement;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.network.PacketSendEvent;
-import com.cubk.event.impl.player.MotionEvent;
-import com.cubk.event.impl.player.MoveEvent;
+import dev.tenacity.event.annotations.EventTarget;
+
+import dev.tenacity.event.impl.player.MotionEvent;
+import dev.tenacity.event.impl.player.MoveEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.BooleanSetting;
@@ -55,9 +55,9 @@ public final class LongJump extends Module {
 
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
-        setSuffix(mode.getMode());
-        if (spoofY.isEnabled()) mc.thePlayer.posY = y;
-        switch (mode.getMode()) {
+        setSuffix(mode.get());
+        if (spoofY.get()) mc.thePlayer.posY = y;
+        switch (mode.get()) {
             case "Vanilla":
                 if (MovementUtils.isMoving() && mc.thePlayer.onGround) {
                     MovementUtils.setSpeed(MovementUtils.getBaseMoveSpeed() * 2);
@@ -66,7 +66,7 @@ public final class LongJump extends Module {
                 break;
             case "Watchdog":
                 if (event.isPre()) {
-                    switch (watchdogMode.getMode()) {
+                    switch (watchdogMode.get()) {
                         case "Damage":
                             if (mc.thePlayer.onGround) {
                                 stage++;
@@ -78,7 +78,7 @@ public final class LongJump extends Module {
                             if (stage <= 3) {
                                 event.setOnGround(false);
                                 mc.thePlayer.posY = y;
-                                mc.timer.timerSpeed = damageSpeed.getValue().floatValue();
+                                mc.timer.timerSpeed = damageSpeed.get().floatValue();
                                 speed = 1.2;
                             }
                             if (mc.thePlayer.hurtTime > 0) {
@@ -173,10 +173,6 @@ public final class LongJump extends Module {
         }
         if (!mode.is("Watchdog"))
             ticks++;
-    }
-
-    @EventTarget
-    public void onPacketSendEvent(PacketSendEvent event) {
     }
 
     @EventTarget

@@ -3,19 +3,18 @@ package dev.tenacity.module.settings.impl;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import dev.tenacity.module.settings.Setting;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 public class ModeSetting extends Setting {
-
+    @Getter
     public final List<String> modes;
-    private final HashMap<String, ArrayList<Setting>> childrenMap = new HashMap<>();
-    private String defaultMode;
     private int modeIndex;
 
+    @Setter
     @Expose
     @SerializedName("value")
     private String currentMode;
@@ -28,13 +27,20 @@ public class ModeSetting extends Setting {
     }
 
 
+    public String get() {
+        return currentMode;
+    }
+
     public String getMode() {
         return currentMode;
     }
 
-
     public boolean is(String mode) {
         return currentMode.equalsIgnoreCase(mode);
+    }
+
+    public void set(String currentMode) {
+        this.currentMode = currentMode;
     }
 
     public void cycleForwards() {
@@ -49,10 +55,6 @@ public class ModeSetting extends Setting {
         currentMode = modes.get(modeIndex);
     }
 
-
-    public void setCurrentMode(String currentMode) {
-        this.currentMode = currentMode;
-    }
 
     @Override
     public String getConfigValue() {

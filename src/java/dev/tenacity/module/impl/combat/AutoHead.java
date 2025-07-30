@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.combat;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.MotionEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.NumberSetting;
@@ -29,8 +29,8 @@ public class AutoHead extends Module {
     public void onMotionEvent(MotionEvent e) {
         if (mc.thePlayer != null && mc.theWorld != null && e.isPre()
                 && !(mc.thePlayer.isPotionActive(Potion.moveSpeed) && mc.thePlayer.isPotionActive(Potion.regeneration))
-                && (mc.thePlayer.getHealth() / mc.thePlayer.getMaxHealth()) * 100 <= healPercent.getValue()
-                && timer.hasTimeElapsed(delay.getValue().longValue())) {
+                && (mc.thePlayer.getHealth() / mc.thePlayer.getMaxHealth()) * 100 <= healPercent.get()
+                && timer.hasTimeElapsed(delay.get().longValue())) {
             for (int i = 0; i < 45; i++) {
                 ItemStack is = mc.thePlayer.inventoryContainer.getSlot(i).getStack();
                 if (is != null && is.getItem() instanceof ItemSkull && is.getDisplayName().contains("Head")) {

@@ -16,10 +16,17 @@ public class StringSetting extends Setting {
     }
 
 
+    public String get() {
+        return string;
+    }
+
     public String getString() {
         return string;
     }
 
+    public void set(String string) {
+        this.string = string;
+    }
 
     public void setString(String string) {
         this.string = string;

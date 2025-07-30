@@ -11,7 +11,7 @@ import net.minecraft.util.BlockPos;
 public class EffectManager implements Utils {
 
     public void playKillEffect(KillEffects.Location location) {
-        switch (KillEffects.killEffect.getMode()) {
+        switch (KillEffects.killEffect.get()) {
             case "Blood Explosion":
                 playBlockBreak(location.x, location.y, location.z, location.eyeHeight, 152);
                 break;

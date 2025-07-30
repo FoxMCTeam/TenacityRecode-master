@@ -49,8 +49,8 @@ public class ColorComponent extends SettingComponent<ColorSetting> {
             rainbowSettings = new ArrayList<>();
             rainbowSettings.add(new NumberComponent(speedSetting));
             rainbowSettings.add(new NumberComponent(saturationSetting));
-            speedSetting.setValue(setting.getRainbow().getSpeed());
-            saturationSetting.setValue(setting.getRainbow().getSaturation());
+            speedSetting.set(setting.getRainbow().getSpeed());
+            saturationSetting.set(setting.getRainbow().getSaturation());
         }
     }
 
@@ -102,7 +102,7 @@ public class ColorComponent extends SettingComponent<ColorSetting> {
         boolean hovered = HoveringUtil.isHovering(colorX - 4, colorY - 4, colorWidth + 8, colorHeight + 8, mouseX, mouseY);
 
         hoverAnimation.setDirection(hovered ? Direction.FORWARDS : Direction.BACKWARDS);
-        Color actualColor = ColorUtil.applyOpacity(colorSetting.getColor(), alpha);
+        Color actualColor = ColorUtil.applyOpacity(colorSetting.get(), alpha);
 
         RoundedUtil.drawRound(colorX, colorY, colorWidth, colorHeight, colorRadius,
                 ColorUtil.interpolateColorC(actualColor, actualColor.darker(), hoverAnimation.getOutput().floatValue()));
@@ -119,7 +119,7 @@ public class ColorComponent extends SettingComponent<ColorSetting> {
         float rainbowCount = 0;
         if (opened || !openAnimation.isDone()) {
             if (colorSetting.isRainbow()) {
-                Color color = colorSetting.getColor();
+                Color color = colorSetting.get();
                 int red = color.getRed(), green = color.getGreen(), blue = color.getBlue();
                 float[] hsb = Color.RGBtoHSB(red, green, blue, null);
                 colorSetting.setHue(hsb[0]);
@@ -272,8 +272,8 @@ public class ColorComponent extends SettingComponent<ColorSetting> {
                     }
 
                     if (colorSetting.isRainbow()) {
-                        colorSetting.getRainbow().setSpeed(speedSetting.getValue().intValue());
-                        colorSetting.getRainbow().setSaturation(saturationSetting.getValue().floatValue());
+                        colorSetting.getRainbow().setSpeed(speedSetting.get().intValue());
+                        colorSetting.getRainbow().setSaturation(saturationSetting.get().floatValue());
                     }
                 }
 
@@ -293,7 +293,7 @@ public class ColorComponent extends SettingComponent<ColorSetting> {
     }
 
     private String getHexCode(ColorSetting colorSetting) {
-        Color color = colorSetting.getColor();
+        Color color = colorSetting.get();
         return String.format("#%02X%02X%02X", color.getRed(), color.getGreen(), color.getBlue());
     }
 
@@ -330,8 +330,8 @@ public class ColorComponent extends SettingComponent<ColorSetting> {
                     rainbowSettings = new ArrayList<>();
                     rainbowSettings.add(new NumberComponent(speedSetting));
                     rainbowSettings.add(new NumberComponent(saturationSetting));
-                    getSetting().getRainbow().setSpeed(speedSetting.getValue().intValue());
-                    getSetting().getRainbow().setSaturation(saturationSetting.getValue().floatValue());
+                    getSetting().getRainbow().setSpeed(speedSetting.get().intValue());
+                    getSetting().getRainbow().setSaturation(saturationSetting.get().floatValue());
                 }
             }
 

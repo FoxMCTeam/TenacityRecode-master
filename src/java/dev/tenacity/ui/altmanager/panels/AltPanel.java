@@ -308,17 +308,6 @@ public class AltPanel extends Panel {
             }
         }
 
-
-        @Override
-        public void initGui() {
-
-        }
-
-        @Override
-        public void keyTyped(char typedChar, int keyCode) {
-
-        }
-
         @Override
         public void drawScreen(int mouseX, int mouseY) {
             hovering = HoveringUtil.isHovering(x, y, width, height, mouseX, mouseY);
@@ -493,11 +482,6 @@ public class AltPanel extends Panel {
                     shiftClickStart = (shiftClickStart == this) ? null : this;
                 }
             }
-        }
-
-        @Override
-        public void mouseReleased(int mouseX, int mouseY, int state) {
-
         }
 
         public void drawAltHead(float x, float y, float size) {

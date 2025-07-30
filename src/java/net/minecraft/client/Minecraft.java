@@ -1,5 +1,7 @@
 package net.minecraft.client;
 
+import dev.tenacity.event.impl.game.*;
+import dev.tenacity.event.impl.render.ScrollMouseEvent;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
@@ -12,11 +14,10 @@ import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import dev.tenacity.Client;
-import com.cubk.event.impl.game.*;
-import com.cubk.event.impl.player.BlockEvent;
-import com.cubk.event.impl.player.BlockPlaceableEvent;
-import com.cubk.event.impl.player.ClickEvent;
-import com.cubk.event.impl.player.ClickEventRight;
+import dev.tenacity.event.impl.player.BlockEvent;
+import dev.tenacity.event.impl.player.BlockPlaceableEvent;
+import dev.tenacity.event.impl.player.ClickEvent;
+import dev.tenacity.event.impl.player.ClickEventRight;
 import dev.tenacity.module.impl.display.ClickGUIMod;
 import dev.tenacity.ui.SplashScreen;
 import dev.tenacity.ui.clickguis.dropdown.DropdownClickGUI;
@@ -24,6 +25,7 @@ import dev.tenacity.ui.mainmenu.CustomMainMenu;
 import de.florianmichael.viamcp.fixes.AttackOrder;
 import dev.tenacity.utils.font.FontUtil;
 import dev.tenacity.utils.misc.SoundUtils;
+import dev.tenacity.utils.client.addons.smoothscrollingeverywhere.SmoothScrollingEverywhere;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.MusicTicker;
@@ -107,6 +109,7 @@ import org.lwjglx.opengl.DisplayMode;
 import org.lwjgl.opengl.*;
 import org.lwjglx.opengl.PixelFormat;
 import org.lwjglx.util.glu.GLU;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -523,13 +526,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         this.effectRenderer = new EffectRenderer(this.theWorld, this.renderEngine);
         this.checkGLError("Post startup");
         this.ingameGUI = new GuiIngame(this);
-
-
-
-
         SplashScreen.continueCount(false);
         logger.info("Finished loading in {} seconds.", (System.currentTimeMillis() - start) / 1000f);
-
+        Client.INSTANCE.setLoaded(true);
         this.gameSettings.guiScale = 2;
         SoundUtils.playSound(new ResourceLocation("Tenacity/Sounds/opening.wav"), .8f);
         //SplashScreen.drawScreen();
@@ -565,7 +564,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
 
     private void createDisplay() {
         Display.setResizable(true);
-        Display.setTitle("Minecraft 1.8.9 - lwjgl " + Sys.getVersion());
+        Display.setTitle("Minecraft 1.8.9 - LWJGL" + Sys.getVersion());
 
         Display.create((new PixelFormat()).withDepthBits(24));
     }
@@ -594,8 +593,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
             InputStream inputstream1 = null;
 
             try {
-                inputstream = this.mcDefaultResourcePack.getInputStreamAssets(new ResourceLocation("icons/icon_16x16.png"));
-                inputstream1 = this.mcDefaultResourcePack.getInputStreamAssets(new ResourceLocation("icons/icon_32x32.png"));
+                inputstream = this.mcDefaultResourcePack.getInputStream(new ResourceLocation("icons/icon_16x16.png"));
+                inputstream1 = this.mcDefaultResourcePack.getInputStream(new ResourceLocation("icons/icon_32x32.png"));
 
                 if (inputstream != null && inputstream1 != null) {
                     Display.setIcon(new ByteBuffer[]{this.readImageToBuffer(inputstream), this.readImageToBuffer(inputstream1)});
@@ -1071,7 +1070,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
     }
 
     public int getLimitFramerate() {
-        return this.theWorld == null && this.currentScreen != null ? 144 : this.gameSettings.limitFramerate;
+        if (SmoothScrollingEverywhere.isUnlimitFps())
+            return (this.gameSettings.limitFramerate);
+        return 0;
     }
 
     public boolean isFramerateLimitBelowMax() {
@@ -1262,7 +1263,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
      */
     public void setIngameNotInFocus() {
         if (this.inGameHasFocus) {
-            if (!(ClickGUIMod.walk.isEnabled() && this.currentScreen instanceof DropdownClickGUI)) {
+            if (!(ClickGUIMod.walk.get() && this.currentScreen instanceof DropdownClickGUI)) {
                 KeyBinding.unPressAllKeys();
             }
             this.inGameHasFocus = false;
@@ -1602,7 +1603,18 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
                 long i1 = getSystemTime() - this.systemTime;
 
                 if (i1 <= 200L) {
-                    int j = Mouse.getEventDWheel();
+                    int dWheel = Mouse.getEventDWheel();
+
+                    ScrollMouseEvent event = new ScrollMouseEvent(dWheel);
+                    Client.INSTANCE.getEventManager().call(event);
+
+                    if(dWheel != 0) {
+                        if(event.isCancelled()) {
+                            dWheel = 0;
+                        }
+                    }
+
+                    int j = dWheel;
 
                     if (j != 0) {
                         if (this.thePlayer.isSpectator()) {
@@ -2008,7 +2020,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
             this.entityRenderer.getMapItemRenderer().clearLoadedMaps();
         }
         if (theWorld != null) {
-            WorldEvent e = new WorldEvent.Unload(theWorld);
+            WorldEvent e = new WorldEvent(theWorld);
             Client.INSTANCE.getEventManager().call(e);
         }
         if (worldClientIn == null) {

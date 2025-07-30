@@ -1,5 +1,6 @@
 package net.minecraft.client.gui;
 
+import dev.tenacity.utils.client.addons.smoothscrollingeverywhere.SmoothScrollingEverywhere;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -7,6 +8,8 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.MathHelper;
 import org.lwjglx.input.Mouse;
+
+import static dev.tenacity.utils.client.addons.smoothscrollingeverywhere.SmoothScrollingEverywhere.clamp;
 
 public abstract class GuiSlot {
     protected final Minecraft mc;
@@ -66,6 +69,10 @@ public abstract class GuiSlot {
      */
     private int scrollDownButtonID;
     private boolean enabled = true;
+
+    protected float target;
+    protected long start;
+    protected long duration;
 
     public GuiSlot(Minecraft mcIn, int width, int height, int topIn, int bottomIn, int slotHeightIn) {
         this.mc = mcIn;
@@ -162,7 +169,8 @@ public abstract class GuiSlot {
      * Stop the thing from scrolling out of bounds
      */
     protected void bindAmountScrolled() {
-        this.amountScrolled = MathHelper.clamp_float(this.amountScrolled, 0.0F, (float) this.func_148135_f());
+        amountScrolled = clamp(amountScrolled, func_148135_f());
+        target = clamp(target, func_148135_f());
     }
 
     public int func_148135_f() {
@@ -203,76 +211,78 @@ public abstract class GuiSlot {
         }
     }
 
-    public void drawScreen(int mouseXIn, int mouseYIn, float p_148128_3_) {
+    public void drawScreen(int mouseXIn, int mouseYIn, float partialTicks) {
+        float[] target = new float[]{this.target};
+        this.amountScrolled = SmoothScrollingEverywhere.handleScrollingPosition(target, this.amountScrolled, this.func_148135_f(), 20f / Minecraft.getDebugFPS(), (double) this.start, (double) this.duration);
+        this.target = target[0];
+
         if (this.field_178041_q) {
             this.mouseX = mouseXIn;
             this.mouseY = mouseYIn;
             this.drawBackground();
-            int i = this.getScrollBarX();
-            int j = i + 6;
             this.bindAmountScrolled();
+
             GlStateManager.disableLighting();
             GlStateManager.disableFog();
+
             Tessellator tessellator = Tessellator.getInstance();
-            WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+            WorldRenderer buffer = tessellator.getWorldRenderer();
+
             this.drawContainerBackground(tessellator);
-            int k = this.left + this.width / 2 - this.getListWidth() / 2 + 2;
-            int l = this.top + 4 - (int) this.amountScrolled;
+
+            int left = this.left + this.width / 2 - this.getListWidth() / 2 + 2;
+            int topY = this.top + 4 - (int) this.amountScrolled;
 
             if (this.hasListHeader) {
-                this.drawListHeader(k, l, tessellator);
+                this.drawListHeader(left, topY, tessellator);
             }
 
-            this.drawSelectionBox(k, l, mouseXIn, mouseYIn);
+            this.drawSelectionBox(left, topY, mouseXIn, mouseYIn);
+
+            // 遮罩上下阴影
             GlStateManager.disableDepth();
-            int i1 = 4;
             this.overlayBackground(0, this.top, 255, 255);
             this.overlayBackground(this.bottom, this.height, 255, 255);
+
             GlStateManager.enableBlend();
             GlStateManager.tryBlendFuncSeparate(770, 771, 0, 1);
             GlStateManager.disableAlpha();
             GlStateManager.shadeModel(7425);
             GlStateManager.disableTexture2D();
-            worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-            worldrenderer.pos(this.left, this.top + i1, 0.0D).tex(0.0D, 1.0D).color(0, 0, 0, 0).endVertex();
-            worldrenderer.pos(this.right, this.top + i1, 0.0D).tex(1.0D, 1.0D).color(0, 0, 0, 0).endVertex();
-            worldrenderer.pos(this.right, this.top, 0.0D).tex(1.0D, 0.0D).color(0, 0, 0, 255).endVertex();
-            worldrenderer.pos(this.left, this.top, 0.0D).tex(0.0D, 0.0D).color(0, 0, 0, 255).endVertex();
-            tessellator.draw();
-            worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-            worldrenderer.pos(this.left, this.bottom, 0.0D).tex(0.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-            worldrenderer.pos(this.right, this.bottom, 0.0D).tex(1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-            worldrenderer.pos(this.right, this.bottom - i1, 0.0D).tex(1.0D, 0.0D).color(0, 0, 0, 0).endVertex();
-            worldrenderer.pos(this.left, this.bottom - i1, 0.0D).tex(0.0D, 0.0D).color(0, 0, 0, 0).endVertex();
-            tessellator.draw();
-            int j1 = this.func_148135_f();
 
-            if (j1 > 0) {
-                int k1 = (this.bottom - this.top) * (this.bottom - this.top) / this.getContentHeight();
-                k1 = MathHelper.clamp_int(k1, 32, this.bottom - this.top - 8);
-                int l1 = (int) this.amountScrolled * (this.bottom - this.top - k1) / j1 + this.top;
+            // 替换的滚动条绘制逻辑（对应Mixin的renderScrollbar）
+            int scrollbarPositionMinX = this.getScrollBarX();
+            int scrollbarPositionMaxX = scrollbarPositionMinX + 6;
+            int maxScroll = this.func_148135_f();
 
-                if (l1 < this.top) {
-                    l1 = this.top;
-                }
+            if (maxScroll > 0) {
+                int height = (this.bottom - this.top) * (this.bottom - this.top) / this.getContentHeight();
+                height = MathHelper.clamp_int(height, 32, this.bottom - this.top - 8);
+                height = (int) ((double) height - Math.min(this.amountScrolled < 0.0D ? (int) (-this.amountScrolled) : (this.amountScrolled > (double) maxScroll ? (int) this.amountScrolled - maxScroll : 0), (double) height * 0.75D));
+                int minY = Math.min(Math.max((int) this.amountScrolled * (this.bottom - this.top - height) / maxScroll + this.top, this.top), this.bottom - height);
 
-                worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-                worldrenderer.pos(i, this.bottom, 0.0D).tex(0.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-                worldrenderer.pos(j, this.bottom, 0.0D).tex(1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-                worldrenderer.pos(j, this.top, 0.0D).tex(1.0D, 0.0D).color(0, 0, 0, 255).endVertex();
-                worldrenderer.pos(i, this.top, 0.0D).tex(0.0D, 0.0D).color(0, 0, 0, 255).endVertex();
+                // 滚动条背景
+                buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+                buffer.pos(scrollbarPositionMinX, this.bottom, 0.0D).tex(0.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+                buffer.pos(scrollbarPositionMaxX, this.bottom, 0.0D).tex(1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+                buffer.pos(scrollbarPositionMaxX, this.top, 0.0D).tex(1.0D, 0.0D).color(0, 0, 0, 255).endVertex();
+                buffer.pos(scrollbarPositionMinX, this.top, 0.0D).tex(0.0D, 0.0D).color(0, 0, 0, 255).endVertex();
                 tessellator.draw();
-                worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-                worldrenderer.pos(i, l1 + k1, 0.0D).tex(0.0D, 1.0D).color(128, 128, 128, 255).endVertex();
-                worldrenderer.pos(j, l1 + k1, 0.0D).tex(1.0D, 1.0D).color(128, 128, 128, 255).endVertex();
-                worldrenderer.pos(j, l1, 0.0D).tex(1.0D, 0.0D).color(128, 128, 128, 255).endVertex();
-                worldrenderer.pos(i, l1, 0.0D).tex(0.0D, 0.0D).color(128, 128, 128, 255).endVertex();
+
+                // 滚动条灰色主体
+                buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+                buffer.pos(scrollbarPositionMinX, minY + height, 0.0D).tex(0.0D, 1.0D).color(128, 128, 128, 255).endVertex();
+                buffer.pos(scrollbarPositionMaxX, minY + height, 0.0D).tex(1.0D, 1.0D).color(128, 128, 128, 255).endVertex();
+                buffer.pos(scrollbarPositionMaxX, minY, 0.0D).tex(1.0D, 0.0D).color(128, 128, 128, 255).endVertex();
+                buffer.pos(scrollbarPositionMinX, minY, 0.0D).tex(0.0D, 0.0D).color(128, 128, 128, 255).endVertex();
                 tessellator.draw();
-                worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-                worldrenderer.pos(i, l1 + k1 - 1, 0.0D).tex(0.0D, 1.0D).color(192, 192, 192, 255).endVertex();
-                worldrenderer.pos(j - 1, l1 + k1 - 1, 0.0D).tex(1.0D, 1.0D).color(192, 192, 192, 255).endVertex();
-                worldrenderer.pos(j - 1, l1, 0.0D).tex(1.0D, 0.0D).color(192, 192, 192, 255).endVertex();
-                worldrenderer.pos(i, l1, 0.0D).tex(0.0D, 0.0D).color(192, 192, 192, 255).endVertex();
+
+                // 滚动条边缘亮色高光
+                buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+                buffer.pos(scrollbarPositionMinX, minY + height - 1, 0.0D).tex(0.0D, 1.0D).color(192, 192, 192, 255).endVertex();
+                buffer.pos(scrollbarPositionMaxX - 1, minY + height - 1, 0.0D).tex(1.0D, 1.0D).color(192, 192, 192, 255).endVertex();
+                buffer.pos(scrollbarPositionMaxX - 1, minY, 0.0D).tex(1.0D, 0.0D).color(192, 192, 192, 255).endVertex();
+                buffer.pos(scrollbarPositionMinX, minY, 0.0D).tex(0.0D, 0.0D).color(192, 192, 192, 255).endVertex();
                 tessellator.draw();
             }
 
@@ -283,6 +293,7 @@ public abstract class GuiSlot {
             GlStateManager.disableBlend();
         }
     }
+
 
     public void handleMouseInput() {
         if (this.isMouseYWithinSlotBounds(this.mouseY)) {
@@ -356,16 +367,24 @@ public abstract class GuiSlot {
                 this.initialClickY = -1;
             }
 
-            int i2 = Mouse.getEventDWheel();
+            // 自定义滚轮处理逻辑（替换原来的）
+            int wheel = Mouse.getEventDWheel();
+            if (Mouse.isButtonDown(0) && this.getEnabled()) {
+                // 禁止在拖动时滚动，强制钳制滚动位置
+                this.amountScrolled = clamp(this.amountScrolled, this.func_148135_f(), 0);
+                // 如果你添加了 target 字段也同步（原版 MCP 没有这个字段，需要你自己加）
+                // this.target = this.amountScrolled;
+            } else {
+                if (wheel != 0) {
+                    if (wheel > 0) {
+                        wheel = -1;
+                    } else if (wheel < 0) {
+                        wheel = 1;
+                    }
 
-            if (i2 != 0) {
-                if (i2 > 0) {
-                    i2 = -1;
-                } else if (i2 < 0) {
-                    i2 = 1;
+                    // 替代原逻辑，支持平滑滚动
+                    this.offset(SmoothScrollingEverywhere.getScrollStep() * wheel, true);
                 }
-
-                this.amountScrolled += (float) (i2 * this.slotHeight / 2);
             }
         }
     }
@@ -376,6 +395,24 @@ public abstract class GuiSlot {
 
     public void setEnabled(boolean enabledIn) {
         this.enabled = enabledIn;
+    }
+
+    public void offset(float value, boolean animated) {
+        scrollTo(target + value, animated);
+    }
+
+    public void scrollTo(float value, boolean animated) {
+        scrollTo(value, animated, SmoothScrollingEverywhere.getScrollDuration());
+    }
+
+    public void scrollTo(float value, boolean animated, long duration) {
+        target = clamp(value, func_148135_f());
+
+        if (animated) {
+            start = System.currentTimeMillis();
+            this.duration = duration;
+        } else
+            amountScrolled = target;
     }
 
     /**

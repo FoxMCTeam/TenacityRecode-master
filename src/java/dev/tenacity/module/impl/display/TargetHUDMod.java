@@ -1,17 +1,17 @@
 package dev.tenacity.module.impl.display;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.render.PreRenderEvent;
-import com.cubk.event.impl.render.Render2DEvent;
-import com.cubk.event.impl.render.Render3DEvent;
-import com.cubk.event.impl.render.ShaderEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.render.PreRenderEvent;
+import dev.tenacity.event.impl.render.Render2DEvent;
+import dev.tenacity.event.impl.render.Render3DEvent;
+import dev.tenacity.event.impl.render.ShaderEvent;
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.combat.KillAura;
-import dev.tenacity.module.impl.render.targethud.AutoDoxTargetHUD;
-import dev.tenacity.module.impl.render.targethud.RiseTargetHUD;
-import dev.tenacity.module.impl.render.targethud.TargetHUD;
+import dev.tenacity.module.impl.display.targethud.AutoDoxTargetHUD;
+import dev.tenacity.module.impl.display.targethud.RiseTargetHUD;
+import dev.tenacity.module.impl.display.targethud.TargetHUD;
 import dev.tenacity.module.settings.ParentAttribute;
 import dev.tenacity.module.settings.impl.BooleanSetting;
 import dev.tenacity.module.settings.impl.ModeSetting;
@@ -36,7 +36,7 @@ import java.awt.*;
 public class TargetHUDMod extends Module {
 
     public static boolean renderLayers = true;
-    private final ModeSetting targetHud = new ModeSetting("Mode", "Tenacity", "Tenacity", "Old Tenacity", "Rise", "Exhibition", "Auto-Dox", "Akrien", "Astolfo", "Novoline");
+    private final ModeSetting targetHud = new ModeSetting("Mode", "Tenacity", "Tenacity", "Old Tenacity", "Rise", "Exhibition", "Auto-Dox", "Akrien", "Astolfo", "Novoline", "Modern Exhibition");
     private final BooleanSetting trackTarget = new BooleanSetting("Track Target", false);
     private final ModeSetting trackingMode = new ModeSetting("Tracking Mode", "Middle", "Middle", "Top", "Left", "Right");
     private final GradientColorWheel colorWheel = new GradientColorWheel();
@@ -55,7 +55,7 @@ public class TargetHUDMod extends Module {
 
     @EventTarget
     public void onRender3DEvent(Render3DEvent event) {
-        if (trackTarget.isEnabled() && target != null) {
+        if (trackTarget.get() && target != null) {
             for (Entity entity : mc.theWorld.loadedEntityList) {
                 if (entity instanceof EntityLivingBase entityLivingBase) {
                     if (target.equals(entityLivingBase)) {
@@ -69,7 +69,7 @@ public class TargetHUDMod extends Module {
 
     @EventTarget
     public void onPreRenderEvent(PreRenderEvent event) {
-        TargetHUD currentTargetHUD = TargetHUD.get(targetHud.getMode());
+        TargetHUD currentTargetHUD = TargetHUD.get(targetHud.get());
         drag.setWidth(currentTargetHUD.getWidth());
         drag.setHeight(currentTargetHUD.getHeight());
 
@@ -123,10 +123,10 @@ public class TargetHUDMod extends Module {
 
     @EventTarget
     public void onRender2DEvent(Render2DEvent e) {
-        this.setSuffix(targetHud.getMode());
-        boolean tracking = trackTarget.isEnabled() && targetVector != null && target != mc.thePlayer;
+        this.setSuffix(targetHud.get());
+        boolean tracking = trackTarget.get() && targetVector != null && target != mc.thePlayer;
 
-        TargetHUD currentTargetHUD = TargetHUD.get(targetHud.getMode());
+        TargetHUD currentTargetHUD = TargetHUD.get(targetHud.get());
 
         if (target != null) {
 
@@ -159,8 +159,8 @@ public class TargetHUDMod extends Module {
     public void onShaderEvent(ShaderEvent e) {
         float x = drag.getX(), y = drag.getY();
         float trackScale = 1;
-        TargetHUD currentTargetHUD = TargetHUD.get(targetHud.getMode());
-        if (trackTarget.isEnabled() && targetVector != null && target != mc.thePlayer) {
+        TargetHUD currentTargetHUD = TargetHUD.get(targetHud.get());
+        if (trackTarget.get() && targetVector != null && target != mc.thePlayer) {
             Pair<Float, Float> coords = getTrackedCoords();
             x = coords.getFirst();
             y = coords.getSecond();
@@ -172,7 +172,7 @@ public class TargetHUDMod extends Module {
 
         if (target != null) {
 
-            boolean glow = e.getBloomOptions().getSetting("TargetHud").isEnabled();
+            boolean glow = e.getBloomOptions().getSetting("TargetHud").get();
             RenderUtil.scaleStart(x + drag.getWidth() / 2f, y + drag.getHeight() / 2f,
                     (float) (.5 + openAnimation.getOutput().floatValue()) * trackScale);
             float alpha = Math.min(1, openAnimation.getOutput().floatValue() * 2);
@@ -200,7 +200,7 @@ public class TargetHUDMod extends Module {
         float entityHeight = (targetVector.getW() - targetVector.getY());
         float middleX = x + entityWidth / 2f - width / 2f;
         float middleY = y + entityHeight / 2f - height / 2f;
-        switch (trackingMode.getMode()) {
+        switch (trackingMode.get()) {
             case "Middle":
                 return Pair.of(middleX, middleY);
             case "Top":

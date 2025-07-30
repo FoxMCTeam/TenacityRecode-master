@@ -1,8 +1,9 @@
 package dev.tenacity.module.impl.player;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.network.PacketSendEvent;
-import com.cubk.event.impl.player.MotionEvent;
+import dev.tenacity.event.annotations.EventTarget;
+
+import dev.tenacity.event.impl.network.PacketEvent;
+import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.ParentAttribute;
@@ -131,7 +132,7 @@ public class InvManager extends Module {
     }
 
     @EventTarget
-    public void onPacketSendEvent(PacketSendEvent e) {
+    public void onPacketEvent(PacketEvent e) {
         if (isInvOpen) {
             Packet<?> packet = e.getPacket();
             if ((packet instanceof C16PacketClientStatus && ((C16PacketClientStatus) packet).getStatus() == C16PacketClientStatus.EnumState.OPEN_INVENTORY_ACHIEVEMENT)
@@ -144,7 +145,7 @@ public class InvManager extends Module {
     }
 
     private boolean isReady() {
-        return timer.hasTimeElapsed(delay.getValue());
+        return timer.hasTimeElapsed(delay.get());
     }
 
     private void dropItems() {
@@ -250,14 +251,14 @@ public class InvManager extends Module {
             }
 
             if ((item == Items.wheat) || item == Items.spawn_egg
-                    || (item instanceof ItemFood && dropFood.isEnabled() && !(item instanceof ItemAppleGold))
+                    || (item instanceof ItemFood && dropFood.get() && !(item instanceof ItemAppleGold))
                     || (item instanceof ItemPotion && isBadPotion(stack))) {
                 return true;
             } else if (!(item instanceof ItemSword) && !(item instanceof ItemTool) && !(item instanceof ItemHoe) && !(item instanceof ItemArmor)) {
-                if (dropArchery.isEnabled() && (item instanceof ItemBow || item == Items.arrow)) {
+                if (dropArchery.get() && (item instanceof ItemBow || item == Items.arrow)) {
                     return true;
                 } else {
-                    return (dropShears.isEnabled() && ulName.contains("shears")) || item instanceof ItemGlassBottle || Arrays.stream(blacklist).anyMatch(ulName::contains);
+                    return (dropShears.get() && ulName.contains("shears")) || item instanceof ItemGlassBottle || Arrays.stream(blacklist).anyMatch(ulName::contains);
                 }
             }
             return true;
@@ -344,7 +345,7 @@ public class InvManager extends Module {
     }
 
     private void moveArrows() {
-        if (dropArchery.isEnabled() || !moveArrows.isEnabled() || !isReady()) return;
+        if (dropArchery.get() || !moveArrows.get() || !isReady()) return;
         for (int i = 36; i < 45; i++) {
             ItemStack is = mc.thePlayer.inventoryContainer.getSlot(i).getStack();
             if (is != null && is.getItem() == Items.arrow) {
@@ -362,7 +363,7 @@ public class InvManager extends Module {
     }
 
     private void moveFood() {
-        if (dropFood.isEnabled() || !isReady()) return;
+        if (dropFood.get() || !isReady()) return;
         for (int i = 9; i < 45; i++) {
             Slot slot = mc.thePlayer.inventoryContainer.getSlot(i);
             if (slot.getHasStack()) {
@@ -414,7 +415,7 @@ public class InvManager extends Module {
     }
 
     private void swapBlocks() {
-        if (!swapBlocks.isEnabled() || !isReady()) return;
+        if (!swapBlocks.get() || !isReady()) return;
         int mostBlocksSlot = getMostBlocks();
         int desiredSlot = ItemType.BLOCK.getDesiredSlot();
         if (mostBlocksSlot != -1 && mostBlocksSlot != desiredSlot) {
@@ -584,7 +585,7 @@ public class InvManager extends Module {
     private void fakeOpen() {
         if (!isInvOpen) {
             timer.reset();
-            if (!inventoryOnly.isEnabled() && inventoryPackets.isEnabled())
+            if (!inventoryOnly.get() && inventoryPackets.get())
                 PacketUtils.sendPacketNoEvent(new C16PacketClientStatus(C16PacketClientStatus.EnumState.OPEN_INVENTORY_ACHIEVEMENT));
             isInvOpen = true;
         }
@@ -592,7 +593,7 @@ public class InvManager extends Module {
 
     private void fakeClose() {
         if (isInvOpen) {
-            if (!inventoryOnly.isEnabled() && inventoryPackets.isEnabled())
+            if (!inventoryOnly.get() && inventoryPackets.get())
                 PacketUtils.sendPacketNoEvent(new C0DPacketCloseWindow(mc.thePlayer.inventoryContainer.windowId));
             isInvOpen = false;
         }
@@ -606,7 +607,7 @@ public class InvManager extends Module {
     }
 
     private boolean canContinue() {
-        return (inventoryOnly.isEnabled() && !(mc.currentScreen instanceof GuiInventory)) || (onlyWhileNotMoving.isEnabled() && MovementUtils.isMoving());
+        return (inventoryOnly.get() && !(mc.currentScreen instanceof GuiInventory)) || (onlyWhileNotMoving.get() && MovementUtils.isMoving());
     }
 
     @Getter
@@ -623,7 +624,7 @@ public class InvManager extends Module {
         private final NumberSetting setting;
 
         public int getDesiredSlot() {
-            return setting.getValue().intValue() + 35;
+            return setting.get().intValue() + 35;
         }
 
         public Slot getSlot() {

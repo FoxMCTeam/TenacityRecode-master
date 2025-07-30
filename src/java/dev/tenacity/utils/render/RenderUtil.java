@@ -3,6 +3,9 @@ package dev.tenacity.utils.render;
 import dev.tenacity.module.impl.combat.KillAura;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.animations.Animation;
+import dev.tenacity.utils.font.AbstractFontRenderer;
+import dev.tenacity.utils.objects.MathUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.*;
@@ -32,10 +35,46 @@ public class RenderUtil implements Utils {
     public static double ticks = 0;
     public static long lastFrame = 0;
 
+    private static int lastWidth;
+    private static int lastHeight;
+    private static LockedResolution lockedResolution;
+
     public static Framebuffer createFrameBuffer(Framebuffer framebuffer) {
         return createFrameBuffer(framebuffer, false);
     }
 
+    public static void hoveredText(AbstractFontRenderer font, String text, float x, float y, float mouseX, float mouseY, Color hoveredColor, Color unHoveredColor) {
+        if (isHovered(mouseX, mouseY, x, y, font.getStringWidth(text), (float)font.getHeight())) {
+            font.drawString(text, x, y, hoveredColor);
+        } else {
+            font.drawString(text, x, y, unHoveredColor);
+        }
+
+    }
+
+    public static void hoveredTextWithRun(AbstractFontRenderer font, String text, float x, float y, float mouseX, float mouseY, Color hoveredColor, Color unHoveredColor, Runnable task) {
+        if (isHovered(mouseX, mouseY, x, y, font.getStringWidth(text), (float)font.getHeight())) {
+            font.drawString(text, x, y, hoveredColor);
+            task.run();
+        } else {
+            font.drawString(text, x, y, unHoveredColor);
+        }
+
+    }
+    public static void drawRectWH(double x, double y, double width, double height, int color) {
+        RenderUtil.resetColor();
+        RenderUtil.setAlphaLimit(0.0f);
+        GLUtil.setup2DRendering(true);
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+        worldrenderer.pos(x, y, 0.0).color(color).endVertex();
+        worldrenderer.pos(x, y + height, 0.0).color(color).endVertex();
+        worldrenderer.pos(x + width, y + height, 0.0).color(color).endVertex();
+        worldrenderer.pos(x + width, y, 0.0).color(color).endVertex();
+        tessellator.draw();
+        GLUtil.end2DRendering();
+    }
     public static Framebuffer createFrameBuffer(Framebuffer framebuffer, boolean depth) {
         if (needsNewFramebuffer(framebuffer)) {
             if (framebuffer != null) {
@@ -46,10 +85,110 @@ public class RenderUtil implements Utils {
         return framebuffer;
     }
 
+    public static LockedResolution getLockedResolution() {
+        int width = Display.getWidth();
+        int height = Display.getHeight();
+
+        if (width != lastWidth ||
+                height != lastHeight) {
+            lastWidth = width;
+            lastHeight = height;
+            return lockedResolution = new LockedResolution(width / LockedResolution.SCALE_FACTOR, height / LockedResolution.SCALE_FACTOR);
+        }
+
+        return lockedResolution;
+    }
+
+    public static double progressiveAnimation(double now, double desired, double speed) {
+        double dif = Math.abs(now - desired);
+
+        final int fps = Minecraft.getDebugFPS();
+
+        if (dif > 0) {
+            double animationSpeed = MathUtils.roundToDecimalPlace(Math.min(
+                    10.0D, Math.max(0.05D, (144.0D / fps) * (dif / 10) * speed)), 0.05D);
+
+            if (dif != 0 && dif < animationSpeed)
+                animationSpeed = dif;
+
+            if (now < desired)
+                return now + animationSpeed;
+            else if (now > desired)
+                return now - animationSpeed;
+        }
+
+        return now;
+    }
+
+    public static double linearAnimation(double now, double desired, double speed) {
+        double dif = Math.abs(now - desired);
+
+        final int fps = Minecraft.getDebugFPS();
+
+        if (dif > 0) {
+            double animationSpeed = MathUtils.roundToDecimalPlace(Math.min(
+                    10.0D, Math.max(0.005D, (144.0D / fps) * speed)), 0.005D);
+
+            if (dif != 0 && dif < animationSpeed)
+                animationSpeed = dif;
+
+            if (now < desired)
+                return now + animationSpeed;
+            else if (now > desired)
+                return now - animationSpeed;
+        }
+
+        return now;
+    }
+
     public static boolean needsNewFramebuffer(Framebuffer framebuffer) {
         return framebuffer == null || framebuffer.framebufferWidth != mc.displayWidth || framebuffer.framebufferHeight != mc.displayHeight;
     }
 
+    public static void drawOutlinedString(AbstractFontRenderer fr, String s, float x, float y, int color, int outlineColor) {
+        fr.drawString(s, x - 0.5F, y, outlineColor);
+        fr.drawString(s, x, y - 0.5F, outlineColor);
+        fr.drawString(s, x + 0.5F, y, outlineColor);
+        fr.drawString(s, x, y + 0.5F, outlineColor);
+        fr.drawString(s, x, y, color);
+    }
+
+    public static int darker(int color) {
+        return darker(color, 0.6F);
+    }
+
+    public static void drawAndRotateArrow(float x, float y, float size, boolean rotate) {
+        glPushMatrix();
+        glTranslatef(x, y, 1.0F);
+        OGLUtils.enableBlending();
+        glEnable(GL_LINE_SMOOTH);
+        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+        glLineWidth(1.0F);
+        glDisable(GL_TEXTURE_2D);
+        glBegin(GL_TRIANGLES);
+        if (rotate) {
+            glVertex2f(size, size / 2);
+            glVertex2f(size / 2, 0);
+            glVertex2f(0, size / 2);
+        } else {
+            glVertex2f(0, 0);
+            glVertex2f(size / 2, size / 2);
+            glVertex2f(size, 0);
+        }
+        glEnd();
+        glEnable(GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_BLEND);
+        glDisable(GL_LINE_SMOOTH);
+        glPopMatrix();
+    }
+
+    public static int darker(int color, float FACTOR) {
+        Color col = new Color(color);
+        return new Color(Math.max((int) (col.getRed() * FACTOR), 0),
+                Math.max((int) (col.getGreen() * FACTOR), 0),
+                Math.max((int) (col.getBlue() * FACTOR), 0),
+                col.getAlpha()).getRGB();
+    }
 
     private static void drawESPImage(ResourceLocation resource, double x, double y, double x2, double y2, Color c, Color c2, float alpha) {
         mc.getTextureManager().bindTexture(resource);
@@ -273,6 +412,36 @@ public class RenderUtil implements Utils {
 
     public static void drawMicrosoftLogo(float x, float y, float size, float spacing) {
         drawMicrosoftLogo(x, y, size, spacing, 1f);
+    }
+
+    public static void drawImage(float x,
+                                 float y,
+                                 float width,
+                                 float height,
+                                 float r,
+                                 float g,
+                                 float b,
+                                 ResourceLocation image) {
+        mc.getTextureManager().bindTexture(image);
+        float f = 1.0F / width;
+        float f1 = 1.0F / height;
+        glColor4f(r, g, b, 1.0F);
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        worldrenderer.pos(x, y + height, 0.0D)
+                .tex(0.0D, height * f1)
+                .endVertex();
+        worldrenderer.pos(x + width, y + height, 0.0D)
+                .tex(width * f, height * f1)
+                .endVertex();
+        worldrenderer.pos(x + width, y, 0.0D)
+                .tex(width * f, 0.0D)
+                .endVertex();
+        worldrenderer.pos(x, y, 0.0D)
+                .tex(0.0D, 0.0D)
+                .endVertex();
+        tessellator.draw();
     }
 
     public static void drawImage(ResourceLocation resourceLocation, float x, float y, float imgWidth, float imgHeight) {
@@ -682,6 +851,37 @@ public class RenderUtil implements Utils {
         glDisable(GL_LINE_SMOOTH);
         GLUtil.end2DRendering();
         resetColor();
+    }
+
+
+    public static void drawGradientRect2(double left, double top, double right, double bottom,
+                                        boolean sideways,
+                                        int startColor, int endColor) {
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        OGLUtils.enableBlending();
+        GL11.glShadeModel(GL11.GL_SMOOTH);
+        GL11.glBegin(GL11.GL_QUADS);
+
+        OGLUtils.color(startColor);
+        if (sideways) {
+            GL11.glVertex2d(left, top);
+            GL11.glVertex2d(left, bottom);
+            OGLUtils.color(endColor);
+            GL11.glVertex2d(right, bottom);
+            GL11.glVertex2d(right, top);
+        } else {
+            GL11.glVertex2d(left, top);
+            OGLUtils.color(endColor);
+            GL11.glVertex2d(left, bottom);
+            GL11.glVertex2d(right, bottom);
+            OGLUtils.color(startColor);
+            GL11.glVertex2d(right, top);
+        }
+
+        GL11.glEnd();
+        GL11.glDisable(GL_BLEND);
+        GL11.glShadeModel(GL11.GL_FLAT);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
     }
 
     public static void drawGradientRectBordered(double left, double top, double right, double bottom, double width, int startColor, int endColor, int borderStartColor, int borderEndColor) {

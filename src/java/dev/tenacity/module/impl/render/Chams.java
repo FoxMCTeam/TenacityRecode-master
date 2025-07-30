@@ -1,8 +1,8 @@
 package dev.tenacity.module.impl.render;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.render.RenderChestEvent;
-import com.cubk.event.impl.render.RenderModelEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.render.RenderChestEvent;
+import dev.tenacity.event.impl.render.RenderModelEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.display.HUDMod;
@@ -48,10 +48,10 @@ public class Chams extends Module {
 
     @EventTarget
     public void onRenderChestEvent(RenderChestEvent event) {
-        if (!entities.isEnabled("Chests")) return;
+        if (!entities.get("Chests")) return;
         Color behindWallsColor = Color.WHITE;
         Pair<Color, Color> colors = HUDMod.getClientColors();
-        switch (behindWalls.getMode()) {
+        switch (behindWalls.get()) {
             case "Sync":
                 behindWallsColor = colors.getSecond();
                 break;
@@ -62,17 +62,17 @@ public class Chams extends Module {
                 behindWallsColor = new Color(0xffEF2626);
                 break;
             case "Custom":
-                behindWallsColor = wallColor.getColor();
+                behindWallsColor = wallColor.get();
                 break;
         }
 
         Color visibleColor = Color.WHITE;
-        switch (visibleColorMode.getMode()) {
+        switch (visibleColorMode.get()) {
             case "Sync":
                 visibleColor = colors.getFirst();
                 break;
             case "Custom":
-                visibleColor = this.visibleColor.getColor();
+                visibleColor = this.visibleColor.get();
                 break;
         }
 
@@ -83,7 +83,7 @@ public class Chams extends Module {
 
         RenderUtil.color(behindWallsColor.getRGB());
 
-        if (!lighting.isEnabled()) {
+        if (!lighting.get()) {
             glDisable(GL_LIGHTING);
         }
 
@@ -94,7 +94,7 @@ public class Chams extends Module {
 
         RenderUtil.resetColor();
 
-        if (!onlyBehindWalls.isEnabled()) {
+        if (!onlyBehindWalls.get()) {
             RenderUtil.color(visibleColor.getRGB());
             event.drawChest();
             event.cancel();
@@ -115,7 +115,7 @@ public class Chams extends Module {
         if (event.isPre()) {
             Color behindWallsColor = Color.WHITE;
 
-            switch (behindWalls.getMode()) {
+            switch (behindWalls.get()) {
                 case "Sync":
                     behindWallsColor = colors.getSecond();
                     break;
@@ -126,7 +126,7 @@ public class Chams extends Module {
                     behindWallsColor = new Color(0xffEF2626);
                     break;
                 case "Custom":
-                    behindWallsColor = wallColor.getColor();
+                    behindWallsColor = wallColor.get();
                     break;
             }
 
@@ -135,7 +135,7 @@ public class Chams extends Module {
             glPolygonOffset(1.0F, 1000000.0F);
 
             glDisable(GL_TEXTURE_2D);
-            if (!lighting.isEnabled()) {
+            if (!lighting.get()) {
                 glDisable(GL_LIGHTING);
             }
             RenderUtil.color(behindWallsColor.getRGB());
@@ -148,22 +148,22 @@ public class Chams extends Module {
             glDepthMask(true);
 
             Color visibleColor = Color.WHITE;
-            switch (visibleColorMode.getMode()) {
+            switch (visibleColorMode.get()) {
                 case "Sync":
                     visibleColor = colors.getFirst();
                     break;
                 case "Custom":
-                    visibleColor = this.visibleColor.getColor();
+                    visibleColor = this.visibleColor.get();
                     break;
             }
 
-            if (onlyBehindWalls.isEnabled()) {
+            if (onlyBehindWalls.get()) {
                 glDisable(GL_BLEND);
                 glEnable(GL_TEXTURE_2D);
                 glEnable(GL_LIGHTING);
                 glColor4f(1, 1, 1, 1);
             } else {
-                if (!lighting.isEnabled()) {
+                if (!lighting.get()) {
                     glDisable(GL_LIGHTING);
                 }
                 RenderUtil.color(visibleColor.getRGB());
@@ -186,9 +186,9 @@ public class Chams extends Module {
     }
 
     private boolean isValidEntity(Entity entity) {
-        return entities.isEnabled("Players") && entity instanceof EntityPlayer ||
-                entities.isEnabled("Animals") && entity instanceof EntityAnimal ||
-                entities.isEnabled("Mobs") && entity instanceof EntityMob;
+        return entities.get("Players") && entity instanceof EntityPlayer ||
+                entities.get("Animals") && entity instanceof EntityAnimal ||
+                entities.get("Mobs") && entity instanceof EntityMob;
     }
 
 

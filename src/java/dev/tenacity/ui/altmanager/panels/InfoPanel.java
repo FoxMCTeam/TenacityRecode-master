@@ -21,18 +21,6 @@ public class InfoPanel extends Panel {
         controlInfo.add(Pair.of("DOUBLE-CLICK", "Logs into the selected alt"));
     }
 
-
-    @Override
-    public void initGui() {
-
-    }
-
-    @Override
-    public void keyTyped(char typedChar, int keyCode) {
-
-    }
-
-
     @Override
     public void drawScreen(int mouseX, int mouseY) {
         super.drawScreen(mouseX, mouseY);
@@ -58,16 +46,6 @@ public class InfoPanel extends Panel {
 
         duckSansFont18.drawCenteredString("Combo lists must have a new line seperating each combo",
                 getX() + getWidth() / 2f, controlY + 16, ColorUtil.applyOpacity(-1, .5f));
-
-    }
-
-    @Override
-    public void mouseClicked(int mouseX, int mouseY, int button) {
-
-    }
-
-    @Override
-    public void mouseReleased(int mouseX, int mouseY, int state) {
 
     }
 }

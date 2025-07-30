@@ -7,6 +7,7 @@ import dev.tenacity.utils.tuples.mutable.MutablePair;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.renderer.GlStateManager;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -254,51 +255,58 @@ public class CustomFont implements AbstractFontRenderer {
     }
 
 
-    public final int drawString(String str, float x, float y, int color, final boolean darken) {
-        if (str == null || str.isEmpty()) {
-            return 0;
-        }
+    public final int drawString(String str, float x, float y, int baseColor, final boolean darken) {
+        if (str == null || str.isEmpty()) return 0;
 
-        str = str.replace("▬", "="); // Character replacement (compatibility handling)
         y -= 2.0f;
         x *= 2.0f;
         y *= 2.0f;
 
         int offset = 0;
+        int currentColor = baseColor;
+        boolean bold = false;
 
         if (darken) {
-            color = ((color & 0xFCFCFC) >> 2) | (color & 0xFF000000); // Darken color
+            baseColor = ((baseColor & 0xFCFCFC) >> 2 | (baseColor & 0xFF000000));
         }
+
         GL11.glPushMatrix();
         GL11.glScaled(0.5, 0.5, 0.5);
-        int currentColor = color;
+
         RenderUtil.resetColor();
         RenderUtil.color(currentColor);
+
         char[] chars = str.toCharArray();
         for (int i = 0; i < chars.length; ++i) {
             char chr = chars[i];
+
             if (chr == '§' && i + 1 < chars.length) {
-                char codeChar = Character.toLowerCase(chars[i + 1]);
-                int codeIndex = "0123456789abcdefklmnor".indexOf(codeChar);
+                char next = Character.toLowerCase(chars[++i]);
+                int codeIndex = "0123456789abcdefklmnor".indexOf(next);
                 if (codeIndex >= 0) {
+                    // 切换颜色
                     if (codeIndex < 16) {
                         int newColor = colorCode[codeIndex];
                         float alpha = (currentColor >> 24 & 0xFF) / 255.0f;
                         if (alpha == 0.0f) alpha = 1.0f;
-                        currentColor = (newColor & 0x00FFFFFF) | ((int)(alpha * 255) << 24);
-                        RenderUtil.resetColor();
+                        currentColor = (newColor & 0xFFFFFF) | ((int)(alpha * 255) << 24);
                         RenderUtil.color(currentColor);
-                    } else if (codeChar == 'r') {
-                        currentColor = color;
-                        RenderUtil.resetColor();
+                        bold = false;
+                    } else if (next == 'l') {
+                        bold = true;
+                    } else if (next == 'r') {
+                        currentColor = baseColor;
                         RenderUtil.color(currentColor);
+                        bold = false;
                     }
-                    i++;
-                    continue;
                 }
+                continue;
             }
 
-            offset += drawChar(chr, x + offset, y);
+            // 根据状态选择字体
+            CustomFont fontToUse = bold && this.boldFont != null ? this.boldFont : this;
+
+            offset += fontToUse.drawChar(chr, x + offset, y);
         }
 
         GL11.glPopMatrix();
@@ -306,14 +314,6 @@ public class CustomFont implements AbstractFontRenderer {
         return offset / 2;
     }
 
-
-    public void drawStringDynamic(String text, double x2, double y2, int tick1, int tick2) {
-        GradientUtil.applyGradientHorizontal((float) x2, (float) y2, this.getStringWidth(text), this.fontHeight, 1.0f, HUDMod.color(tick1), HUDMod.color(tick2), () -> {
-            GlStateManager.enableAlpha();
-            GlStateManager.alphaFunc(516, 0.0f);
-            this.drawString(text, (float) x2, (float) y2, -1);
-        });
-    }
 
     @Override
     public void drawString(String name, float x, float y, Color color) {
@@ -409,10 +409,10 @@ public class CustomFont implements AbstractFontRenderer {
     }
 
     public void drawStringWithOutline(String text, float x, float y, int color, int outlineColor) {
-        drawString(text, x-1, y, outlineColor); // 左
-        drawString(text, x+1, y, outlineColor); // 右
-        drawString(text, x, y-1, outlineColor); // 上
-        drawString(text, x, y+1, outlineColor); // 下
+        drawString(text, x - 1, y, outlineColor); // 左
+        drawString(text, x + 1, y, outlineColor); // 右
+        drawString(text, x, y - 1, outlineColor); // 上
+        drawString(text, x, y + 1, outlineColor); // 下
         drawString(text, x, y, color); // 中心
     }
 
@@ -424,17 +424,14 @@ public class CustomFont implements AbstractFontRenderer {
 
     @Override
     public final int drawStringWithShadow(final String name, final float i, final float i1, final int rgb) {
-        int shadowColor = (rgb & 0xFCFCFC) >> 2 | (rgb & 0xFF000000); // Darken for shadow
-        this.drawString(name, i + 0.5f, i1 + 0.5f, shadowColor, false);
+        this.drawString(name, i + 0.5f, i1 + 0.5f, rgb, true);
         return drawString(name, i, i1, rgb, false);
     }
 
     @Override
     public void drawStringWithShadow(String name, float x, float y, Color color) {
-        int rgb = color.getRGB();
-        int shadowColor = (rgb & 0xFCFCFC) >> 2 | (rgb & 0xFF000000); // Darken for shadow
-        this.drawString(name, x + 0.5f, y + 0.5f, shadowColor, false);
-        drawString(name, x, y, rgb, false);
+        this.drawString(name, x + 0.5f, y + 0.5f, color.getRGB(), true);
+        drawString(name, x, y, color.getRGB(), false);
     }
 
     public void drawStringWithShadow(final String z, final double x, final double positionY, final int mainTextColor) {

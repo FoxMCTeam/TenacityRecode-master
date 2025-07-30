@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.render;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.ChatReceivedEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.ChatReceivedEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.ParentAttribute;
@@ -27,10 +27,10 @@ public class Streamer extends Module {
 
     public static String filter(String text) {
         if (enabled) {
-            if (hideUsername.isEnabled() && mc.getSession() != null) {
+            if (hideUsername.get() && mc.getSession() != null) {
                 String name = mc.getSession().getUsername();
                 if (name != null && !name.trim().isEmpty() && !name.equals("Player") && text.contains(name)) {
-                    text = text.replace(name, customName.getString().replace('&', '§'));
+                    text = text.replace(name, customName.get().replace('&', '§'));
                     String text2 = StringUtils.stripControlCodes(text);
                     if (text2.contains("You has ")) {
                         text = text.replace(" has", " have");
@@ -44,12 +44,12 @@ public class Streamer extends Module {
                 }
             }
             if (mc.theWorld != null) {
-                if (hideIP.isEnabled() && ServerUtils.isOnHypixel() && text.startsWith("§ewww.")) {
+                if (hideIP.get() && ServerUtils.isOnHypixel() && text.startsWith("§ewww.")) {
                     text = StringUtils.stripControlCodes(text)
                             .replaceAll("[^A-Za-z0-9 .]", "")
                             .replace("www.hypixel.net", "§ewww.tenacity.dev");
                 }
-                if (hideServerId.isEnabled() && text.startsWith("§7") && text.contains("/") && text.contains("  §8")) {
+                if (hideServerId.get() && text.startsWith("§7") && text.contains("/") && text.contains("  §8")) {
                     text = text.replace("§8", "§8§k");
                 }
             }
@@ -59,7 +59,7 @@ public class Streamer extends Module {
 
     @EventTarget
     public void onChatReceivedEvent(ChatReceivedEvent e) {
-        if (ServerUtils.isOnHypixel() && hideServerId.isEnabled()) {
+        if (ServerUtils.isOnHypixel() && hideServerId.get()) {
             String message = StringUtils.stripControlCodes(e.message.getUnformattedText());
             if (message.startsWith("Sending you to")) {
                 String serverID = message.replace("Sending you to ", "").replace("!", "");

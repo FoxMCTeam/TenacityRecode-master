@@ -22,14 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LoginPanel extends Panel {
-
-    public static boolean cracked = false;
     public final List<TextField> textFields = new ArrayList<>();
     private final List<ActionButton> actionButtons = new ArrayList<>();
     private final Animation hoverMicrosoftAnim = new DecelerateAnimation(250, 1);
     RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange('a', 'z').build();
     private boolean hoveringMicrosoft = false;
-
 
     public LoginPanel() {
         setHeight(200);
@@ -38,11 +35,6 @@ public class LoginPanel extends Panel {
         actionButtons.add(new ActionButton("Gen Cracked"));
         textFields.add(new TextField(duckSansFont20));
         textFields.add(new TextField(duckSansFont20));
-    }
-
-    @Override
-    public void initGui() {
-
     }
 
     @Override
@@ -182,11 +174,6 @@ public class LoginPanel extends Panel {
             Client.INSTANCE.getAltManager().getUtils().microsoftLoginAsync(email, password);
             resetTextFields();
         }
-
-    }
-
-    @Override
-    public void mouseReleased(int mouseX, int mouseY, int state) {
 
     }
 

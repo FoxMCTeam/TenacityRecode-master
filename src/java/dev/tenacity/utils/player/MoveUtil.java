@@ -1,7 +1,7 @@
 package dev.tenacity.utils.player;
 
-import com.cubk.event.impl.player.EventMoveInput;
-import com.cubk.event.impl.player.MoveEvent;
+import dev.tenacity.event.impl.player.EventMoveInput;
+import dev.tenacity.event.impl.player.MoveEvent;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.client.addons.vector.Vector2d;
 import lombok.experimental.UtilityClass;

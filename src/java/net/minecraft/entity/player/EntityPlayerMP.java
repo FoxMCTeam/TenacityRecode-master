@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
 import dev.tenacity.Client;
-import com.cubk.event.impl.player.LivingDeathEvent;
+import dev.tenacity.event.impl.player.LivingDeathEvent;
 import io.netty.buffer.Unpooled;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;

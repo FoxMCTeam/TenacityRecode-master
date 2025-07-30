@@ -22,18 +22,6 @@ public class MicrosoftInfoPanel extends Panel {
         steps.add(Pair.of("6", "Enjoy! You are now logged in to your microsoft account"));
     }
 
-
-    @Override
-    public void initGui() {
-
-    }
-
-    @Override
-    public void keyTyped(char typedChar, int keyCode) {
-
-    }
-
-
     @Override
     public void drawScreen(int mouseX, int mouseY) {
         setHeight(119);
@@ -61,16 +49,6 @@ public class MicrosoftInfoPanel extends Panel {
 
             controlY += duckSansBoldFont16.getHeight() + 6;
         }
-
-    }
-
-    @Override
-    public void mouseClicked(int mouseX, int mouseY, int button) {
-
-    }
-
-    @Override
-    public void mouseReleased(int mouseX, int mouseY, int state) {
 
     }
 }

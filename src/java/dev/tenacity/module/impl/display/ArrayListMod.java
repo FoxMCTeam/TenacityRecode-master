@@ -1,8 +1,8 @@
 package dev.tenacity.module.impl.display;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.render.Render2DEvent;
-import com.cubk.event.impl.render.ShaderEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.render.Render2DEvent;
+import dev.tenacity.event.impl.render.ShaderEvent;
 import dev.tenacity.Client;
 import dev.tenacity.i18n.Localization;
 import dev.tenacity.module.Category;
@@ -46,7 +46,7 @@ public class ArrayListMod extends Module {
     private final MultipleBoolSetting fontSettings = new MultipleBoolSetting("Font Settings",
             new BooleanSetting("Bold", false),
             new BooleanSetting("Small Font", false), minecraftFont);
-    private final ModeSetting animation = new ModeSetting("Animation", "Scale in", "Move in", "Scale in");
+    public static final ModeSetting animation = new ModeSetting("Animation", "Scale in", "Move in", "Scale in", "None");
     private final NumberSetting colorIndex = new NumberSetting("Color Separation", 20, 100, 5, 1);
     private final NumberSetting colorSpeed = new NumberSetting("Color Speed", 15, 30, 2, 1);
     private final BooleanSetting background = new BooleanSetting("Background", true);
@@ -98,7 +98,7 @@ public class ArrayListMod extends Module {
         for (Module module : modules) {
             final Animation moduleAnimation = module.getAnimation();
             if (!Client.INSTANCE.getModuleManager().canRender(this, module)) continue;
-            if (!module.isEnabled() && moduleAnimation.finished(Direction.BACKWARDS)) continue;
+            if ((!module.isEnabled() && moduleAnimation.finished(Direction.BACKWARDS)) || (!module.isEnabled() && animation.is("None"))) continue;
 
             String displayText = HUDMod.get(Localization.get(module.getName()) + (module.hasMode() ? " §7" + module.getSuffix() : ""));
             displayText = applyText(displayText);
@@ -111,9 +111,9 @@ public class ArrayListMod extends Module {
 
             float y = yOffset + arraylistDrag.getY();
 
-            float heightVal = height.getValue().floatValue() + 1;
+            float heightVal = height.get().floatValue() + 1;
             boolean scaleIn = false;
-            switch (animation.getMode()) {
+            switch (animation.get()) {
                 case "Move in":
                     if (flip) {
                         x -= Math.abs((moduleAnimation.getOutput().floatValue() - 1) * (sr.getScaledWidth() - (arraylistDrag.getX() + textWidth)));
@@ -130,32 +130,32 @@ public class ArrayListMod extends Module {
             }
 
 
-            int index = (int) (count * colorIndex.getValue());
+            int index = (int) (count * colorIndex.get());
             Pair<Color, Color> colors = HUDMod.getClientColors();
 
-            Color textcolor = ColorUtil.interpolateColorsBackAndForth(colorSpeed.getValue().intValue(), index, colors.getFirst(), colors.getSecond(), false);
+            Color textcolor = ColorUtil.interpolateColorsBackAndForth(colorSpeed.get().intValue(), index, colors.getFirst(), colors.getSecond(), false);
 
             if (HUDMod.isRainbowTheme()) {
-                textcolor = ColorUtil.rainbow(colorSpeed.getValue().intValue(), index, HUDMod.color1.getRainbow().getSaturation(), 1, 1);
+                textcolor = ColorUtil.rainbow(colorSpeed.get().intValue(), index, HUDMod.color1.getRainbow().getSaturation(), 1, 1);
             }
 
-            if (background.isEnabled()) {
-                float offset = minecraftFont.isEnabled() ? 4 : 5;
-                int rectColor = e.getBloomOptions().getSetting("Arraylist").isEnabled() ? textcolor.getRGB() : (rectangle.getMode().equals("Outline") && partialGlow.isEnabled() ? textcolor.getRGB() : Color.BLACK.getRGB());
+            if (background.get()) {
+                float offset = minecraftFont.get() ? 4 : 5;
+                int rectColor = e.getBloomOptions().getSetting("Arraylist").get() ? textcolor.getRGB() : (rectangle.get().equals("Outline") && partialGlow.get() ? textcolor.getRGB() : Color.BLACK.getRGB());
 
 
                 Gui.drawRect2(x - 2, y, font.getStringWidth(displayText) + offset, heightVal,
                         scaleIn ? ColorUtil.applyOpacity(rectColor, moduleAnimation.getOutput().floatValue()) : rectColor);
 
-                float offset2 = minecraftFont.isEnabled() ? 1 : 0;
+                float offset2 = minecraftFont.get() ? 1 : 0;
 
-                int rectangleColor = partialGlow.isEnabled() ? textcolor.getRGB() : Color.BLACK.getRGB();
+                int rectangleColor = partialGlow.get() ? textcolor.getRGB() : Color.BLACK.getRGB();
 
                 if (scaleIn) {
                     rectangleColor = ColorUtil.applyOpacity(rectangleColor, moduleAnimation.getOutput().floatValue());
                 }
 
-                switch (rectangle.getMode()) {
+                switch (rectangle.get()) {
                     case "Outline":
                     default:
                         break;
@@ -179,7 +179,7 @@ public class ArrayListMod extends Module {
                 RenderUtil.scaleEnd();
             }
 
-            yOffset += moduleAnimation.getOutput().floatValue() * heightVal;
+            yOffset += animation.is("None") ? 1 * heightVal : moduleAnimation.getOutput().floatValue() * heightVal;
             count++;
         }
     }
@@ -197,7 +197,7 @@ public class ArrayListMod extends Module {
         for (Module module : modules) {
             final Animation moduleAnimation = module.getAnimation();
             moduleAnimation.setDirection(module.isEnabled() ? Direction.FORWARDS : Direction.BACKWARDS);
-            if (!module.isEnabled() && moduleAnimation.finished(Direction.BACKWARDS)) continue;
+            if ((!module.isEnabled() && moduleAnimation.finished(Direction.BACKWARDS)) || (!module.isEnabled() && animation.is("None"))) continue;
             if (!Client.INSTANCE.getModuleManager().canRender(this, module)) continue;
 
             String displayText = HUDMod.get(Localization.get(module.getName()) + (module.hasMode() ? (module.getCategory().equals(Category.SCRIPTS) ? " §c" : " §7") + module.getSuffix() : ""));
@@ -220,9 +220,9 @@ public class ArrayListMod extends Module {
 
             float y = (float) (yOffset + arraylistDrag.getY());
 
-            float heightVal = (float) (height.getValue() + 1);
+            float heightVal = (float) (height.get() + 1);
 
-            switch (animation.getMode()) {
+            switch (animation.get()) {
                 case "Move in":
                     if (flip) {
                         x -= Math.abs((moduleAnimation.getOutput().floatValue() - 1) * (sr.getScaledWidth() - (arraylistDrag.getX() - textWidth)));
@@ -239,25 +239,25 @@ public class ArrayListMod extends Module {
             }
 
 
-            int index = (int) (count * colorIndex.getValue());
+            int index = (int) (count * colorIndex.get());
             Pair<Color, Color> colors = HUDMod.getClientColors();
 
-            Color textcolor = ColorUtil.interpolateColorsBackAndForth(colorSpeed.getValue().intValue(), index, colors.getFirst(), colors.getSecond(), false);
+            Color textcolor = ColorUtil.interpolateColorsBackAndForth(colorSpeed.get().intValue(), index, colors.getFirst(), colors.getSecond(), false);
 
             if (HUDMod.isRainbowTheme()) {
-                textcolor = ColorUtil.rainbow(colorSpeed.getValue().intValue(), index, HUDMod.color1.getRainbow().getSaturation(), 1, 1);
+                textcolor = ColorUtil.rainbow(colorSpeed.get().intValue(), index, HUDMod.color1.getRainbow().getSaturation(), 1, 1);
             }
 
 
-            if (background.isEnabled()) {
-                float offset = minecraftFont.isEnabled() ? 4 : 5;
-                Color color = backgroundColor.isEnabled() ? textcolor : new Color(10, 10, 10);
+            if (background.get()) {
+                float offset = minecraftFont.get() ? 4 : 5;
+                Color color = backgroundColor.get() ? textcolor : new Color(10, 10, 10);
                 Gui.drawRect2(x - 2, y, font.getStringWidth(displayText) + offset, heightVal,
-                        ColorUtil.applyOpacity(color, backgroundAlpha.getValue().floatValue() * alphaAnimation).getRGB());
+                        ColorUtil.applyOpacity(color, backgroundAlpha.get().floatValue() * alphaAnimation).getRGB());
             }
 
-            float offset = minecraftFont.isEnabled() ? 1 : 0;
-            switch (rectangle.getMode()) {
+            float offset = minecraftFont.get() ? 1 : 0;
+            switch (rectangle.get()) {
                 default:
                     break;
                 case "Top":
@@ -310,10 +310,10 @@ public class ArrayListMod extends Module {
             }
 
 
-            float textYOffset = minecraftFont.isEnabled() ? .5f : 0;
+            float textYOffset = minecraftFont.get() ? .5f : 0;
             y += textYOffset;
             Color color = ColorUtil.applyOpacity(textcolor, alphaAnimation);
-            switch (textShadow.getMode()) {
+            switch (textShadow.get()) {
                 case "None":
                     font.drawString(displayText, x, y + font.getMiddleOfBox(heightVal), color.getRGB());
                     break;
@@ -325,7 +325,7 @@ public class ArrayListMod extends Module {
                     break;
                 case "Black":
                     RenderUtil.resetColor();
-                    float f = minecraftFont.isEnabled() ? 1 : .5f;
+                    float f = minecraftFont.get() ? 1 : .5f;
                     font.drawString(StringUtils.stripColorCodes(displayText), x + f, y + font.getMiddleOfBox(heightVal) + f,
                             ColorUtil.applyOpacity(Color.BLACK, alphaAnimation));
                     RenderUtil.resetColor();
@@ -342,7 +342,7 @@ public class ArrayListMod extends Module {
 
             lastModule = module;
 
-            yOffset += moduleAnimation.getOutput().floatValue() * heightVal;
+            yOffset += animation.is("None") ? 1 * heightVal : moduleAnimation.getOutput().floatValue() * heightVal;
             count++;
         }
         lastCount = count;
@@ -350,7 +350,7 @@ public class ArrayListMod extends Module {
     }
 
     private String applyText(String text) {
-        if (minecraftFont.isEnabled() && fontSettings.getSetting("Bold").isEnabled()) {
+        if (minecraftFont.get() && fontSettings.getSetting("Bold").get()) {
             return "§l" + text.replace("§7", "§7§l");
         }
         return text;
@@ -358,12 +358,12 @@ public class ArrayListMod extends Module {
 
 
     private AbstractFontRenderer getFont() {
-        boolean smallFont = fontSettings.getSetting("Small Font").isEnabled();
-        if (minecraftFont.isEnabled()) {
+        boolean smallFont = fontSettings.getSetting("Small Font").get();
+        if (minecraftFont.get()) {
             return mc.fontRendererObj;
         }
 
-        if (fontSettings.getSetting("Bold").isEnabled()) {
+        if (fontSettings.getSetting("Bold").get()) {
             if (smallFont) {
                 return duckSansBoldFont18;
             }

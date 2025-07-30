@@ -1,8 +1,8 @@
 package net.minecraft.client.renderer.entity;
 
 import dev.tenacity.Client;
-import dev.tenacity.module.impl.render.ItemPhysics;
-import dev.tenacity.utils.render.EntityCulling;
+import dev.tenacity.module.impl.mods.ItemPhysics;
+import dev.tenacity.module.impl.mods.EntityCulling;
 import net.minecraft.block.BlockTrapDoor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -42,7 +42,6 @@ public class RenderEntityItem extends Render<EntityItem> {
         } else {
             boolean flag = p_177077_9_.isGui3d();
             int i = this.func_177078_a(itemstack);
-            float f = 0.25F;
             float f1 = itemPhysics ? -.13f : MathHelper.sin(((float) itemIn.getAge() + p_177077_8_) / 10.0F + itemIn.hoverStart) * 0.1F + 0.1F;
             float f2 = p_177077_9_.getItemCameraTransforms().getTransform(ItemCameraTransforms.TransformType.GROUND).scale.y;
             GlStateManager.translate((float) p_177077_2_, (float) p_177077_4_ + f1 + 0.25F * f2, (float) p_177077_6_);

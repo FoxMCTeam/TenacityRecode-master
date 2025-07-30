@@ -48,7 +48,7 @@ public class KeybindComponent extends SettingComponent<KeybindSetting> {
 
         clickAnimation.setDirection(binding ? Direction.FORWARDS : Direction.BACKWARDS);
 
-        String bind = Keyboard.getKeyName(getSetting().getCode());
+        String bind = Keyboard.getKeyName(getSetting().get());
 
         float fullTextWidth = duckSansFont16.getStringWidth("Bind: §l" + bind);
 
@@ -67,7 +67,7 @@ public class KeybindComponent extends SettingComponent<KeybindSetting> {
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
-        String bind = Keyboard.getKeyName(getSetting().getCode());
+        String bind = Keyboard.getKeyName(getSetting().get());
         String text = "§fBind: §r" + bind;
         float textWidth = duckSansFont18.getStringWidth(text);
         float startX = x + width / 2f - textWidth / 2f;

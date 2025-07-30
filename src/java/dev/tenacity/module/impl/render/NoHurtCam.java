@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.render;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.render.HurtCamEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.render.HurtCamEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 

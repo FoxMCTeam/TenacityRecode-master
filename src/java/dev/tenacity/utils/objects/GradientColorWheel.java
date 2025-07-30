@@ -69,7 +69,7 @@ public class GradientColorWheel {
                 color3 = colorSetting.getRainbow().getColor(180);
                 color4 = colorSetting.getRainbow().getColor(270);
             } else {
-                setWheel(Pair.of(colorSetting.getColor(), colorSetting.getAltColor()));
+                setWheel(Pair.of(colorSetting.get(), colorSetting.getAltColor()));
             }
         }
 

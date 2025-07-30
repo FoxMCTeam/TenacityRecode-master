@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.movement;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.MotionEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.ModeSetting;
@@ -20,20 +20,20 @@ public class FastLadder extends Module {
 
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
-        this.setSuffix(mode.getMode());
+        this.setSuffix(mode.get());
         if (mc.thePlayer.isOnLadder()) {
-            switch (mode.getMode()) {
+            switch (mode.get()) {
                 case "Timer":
-                    mc.timer.timerSpeed = speed.getValue().floatValue();
+                    mc.timer.timerSpeed = speed.get().floatValue();
                     break;
                 case "Motion":
-                    mc.thePlayer.motionY = speed.getValue();
+                    mc.thePlayer.motionY = speed.get();
                     break;
                 case "Position":
                     mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(
-                            mc.thePlayer.posX, mc.thePlayer.posY + speed.getValue(), mc.thePlayer.posZ,
+                            mc.thePlayer.posX, mc.thePlayer.posY + speed.get(), mc.thePlayer.posZ,
                             mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch, false));
-                    mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY + speed.getValue(), mc.thePlayer.posZ);
+                    mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY + speed.get(), mc.thePlayer.posZ);
                     break;
             }
         } else {

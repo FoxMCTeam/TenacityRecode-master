@@ -38,7 +38,7 @@ public class GuiTextField extends Gui {
     private boolean canLoseFocus = true;
 
     /**
-     * If this value is true along with isEnabled, keyTyped will process the keys.
+     * If this value is true along with get, keyTyped will process the keys.
      */
     private boolean isFocused;
 

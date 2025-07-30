@@ -1,8 +1,8 @@
 package dev.tenacity.module.impl.player;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.BoundingBoxEvent;
-import com.cubk.event.impl.player.MotionEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.BoundingBoxEvent;
+import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.ModeSetting;
@@ -27,9 +27,9 @@ public final class NoFall extends Module {
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
         if (event.isPre()) {
-            this.setSuffix(mode.getMode());
+            this.setSuffix(mode.get());
             if (mc.thePlayer.fallDistance > 3.0 && isBlockUnder()) {
-                switch (mode.getMode()) {
+                switch (mode.get()) {
                     case "Vanilla":
                         event.setOnGround(true);
                         break;

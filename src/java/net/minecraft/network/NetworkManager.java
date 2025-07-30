@@ -10,8 +10,8 @@ import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.netty.event.CompressionReorderEvent;
 import de.florianmichael.viamcp.MCPVLBPipeline;
 import de.florianmichael.viamcp.ViaMCP;
-import com.cubk.event.impl.network.PacketReceiveEvent;
-import com.cubk.event.impl.network.PacketSendEvent;
+import dev.tenacity.event.impl.network.PacketEvent;
+
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.epoll.Epoll;
@@ -132,7 +132,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     protected void channelRead0(ChannelHandlerContext p_channelRead0_1_, Packet p_channelRead0_2_) throws Exception {
         if (this.channel.isOpen()) {
             try {
-                PacketReceiveEvent e = new PacketReceiveEvent(p_channelRead0_2_);
+                PacketEvent e = new PacketEvent(p_channelRead0_2_, PacketEvent.PacketEventType.RECEIVE);
                 Client.INSTANCE.getEventManager().call(e);
                 if (e.isCancelled()) return;
                 p_channelRead0_2_.processPacket(this.packetListener);
@@ -223,7 +223,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     public void sendPacket(Packet packetIn, boolean silent) {
         if (this.isChannelOpen()) {
             if (!silent) {
-                PacketSendEvent e = new PacketSendEvent(packetIn);
+                PacketEvent e = new PacketEvent(packetIn, PacketEvent.PacketEventType.SEND);
                 Client.INSTANCE.getEventManager().call(e);
                 if (e.isCancelled()) return;
                 packetIn = e.getPacket();
@@ -361,8 +361,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
      * @param serverPort         The server port
      * @param useNativeTransport True if the client use the native transport system
      */
-    public static NetworkManager createNetworkManagerAndConnect(InetAddress address, int serverPort,
-                                                                boolean useNativeTransport) {
+    public static NetworkManager createNetworkManagerAndConnect(InetAddress address, int serverPort, boolean useNativeTransport) {
         final NetworkManager networkmanager = new NetworkManager(EnumPacketDirection.CLIENTBOUND);
         Class<? extends SocketChannel> oclass;
         LazyLoadBase<? extends EventLoopGroup> lazyloadbase;
@@ -376,20 +375,13 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         }
 
         (new Bootstrap()).group(lazyloadbase.getValue()).handler(new ChannelInitializer<Channel>() {
-            protected void initChannel(Channel p_initChannel_1_) throws Exception {
+            protected void initChannel(Channel p_initChannel_1_) {
                 try {
-                    p_initChannel_1_.config().setOption(ChannelOption.TCP_NODELAY, Boolean.valueOf(true));
-                } catch (ChannelException var3) {
+                    p_initChannel_1_.config().setOption(ChannelOption.TCP_NODELAY, true);
+                } catch (ChannelException ignored) {
                 }
 
-
-                if (p_initChannel_1_ instanceof SocketChannel && ViaLoadingBase.getInstance().getTargetVersion().getVersion() != ViaMCP.NATIVE_VERSION) {
-                    final UserConnection user = new UserConnectionImpl(p_initChannel_1_, true);
-                    new ProtocolPipelineImpl(user);
-
-                    p_initChannel_1_.pipeline().addLast(new MCPVLBPipeline(user));
-                }
-
+                p_initChannel_1_.pipeline().addLast((String)"timeout", (ChannelHandler)(new ReadTimeoutHandler(30))).addLast((String)"splitter", (ChannelHandler)(new MessageDeserializer2())).addLast((String)"decoder", (ChannelHandler)(new MessageDeserializer(EnumPacketDirection.CLIENTBOUND))).addLast((String)"prepender", (ChannelHandler)(new MessageSerializer2())).addLast((String)"encoder", (ChannelHandler)(new MessageSerializer(EnumPacketDirection.SERVERBOUND))).addLast((String)"packet_handler", (ChannelHandler)networkmanager);
                 if (p_initChannel_1_ instanceof SocketChannel && ViaLoadingBase.getInstance().getTargetVersion().getVersion() != ViaMCP.NATIVE_VERSION) {
                     final UserConnection user = new UserConnectionImpl(p_initChannel_1_, true);
                     new ProtocolPipelineImpl(user);

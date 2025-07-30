@@ -1,22 +1,16 @@
 package dev.tenacity.module.impl.player;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.MotionEvent;
-import com.cubk.event.impl.player.SlowDownEvent;
-import com.cubk.event.impl.player.UpdateEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.MotionEvent;
+import dev.tenacity.event.impl.player.SlowDownEvent;
+import dev.tenacity.event.impl.player.UpdateEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.ModeSetting;
 import dev.tenacity.utils.player.MovementUtils;
-import dev.tenacity.utils.server.PacketUtils;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.*;
-import net.minecraft.network.play.client.C07PacketPlayerDigging;
-import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
-import net.minecraft.network.play.client.C09PacketHeldItemChange;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
 
 public class NoSlow extends Module {
 
@@ -58,7 +52,7 @@ public class NoSlow extends Module {
 
     @EventTarget
     public void onUpdateEvent(UpdateEvent event) {
-        setSuffix(mode.getMode());
+        setSuffix(mode.get());
 
         if (mc.thePlayer == null || mc.thePlayer.getHeldItem() == null || mc.thePlayer.getHeldItem().getItem() == null) return;
 

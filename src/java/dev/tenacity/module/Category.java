@@ -11,6 +11,7 @@ public enum Category {
     MOVEMENT("module.movement", FontUtil.WHEELCHAIR),
     RENDER("module.render", FontUtil.EYE),
     DISPLAY("module.display", FontUtil.DISPLAY),
+    MODS("module.mods", FontUtil.DISPLAY),
     PLAYER("module.player", FontUtil.PERSON),
     EXPLOIT("module.exploit", FontUtil.BUG),
     MISC("module.misc", FontUtil.LIST),

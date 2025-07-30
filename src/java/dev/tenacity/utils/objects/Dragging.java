@@ -124,7 +124,7 @@ public class Dragging implements Utils {
         String longest = getLongestModule(arraylistMod);
 
         width = (float) MathUtils.roundToHalf(arraylistMod.font.getStringWidth(longest) + 5);
-        height = (float) MathUtils.roundToHalf((arraylistMod.height.getValue() + 1) * modules.size());
+        height = (float) MathUtils.roundToHalf((arraylistMod.height.get() + 1) * modules.size());
 
         float textVal = (float) arraylistMod.font.getStringWidth(longest);
         float xVal = sr.getScaledWidth() - (textVal + 8 + xPos);

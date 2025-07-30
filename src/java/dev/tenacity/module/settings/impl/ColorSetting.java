@@ -3,9 +3,13 @@ package dev.tenacity.module.settings.impl;
 import com.google.gson.JsonObject;
 import dev.tenacity.module.settings.Setting;
 import dev.tenacity.utils.render.ColorUtil;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.awt.*;
 
+@Getter
+@Setter
 public class ColorSetting extends Setting {
     private float hue = 0;
     private float saturation = 1;
@@ -14,12 +18,31 @@ public class ColorSetting extends Setting {
 
     public ColorSetting(String name, Color defaultColor) {
         this.name = name;
-        this.setColor(defaultColor);
+        this.set(defaultColor);
     }
 
 
+    public int getColorInt() {
+        return get().getRGB();
+    }
+
+    public Color get() {
+        return isRainbow() ? getRainbow().getColor() : Color.getHSBColor(hue, saturation, brightness);
+    }
+
     public Color getColor() {
         return isRainbow() ? getRainbow().getColor() : Color.getHSBColor(hue, saturation, brightness);
+    }
+
+    public void setColorInt(int colorInt) {
+        set(new Color(colorInt));
+    }
+
+    public void set(Color color) {
+        float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
+        hue = hsb[0];
+        saturation = hsb[1];
+        brightness = hsb[2];
     }
 
     public void setColor(Color color) {
@@ -30,7 +53,7 @@ public class ColorSetting extends Setting {
     }
 
     public Color getAltColor() {
-        return isRainbow() ? getRainbow().getColor(40) : ColorUtil.darker(getColor(), .6f);
+        return isRainbow() ? getRainbow().getColor(40) : ColorUtil.darker(get(), .6f);
     }
 
     public void setColor(float hue, float saturation, float brightness) {
@@ -44,36 +67,17 @@ public class ColorSetting extends Setting {
         return hue;
     }
 
-    public void setHue(float hue) {
-        this.hue = hue;
-    }
-
-
     public double getSaturation() {
         return saturation;
     }
-
-    public void setSaturation(float saturation) {
-        this.saturation = saturation;
-    }
-
 
     public double getBrightness() {
         return brightness;
     }
 
-    public void setBrightness(float brightness) {
-        this.brightness = brightness;
-    }
-
     public String getHexCode() {
-        Color color = getColor();
+        Color color = get();
         return String.format("%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
-    }
-
-
-    public Rainbow getRainbow() {
-        return rainbow;
     }
 
     public boolean isRainbow() {
@@ -90,11 +94,13 @@ public class ColorSetting extends Setting {
 
     @Override
     public Object getConfigValue() {
-        return isRainbow() ? getRainbow().getJsonObject() : getColor().getRGB();
+        return isRainbow() ? getRainbow().getJsonObject() : get().getRGB();
     }
 
+    @Setter
     public static class Rainbow {
         private float saturation = 1;
+        @Getter
         private int speed = 15;
 
 
@@ -117,21 +123,6 @@ public class ColorSetting extends Setting {
 
         public float getSaturation() {
             return Math.max(0, Math.min(1, saturation));
-        }
-
-
-        public void setSaturation(float saturation) {
-            this.saturation = saturation;
-        }
-
-
-        public int getSpeed() {
-            return speed;
-        }
-
-
-        public void setSpeed(int speed) {
-            this.speed = speed;
         }
     }
 

@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.combat;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.MotionEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -49,7 +49,7 @@ public class AutoPot extends Module {
                     && !(mc.theWorld.getBlockState(new BlockPos(e.getX(), e.getY() - 1, e.getZ())).getBlock() instanceof BlockGlass)
                     && (!mc.thePlayer.isPotionActive(Potion.moveSpeed)
                     || mc.thePlayer.getActivePotionEffect(Potion.moveSpeed).getDuration() < 30)
-                    && timerUtil.hasTimeElapsed(delay.getValue().longValue()) && !mc.thePlayer.isUsingItem()) {
+                    && timerUtil.hasTimeElapsed(delay.get().longValue()) && !mc.thePlayer.isUsingItem()) {
                 if (isSpeedPotsInHotbar()) {
                     for (int i = 36; i < 45; i++) {
                         if (isSpeedPot(mc.thePlayer.inventoryContainer.getSlot(i).getStack())) {
@@ -67,8 +67,8 @@ public class AutoPot extends Module {
                 }
             }
 
-            if (!mc.thePlayer.isPotionActive(Potion.regeneration) && mc.thePlayer.getHealth() <= minHealHP.getValue()
-                    && timerUtil.hasTimeElapsed(delay.getValue().longValue())) {
+            if (!mc.thePlayer.isPotionActive(Potion.regeneration) && mc.thePlayer.getHealth() <= minHealHP.get()
+                    && timerUtil.hasTimeElapsed(delay.get().longValue())) {
                 if (isRegenPotsInHotbar()) {
                     for (int i = 36; i < 45; i++) {
                         if (isRegenPot(mc.thePlayer.inventoryContainer.getSlot(i).getStack())) {
@@ -86,7 +86,7 @@ public class AutoPot extends Module {
                 }
             }
 
-            if (mc.thePlayer.getHealth() <= minHealHP.getValue() && timerUtil.hasTimeElapsed(delay.getValue().longValue())) {
+            if (mc.thePlayer.getHealth() <= minHealHP.get() && timerUtil.hasTimeElapsed(delay.get().longValue())) {
                 if (isHealthPotsInHotbar()) {
                     for (int i = 36; i < 45; i++) {
                         if (isHealthPot(mc.thePlayer.inventoryContainer.getSlot(i).getStack())) {
@@ -157,7 +157,7 @@ public class AutoPot extends Module {
         for (int index = 9; index < 36; index++) {
             final ItemStack stack = mc.thePlayer.inventoryContainer.getSlot(index).getStack();
             if (stack == null) continue;
-            if (!splashFrogPots.isEnabled() && stack.getDisplayName().contains("Frog")) continue;
+            if (!splashFrogPots.get() && stack.getDisplayName().contains("Frog")) continue;
             if (isSpeedPot(stack)) {
                 mc.playerController.windowClick(0, index, 6, 2, mc.thePlayer);
                 break;
@@ -189,7 +189,7 @@ public class AutoPot extends Module {
 
     private boolean isSpeedPot(ItemStack stack) {
         if (stack != null && stack.getItem() instanceof ItemPotion) {
-            if (!splashFrogPots.isEnabled() && stack.getDisplayName().contains("Frog")) return false;
+            if (!splashFrogPots.get() && stack.getDisplayName().contains("Frog")) return false;
             if (ItemPotion.isSplash(stack.getItemDamage())) {
                 for (PotionEffect e : ((ItemPotion) stack.getItem()).getEffects(stack)) {
                     if (e.getPotionID() == Potion.moveSpeed.id && e.getPotionID() != Potion.jump.id) {

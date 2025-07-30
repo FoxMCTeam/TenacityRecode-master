@@ -1,12 +1,11 @@
 package dev.tenacity.module.impl.display;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.render.Render2DEvent;
-import com.cubk.event.impl.render.ShaderEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.render.Render2DEvent;
+import dev.tenacity.event.impl.render.ShaderEvent;
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
-import dev.tenacity.module.impl.display.HUDMod;
 import dev.tenacity.module.settings.impl.NumberSetting;
 import dev.tenacity.utils.animations.Animation;
 import dev.tenacity.utils.animations.Direction;
@@ -46,8 +45,8 @@ public class Keystrokes extends Module {
     @EventTarget
     public void onShaderEvent(ShaderEvent e) {
         if (keyBindForward == null) return;
-        float offset = offsetValue.getValue().floatValue();
-        float x = dragging.getX(), y = dragging.getY(), width = dragging.getWidth(), height = dragging.getHeight(), size = sizeValue.getValue().floatValue();
+        float offset = offsetValue.get().floatValue();
+        float x = dragging.getX(), y = dragging.getY(), width = dragging.getWidth(), height = dragging.getHeight(), size = sizeValue.get().floatValue();
 
         float increment = size + offset;
         keyBindForward.renderForEffects(x + width / 2f - size / 2f, y, size, e);
@@ -59,9 +58,9 @@ public class Keystrokes extends Module {
 
     @EventTarget
     public void onRender2DEvent(Render2DEvent e) {
-        float offset = offsetValue.getValue().floatValue();
-        dragging.setHeight((float) ((sizeValue.getValue() + offset) * 3) - offset);
-        dragging.setWidth((float) ((sizeValue.getValue() + offset) * 3) - offset);
+        float offset = offsetValue.get().floatValue();
+        dragging.setHeight((float) ((sizeValue.get() + offset) * 3) - offset);
+        dragging.setWidth((float) ((sizeValue.get() + offset) * 3) - offset);
 
         if (keyBindForward == null) {
             keyBindForward = new Button(mc.gameSettings.keyBindForward);
@@ -71,9 +70,9 @@ public class Keystrokes extends Module {
             keyBindJump = new Button(mc.gameSettings.keyBindJump);
         }
 
-        float x = dragging.getX(), y = dragging.getY(), width = dragging.getWidth(), height = dragging.getHeight(), size = sizeValue.getValue().floatValue();
+        float x = dragging.getX(), y = dragging.getY(), width = dragging.getWidth(), height = dragging.getHeight(), size = sizeValue.get().floatValue();
 
-        if (HUDMod.customFont.isEnabled()) {
+        if (HUDMod.customFont.get()) {
             Button.font = duckSansFont22;
         } else {
             Button.font = mc.fontRendererObj;
@@ -104,10 +103,10 @@ public class Keystrokes extends Module {
 
         public void renderForEffects(float x, float y, float width, float height, ShaderEvent event) {
             Color color = Color.BLACK;
-            if (event.getBloomOptions().getSetting("Keystrokes").isEnabled()) {
+            if (event.getBloomOptions().getSetting("Keystrokes").get()) {
                 color = ColorUtil.interpolateColorC(Color.BLACK, Color.WHITE, clickAnimation.getOutput().floatValue());
             }
-            RoundedUtil.drawRound(x, y, width, height, radius.getValue().floatValue(), color);
+            RoundedUtil.drawRound(x, y, width, height, radius.get().floatValue(), color);
         }
 
         public void render(float x, float y, float size) {
@@ -115,10 +114,10 @@ public class Keystrokes extends Module {
         }
 
         public void render(float x, float y, float width, float height) {
-            Color color = ColorUtil.applyOpacity(Color.BLACK, opacity.getValue().floatValue());
+            Color color = ColorUtil.applyOpacity(Color.BLACK, opacity.get().floatValue());
             clickAnimation.setDirection(binding.isKeyDown() ? Direction.FORWARDS : Direction.BACKWARDS);
 
-            RoundedUtil.drawRound(x, y, width, height, radius.getValue().floatValue(), color);
+            RoundedUtil.drawRound(x, y, width, height, radius.get().floatValue(), color);
             float offsetX = font instanceof CustomFont ? 0 : .5f;
             int offsetY = font instanceof CustomFont ? 0 : 1;
 
@@ -128,7 +127,7 @@ public class Keystrokes extends Module {
                 float animation = clickAnimation.getOutput().floatValue();
                 Color color2 = ColorUtil.applyOpacity(Color.WHITE, (0.5f * animation));
                 RenderUtil.scaleStart(x + width / 2f, y + height / 2f, animation);
-                float diff = (height / 2f) - radius.getValue().floatValue();
+                float diff = (height / 2f) - radius.get().floatValue();
                 RoundedUtil.drawRound(x, y, width, height, ((height / 2f) - (diff * animation)), color2);
                 RenderUtil.scaleEnd();
             }

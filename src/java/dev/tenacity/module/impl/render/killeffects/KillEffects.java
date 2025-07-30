@@ -1,10 +1,10 @@
 package dev.tenacity.module.impl.render.killeffects;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.game.WorldEvent;
-import com.cubk.event.impl.player.ChatReceivedEvent;
-import com.cubk.event.impl.player.LivingDeathEvent;
-import com.cubk.event.impl.render.RendererLivingEntityEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.game.WorldEvent;
+import dev.tenacity.event.impl.player.ChatReceivedEvent;
+import dev.tenacity.event.impl.player.LivingDeathEvent;
+import dev.tenacity.event.impl.render.RendererLivingEntityEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.ModeSetting;

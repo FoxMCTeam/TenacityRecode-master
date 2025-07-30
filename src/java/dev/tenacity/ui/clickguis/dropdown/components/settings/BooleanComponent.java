@@ -33,7 +33,7 @@ public class BooleanComponent extends SettingComponent<BooleanSetting> {
 
     @Override
     public void drawScreen(int mouseX, int mouseY) {
-        toggleAnimation.setDirection(getSetting().isEnabled() ? Direction.FORWARDS : Direction.BACKWARDS);
+        toggleAnimation.setDirection(getSetting().get() ? Direction.FORWARDS : Direction.BACKWARDS);
         RenderUtil.resetColor();
 
         duckSansFont16.drawString(getSetting().name, x + 5, y + duckSansFont16.getMiddleOfBox(height),

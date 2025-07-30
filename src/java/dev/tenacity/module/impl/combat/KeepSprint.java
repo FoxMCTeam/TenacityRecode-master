@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.combat;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.KeepSprintEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.KeepSprintEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 

@@ -1,9 +1,9 @@
 package dev.tenacity.module.impl.combat;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.MotionEvent;
-import com.cubk.event.impl.player.MoveEvent;
-import com.cubk.event.impl.render.Render3DEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.MotionEvent;
+import dev.tenacity.event.impl.player.MoveEvent;
+import dev.tenacity.event.impl.render.Render3DEvent;
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -56,7 +56,7 @@ public final class TargetStrafe extends Module {
     private static int position;
     private final BooleanSetting render = new BooleanSetting("Render", true);
     private final ColorSetting color = new ColorSetting("Color", new Color(-16711712));
-    private final DecelerateAnimation animation = new DecelerateAnimation(250, radius.getValue(), Direction.FORWARDS);
+    private final DecelerateAnimation animation = new DecelerateAnimation(250, radius.get(), Direction.FORWARDS);
     private boolean returnState;
 
     public TargetStrafe() {
@@ -137,7 +137,7 @@ public final class TargetStrafe extends Module {
     public static boolean strafe(MoveEvent e, double moveSpeed) {
         if (canStrafe()) {
             setSpeed(e, moveSpeed, RotationUtils.getYaw(KillAura.target.getPositionVector()), strafe,
-                    mc.thePlayer.getDistanceToEntity(KillAura.target) <= radius.getValue() ? 0 : 1);
+                    mc.thePlayer.getDistanceToEntity(KillAura.target) <= radius.get() ? 0 : 1);
             return true;
         }
         return false;
@@ -146,7 +146,7 @@ public final class TargetStrafe extends Module {
     public static boolean canStrafe() {
         KillAura killAura = Client.INSTANCE.getModuleManager().getModule(KillAura.class);
         if (!Client.INSTANCE.isEnabled(TargetStrafe.class) || !killAura.isEnabled()
-                || !MovementUtils.isMoving() || (space.isEnabled() && !Keyboard.isKeyDown(Keyboard.KEY_SPACE))) {
+                || !MovementUtils.isMoving() || (space.get() && !Keyboard.isKeyDown(Keyboard.KEY_SPACE))) {
             return false;
         }
         if (!(Client.INSTANCE.isEnabled(Speed.class) || Client.INSTANCE.isEnabled(Flight.class))) {
@@ -157,8 +157,8 @@ public final class TargetStrafe extends Module {
 
     public static void setSpeed(MoveEvent moveEvent, double speed, float yaw, double strafe, double forward) {
         EntityLivingBase target = KillAura.target;
-        double rad = radius.getValue();
-        int count = points.getValue().intValue();
+        double rad = radius.get();
+        int count = points.get().intValue();
 
         double a = (Math.PI * 2.0) / (double) count;
         double posX = StrictMath.sin(a * position) * rad * strafe, posY = StrictMath.cos(a * position) * rad;
@@ -170,7 +170,7 @@ public final class TargetStrafe extends Module {
             if (ServerUtils.isGeniuneHypixel()) speed = Math.min(speed, 0.3375);
 
             boolean skip = false;
-            if (adaptiveSettings.getSetting("Edges").isEnabled()) {
+            if (adaptiveSettings.getSetting("Edges").get()) {
                 Vec3 pos = new Vec3(mc.thePlayer.posX, mc.thePlayer.posY + mc.thePlayer.getEyeHeight(), mc.thePlayer.posZ);
                 Vec3 vec = RotationUtils.getVecRotations(0, 90);
                 if (mc.theWorld.rayTraceBlocks(pos, pos.addVector(vec.xCoord * 5, vec.yCoord * 5, vec.zCoord * 5), false, false, false) == null) {
@@ -182,7 +182,7 @@ public final class TargetStrafe extends Module {
 
             if (!skip) {
                 double d;
-                if (adaptiveSettings.getSetting("Behind").isEnabled()) {
+                if (adaptiveSettings.getSetting("Behind").get()) {
                     double x = target.posX + -StrictMath.sin(StrictMath.toRadians(target.rotationYaw)) * -2,
                             z = target.posZ + StrictMath.cos(StrictMath.toRadians(target.rotationYaw)) * -2;
                     d = StrictMath.toRadians(RotationUtils.getRotations(x, target.posY, z)[0]);
@@ -209,9 +209,9 @@ public final class TargetStrafe extends Module {
     }
 
     private static List<Point> getPoints(Entity target) {
-        double radius = TargetStrafe.radius.getValue();
+        double radius = TargetStrafe.radius.get();
         List<Point> pointList = new ArrayList<>();
-        int count = points.getValue().intValue();
+        int count = points.get().intValue();
         double posX = target.posX, posZ = target.posZ;
         double d = (Math.PI * 2.0) / count;
         for (int i = 0; i <= count; i++) {
@@ -225,7 +225,7 @@ public final class TargetStrafe extends Module {
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
         if (canStrafe()) {
-            if (auto3rdPerson.isEnabled() && mc.gameSettings.thirdPersonView == 0) {
+            if (auto3rdPerson.get() && mc.gameSettings.thirdPersonView == 0) {
                 mc.gameSettings.thirdPersonView = 1;
                 returnState = true;
             }
@@ -235,7 +235,7 @@ public final class TargetStrafe extends Module {
                 updatePosition = true;
                 positive = strafe == 1;
             } else {
-                if (adaptiveSettings.getSetting("Controllable").isEnabled()) {
+                if (adaptiveSettings.getSetting("Controllable").get()) {
                     if (mc.gameSettings.keyBindLeft.isPressed()) {
                         strafe = 1;
                         updatePosition = true;
@@ -246,21 +246,21 @@ public final class TargetStrafe extends Module {
                         positive = false;
                     }
                 }
-                if (adaptiveSettings.getSetting("Edges").isEnabled() && isInVoid()) {
+                if (adaptiveSettings.getSetting("Edges").get() && isInVoid()) {
                     strafe = -strafe;
                     updatePosition = true;
                     positive = false;
                 }
-                if (adaptiveSettings.getSetting("Liquids").isEnabled() && isInLiquid()) {
+                if (adaptiveSettings.getSetting("Liquids").get() && isInLiquid()) {
                     strafe = -strafe;
                     updatePosition = true;
                     positive = false;
                 }
             }
             if (updatePosition) {
-                position = (position + (positive ? 1 : -1)) % points.getValue().intValue();
+                position = (position + (positive ? 1 : -1)) % points.get().intValue();
             }
-        } else if (auto3rdPerson.isEnabled() && mc.gameSettings.thirdPersonView != 0 && returnState) {
+        } else if (auto3rdPerson.get() && mc.gameSettings.thirdPersonView != 0 && returnState) {
             mc.gameSettings.thirdPersonView = 0;
             returnState = false;
         }
@@ -268,13 +268,13 @@ public final class TargetStrafe extends Module {
 
     @EventTarget
     public void onRender3DEvent(Render3DEvent event) {
-        if (render.isEnabled()) {
-            if (animation.getEndPoint() != radius.getValue()) animation.setEndPoint(radius.getValue());
+        if (render.get()) {
+            if (animation.getEndPoint() != radius.get()) animation.setEndPoint(radius.get());
             boolean canStrafe = canStrafe();
             animation.setDirection(canStrafe ? Direction.FORWARDS : Direction.BACKWARDS);
             if (canStrafe || !animation.isDone()) {
                 drawCircle(5, 0xFF000000);
-                drawCircle(3, color.getColor().getRGB());
+                drawCircle(3, color.get().getRGB());
             }
         }
     }
@@ -284,7 +284,7 @@ public final class TargetStrafe extends Module {
         if (entity == null) return;
 
         glPushMatrix();
-        RenderUtil.color(color, (float) ((animation.getOutput().floatValue() / radius.getValue()) / 2F));
+        RenderUtil.color(color, (float) ((animation.getOutput().floatValue() / radius.get()) / 2F));
         glDisable(GL_TEXTURE_2D);
         glDisable(GL_DEPTH_TEST);
         glDepthMask(false);
@@ -295,8 +295,8 @@ public final class TargetStrafe extends Module {
         glBegin(GL_LINE_STRIP);
         EntityLivingBase target = KillAura.target;
         float partialTicks = mc.timer.elapsedPartialTicks;
-        double rad = radius.getValue();
-        double d = (Math.PI * 2.0) / points.getValue();
+        double rad = radius.get();
+        double d = (Math.PI * 2.0) / points.get();
 
         double posX = target.posX, posY = target.posY, posZ = target.posZ;
         double lastTickX = target.lastTickPosX, lastTickY = target.lastTickPosY, lastTickZ = target.lastTickPosZ;

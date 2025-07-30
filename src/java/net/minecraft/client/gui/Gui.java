@@ -169,7 +169,7 @@ public class Gui {
     }
 
     protected AbstractFontRenderer getFont() {
-        return HUDMod.customFont.isEnabled() ? FontUtil.duckSansFont20 : Minecraft.getMinecraft().fontRendererObj;
+        return HUDMod.customFont.get() ? FontUtil.duckSansFont20 : Minecraft.getMinecraft().fontRendererObj;
     }
 
     /**

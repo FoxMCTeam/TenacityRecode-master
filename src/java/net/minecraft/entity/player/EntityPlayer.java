@@ -4,7 +4,9 @@ import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
 import dev.tenacity.Client;
-import com.cubk.event.impl.player.KeepSprintEvent;
+import dev.tenacity.event.impl.player.KeepSprintEvent;
+import dev.tenacity.utils.client.addons.skinlayers.accessor.PlayerSettings;
+import dev.tenacity.utils.client.addons.skinlayers.render.CustomizableModelPart;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.BlockDirectional;
@@ -50,7 +52,7 @@ import java.util.List;
 import java.util.UUID;
 
 @SuppressWarnings("incomplete-switch")
-public abstract class EntityPlayer extends EntityLivingBase {
+public abstract class EntityPlayer extends EntityLivingBase implements PlayerSettings {
     /**
      * Inventory of the player
      */
@@ -169,7 +171,8 @@ public abstract class EntityPlayer extends EntityLivingBase {
      * An instance of a fishing rod's hook. If this isn't null, the icon image of the fishing rod is slightly different
      */
     public EntityFishHook fishEntity;
-
+    private CustomizableModelPart headLayer;
+    private CustomizableModelPart[] skinLayer;
     public EntityPlayer(World worldIn, GameProfile gameProfileIn) {
         super(worldIn);
         this.entityUniqueID = getUUID(gameProfileIn);
@@ -182,6 +185,26 @@ public abstract class EntityPlayer extends EntityLivingBase {
         this.fireResistance = 20;
     }
 
+
+    @Override
+    public CustomizableModelPart[] getSkinLayers() {
+        return skinLayer;
+    }
+
+    @Override
+    public void setupSkinLayers(CustomizableModelPart[] box) {
+        this.skinLayer = box;
+    }
+
+    @Override
+    public CustomizableModelPart getHeadLayers() {
+        return headLayer;
+    }
+
+    @Override
+    public void setupHeadLayers(CustomizableModelPart box) {
+        this.headLayer = box;
+    }
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(1.0D);

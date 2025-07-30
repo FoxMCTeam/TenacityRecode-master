@@ -1,24 +1,13 @@
 package dev.tenacity.module.impl.combat;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.game.WorldEvent;
-import com.cubk.event.impl.network.PacketReceiveEvent;
-import com.cubk.event.impl.network.PacketSendEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.network.PacketEvent;
+import dev.tenacity.event.impl.network.PacketEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
-import dev.tenacity.module.settings.Setting;
-import dev.tenacity.module.settings.impl.BooleanSetting;
 import dev.tenacity.module.settings.impl.ModeSetting;
-import dev.tenacity.module.settings.impl.NumberSetting;
-import dev.tenacity.ui.notifications.NotificationManager;
-import dev.tenacity.ui.notifications.NotificationType;
 import dev.tenacity.utils.Utils;
-import dev.tenacity.utils.misc.MathUtils;
-import dev.tenacity.utils.player.MovementUtils;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
-import net.minecraft.network.play.server.S19PacketEntityStatus;
 import net.minecraft.network.play.server.S27PacketExplosion;
 
 public class Velocity extends Module {
@@ -34,14 +23,14 @@ public class Velocity extends Module {
         this.addSettings(mode);
     }
     @EventTarget
-    public void onPacketReceiveEvent(PacketReceiveEvent e) {
-        this.setSuffix(mode.getMode());
-        if (mode.getMode().equals("Watchdog")) {
+    public void onPacketEvent(PacketEvent e) {
+        this.setSuffix(mode.get());
+        if (mode.get().equals("Watchdog")) {
             handleAirMotion(e);
         }
     }
 
-    private void handleAirMotion(PacketReceiveEvent e) {
+    private void handleAirMotion(PacketEvent e) {
         if (!Utils.nullCheck()  || e.isCancelled()) return;
 
         if (shouldCancelAllVelocity()) {
@@ -56,7 +45,7 @@ public class Velocity extends Module {
         }
     }
 
-    private void handleExplosionVelocity(S27PacketExplosion packet, PacketReceiveEvent e) {
+    private void handleExplosionVelocity(S27PacketExplosion packet, PacketEvent e) {
         if (cancelExplosion || checkAirMotionConditions()) {
             e.cancel();
             return;
@@ -81,7 +70,7 @@ public class Velocity extends Module {
         return cancelWhileFalling && mc.thePlayer.fallDistance > 0;
     }
 
-    private void handleEntityVelocity(S12PacketEntityVelocity packet, PacketReceiveEvent e) {
+    private void handleEntityVelocity(S12PacketEntityVelocity packet, PacketEvent e) {
         if (packet.getEntityID() != mc.thePlayer.getEntityId()) return;
 
         if (checkAirMotionConditions()) {

@@ -1,14 +1,11 @@
 package dev.tenacity.ui.mainmenu;
 
 import dev.tenacity.Client;
-import dev.tenacity.module.impl.display.PostProcessing;
 import dev.tenacity.utils.misc.NetworkingUtils;
-import dev.tenacity.utils.render.GLUtil;
-import dev.tenacity.utils.render.RenderUtil;
-import dev.tenacity.utils.render.RoundedUtil;
-import dev.tenacity.utils.render.StencilUtil;
+import dev.tenacity.utils.render.*;
 import dev.tenacity.utils.render.blur.GaussianBlur;
 import net.minecraft.client.gui.*;
+import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
@@ -59,8 +56,11 @@ public class CustomMainMenu extends GuiScreen {
         float rectWidth = 277;
         float rectHeight = 275.5f;
 
-        PostProcessing.runBloom(() -> RoundedUtil.drawRound(width / 2f - rectWidth / 2f, height / 2f - rectHeight / 2f,
-                rectWidth, rectHeight, 10, Color.WHITE), true, false, 1);
+        GaussianBlur.startBlur();
+        RoundedUtil.drawRound(width / 2f - rectWidth / 2f, height / 2f - rectHeight / 2f,
+                rectWidth, rectHeight, 10, Color.WHITE);
+        GaussianBlur.endBlur(40, 2);
+
 
         float outlineImgWidth = 688 / 2f;
         float outlineImgHeight = 681 / 2f;
@@ -122,6 +122,11 @@ public class CustomMainMenu extends GuiScreen {
             button.drawScreen(mouseX, mouseY);
             count += (int) (buttonHeight + 5F);
         }
+
+        duckSansFont16.drawStringWithShadow("Copyright Mojang AB. Do not distribute!", 10, height - 25,
+                ColorUtil.applyOpacity(Color.WHITE, 0.6f));
+        duckSansFont16.drawStringWithShadow("Minecraft 1.8.9 (" + Config.getVersion() + ")", 10, height - 15,
+                ColorUtil.applyOpacity(Color.WHITE, 0.6f));
 
         duckSansBoldFont80.drawCenteredString("Tenacity", width / 2f, height / 2f - 110, Color.WHITE.getRGB());
         duckSansFont32.drawString(Client.VERSION, width / 2f + duckSansBoldFont80.getStringWidth("Tenacity") / 2f - (duckSansFont32.getStringWidth(Client.VERSION) / 2f), height / 2f - 113, Color.WHITE.getRGB());

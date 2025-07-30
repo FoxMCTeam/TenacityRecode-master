@@ -92,7 +92,7 @@ public class SettingsPanel extends Panel {
 
             if (setting instanceof StringSetting stringSetting) {
                 TextField textField = new TextField(duckSansFont18);
-                textField.setText(stringSetting.getString());
+                textField.setText(stringSetting.get());
                 textField.setCursorPositionZero();
                 textFieldMap.put(stringSetting, textField);
             }
@@ -106,7 +106,7 @@ public class SettingsPanel extends Panel {
     public void initGui() {
         if (textFieldMap != null) {
             for (Map.Entry<StringSetting, TextField> entry : textFieldMap.entrySet()) {
-                entry.getValue().setText(entry.getKey().getString());
+                entry.getValue().setText(entry.getKey().get());
                 entry.getValue().setCursorPositionZero();
             }
         }
@@ -156,7 +156,7 @@ public class SettingsPanel extends Panel {
             boolean isHoveringSetting = HoveringUtil.isHovering(x + 5, settingY, 130, settingHeight - 2, mouseX, mouseY);
             if (setting instanceof BooleanSetting booleanSetting) {
                 Animation animation = booleanSettingHashMap.get(setting);
-                animation.setDirection(booleanSetting.isEnabled() ? Direction.FORWARDS : Direction.BACKWARDS);
+                animation.setDirection(booleanSetting.get() ? Direction.FORWARDS : Direction.BACKWARDS);
 
                 if (type == GuiEvents.CLICK && isHoveringSetting && button == 0) {
                     booleanSetting.toggle();
@@ -210,11 +210,11 @@ public class SettingsPanel extends Panel {
 
                 float modeX = x + 114 - stringWidth + modeWidth / 2f;
                 RenderUtil.resetColor();
-                duckSansFont16.drawCenteredString(modeSetting.getMode(), modeX, settingY + duckSansFont16.getMiddleOfBox(10), -1);
+                duckSansFont16.drawCenteredString(modeSetting.get(), modeX, settingY + duckSansFont16.getMiddleOfBox(10), -1);
 
                 int modeCount = 1;
                 for (String mode : modeSetting.modes) {
-                    if (!mode.equalsIgnoreCase(modeSetting.getMode())) {
+                    if (!mode.equalsIgnoreCase(modeSetting.get())) {
                         Animation modeAnimation = modesHoverAnimation.get(modeSetting).get(mode);
                         boolean isHoveringMode = animation.getDirection().equals(Direction.FORWARDS) &&
                                 HoveringUtil.isHovering(x + 115 - stringWidth, settingY + (modeCount * 15), modeWidth, 11, mouseX, mouseY);
@@ -222,7 +222,7 @@ public class SettingsPanel extends Panel {
 
                         if (type == GuiEvents.CLICK && button == 0 && isHoveringMode) {
                             modeSettingClick.put(setting, !modeSettingClick.get(setting));
-                            modeSetting.setCurrentMode(mode);
+                            modeSetting.set(mode);
                         }
 
                         modeAnimation.setDirection(isHoveringMode ? Direction.FORWARDS : Direction.BACKWARDS);
@@ -250,7 +250,7 @@ public class SettingsPanel extends Panel {
                 duckSansFont16.drawCenteredString(colorSetting.name, (x + 13) + 115 / 2f, settingY + 3, -1);
 
                 if (colorSetting.isRainbow()) {
-                    Color color = colorSetting.getColor();
+                    Color color = colorSetting.get();
                     int red = color.getRed(), green = color.getGreen(), blue = color.getBlue();
                     float[] hsb = Color.RGBtoHSB(red, green, blue, null);
                     colorSetting.setHue(hsb[0]);
@@ -261,11 +261,11 @@ public class SettingsPanel extends Panel {
 
                 float[] hsb = {(float) colorSetting.getHue(), (float) colorSetting.getSaturation(), (float) colorSetting.getBrightness()};
 
-                /*Draw.colorRGBA(colorSetting.getColor().getRGB());
+                /*Draw.colorRGBA(colorSetting.get().getRGB());
                 GL11.glEnable(GL11.GL_BLEND);
                 mc.getTextureManager().bindTexture(new ResourceLocation("Tenacity/booleanslider1.png"));
                 Gui.drawModalRectWithCustomSizedTexture(x + 98, settingY, 0, 0, 20, 10, 20, 10);*/
-                //RenderUtil.renderRoundedRect(x + 95, settingY, 20, 10, 3, colorSetting.getColor().getRGB());
+                //RenderUtil.renderRoundedRect(x + 95, settingY, 20, 10, 3, colorSetting.get().getRGB());
 
                 float gradientX = x + 17;
                 float gradientY = settingY + 15;
@@ -314,7 +314,7 @@ public class SettingsPanel extends Panel {
 
 
                 GlStateManager.color(1, 1, 1, 1);
-                Gui.drawRect2(gradientX + gradientWidth + 5, gradientY, 5, gradientHeight, colorSetting.getColor().getRGB());
+                Gui.drawRect2(gradientX + gradientWidth + 5, gradientY, 5, gradientHeight, colorSetting.get().getRGB());
 
 
                 // Hue bar
@@ -379,13 +379,13 @@ public class SettingsPanel extends Panel {
                     draggingNumber = numberSetting;
                 }
 
-                double currentValue = numberSetting.getValue();
+                double currentValue = numberSetting.get();
 
 
                 if (draggingNumber != null && draggingNumber == setting) {
                     float percent = Math.min(1, Math.max(0, (mouseX - (x + 14)) / 108));
                     double newValue = (percent * (numberSetting.getMaxValue() - numberSetting.getMinValue())) + numberSetting.getMinValue();
-                    numberSetting.setValue(newValue);
+                    numberSetting.set(newValue);
                 }
 
                 String value = Double.toString(MathUtils.round(currentValue, 2));
@@ -426,7 +426,7 @@ public class SettingsPanel extends Panel {
                 textField.setOutline(new Color(68, 71, 78));
                 textField.setFill(new Color(30, 31, 35));
 
-                stringSetting.setString(textField.getText());
+                stringSetting.set(textField.getText());
 
                 if (type == GuiEvents.CLICK) textField.mouseClicked(mouseX, mouseY, button);
 
@@ -469,7 +469,7 @@ public class SettingsPanel extends Panel {
 
                     boolAnimation.setDirection(isHoveringBool ? Direction.FORWARDS : Direction.BACKWARDS);
 
-                    Color boolColor = booleanSetting.isEnabled() ? colors.getSecond() : new Color(128, 134, 141);
+                    Color boolColor = booleanSetting.get() ? colors.getSecond() : new Color(128, 134, 141);
                     int colorInterpolate = ColorUtil.interpolateColor(boolColor,
                             boolColor.brighter(), boolAnimation.getOutput().floatValue());
 

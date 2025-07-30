@@ -3,7 +3,11 @@ package dev.tenacity.module.settings.impl;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import dev.tenacity.module.settings.Setting;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 public class BooleanSetting extends Setting {
 
     @Expose
@@ -15,24 +19,24 @@ public class BooleanSetting extends Setting {
         this.state = state;
     }
 
+    public boolean get() {
+        return state;
+    }
 
     public boolean isEnabled() {
         return state;
     }
 
-
     public void toggle() {
-        setState(!isEnabled());
+        setState(!get());
     }
 
-
-    public void setState(boolean state) {
-        this.state = state;
+    public void set(boolean b) {
+        state = b;
     }
 
     @Override
     public Boolean getConfigValue() {
-        return isEnabled();
+        return get();
     }
-
 }

@@ -43,10 +43,20 @@ public class NumberSetting extends Setting {
     }
 
 
+    public Double get() {
+        return value;
+    }
+
     public Double getValue() {
         return value;
     }
 
+
+    public void set(double value) {
+        value = clamp(value, this.minValue, this.maxValue);
+        value = Math.round(value * (1.0 / this.increment)) / (1.0 / this.increment);
+        this.value = value;
+    }
 
     public void setValue(double value) {
         value = clamp(value, this.minValue, this.maxValue);
@@ -60,7 +70,7 @@ public class NumberSetting extends Setting {
 
     @Override
     public Double getConfigValue() {
-        return getValue();
+        return get();
     }
 
 }

@@ -2,7 +2,7 @@ package net.minecraft.client.entity;
 
 import dev.tenacity.Client;
 import dev.tenacity.commands.CommandHandler;
-import com.cubk.event.impl.player.*;
+import dev.tenacity.event.impl.player.*;
 import dev.tenacity.utils.client.addons.vector.Vector2f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;

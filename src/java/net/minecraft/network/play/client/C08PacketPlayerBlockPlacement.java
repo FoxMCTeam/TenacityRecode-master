@@ -9,13 +9,13 @@ import net.minecraft.util.BlockPos;
 import java.io.IOException;
 
 public class C08PacketPlayerBlockPlacement implements Packet<INetHandlerPlayServer> {
-    private static final BlockPos NEGATIVE = new BlockPos(-1, -1, -1);
-    private BlockPos position;
-    private int placedBlockDirection;
-    private ItemStack stack;
-    private float facingX;
-    private float facingY;
-    private float facingZ;
+    public static final BlockPos NEGATIVE = new BlockPos(-1, -1, -1);
+    public BlockPos position;
+    public int placedBlockDirection;
+    public ItemStack stack;
+    public float facingX;
+    public float facingY;
+    public float facingZ;
 
     public C08PacketPlayerBlockPlacement() {
     }

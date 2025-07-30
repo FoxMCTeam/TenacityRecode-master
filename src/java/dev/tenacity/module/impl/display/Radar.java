@@ -1,8 +1,8 @@
 package dev.tenacity.module.impl.display;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.render.Render2DEvent;
-import com.cubk.event.impl.render.ShaderEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.render.Render2DEvent;
+import dev.tenacity.event.impl.render.ShaderEvent;
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -44,11 +44,11 @@ public class Radar extends Module {
 
     public Radar() {
         super("module.display.radar", Category.DISPLAY, "Shows entites on a gui");
-        playerColor.addParent(targets, targetsSetting -> targetsSetting.getSetting("Players").isEnabled());
-        mobColor.addParent(targets, targetsSetting -> targetsSetting.getSetting("Mobs").isEnabled());
-        animalColor.addParent(targets, targetsSetting -> targetsSetting.getSetting("Animals").isEnabled());
+        playerColor.addParent(targets, targetsSetting -> targetsSetting.getSetting("Players").get());
+        mobColor.addParent(targets, targetsSetting -> targetsSetting.getSetting("Mobs").get());
+        animalColor.addParent(targets, targetsSetting -> targetsSetting.getSetting("Animals").get());
 
-        itemColor.addParent(targets, targetsSetting -> targetsSetting.getSetting("Items").isEnabled());
+        itemColor.addParent(targets, targetsSetting -> targetsSetting.getSetting("Items").get());
 
         addSettings(targets, colorWheel.createModeSetting("Color Mode"), colorWheel.getColorSetting(),
                 size, playerColor, mobColor, animalColor, itemColor);
@@ -56,8 +56,8 @@ public class Radar extends Module {
 
     @EventTarget
     public void onShaderEvent(ShaderEvent e) {
-        float x = drag.getX(), y = drag.getY(), size = this.size.getValue().floatValue(), middleX = x + size / 2f, middleY = y + size / 2f;
-        if (e.getBloomOptions().getSetting("Radar").isEnabled()) {
+        float x = drag.getX(), y = drag.getY(), size = this.size.get().floatValue(), middleX = x + size / 2f, middleY = y + size / 2f;
+        if (e.getBloomOptions().getSetting("Radar").get()) {
             RoundedUtil.drawGradientRound(x, y, size, size, 6, colorWheel.getColor1(), colorWheel.getColor4(), colorWheel.getColor2(), colorWheel.getColor3());
         } else {
             RoundedUtil.drawRound(x, y, size, size, 6, Color.BLACK);
@@ -68,7 +68,7 @@ public class Radar extends Module {
     @EventTarget
     public void onRender2DEvent(Render2DEvent e) {
         getEntities();
-        float x = drag.getX(), y = drag.getY(), size = this.size.getValue().floatValue(), middleX = x + size / 2f, middleY = y + size / 2f;
+        float x = drag.getX(), y = drag.getY(), size = this.size.get().floatValue(), middleX = x + size / 2f, middleY = y + size / 2f;
 
         drag.setWidth(size);
         drag.setHeight(size);
@@ -112,18 +112,18 @@ public class Radar extends Module {
         Color color = Color.WHITE;
 
         if (entity instanceof EntityPlayer) {
-            color = playerColor.getColor();
+            color = playerColor.get();
         }
         if (entity instanceof EntityMob || entity instanceof EntityWaterMob) {
-            color = mobColor.getColor();
+            color = mobColor.get();
         }
 
         if (entity instanceof EntityAnimal) {
-            color = animalColor.getColor();
+            color = animalColor.get();
         }
 
         if (entity instanceof EntityItem) {
-            color = itemColor.getColor();
+            color = itemColor.get();
         }
 
         return color;
@@ -136,21 +136,21 @@ public class Radar extends Module {
         for (Entity entity : mc.theWorld.loadedEntityList) {
 
 
-            if (entity instanceof EntityPlayer && targets.getSetting("Players").isEnabled()) {
+            if (entity instanceof EntityPlayer && targets.getSetting("Players").get()) {
                 if (entity != mc.thePlayer && !entity.isInvisible()) {
                     entities.add(entity);
                 }
             }
 
-            if ((entity instanceof EntityMob || entity instanceof EntityWaterMob) && targets.getSetting("Mobs").isEnabled()) {
+            if ((entity instanceof EntityMob || entity instanceof EntityWaterMob) && targets.getSetting("Mobs").get()) {
                 entities.add(entity);
             }
 
-            if (entity instanceof EntityAnimal && targets.getSetting("Animals").isEnabled()) {
+            if (entity instanceof EntityAnimal && targets.getSetting("Animals").get()) {
                 entities.add(entity);
             }
 
-            if (entity instanceof EntityItem && targets.getSetting("Items").isEnabled()) {
+            if (entity instanceof EntityItem && targets.getSetting("Items").get()) {
                 entities.add(entity);
             }
         }

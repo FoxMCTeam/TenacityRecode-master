@@ -74,7 +74,7 @@ public class BlockModelRenderer {
 
             boolean flag1;
             if (XRay.enabled) {
-                if (XRay.isWhitelisted(blockStateIn.getBlock()) && (!XRay.bypass.isEnabled() || XRay.checkedOres.contains(blockPosIn))) {
+                if (XRay.isWhitelisted(blockStateIn.getBlock()) && (!XRay.bypass.get() || XRay.checkedOres.contains(blockPosIn))) {
                     checkSides = false;
                 }
                 flag1 = this.renderModelSmooth(blockAccessIn, modelIn, blockStateIn, blockPosIn, worldRendererIn, checkSides);

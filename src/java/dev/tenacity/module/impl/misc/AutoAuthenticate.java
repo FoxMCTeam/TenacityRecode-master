@@ -1,10 +1,10 @@
 package dev.tenacity.module.impl.misc;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.game.WorldEvent;
-import com.cubk.event.impl.player.ChatReceivedEvent;
-import com.cubk.event.impl.player.MotionEvent;
-import com.cubk.event.impl.render.Render2DEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.game.WorldEvent;
+import dev.tenacity.event.impl.player.ChatReceivedEvent;
+import dev.tenacity.event.impl.player.MotionEvent;
+import dev.tenacity.event.impl.render.Render2DEvent;
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -49,7 +49,7 @@ public class AutoAuthenticate extends Module {
     @EventTarget
     public void onChatReceivedEvent(ChatReceivedEvent event) {
         String msg = event.message.getUnformattedText();
-        String password = this.password.getString();
+        String password = this.password.get();
         int passCount = count(msg);
         if (passCount > 0) {
             if (msg.contains("/register ")) {
@@ -110,7 +110,7 @@ public class AutoAuthenticate extends Module {
         long currentTimeMillis = System.currentTimeMillis();
         this.animation.setDirection(Direction.FORWARDS);
         this.startAt = currentTimeMillis;
-        this.runAt = currentTimeMillis + delay.getValue().longValue();
+        this.runAt = currentTimeMillis + delay.get().longValue();
         this.runCommand = runCommand.trim();
     }
 

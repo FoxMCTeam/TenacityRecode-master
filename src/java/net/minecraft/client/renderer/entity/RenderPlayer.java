@@ -2,8 +2,16 @@ package net.minecraft.client.renderer.entity;
 
 import dev.tenacity.Client;
 import dev.tenacity.module.impl.combat.KillAura;
+import dev.tenacity.module.impl.mods.SkinLayers3D;
 import dev.tenacity.module.impl.render.BrightPlayers;
-import dev.tenacity.module.impl.render.CustomModel;
+import dev.tenacity.module.impl.mods.CustomModel;
+import dev.tenacity.utils.client.addons.skinlayers.SkinLayersModBase;
+import dev.tenacity.utils.client.addons.skinlayers.SkinUtil;
+import dev.tenacity.utils.client.addons.skinlayers.accessor.PlayerEntityModelAccessor;
+import dev.tenacity.utils.client.addons.skinlayers.accessor.PlayerSettings;
+import dev.tenacity.utils.client.addons.skinlayers.renderlayers.BodyLayerFeatureRenderer;
+import dev.tenacity.utils.client.addons.skinlayers.renderlayers.HeadLayerFeatureRenderer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelPlayer;
@@ -17,12 +25,13 @@ import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.util.ResourceLocation;
 
-public class RenderPlayer extends RendererLivingEntity<AbstractClientPlayer> {
+public class RenderPlayer extends RendererLivingEntity<AbstractClientPlayer>  implements PlayerEntityModelAccessor {
     /**
      * this field is used to indicate the 3-pixel wide arms
      */
     private boolean smallArms;
-
+    private HeadLayerFeatureRenderer headLayer;
+    private BodyLayerFeatureRenderer bodyLayer;
     public RenderPlayer(RenderManager renderManager) {
         this(renderManager, false);
     }
@@ -37,6 +46,22 @@ public class RenderPlayer extends RendererLivingEntity<AbstractClientPlayer> {
         this.addLayer(new LayerDeadmau5Head(this));
         this.addLayer(new LayerCape(this));
         this.addLayer(new LayerCustomHead(this.getMainModel().bipedHead));
+        headLayer = new HeadLayerFeatureRenderer(this);
+        bodyLayer = new BodyLayerFeatureRenderer(this);
+    }
+    @Override
+    public HeadLayerFeatureRenderer getHeadLayer() {
+        return headLayer;
+    }
+
+    @Override
+    public BodyLayerFeatureRenderer getBodyLayer() {
+        return bodyLayer;
+    }
+
+    @Override
+    public boolean hasThinArms() {
+        return smallArms;
     }
 
     public ModelPlayer getMainModel() {
@@ -64,7 +89,27 @@ public class RenderPlayer extends RendererLivingEntity<AbstractClientPlayer> {
     }
 
     private void setModelVisibilities(AbstractClientPlayer clientPlayer) {
-
+        if (Client.INSTANCE.getModuleManager().getModule(SkinLayers3D.class).isEnabled()) {
+            ModelPlayer playerModel = getMainModel();
+            if (Minecraft.getMinecraft().thePlayer.getPositionVector().squareDistanceTo(clientPlayer.getPositionVector()) < SkinLayersModBase.config.renderDistanceLOD * SkinLayersModBase.config.renderDistanceLOD) {
+                playerModel.bipedHeadwear.isHidden = playerModel.bipedHeadwear.isHidden || SkinLayersModBase.config.enableHat;
+                playerModel.bipedBodyWear.isHidden = playerModel.bipedBodyWear.isHidden || SkinLayersModBase.config.enableJacket;
+                playerModel.bipedLeftArmwear.isHidden = playerModel.bipedLeftArmwear.isHidden || SkinLayersModBase.config.enableLeftSleeve;
+                playerModel.bipedRightArmwear.isHidden = playerModel.bipedRightArmwear.isHidden || SkinLayersModBase.config.enableRightSleeve;
+                playerModel.bipedLeftLegwear.isHidden = playerModel.bipedLeftLegwear.isHidden || SkinLayersModBase.config.enableLeftPants;
+                playerModel.bipedRightLegwear.isHidden = playerModel.bipedRightLegwear.isHidden || SkinLayersModBase.config.enableRightPants;
+            } else {
+                // not correct, but the correct way doesn't work cause 1.8 or whatever
+                if (!clientPlayer.isSpectator()) {
+                    playerModel.bipedHeadwear.isHidden = false;
+                    playerModel.bipedBodyWear.isHidden = false;
+                    playerModel.bipedLeftArmwear.isHidden = false;
+                    playerModel.bipedRightArmwear.isHidden = false;
+                    playerModel.bipedLeftLegwear.isHidden = false;
+                    playerModel.bipedRightLegwear.isHidden = false;
+                }
+            }
+        }
         ModelPlayer modelplayer = this.getMainModel();
 
         if (clientPlayer.isSpectator()) {
@@ -111,7 +156,7 @@ public class RenderPlayer extends RendererLivingEntity<AbstractClientPlayer> {
     protected ResourceLocation getEntityTexture(AbstractClientPlayer entity) {
 
         if (CustomModel.enabled) {
-            switch (CustomModel.model.getMode()) {
+            switch (CustomModel.model.get()) {
                 case "Rabbit":
                     return CustomModel.rabbitModel;
                 case "Among Us":
@@ -160,7 +205,9 @@ public class RenderPlayer extends RendererLivingEntity<AbstractClientPlayer> {
         modelplayer.isSneak = false;
         modelplayer.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, clientPlayer);
         modelplayer.renderRightArm();
-
+        if (Client.INSTANCE.getModuleManager().getModule(SkinLayers3D.class).isEnabled()) {
+            renderFirstPersonArm(clientPlayer, 3);
+        }
     }
 
     public void renderLeftArm(AbstractClientPlayer clientPlayer) {
@@ -172,7 +219,37 @@ public class RenderPlayer extends RendererLivingEntity<AbstractClientPlayer> {
         modelplayer.swingProgress = 0.0F;
         modelplayer.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, clientPlayer);
         modelplayer.renderLeftArm();
+        if (Client.INSTANCE.getModuleManager().getModule(SkinLayers3D.class).isEnabled()) {
+            renderFirstPersonArm(clientPlayer, 2);
+        }
+    }
+    private void renderFirstPersonArm(AbstractClientPlayer player, int layerId) {
+        ModelPlayer modelplayer = getMainModel();
+        float pixelScaling = SkinLayersModBase.config.baseVoxelSize;
+        PlayerSettings settings = (PlayerSettings) player;
+        if(settings.getSkinLayers() == null && !setupModel(player, settings)) {
+            return;
+        }
+        GlStateManager.pushMatrix();
+        modelplayer.bipedRightArm.postRender(0.0625F);
+        GlStateManager.scale(0.0625, 0.0625, 0.0625);
+        GlStateManager.scale(pixelScaling, pixelScaling, pixelScaling);
+        if(!smallArms) {
+            settings.getSkinLayers()[layerId].x = -0.998f*16f;
+        } else {
+            settings.getSkinLayers()[layerId].x = -0.499f*16;
+        }
+        settings.getSkinLayers()[layerId].render(false);
+        GlStateManager.popMatrix();
+    }
 
+    private boolean setupModel(AbstractClientPlayer abstractClientPlayerEntity, PlayerSettings settings) {
+
+        if(!SkinUtil.hasCustomSkin(abstractClientPlayerEntity)) {
+            return false; // default skin
+        }
+        SkinUtil.setup3dLayers(abstractClientPlayerEntity, settings, smallArms, null);
+        return true;
     }
 
     /**

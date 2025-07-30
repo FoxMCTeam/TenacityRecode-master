@@ -402,7 +402,7 @@ public class WorldRenderer {
         }
 
         if (XRay.enabled) {
-            j = ColorUtil.applyOpacity(j, XRay.opacity.getValue().intValue() / 255f);
+            j = ColorUtil.applyOpacity(j, XRay.opacity.get().intValue() / 255f);
         }
 
         this.rawIntBuffer.put(i, j);

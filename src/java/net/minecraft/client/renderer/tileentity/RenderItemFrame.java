@@ -1,6 +1,6 @@
 package net.minecraft.client.renderer.tileentity;
 
-import dev.tenacity.utils.render.EntityCulling;
+import dev.tenacity.module.impl.mods.EntityCulling;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.IFontRenderer;
 import net.minecraft.client.renderer.*;

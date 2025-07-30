@@ -27,17 +27,15 @@ import com.viaversion.viaversion.protocol.ProtocolManagerImpl;
 import de.florianmichael.vialoadingbase.model.Platform;
 import de.florianmichael.vialoadingbase.platform.ViaBackwardsPlatformImpl;
 import de.florianmichael.vialoadingbase.platform.ViaRewindPlatformImpl;
-import de.florianmichael.vialoadingbase.platform.ViaVersionPlatformImpl;
 import de.florianmichael.vialoadingbase.platform.viaversion.VLBViaCommandHandler;
-import de.florianmichael.vialoadingbase.platform.viaversion.VLBViaInjector;
 import de.florianmichael.vialoadingbase.platform.viaversion.VLBViaProviders;
+import de.florianmichael.vialoadingbase.platform.ViaVersionPlatformImpl;
+import de.florianmichael.vialoadingbase.platform.viaversion.VLBViaInjector;
 import de.florianmichael.vialoadingbase.util.JLoggerToLog4j;
 import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -84,27 +82,8 @@ public class ViaLoadingBase {
         initPlatform();
     }
 
-    public static ViaLoadingBase getInstance() {
-        return instance;
-    }
-
-    public static boolean inClassPath(final String name) {
-        try {
-            Class.forName(name);
-            return true;
-        } catch (Exception ignored) {
-            return false;
-        }
-    }
-
-    @Deprecated
-    public static List<ProtocolVersion> getProtocols() {
-        return PROTOCOLS;
-    }
-
     public ProtocolVersion getTargetVersion() {
-        if (forceNativeVersionCondition != null && forceNativeVersionCondition.getAsBoolean())
-            return nativeProtocolVersion;
+        if (forceNativeVersionCondition != null && forceNativeVersionCondition.getAsBoolean()) return nativeProtocolVersion;
 
         return targetProtocolVersion;
     }
@@ -126,7 +105,8 @@ public class ViaLoadingBase {
                 platform(viaVersionPlatform).
                 loader(new VLBViaProviders()).
                 injector(new VLBViaInjector()).
-                commandHandler(new VLBViaCommandHandler());
+                commandHandler(new VLBViaCommandHandler())
+                ;
 
         if (this.managerBuilderConsumer != null) this.managerBuilderConsumer.accept(builder);
 
@@ -144,6 +124,10 @@ public class ViaLoadingBase {
         ((ProtocolManagerImpl) manager.getProtocolManager()).refreshVersions();
 
         ViaLoadingBase.LOGGER.info("ViaLoadingBase has loaded " + Platform.COUNT + "/" + platforms.size() + " platforms");
+    }
+
+    public static ViaLoadingBase getInstance() {
+        return instance;
     }
 
     public List<Platform> getSubPlatforms() {
@@ -164,6 +148,20 @@ public class ViaLoadingBase {
 
     public Consumer<ViaProviders> getProviders() {
         return providers;
+    }
+
+    public static boolean inClassPath(final String name) {
+        try {
+            Class.forName(name);
+            return true;
+        } catch (Exception ignored) {
+            return false;
+        }
+    }
+
+    @Deprecated
+    public static List<ProtocolVersion> getProtocols() {
+        return PROTOCOLS;
     }
 
     public static class ViaLoadingBaseBuilder {

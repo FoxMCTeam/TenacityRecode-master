@@ -6,6 +6,7 @@ import dev.tenacity.Client;
 import dev.tenacity.config.ConfigSetting;
 import dev.tenacity.i18n.Locale;
 import dev.tenacity.i18n.Localization;
+import dev.tenacity.module.impl.display.ArrayListMod;
 import dev.tenacity.module.impl.display.NotificationsMod;
 import dev.tenacity.module.impl.render.GlowESP;
 import dev.tenacity.module.settings.Setting;
@@ -36,7 +37,7 @@ public class Module implements Utils {
     private final String description;
     private final Category category;
     private final CopyOnWriteArrayList<Setting> settingsList = new CopyOnWriteArrayList<>();
-    private final Animation animation = new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
+    private final Animation animation = ArrayListMod.animation.is("None") ? new DecelerateAnimation(0, 1).setDirection(Direction.BACKWARDS) : new DecelerateAnimation(250, 1).setDirection(Direction.BACKWARDS);
     private final KeybindSetting keybind = new KeybindSetting(Keyboard.KEY_NONE);
     @Expose
     @SerializedName("settings")
@@ -97,12 +98,13 @@ public class Module implements Utils {
 
     public void toggle() {
         toggleSilent();
-        if (NotificationsMod.toggleNotifications.isEnabled()) {
+        if (NotificationsMod.toggleNotifications.get()) {
+            Client.INSTANCE.getDynamicIslandManager().addContent(this);
             String titleToggle = Localization.get("module.toggle.title");
             String descriptionToggleOn = Localization.get(this.getName(), Locale.EN_US) + " was " + "§aenabled\r";
             String descriptionToggleOff = Localization.get(this.getName(), Locale.EN_US) + " was " + "§cdisabled\r";
 
-            switch (NotificationsMod.mode.getMode()) {
+            switch (NotificationsMod.mode.get()) {
                 case "Default":
                     if (this.isEnabled()) {
                         descriptionToggleOn = Localization.get(this.getName()) + " " + Localization.get("module.toggle.default.enable");
@@ -110,7 +112,7 @@ public class Module implements Utils {
                         descriptionToggleOff = Localization.get(this.getName()) + " " +  Localization.get("module.toggle.default.disable");
                     }
 
-                    if (NotificationsMod.onlyTitle.isEnabled()) {
+                    if (NotificationsMod.onlyTitle.get()) {
                         titleToggle = Localization.get(this.getName()) + Localization.get("module.toggle.default.onlyTitle");
                     }
 
@@ -173,7 +175,7 @@ public class Module implements Utils {
 
 
     public int getKeybindCode() {
-        return keybind.getCode();
+        return keybind.get();
     }
 
 

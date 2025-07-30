@@ -23,7 +23,7 @@ public class Glint extends Module {
 
     public Color getColor() {
         Color customColor = Color.WHITE;
-        switch (colorMode.getMode()) {
+        switch (colorMode.get()) {
             case "Sync":
                 Pair<Color, Color> colors = HUDMod.getClientColors();
                 if (HUDMod.isRainbowTheme()) {
@@ -33,7 +33,7 @@ public class Glint extends Module {
                 }
                 break;
             case "Custom":
-                customColor = color.getColor();
+                customColor = color.get();
                 break;
         }
         return customColor;

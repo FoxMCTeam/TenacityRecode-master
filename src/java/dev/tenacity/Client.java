@@ -1,7 +1,6 @@
 package dev.tenacity;
 
-import com.cubk.event.EventManager;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import dev.tenacity.event.EventManager;
 import dev.tenacity.commands.CommandHandler;
 import dev.tenacity.commands.impl.*;
 import dev.tenacity.config.ConfigManager;
@@ -21,9 +20,12 @@ import dev.tenacity.utils.client.addons.rise.component.RotationComponent;
 import de.florianmichael.viamcp.ViaMCP;
 import dev.tenacity.utils.objects.Dragging;
 import dev.tenacity.utils.objects.HTTPUtil;
+import dev.tenacity.utils.packet.BlinkComponent;
+import dev.tenacity.utils.render.DynamicIslandManager;
 import dev.tenacity.utils.render.Theme;
 import dev.tenacity.utils.render.WallpaperEngine;
 import dev.tenacity.utils.server.PingerUtils;
+import dev.tenacity.utils.client.addons.skinlayers.SkinLayersMod;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
@@ -44,7 +46,7 @@ import static dev.tenacity.module.impl.display.HUDMod.language;
 public class Client implements Utils {
     public static final Client INSTANCE = new Client();
     public static final String NAME = "Tenacity";
-    public static final String VERSION = "5.3";
+    public static final String VERSION = "5.2";
     public static final String THANKS = "d3Ck, bzdhyp";
     public static String userName = "d3Ck";
     public static final ReleaseType RELEASE = ReleaseType.DEV;
@@ -65,7 +67,10 @@ public class Client implements Utils {
     private GuiAltManager altManager;
     private CommandHandler commandHandler;
     private PingerUtils pingerUtils;
+    private DynamicIslandManager dynamicIslandManager;
+    private SkinLayersMod skinLayersMod;
     private Locale locale = Locale.EN_US;
+    public boolean loaded = false;
     public static void initClient() {
         executorService.execute(INSTANCE::intiViaMCP);
 
@@ -75,6 +80,8 @@ public class Client implements Utils {
         executorService.execute(() -> INSTANCE.getEventManager().register(new BackgroundProcess()));
         executorService.execute(() -> INSTANCE.getEventManager().register(new RotationComponent()));
         executorService.execute(() -> INSTANCE.getEventManager().register(new RenderSlotComponent()));
+        executorService.execute(() -> INSTANCE.getEventManager().register(new DynamicIslandManager()));
+        executorService.execute(() -> INSTANCE.getEventManager().register(new BlinkComponent()));
 
         ConfigManager.defaultConfig = new File(Minecraft.getMinecraft().mcDataDir + "/Tenacity/Config.json");
         INSTANCE.getConfigManager().collectConfigs();
@@ -94,7 +101,7 @@ public class Client implements Utils {
     }
 
     public void updateLanguage() {
-        switch (language.getMode()) {
+        switch (language.get()) {
             case "en_US" : Client.INSTANCE.setLocale(Locale.EN_US); break;
             case "ru_RU" : Client.INSTANCE.setLocale(Locale.RU_RU); break;
             case "zh_HK" : Client.INSTANCE.setLocale(Locale.ZH_HK); break;
@@ -115,10 +122,12 @@ public class Client implements Utils {
     }
 
     public void intiVars() {
+        INSTANCE.setDynamicIslandManager(new DynamicIslandManager());
         INSTANCE.setModuleManager(new ModuleManager());
         INSTANCE.setPingerUtils(new PingerUtils());
         INSTANCE.setConfigManager(new ConfigManager());
         INSTANCE.setScriptManager(new ScriptManager());
+        INSTANCE.setSkinLayersMod(new SkinLayersMod());
         CommandHandler commandHandler = new CommandHandler();
         commandHandler.commands.addAll(Arrays.asList(
                 new FriendCommand(), new CopyNameCommand(), new BindCommand(), new UnbindCommand(),

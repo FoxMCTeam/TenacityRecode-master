@@ -9,7 +9,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import dev.tenacity.Client;
 import dev.tenacity.module.impl.movement.Flight;
-import com.cubk.event.impl.player.ChatReceivedEvent;
+import dev.tenacity.event.impl.player.ChatReceivedEvent;
 import dev.tenacity.utils.misc.Enhancements;
 import io.netty.buffer.Unpooled;
 import net.minecraft.block.Block;
@@ -897,7 +897,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
     public void handleConfirmTransaction(S32PacketConfirmTransaction packetIn) {
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.gameController);
         if (ViaLoadingBase.getInstance().getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_17)) {
-            this.addToSendQueue(new C0FPacketConfirmTransaction(packetIn.getWindowId(), (short) 0, false));
+            this.addToSendQueue(new C0FPacketConfirmTransaction(packetIn.getWindowId(), packetIn.getActionNumber(), true));
             return;
         }
         Container container = null;
@@ -1433,15 +1433,6 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
                 this.gameController.displayGuiScreen(new GuiScreenBook(this.gameController.thePlayer, itemstack, false));
             }
         }
-    }
-
-    public void addToSendQueueUnregisteredNoEvent(Packet p_147297_1_) {
-        this.netManager.sendUnregisteredPacketWithoutEvent(p_147297_1_);
-    }
-
-
-    public void addToSendQueueUnregistered(Packet p_147297_1_) {
-        this.netManager.sendUnregisteredPacket(p_147297_1_);
     }
 
     /**

@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.player;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.MotionEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.BooleanSetting;
@@ -31,14 +31,14 @@ public class AutoArmor extends Module {
     @EventTarget
     public void onMotionEvent(MotionEvent e) {
         if (e.isPost()) return;
-        if ((invOnly.isEnabled() && !(mc.currentScreen instanceof GuiInventory)) || (onlyWhileNotMoving.isEnabled() && MovementUtils.isMoving())) {
+        if ((invOnly.get() && !(mc.currentScreen instanceof GuiInventory)) || (onlyWhileNotMoving.get() && MovementUtils.isMoving())) {
             return;
         }
         if (mc.thePlayer.openContainer instanceof ContainerChest) {
             // so it doesn't put on armor immediately after closing a chest
             timer.reset();
         }
-        if (timer.hasTimeElapsed(delay.getValue().longValue())) {
+        if (timer.hasTimeElapsed(delay.get().longValue())) {
             for (int armorSlot = 5; armorSlot < 9; armorSlot++) {
                 if (equipBest(armorSlot)) {
                     timer.reset();

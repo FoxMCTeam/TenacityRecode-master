@@ -1,8 +1,9 @@
 package dev.tenacity.utils.client.addons.rise.component;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.network.PacketSendEvent;
-import com.cubk.event.impl.player.*;
+import dev.tenacity.event.annotations.EventTarget;
+
+import dev.tenacity.event.impl.network.PacketEvent;
+import dev.tenacity.event.impl.player.*;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.client.addons.rise.MovementFix;
 import dev.tenacity.utils.client.addons.rise.RotationUtil;
@@ -12,8 +13,6 @@ import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 
 public final class RotationComponent implements Utils {
 
-    public static boolean isRotationg;
-
     public static boolean active;
     public static Vector2f rotations;
     public static Vector2f lastRotations;
@@ -22,7 +21,6 @@ public final class RotationComponent implements Utils {
     private static boolean smoothed;
     private static double rotationSpeed;
     private static MovementFix correctMovement;
-    Object playerYaw = null;
     private int count = 0;
 
     /*
@@ -135,16 +133,6 @@ public final class RotationComponent implements Utils {
     }
 
     @EventTarget
-    public void onPacketSendEvent(PacketSendEvent event) {
-        if (event.getPacket() instanceof C08PacketPlayerBlockPlacement) {
-            count += 1;
-            if (count > 15) {
-                count = 1;
-            }
-        }
-    }
-
-    @EventTarget
     public void onMotionEvent(MotionEvent event) {
         if (event.isPre()) {
             if (active && rotations != null) {
@@ -176,5 +164,15 @@ public final class RotationComponent implements Utils {
             smoothed = false;
         }
 
+    }
+
+    @EventTarget
+    public void onPacketEvent(PacketEvent event) {
+        if (event.getPacket() instanceof C08PacketPlayerBlockPlacement) {
+            count += 1;
+            if (count > 15) {
+                count = 1;
+            }
+        }
     }
 }

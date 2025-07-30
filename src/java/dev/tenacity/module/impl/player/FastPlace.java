@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.player;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.MotionEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.BooleanSetting;
@@ -25,7 +25,7 @@ public final class FastPlace extends Module {
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
         if (canFastPlace()) {
-            mc.rightClickDelayTimer = Math.min(mc.rightClickDelayTimer, ticks.getValue().intValue());
+            mc.rightClickDelayTimer = Math.min(mc.rightClickDelayTimer, ticks.get().intValue());
         }
     }
 
@@ -39,7 +39,7 @@ public final class FastPlace extends Module {
         if (mc.thePlayer == null || mc.thePlayer.getCurrentEquippedItem() == null || mc.thePlayer.getCurrentEquippedItem().getItem() == null)
             return false;
         Item heldItem = mc.thePlayer.getCurrentEquippedItem().getItem();
-        return (blocks.isEnabled() && heldItem instanceof ItemBlock) || (projectiles.isEnabled() && (heldItem instanceof ItemSnowball || heldItem instanceof ItemEgg));
+        return (blocks.get() && heldItem instanceof ItemBlock) || (projectiles.get() && (heldItem instanceof ItemSnowball || heldItem instanceof ItemEgg));
     }
 
 }

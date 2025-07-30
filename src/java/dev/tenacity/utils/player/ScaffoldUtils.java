@@ -17,7 +17,7 @@ import net.minecraft.util.Vec3;
 public class ScaffoldUtils implements Utils {
 
     public static double getYLevel() {
-        if (!Scaffold.keepY.isEnabled() || Scaffold.keepYMode.is("Speed toggled") && !Client.INSTANCE.isEnabled(Speed.class)) {
+        if (!Scaffold.keepY.get() || Scaffold.keepYMode.is("Speed toggled") && !Client.INSTANCE.isEnabled(Speed.class)) {
             return mc.thePlayer.posY - 1.0;
         }
         return mc.thePlayer.posY - 1.0 >= Scaffold.keepYCoord && Math.max(mc.thePlayer.posY, Scaffold.keepYCoord)

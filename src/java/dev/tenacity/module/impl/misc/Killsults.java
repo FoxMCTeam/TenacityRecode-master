@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.misc;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.ChatReceivedEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.ChatReceivedEvent;
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;

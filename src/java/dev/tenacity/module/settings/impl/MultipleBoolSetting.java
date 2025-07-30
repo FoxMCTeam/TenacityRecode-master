@@ -29,9 +29,12 @@ public class MultipleBoolSetting extends Setting {
         return boolSettings.computeIfAbsent(settingName.toLowerCase(), k -> null);
     }
 
+    public boolean get(String settingName) {
+        return boolSettings.get(settingName.toLowerCase()).get();
+    }
 
     public boolean isEnabled(String settingName) {
-        return boolSettings.get(settingName.toLowerCase()).isEnabled();
+        return boolSettings.get(settingName.toLowerCase()).get();
     }
 
     public Collection<BooleanSetting> getBoolSettings() {
@@ -42,7 +45,7 @@ public class MultipleBoolSetting extends Setting {
     public HashMap<String, Boolean> getConfigValue() {
         HashMap<String, Boolean> booleans = new HashMap<>();
         for (BooleanSetting booleanSetting : boolSettings.values()) {
-            booleans.put(booleanSetting.name, booleanSetting.isEnabled());
+            booleans.put(booleanSetting.name, booleanSetting.get());
         }
         return booleans;
     }

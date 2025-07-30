@@ -13,7 +13,7 @@ import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
 
 public class NotificationsMod extends Module {
-    public static final ModeSetting mode = new ModeSetting("Mode", "Default", "Default", "SuicideX", "Exhibition");
+    public static final ModeSetting mode = new ModeSetting("Mode", "Default", "Default", "SuicideX", "Exhibition", "Modern Exhibition", "Dynamic Island");
     public static final BooleanSetting onlyTitle = new BooleanSetting("Only Title", false);
     public static final BooleanSetting toggleNotifications = new BooleanSetting("Show Toggle", true);
     private final NumberSetting time = new NumberSetting("Time on Screen", 2, 10, 1, .5);
@@ -24,7 +24,7 @@ public class NotificationsMod extends Module {
         this.addSettings(time, mode, onlyTitle, toggleNotifications);
         if (!enabled) this.toggleSilent();
     }
-
+    
     public void render() {
         float yOffset = 0;
         int notificationHeight = 0;
@@ -32,7 +32,7 @@ public class NotificationsMod extends Module {
         int actualOffset = 0;
         ScaledResolution sr = new ScaledResolution(mc);
 
-        NotificationManager.setToggleTime(time.getValue().floatValue());
+        NotificationManager.setToggleTime(time.get().floatValue());
 
         for (Notification notification : NotificationManager.getNotifications()) {
             Animation animation = notification.getAnimation();
@@ -45,11 +45,11 @@ public class NotificationsMod extends Module {
 
             float x, y;
 
-            switch (mode.getMode()) {
+            switch (mode.get()) {
                 case "Default":
                     animation.setDuration(250);
                     actualOffset = 8;
-                    if (onlyTitle.isEnabled()) {
+                    if (onlyTitle.get()) {
                         notificationHeight = 19;
                         notificationWidth = (int) duckSansBoldFont22.getStringWidth(notification.getTitle()) + 35;
                     } else {
@@ -60,7 +60,7 @@ public class NotificationsMod extends Module {
                     x = sr.getScaledWidth() - (notificationWidth + 5) * animation.getOutput().floatValue();
                     y = sr.getScaledHeight() - (yOffset + 18 + HUDMod.offsetValue + notificationHeight + (15 * GuiChat.openingAnimation.getOutput().floatValue()));
 
-                    notification.drawDefault(x, y, notificationWidth, notificationHeight, animation.getOutput().floatValue(), onlyTitle.isEnabled());
+                    notification.drawDefault(x, y, notificationWidth, notificationHeight, animation.getOutput().floatValue(), onlyTitle.get());
                     break;
                 case "SuicideX":
                     animation.setDuration(200);
@@ -85,6 +85,18 @@ public class NotificationsMod extends Module {
                     y = sr.getScaledHeight() / 2f - notificationHeight / 2f + 40 + yOffset;
 
                     notification.drawExhi(x, y, notificationWidth, notificationHeight);
+                    break;
+
+                case "Modern Exhibition":
+                    animation.setDuration(177);
+                    actualOffset = 3;
+                    notificationHeight = 25;
+                    notificationWidth = (int) Math.max(tahomaFont.size(18).getStringWidth(notification.getTitle()), tahomaFont.size(14).getStringWidth(notification.getDescription())) + 30;
+
+                    x = sr.getScaledWidth() - ((sr.getScaledWidth() / 2f + notificationWidth / 2f) * animation.getOutput().floatValue());
+                    y = sr.getScaledHeight() / 2f - notificationHeight / 2f + 40 + yOffset;
+
+                    notification.drawExhiModern(x, y, notificationWidth, notificationHeight);
                     break;
             }
 
@@ -113,10 +125,10 @@ public class NotificationsMod extends Module {
 
             float x, y;
 
-            switch (mode.getMode()) {
+            switch (mode.get()) {
                 case "Default":
                     actualOffset = 8;
-                    if (onlyTitle.isEnabled()) {
+                    if (onlyTitle.get()) {
                         notificationHeight = 19;
                         notificationWidth = (int) duckSansBoldFont22.getStringWidth(notification.getTitle()) + 35;
                     } else {
@@ -150,6 +162,17 @@ public class NotificationsMod extends Module {
                     y = sr.getScaledHeight() / 2f - notificationHeight / 2f + 40 + yOffset;
 
                     notification.blurExhi(x, y, notificationWidth, notificationHeight);
+                    break;
+
+                case "Modern Exhibition":
+                    actualOffset = 3;
+                    notificationHeight = 25;
+                    notificationWidth = (int) Math.max(tahomaFont.size(18).getStringWidth(notification.getTitle()), tahomaFont.size(14).getStringWidth(notification.getDescription())) + 30;
+
+                    x = sr.getScaledWidth() - ((sr.getScaledWidth() / 2f + notificationWidth / 2f) * animation.getOutput().floatValue());
+                    y = sr.getScaledHeight() / 2f - notificationHeight / 2f + 40 + yOffset;
+
+                    notification.blurExhiModern(x, y, notificationWidth, notificationHeight);
                     break;
             }
 

@@ -100,7 +100,7 @@ public class CategoryPanel implements Screen {
 
         //Multiply it by the alpha again so that it eases faster
         float alphaValue = alpha * alpha;
-        if (ClickGUIMod.transparent.isEnabled()) {
+        if (ClickGUIMod.transparent.get()) {
             alphaValue *= .75f;
         }
         Color clientFirst = ColorUtil.applyOpacity(clientColors.getFirst(), alphaValue);
@@ -110,8 +110,8 @@ public class CategoryPanel implements Screen {
 
         float x = category.getDrag().getX(), y = category.getDrag().getY();
 
-        if (ClickGUIMod.scrollMode.getMode().equals("Value")) {
-            Module.allowedClickGuiHeight = ClickGUIMod.clickHeight.getValue().floatValue();
+        if (ClickGUIMod.scrollMode.get().equals("Value")) {
+            Module.allowedClickGuiHeight = ClickGUIMod.clickHeight.get().floatValue();
         } else {
             ScaledResolution sr = new ScaledResolution(mc);
             Module.allowedClickGuiHeight = 2 * sr.getScaledHeight() / 3f;
@@ -126,7 +126,7 @@ public class CategoryPanel implements Screen {
         float realHeight = Math.min(actualHeight, Module.allowedClickGuiHeight);
 
 
-        if (ClickGUIMod.outlineAccent.isEnabled()) {
+        if (ClickGUIMod.outlineAccent.get()) {
             if (theme.equals(Theme.RED_COFFEE)) {
                 Color temp = clientFirst;
                 clientFirst = clientSecond;
@@ -140,7 +140,7 @@ public class CategoryPanel implements Screen {
         } else {
             RoundedUtil.drawRound(x - .75f, y - .5f, rectWidth + 1.5f, realHeight + categoryRectHeight + 1.5f, 5,
                     ColorUtil.tripleColor(20, alphaValue));
-            if (!ClickGUIMod.transparent.isEnabled()) {
+            if (!ClickGUIMod.transparent.get()) {
                 Gui.drawRect2(x, y + categoryRectHeight, rectWidth, 3, clientFirst.getRGB());
             }
             if (DropdownClickGUI.gradient) {
@@ -237,15 +237,15 @@ public class CategoryPanel implements Screen {
         Color clientSecond = ColorUtil.applyOpacity(clientColors.getSecond(), alpha);
 
         float allowedHeight = Math.min(actualHeight, Module.allowedClickGuiHeight);
-        boolean glow = PostProcessing.glowOptions.getSetting("ClickGui").isEnabled();
+        boolean glow = PostProcessing.glowOptions.getSetting("ClickGui").get();
 
-        if (!ClickGUIMod.outlineAccent.isEnabled()) {
+        if (!ClickGUIMod.outlineAccent.get()) {
             RoundedUtil.drawRound(x - .75f, y - .5f, rectWidth + 1.5f, allowedHeight + categoryRectHeight + 1.5f, 5, Color.BLACK);
             return;
         }
 
 
-        if (DropdownClickGUI.gradient && glow && ClickGUIMod.outlineAccent.isEnabled()) {
+        if (DropdownClickGUI.gradient && glow && ClickGUIMod.outlineAccent.get()) {
             if (theme.equals(Theme.RED_COFFEE)) {
                 Color temp = clientFirst;
                 clientFirst = clientSecond;
@@ -256,7 +256,7 @@ public class CategoryPanel implements Screen {
                     clientFirst, clientSecond);
 
         } else {
-            RoundedUtil.drawRound(x - .75f, y - .5f, rectWidth + 1.5f, allowedHeight + categoryRectHeight + 1.5f, 5, (glow && ClickGUIMod.outlineAccent.isEnabled()) ? clientFirst :
+            RoundedUtil.drawRound(x - .75f, y - .5f, rectWidth + 1.5f, allowedHeight + categoryRectHeight + 1.5f, 5, (glow && ClickGUIMod.outlineAccent.get()) ? clientFirst :
                     ColorUtil.applyOpacity(Color.BLACK, alpha));
         }
     }

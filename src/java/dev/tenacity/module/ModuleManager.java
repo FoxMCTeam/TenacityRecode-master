@@ -1,18 +1,16 @@
 package dev.tenacity.module;
 
-import dev.tenacity.Client;
-import dev.tenacity.i18n.Locale;
 import dev.tenacity.i18n.Localization;
 import dev.tenacity.module.impl.combat.*;
 import dev.tenacity.module.impl.display.*;
 import dev.tenacity.module.impl.exploit.*;
 import dev.tenacity.module.impl.misc.*;
+import dev.tenacity.module.impl.mods.*;
 import dev.tenacity.module.impl.movement.*;
 import dev.tenacity.module.impl.player.*;
 import dev.tenacity.module.impl.render.*;
 import dev.tenacity.module.impl.render.killeffects.KillEffects;
-import dev.tenacity.module.impl.render.wings.DragonWings;
-import dev.tenacity.utils.render.EntityCulling;
+import dev.tenacity.module.impl.mods.wings.DragonWings;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,6 +29,9 @@ public class ModuleManager {
     private HashMap<Object, Module> modules = new HashMap<>();
 
     public void init() {
+        if (!modules.isEmpty()) {
+            modules.clear();
+        }
         // Combat
         modules.put(KillAura.class, new KillAura());
         modules.put(Velocity.class, new Velocity());
@@ -127,6 +128,13 @@ public class ModuleManager {
         modules.put(EntityEffects.class, new EntityEffects());
         modules.put(Chams.class, new Chams());
         modules.put(BrightPlayers.class, new BrightPlayers());
+        modules.put(SettingComponent.class, new SettingComponent());
+        modules.put(MoBends.class, new MoBends());
+        modules.put(SmoothScrolling.class, new SmoothScrolling());
+        modules.put(Camera.class, new Camera());
+        modules.put(SkinLayers3D.class, new SkinLayers3D());
+        modules.put(ZoomMod.class, new ZoomMod());
+        modules.put(DynamicIsland.class, new DynamicIsland());
     }
 
     public List<Module> getModules() {
@@ -168,23 +176,23 @@ public class ModuleManager {
     public final List<Module> getArraylistModules(ArrayListMod arraylistMod, List<Module> modules) {
         return modules.stream().filter(module -> module.isEnabled() &&
             !(
-                (module.getCategory() == Category.COMBAT && arraylistMod.hideModules.isEnabled("Combat")) ||
-                (module.getCategory() == Category.MOVEMENT && arraylistMod.hideModules.isEnabled("Movement")) ||
-                (module.getCategory() == Category.RENDER && arraylistMod.hideModules.isEnabled("Render")) ||
-                (module.getCategory() == Category.DISPLAY && arraylistMod.hideModules.isEnabled("Display")) ||
-                (module.getCategory() == Category.PLAYER && arraylistMod.hideModules.isEnabled("Player")) ||
-                (module.getCategory() == Category.MISC && arraylistMod.hideModules.isEnabled("Misc")) ||
-                (module.getCategory() == Category.SCRIPTS && arraylistMod.hideModules.isEnabled("Scripts"))
+                (module.getCategory() == Category.COMBAT && arraylistMod.hideModules.get("Combat")) ||
+                (module.getCategory() == Category.MOVEMENT && arraylistMod.hideModules.get("Movement")) ||
+                (module.getCategory() == Category.RENDER && arraylistMod.hideModules.get("Render")) ||
+                (module.getCategory() == Category.DISPLAY && arraylistMod.hideModules.get("Display")) ||
+                (module.getCategory() == Category.PLAYER && arraylistMod.hideModules.get("Player")) ||
+                (module.getCategory() == Category.MISC && arraylistMod.hideModules.get("Misc")) ||
+                (module.getCategory() == Category.SCRIPTS && arraylistMod.hideModules.get("Scripts"))
             )).collect(Collectors.toList());
     }
     public boolean canRender(ArrayListMod arraylistMod, Module module) {
-        return !((module.getCategory() == Category.COMBAT && arraylistMod.hideModules.isEnabled("Combat")) ||
-                (module.getCategory() == Category.MOVEMENT && arraylistMod.hideModules.isEnabled("Movement")) ||
-                (module.getCategory() == Category.RENDER && arraylistMod.hideModules.isEnabled("Render")) ||
-                (module.getCategory() == Category.DISPLAY && arraylistMod.hideModules.isEnabled("Display")) ||
-                (module.getCategory() == Category.PLAYER && arraylistMod.hideModules.isEnabled("Player")) ||
-                (module.getCategory() == Category.MISC && arraylistMod.hideModules.isEnabled("Misc")) ||
-                (module.getCategory() == Category.SCRIPTS && arraylistMod.hideModules.isEnabled("Scripts"))
+        return !((module.getCategory() == Category.COMBAT && arraylistMod.hideModules.get("Combat")) ||
+                (module.getCategory() == Category.MOVEMENT && arraylistMod.hideModules.get("Movement")) ||
+                (module.getCategory() == Category.RENDER && arraylistMod.hideModules.get("Render")) ||
+                (module.getCategory() == Category.DISPLAY && arraylistMod.hideModules.get("Display")) ||
+                (module.getCategory() == Category.PLAYER && arraylistMod.hideModules.get("Player")) ||
+                (module.getCategory() == Category.MISC && arraylistMod.hideModules.get("Misc")) ||
+                (module.getCategory() == Category.SCRIPTS && arraylistMod.hideModules.get("Scripts"))
         );
     }
 }

@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.render;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.PlayerMoveUpdateEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.PlayerMoveUpdateEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.BooleanSetting;
@@ -57,7 +57,7 @@ public class XRay extends Module {
     public static boolean isWhitelisted(Block block) {
         for (Ore o : Ore.values()) {
             if (o.ore == block) {
-                return o.setting.isEnabled();
+                return o.setting.get();
             }
         }
         return false;
@@ -69,7 +69,7 @@ public class XRay extends Module {
 
     @EventTarget
     public void onPlayerMoveUpdateEvent(PlayerMoveUpdateEvent e) {
-        if (bypass.isEnabled() && !mc.isSingleplayer()) {
+        if (bypass.get() && !mc.isSingleplayer()) {
             if (updateTimer.hasTimeElapsed(2000)) {
                 search();
                 updateTimer.reset();

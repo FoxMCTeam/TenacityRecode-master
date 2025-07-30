@@ -1,5 +1,6 @@
 package dev.tenacity.utils.render;
 
+import dev.tenacity.module.impl.display.HUDMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 
@@ -14,6 +15,56 @@ public class RoundedUtil {
     public static ShaderUtil roundedShader = new ShaderUtil("roundedRect");
     public static ShaderUtil roundedOutlineShader = new ShaderUtil("roundRectOutline");
 
+    public static void drawGradientRound(float x, float y, float width, float height, float radius, float alpha, boolean shadow) {
+        drawThemeColorRound(x,
+                y,
+                width,
+                height,
+                radius,
+                ColorUtil.applyOpacity(HUDMod.colorWheel.getColor1(), alpha),
+                ColorUtil.applyOpacity(HUDMod.colorWheel.getColor4(), alpha),
+                ColorUtil.applyOpacity(HUDMod.colorWheel.getColor2(), alpha),
+                ColorUtil.applyOpacity(HUDMod.colorWheel.getColor3(), alpha),
+                reAlpha(new Color(0, 0, 0), alpha), shadow
+        );
+    }
+
+    public static void drawThemeColorRound(float x, float y, float width, float height, float radius, int alpha, boolean shadow) {
+        drawThemeColorRound(x,
+                y,
+                width,
+                height,
+                radius,
+                reAlpha(HUDMod.colorWheel.getColor1(), alpha),
+                reAlpha(HUDMod.colorWheel.getColor4(), alpha),
+                reAlpha(HUDMod.colorWheel.getColor2(), alpha),
+                reAlpha(HUDMod.colorWheel.getColor3(), alpha),
+                reAlpha(new Color(0, 0, 0), alpha), shadow
+        );
+    }
+
+    public static void drawGradientRound(float x, float y, float width, float height, float radius, int alpha, boolean shadow) {
+        drawThemeColorRound(x,
+                y,
+                width,
+                height,
+                radius,
+                ColorUtil.applyOpacity(HUDMod.colorWheel.getColor1(), alpha),
+                ColorUtil.applyOpacity(HUDMod.colorWheel.getColor4(), alpha),
+                ColorUtil.applyOpacity(HUDMod.colorWheel.getColor2(), alpha),
+                ColorUtil.applyOpacity(HUDMod.colorWheel.getColor3(), alpha),
+                reAlpha(new Color(0, 0, 0), alpha), shadow
+        );
+    }
+
+    public static void drawThemeColorRound(float x, float y, float width, float height, float radius, Color bottomLeft, Color topLeft, Color bottomRight, Color topRight, Color color, boolean shadow) {
+        if (HUDMod.gradient.isEnabled() || shadow) {
+            drawGradientRound(x, y, width, height, radius, bottomLeft, topLeft, bottomRight, topRight);
+        } else {
+            drawRound(x, y, width, height, radius, false, color);
+        }
+    }
+    
     public static void drawRound(float x, float y, float width, float height, float radius, int color) {
         drawRound(x, y, width, height, radius, false, new Color(color));
     }
@@ -118,5 +169,31 @@ public class RoundedUtil {
         roundedTexturedShader.setUniformf("radius", radius * sr.getScaleFactor());
     }
 
+    public static Color reAlpha(Color color, float alpha) {
+        // Ensure alpha is within the range [0, 255]
+        alpha = Math.max(0, Math.min(255, alpha));
+
+        // Get the RGB values of the color
+        int red = color.getRed();
+        int green = color.getGreen();
+        int blue = color.getBlue();
+
+        // Return a new color with the adjusted alpha value
+        return new Color(red, green, blue, alpha);
+    }
+
+
+    public static Color reAlpha(Color color, int alpha) {
+        // Ensure alpha is within the range [0, 255]
+        alpha = Math.max(0, Math.min(255, alpha));
+
+        // Get the RGB values of the color
+        int red = color.getRed();
+        int green = color.getGreen();
+        int blue = color.getBlue();
+
+        // Return a new color with the adjusted alpha value
+        return new Color(red, green, blue, alpha);
+    }
 
 }

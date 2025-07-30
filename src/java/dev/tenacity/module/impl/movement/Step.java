@@ -1,8 +1,8 @@
 package dev.tenacity.module.impl.movement;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.MotionEvent;
-import com.cubk.event.impl.player.StepConfirmEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.MotionEvent;
+import dev.tenacity.event.impl.player.StepConfirmEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.ModeSetting;
@@ -27,10 +27,10 @@ public final class Step extends Module {
 
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
-        setSuffix(mode.getMode());
+        setSuffix(mode.get());
         if (mc.thePlayer.onGround) {
-            if (mc.thePlayer.stepHeight != height.getValue().floatValue())
-                mc.thePlayer.stepHeight = height.getValue().floatValue();
+            if (mc.thePlayer.stepHeight != height.get().floatValue())
+                mc.thePlayer.stepHeight = height.get().floatValue();
         } else {
             if (mc.thePlayer.stepHeight != 0.625f) mc.thePlayer.stepHeight = 0.625f;
         }
@@ -45,11 +45,11 @@ public final class Step extends Module {
     public void onStepConfirmEvent(StepConfirmEvent event) {
         double diffY = mc.thePlayer.getEntityBoundingBox().minY - mc.thePlayer.posY;
         if (diffY > 0.625f && diffY <= 1.5f && mc.thePlayer.onGround) {
-            mc.timer.timerSpeed = timer.getValue().floatValue();
+            mc.timer.timerSpeed = timer.get().floatValue();
             timerUtil.reset();
             hasStepped = true;
             isStepping = true;
-            switch (mode.getMode()) {
+            switch (mode.get()) {
                 case "NCP":
                     for (double offset : new double[]{0.41999998688698, 0.7531999805212})
                         mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + offset, mc.thePlayer.posZ, false));

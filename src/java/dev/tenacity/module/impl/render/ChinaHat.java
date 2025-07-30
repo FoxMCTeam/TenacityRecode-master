@@ -1,12 +1,13 @@
 package dev.tenacity.module.impl.render;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.render.Render3DEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.render.Render3DEvent;
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.combat.KillAura;
 import dev.tenacity.module.impl.display.HUDMod;
+import dev.tenacity.module.impl.mods.CustomModel;
 import dev.tenacity.module.impl.movement.Scaffold;
 import dev.tenacity.module.settings.impl.BooleanSetting;
 import dev.tenacity.module.settings.impl.ColorSetting;
@@ -59,7 +60,7 @@ public class ChinaHat extends Module {
         OpenGlHelper.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
         for (EntityPlayer player : mc.theWorld.playerEntities) {
             boolean self = player == mc.thePlayer;
-            if ((!allPlayers.isEnabled() && !self) || (self && !firstPerson.isEnabled() && mc.gameSettings.thirdPersonView == 0)
+            if ((!allPlayers.get() && !self) || (self && !firstPerson.get() && mc.gameSettings.thirdPersonView == 0)
                     || player.isDead || player.isInvisible() || (!self && (!ESPUtil.isInView(player) || !mc.thePlayer.canEntityBeSeen(player))))
                 continue;
 
@@ -137,7 +138,7 @@ public class ChinaHat extends Module {
     private Color getColor(int index, float alpha) {
         Color returnColor;
         if (colorMode.is("Custom")) {
-            returnColor = color.isRainbow() ? color.getRainbow().getColor(index) : color.getColor();
+            returnColor = color.isRainbow() ? color.getRainbow().getColor(index) : color.get();
         } else {
             final Pair<Color, Color> colors = HUDMod.getClientColors();
             if (HUDMod.isRainbowTheme()) {

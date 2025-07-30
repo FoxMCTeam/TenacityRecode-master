@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.misc;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.ChatReceivedEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.ChatReceivedEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.ParentAttribute;
@@ -34,23 +34,23 @@ public class AutoHypixel extends Module {
     @EventTarget
     public void onChatReceivedEvent(ChatReceivedEvent event) {
         String message = event.message.getUnformattedText(), strippedMessage = StringUtils.stripControlCodes(message);
-        if (autoHubOnBan.isEnabled() && strippedMessage.equals("A player has been removed from your game.")) {
+        if (autoHubOnBan.get() && strippedMessage.equals("A player has been removed from your game.")) {
             ChatUtil.send("/lobby");
             NotificationManager.post(NotificationType.WARNING, "AutoHypixel", "A player in your lobby got banned.");
         }
         String m = event.message.toString();
         if (m.contains("ClickEvent{action=RUN_COMMAND, value='/play ")) {
-            if (autoGG.isEnabled() && !strippedMessage.startsWith("You died!")) {
-                ChatUtil.send("/ac " + autoGGMessage.getString());
+            if (autoGG.get() && !strippedMessage.startsWith("You died!")) {
+                ChatUtil.send("/ac " + autoGGMessage.get());
             }
-            if (autoPlay.isEnabled()) {
+            if (autoPlay.get()) {
                 sendToGame(m.split("action=RUN_COMMAND, value='")[1].split("'}")[0]);
             }
         }
     }
 
     private void sendToGame(String mode) {
-        float delay = autoPlayDelay.getValue().floatValue();
+        float delay = autoPlayDelay.get().floatValue();
         NotificationManager.post(NotificationType.INFO, "AutoPlay",
                 "Sending you to a new game" + (delay > 0 ? " in " + delay + "s" : "") + "!", delay);
         Multithreading.schedule(() -> ChatUtil.send(mode), (long) delay, TimeUnit.SECONDS);

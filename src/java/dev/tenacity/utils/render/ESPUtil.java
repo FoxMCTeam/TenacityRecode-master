@@ -1,6 +1,6 @@
 package dev.tenacity.utils.render;
 
-import dev.tenacity.module.impl.render.CustomModel;
+import dev.tenacity.module.impl.mods.CustomModel;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.misc.MathUtils;
 import net.minecraft.client.gui.ScaledResolution;

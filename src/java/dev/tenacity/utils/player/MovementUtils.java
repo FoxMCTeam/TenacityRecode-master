@@ -1,7 +1,7 @@
 package dev.tenacity.utils.player;
 
-import com.cubk.event.impl.player.MoveEvent;
-import com.cubk.event.impl.player.PlayerMoveUpdateEvent;
+import dev.tenacity.event.impl.player.MoveEvent;
+import dev.tenacity.event.impl.player.PlayerMoveUpdateEvent;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.server.PacketUtils;
 import net.minecraft.block.Block;

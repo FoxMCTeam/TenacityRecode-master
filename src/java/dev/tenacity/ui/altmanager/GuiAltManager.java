@@ -16,6 +16,7 @@ import dev.tenacity.ui.sidegui.utils.ToggleButton;
 import dev.tenacity.utils.objects.TextField;
 import dev.tenacity.utils.render.ColorUtil;
 import dev.tenacity.utils.render.GLUtil;
+import lombok.Getter;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
@@ -28,6 +29,7 @@ import java.util.List;
 public class GuiAltManager extends GuiScreen {
     public final TextField searchField = new TextField(duckSansFont20);
     public final ToggleButton filterBanned = new ToggleButton("Filter banned accounts");
+    @Getter
     private final AltManagerUtils utils = new AltManagerUtils();
     private final AltPanel.AltRect altRect = new AltPanel.AltRect(null);
     public Alt currentSessionAlt;
@@ -173,10 +175,6 @@ public class GuiAltManager extends GuiScreen {
             mc.gameSettings.guiScale = Client.prevGuiScale;
             Client.updateGuiScale = false;
         }
-    }
-
-    public AltManagerUtils getUtils() {
-        return utils;
     }
 
     public AltPanel getAltPanel() {

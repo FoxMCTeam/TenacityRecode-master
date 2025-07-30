@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ProtocolInfo {
-
+    
     public static final ProtocolInfo R1_21_5 = new ProtocolInfo("Spring to Life drop", "March 25, 2025", ProtocolVersion.v1_21_5);
     public static final ProtocolInfo R1_21_4 = new ProtocolInfo("The Garden Awakens", "December 3, 2024", ProtocolVersion.v1_21_4);
     public static final ProtocolInfo R1_21_2 = new ProtocolInfo("Bundles of Bravery", "October 22, 2024", ProtocolVersion.v1_21_2);
@@ -84,15 +84,6 @@ public class ProtocolInfo {
         this.protocolVersion = protocolVersion;
     }
 
-    public static ProtocolInfo fromProtocolVersion(final ProtocolVersion protocolVersion) {
-        for (ProtocolInfo protocolInfo : PROTOCOL_INFOS) {
-            if (protocolInfo.getProtocolVersion().getName().equals(protocolVersion.getName())) {
-                return protocolInfo;
-            }
-        }
-        return null;
-    }
-
     public String getName() {
         return name;
     }
@@ -103,5 +94,14 @@ public class ProtocolInfo {
 
     public ProtocolVersion getProtocolVersion() {
         return protocolVersion;
+    }
+
+    public static ProtocolInfo fromProtocolVersion(final ProtocolVersion protocolVersion) {
+        for (ProtocolInfo protocolInfo : PROTOCOL_INFOS) {
+            if (protocolInfo.getProtocolVersion().getName().equals(protocolVersion.getName())) {
+                return protocolInfo;
+            }
+        }
+        return null;
     }
 }

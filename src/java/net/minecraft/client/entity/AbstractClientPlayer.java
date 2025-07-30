@@ -1,6 +1,6 @@
 package net.minecraft.client.entity;
 
-import com.cubk.event.impl.player.EventLook;
+import dev.tenacity.event.impl.player.EventLook;
 import com.mojang.authlib.GameProfile;
 import dev.tenacity.Client;
 import dev.tenacity.utils.client.addons.vector.Vector2f;

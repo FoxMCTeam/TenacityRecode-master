@@ -57,7 +57,7 @@ public class MultipleBoolComponent extends SettingComponent<MultipleBoolSetting>
         float boxWidth = width - 10;
 
 
-        float enabledCount = sortedSettings.stream().filter(BooleanSetting::isEnabled).count();
+        float enabledCount = sortedSettings.stream().filter(BooleanSetting::get).count();
 
         Color outlineColor = ColorUtil.interpolateColorC(settingRectColor.brighter().brighter(), clientColors.getSecond(), enabledCount / sortedSettings.size());
 
@@ -106,7 +106,7 @@ public class MultipleBoolComponent extends SettingComponent<MultipleBoolSetting>
             Animation toggleAnimation = booleanSettingAnimations.get(setting).getSecond();
 
             hoverAnimation.setDirection(hovering ? Direction.FORWARDS : Direction.BACKWARDS);
-            toggleAnimation.setDirection(setting.isEnabled() ? Direction.FORWARDS : Direction.BACKWARDS);
+            toggleAnimation.setDirection(setting.get() ? Direction.FORWARDS : Direction.BACKWARDS);
 
             Color rectColorBool = ColorUtil.interpolateColorC(settingRectColor.brighter().brighter(),
                     clientColors.getSecond(), toggleAnimation.getOutput().floatValue());

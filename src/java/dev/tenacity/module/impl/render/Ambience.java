@@ -1,8 +1,8 @@
 package dev.tenacity.module.impl.render;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.game.TickEvent;
-import com.cubk.event.impl.network.PacketReceiveEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.game.TickEvent;
+import dev.tenacity.event.impl.network.PacketEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.ModeSetting;
@@ -38,9 +38,9 @@ public class Ambience extends Module {
                 worldinfo = world.getWorldInfo();
             }
 
-            mc.theWorld.setWorldTime(time.getValue().longValue());
+            mc.theWorld.setWorldTime(time.get().longValue());
 
-            switch (weather.getMode()) {
+            switch (weather.get()) {
                 case "Clear":
                     worldinfo.setCleanWeatherTime(randomValue);
                     worldinfo.setRainTime(0);
@@ -87,7 +87,7 @@ public class Ambience extends Module {
     }
 
     @EventTarget
-    public void onPacketReceiveEvent(PacketReceiveEvent e) {
+    public void onPacketEvent(PacketEvent e) {
         if (e.getPacket() instanceof S03PacketTimeUpdate) {
             e.cancel();
         }

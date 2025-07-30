@@ -1,9 +1,10 @@
 package dev.tenacity.module.impl.player;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.network.PacketSendEvent;
-import com.cubk.event.impl.player.MotionEvent;
-import com.cubk.event.impl.render.Render3DEvent;
+import dev.tenacity.event.annotations.EventTarget;
+
+import dev.tenacity.event.impl.network.PacketEvent;
+import dev.tenacity.event.impl.player.MotionEvent;
+import dev.tenacity.event.impl.render.Render3DEvent;
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -35,7 +36,7 @@ public final class Blink extends Module {
     }
 
     @EventTarget
-    public void onPacketSendEvent(PacketSendEvent event) {
+    public void onPacketEvent(PacketEvent event) {
         if (mc.thePlayer == null || mc.thePlayer.isDead || mc.isSingleplayer() || mc.thePlayer.ticksExisted < 50) {
             packets.clear();
             return;
@@ -46,8 +47,8 @@ public final class Blink extends Module {
             event.cancel();
         }
 
-        if (pulse.isEnabled()) {
-            if (!packets.isEmpty() && mc.thePlayer.ticksExisted % delayPulse.getValue().intValue() == 0 && Math.random() > 0.1) {
+        if (pulse.get()) {
+            if (!packets.isEmpty() && mc.thePlayer.ticksExisted % delayPulse.get().intValue() == 0 && Math.random() > 0.1) {
                 packets.forEach(PacketUtils::sendPacketNoEvent);
                 packets.clear();
             }
@@ -63,13 +64,13 @@ public final class Blink extends Module {
                 path.add(new Vec3(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ));
             }
 
-            if (pulse.isEnabled()) {
-                while (path.size() > delayPulse.getValue().intValue()) {
+            if (pulse.get()) {
+                while (path.size() > delayPulse.get().intValue()) {
                     path.remove(0);
                 }
             }
 
-            if (pulse.isEnabled() && blinkEntity != null) {
+            if (pulse.get() && blinkEntity != null) {
                 mc.theWorld.removeEntityFromWorld(blinkEntity.getEntityId());
             }
         }

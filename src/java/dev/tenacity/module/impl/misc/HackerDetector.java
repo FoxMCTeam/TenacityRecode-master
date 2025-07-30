@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.misc;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.game.TickEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.game.TickEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.BooleanSetting;
@@ -36,7 +36,7 @@ public class HackerDetector extends Module {
             if (entity instanceof EntityPlayer entityPlayer) {
                 if (entityPlayer != mc.thePlayer) {
                     for (Detection d : detectionManager.getDetections()) {
-                        if (detections.getSetting(d.getName()).isEnabled()) {
+                        if (detections.getSetting(d.getName()).get()) {
                             if (d.runCheck(entityPlayer) && System.currentTimeMillis() > d.getLastViolated() + 500) {
                                 NotificationManager.post(NotificationType.WARNING, entityPlayer.getName(), "has flagged " + d.getName() + " | " + EnumChatFormatting.BOLD + entityPlayer.VL);
                                 entityPlayer.VL++;

@@ -1,8 +1,10 @@
 package dev.tenacity.module.settings.impl;
 
 import dev.tenacity.module.settings.Setting;
+import lombok.Setter;
 import org.lwjglx.input.Keyboard;
 
+@Setter
 public class KeybindSetting extends Setting {
 
     private int code;
@@ -12,17 +14,17 @@ public class KeybindSetting extends Setting {
         this.code = code;
     }
 
+    public int get() {
+        return code == -1 ? Keyboard.KEY_NONE : code;
+    }
+
     public int getCode() {
         return code == -1 ? Keyboard.KEY_NONE : code;
     }
 
-    public void setCode(int code) {
-        this.code = code;
-    }
-
     @Override
     public Integer getConfigValue() {
-        return this.getCode();
+        return this.get();
     }
 
 }

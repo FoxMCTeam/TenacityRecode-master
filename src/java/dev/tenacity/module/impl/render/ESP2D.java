@@ -1,10 +1,10 @@
 package dev.tenacity.module.impl.render;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.render.NametagRenderEvent;
-import com.cubk.event.impl.render.Render2DEvent;
-import com.cubk.event.impl.render.Render3DEvent;
-import com.cubk.event.impl.render.ShaderEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.render.NametagRenderEvent;
+import dev.tenacity.event.impl.render.Render2DEvent;
+import dev.tenacity.event.impl.render.Render3DEvent;
+import dev.tenacity.event.impl.render.ShaderEvent;
 import dev.tenacity.commands.impl.FriendCommand;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -86,7 +86,7 @@ public class ESP2D extends Module {
 
     @EventTarget
     public void onNametagRenderEvent(NametagRenderEvent e) {
-        if (nametags.isEnabled()) e.cancel();
+        if (nametags.get()) e.cancel();
     }
 
     @EventTarget
@@ -102,23 +102,23 @@ public class ESP2D extends Module {
     @EventTarget
     public void onShaderEvent(ShaderEvent e) {
 
-        if (nametagSettings.getSetting("Add PostProcessing").isEnabled() && nametags.isEnabled()) {
+        if (nametagSettings.getSetting("Add PostProcessing").get() && nametags.get()) {
             for (Entity entity : entityPosition.keySet()) {
                 Vector4f pos = entityPosition.get(entity);
                 float x = pos.getX(), y = pos.getY(), right = pos.getZ(), bottom = pos.getW();
 
                 if (entity instanceof EntityLivingBase renderingEntity) {
                     AbstractFontRenderer font = duckSansBoldFont20;
-                    if (mcfont.isEnabled()) {
+                    if (mcfont.get()) {
                         font = mc.fontRendererObj;
                     }
-                    String name = (nametagSettings.getSetting("Formatted Tags").isEnabled() ? renderingEntity.getDisplayName().getFormattedText() : StringUtils.stripControlCodes(renderingEntity.getDisplayName().getUnformattedText()));
+                    String name = (nametagSettings.getSetting("Formatted Tags").get() ? renderingEntity.getDisplayName().getFormattedText() : StringUtils.stripControlCodes(renderingEntity.getDisplayName().getUnformattedText()));
                     StringBuilder text = new StringBuilder(
-                            (FriendCommand.isFriend(renderingEntity.getName()) ? "§d" : redTags.isEnabled() ? "§c" : "§f") + name);
-                    if (nametagSettings.getSetting("Health Text").isEnabled()) {
+                            (FriendCommand.isFriend(renderingEntity.getName()) ? "§d" : redTags.get() ? "§c" : "§f") + name);
+                    if (nametagSettings.getSetting("Health Text").get()) {
                         text.append(String.format(" §7[§r%s HP§7]", df.format(renderingEntity.getHealth())));
                     }
-                    double fontScale = scale.getValue();
+                    double fontScale = scale.get();
                     float middle = x + ((right - x) / 2);
                     float textWidth = 0;
                     double fontHeight;
@@ -131,10 +131,10 @@ public class ESP2D extends Module {
                     glScaled(fontScale, fontScale, 1);
                     glTranslated(-middle, -(y - (fontHeight + 2)), 0);
 
-                    Color backgroundTagColor = nametagSettings.getSetting("Red Background").isEnabled() ? Color.RED : Color.BLACK;
+                    Color backgroundTagColor = nametagSettings.getSetting("Red Background").get() ? Color.RED : Color.BLACK;
                     RenderUtil.resetColor();
                     GLUtil.startBlend();
-                    if (nametagSettings.getSetting("Round").isEnabled()) {
+                    if (nametagSettings.getSetting("Round").get()) {
 
                         RoundedUtil.drawRound(middle - 3, (float) (y - (fontHeight + 7)), textWidth + 6,
                                 (float) ((fontHeight / fontScale) + 4), 4, backgroundTagColor);
@@ -160,7 +160,7 @@ public class ESP2D extends Module {
                 thirdColor = boxColor.getRainbow().getColor(180);
                 fourthColor = boxColor.getRainbow().getColor(270);
             } else {
-                gradientColorWheel(Pair.of(boxColor.getColor(), boxColor.getAltColor()));
+                gradientColorWheel(Pair.of(boxColor.get(), boxColor.getAltColor()));
             }
         } else {
             if (HUDMod.isRainbowTheme()) {
@@ -182,19 +182,19 @@ public class ESP2D extends Module {
 
             if (entity instanceof EntityLivingBase renderingEntity) {
                 AbstractFontRenderer font = duckSansBoldFont20;
-                if (mcfont.isEnabled()) {
+                if (mcfont.get()) {
                     font = mc.fontRendererObj;
                 }
-                if (nametags.isEnabled()) {
+                if (nametags.get()) {
                     float healthValue = renderingEntity.getHealth() / renderingEntity.getMaxHealth();
                     Color healthColor = healthValue > .75 ? new Color(66, 246, 123) : healthValue > .5 ? new Color(228, 255, 105) : healthValue > .35 ? new Color(236, 100, 64) : new Color(255, 65, 68);
-                    String name = (nametagSettings.getSetting("Formatted Tags").isEnabled() ? renderingEntity.getDisplayName().getFormattedText() : StringUtils.stripControlCodes(renderingEntity.getDisplayName().getUnformattedText()));
+                    String name = (nametagSettings.getSetting("Formatted Tags").get() ? renderingEntity.getDisplayName().getFormattedText() : StringUtils.stripControlCodes(renderingEntity.getDisplayName().getUnformattedText()));
                     StringBuilder text = new StringBuilder(
-                            (FriendCommand.isFriend(renderingEntity.getName()) ? "§d" : redTags.isEnabled() ? "§c" : "§f") + name);
-                    if (nametagSettings.getSetting("Health Text").isEnabled()) {
+                            (FriendCommand.isFriend(renderingEntity.getName()) ? "§d" : redTags.get() ? "§c" : "§f") + name);
+                    if (nametagSettings.getSetting("Health Text").get()) {
                         text.append(String.format(" §7[§r%s HP§7]", df.format(renderingEntity.getHealth())));
                     }
-                    double fontScale = scale.getValue();
+                    double fontScale = scale.get();
                     float middle = x + ((right - x) / 2);
                     float textWidth;
                     double fontHeight = font.getHeight() * fontScale;
@@ -207,9 +207,9 @@ public class ESP2D extends Module {
                     glTranslated(-middle, -(y - (fontHeight + 2)), 0);
 
 
-                    if (nametagSettings.getSetting("Background").isEnabled()) {
-                        Color backgroundTagColor = nametagSettings.getSetting("Red Background").isEnabled() ? ColorUtil.applyOpacity(Color.RED, .65f) : backgroundColor;
-                        if (nametagSettings.getSetting("Round").isEnabled()) {
+                    if (nametagSettings.getSetting("Background").get()) {
+                        Color backgroundTagColor = nametagSettings.getSetting("Red Background").get() ? ColorUtil.applyOpacity(Color.RED, .65f) : backgroundColor;
+                        if (nametagSettings.getSetting("Round").get()) {
                             RoundedUtil.drawRound(middle - 3, (float) (y - (fontHeight + 7)), textWidth + 6,
                                     (float) ((fontHeight / fontScale) + 4), 4, backgroundTagColor);
                         } else {
@@ -220,7 +220,7 @@ public class ESP2D extends Module {
 
 
                     RenderUtil.resetColor();
-                    if (mcfont.isEnabled()) {
+                    if (mcfont.get()) {
                         RenderUtil.resetColor();
                         mc.fontRendererObj.drawString(StringUtils.stripControlCodes(text.toString()), middle + .5f, (float) (y - (fontHeight + 4)) + .5f, Color.BLACK);
                         RenderUtil.resetColor();
@@ -231,7 +231,7 @@ public class ESP2D extends Module {
                     glPopMatrix();
                 }
 
-                if (itemHeld.isEnabled()) {
+                if (itemHeld.get()) {
                     if (renderingEntity.getHeldItem() != null) {
 
                         float fontScale = .5f;
@@ -248,7 +248,7 @@ public class ESP2D extends Module {
                         GlStateManager.bindTexture(0);
                         RenderUtil.resetColor();
                         Gui.drawRect2(middle - 3, bottom + 1, font.getStringWidth(text) + 6, font.getHeight() + 5, backgroundColor.getRGB());
-                        if (mcfont.isEnabled()) {
+                        if (mcfont.get()) {
                             mc.fontRendererObj.drawStringWithShadow(text, middle, bottom + 4, -1);
                         } else {
                             duckSansBoldFont20.drawSmoothStringWithShadow(text, middle, bottom + 4, -1);
@@ -257,7 +257,7 @@ public class ESP2D extends Module {
                     }
                 }
 
-                if (equipmentVisual.isEnabled()) {
+                if (equipmentVisual.get()) {
                     float scale = .4f;
                     float equipmentX = right + 5;
                     float equipmentY = y - 1;
@@ -283,7 +283,7 @@ public class ESP2D extends Module {
                 }
 
 
-                if (healthBar.isEnabled()) {
+                if (healthBar.get()) {
                     float healthValue = renderingEntity.getHealth() / renderingEntity.getMaxHealth();
                     Color healthColor = healthValue > .75 ? new Color(66, 246, 123) : healthValue > .5 ? new Color(228, 255, 105) : healthValue > .35 ? new Color(236, 100, 64) : new Color(255, 65, 68);
 
@@ -297,13 +297,13 @@ public class ESP2D extends Module {
                         Gui.drawRect2(x - 3, y + (height - (height * healthValue)), 1, height * healthValue, healthColor.getRGB());
                     }
 
-                    if (healthBarText.isEnabled()) {
+                    if (healthBarText.get()) {
                         healthValue *= 100;
                         String health = String.valueOf(MathUtils.round(healthValue, 1)).substring(0, healthValue == 100 ? 3 : 2);
                         String text = health + "%";
                         double fontScale = .5;
                         float textX = x - ((font.getStringWidth(text) / 2f) + 2);
-                        float fontHeight = mcfont.isEnabled() ? (float) (mc.fontRendererObj.FONT_HEIGHT * fontScale) : (float) (duckSansBoldFont20.getHeight() * fontScale);
+                        float fontHeight = mcfont.get() ? (float) (mc.fontRendererObj.FONT_HEIGHT * fontScale) : (float) (duckSansBoldFont20.getHeight() * fontScale);
                         float newHeight = height - fontHeight;
                         float textY = y + (newHeight - (newHeight * (healthValue / 100)));
 
@@ -311,7 +311,7 @@ public class ESP2D extends Module {
                         glTranslated(textX - 5, textY, 1);
                         glScaled(fontScale, fontScale, 1);
                         glTranslated(-(textX - 5), -textY, 1);
-                        if (mcfont.isEnabled()) {
+                        if (mcfont.get()) {
                             mc.fontRendererObj.drawStringWithShadow(text, textX, textY, -1);
                         } else {
                             duckSansBoldFont20.drawSmoothStringWithShadow(text, textX, textY, -1);
@@ -325,7 +325,7 @@ public class ESP2D extends Module {
 
             }
 
-            if (boxEsp.isEnabled()) {
+            if (boxEsp.get()) {
                 float outlineThickness = .5f;
                 RenderUtil.resetColor();
                 //top
@@ -375,17 +375,17 @@ public class ESP2D extends Module {
         if (entity.isDead || entity.isInvisible()) {
             return false;
         }
-        if (validEntities.getSetting("Players").isEnabled() && entity instanceof EntityPlayer) {
+        if (validEntities.getSetting("Players").get() && entity instanceof EntityPlayer) {
             if (entity == mc.thePlayer) {
                 return mc.gameSettings.thirdPersonView != 0;
             }
             return !entity.getDisplayName().getUnformattedText().contains("[NPC");
         }
-        if (validEntities.getSetting("Animals").isEnabled() && entity instanceof EntityAnimal) {
+        if (validEntities.getSetting("Animals").get() && entity instanceof EntityAnimal) {
             return true;
         }
 
-        return validEntities.getSetting("mobs").isEnabled() && entity instanceof EntityMob;
+        return validEntities.getSetting("mobs").get() && entity instanceof EntityMob;
     }
 
 

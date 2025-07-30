@@ -1,7 +1,7 @@
 package net.minecraft.client.renderer;
 
 import dev.tenacity.Client;
-import com.cubk.event.impl.render.CustomBlockRenderEvent;
+import dev.tenacity.event.impl.render.CustomBlockRenderEvent;
 import dev.tenacity.module.impl.combat.KillAura;
 import dev.tenacity.module.impl.render.Animations;
 import dev.tenacity.utils.player.InventoryUtils;
@@ -288,9 +288,9 @@ public class ItemRenderer {
      */
     private void transformFirstPersonItem(float equipProgress, float swingProgress) {
         boolean animations = Client.INSTANCE.isEnabled(Animations.class);
-        double x = animations ? .56 + (Animations.x.getValue() * .01) : .56;
-        double y = animations ? .52 - (Animations.y.getValue() * .01) : .52;
-        double size = animations ? .40 + (Animations.size.getValue() * .01) : .40;
+        double x = animations ? .56 + (Animations.x.get() * .01) : .56;
+        double y = animations ? .52 - (Animations.y.get() * .01) : .52;
+        double size = animations ? .40 + (Animations.size.get() * .01) : .40;
 
         GlStateManager.translate(x, -y, -0.71999997F);
         GlStateManager.translate(0.0F, equipProgress * -0.6F, 0.0F);
@@ -379,7 +379,7 @@ public class ItemRenderer {
 
                         case BLOCK:
                             if (Client.INSTANCE.isEnabled(Animations.class)) {
-                                switch (Animations.mode.getMode()) {
+                                switch (Animations.mode.get()) {
                                     case "Stella":
                                         this.transformFirstPersonItem(-0.1F, swingProgress);
                                         GlStateManager.translate(-0.5F, 0.4F, -0.2F);
@@ -475,7 +475,7 @@ public class ItemRenderer {
                             this.doBowTransformations(partialTicks, abstractclientplayer);
                     }
                 } else {
-                    if (!Animations.smallSwing.isEnabled()) {
+                    if (!Animations.smallSwing.get()) {
                         this.doItemUsedTransformations(swingProgress);
                     }
                     this.transformFirstPersonItem(f, swingProgress);

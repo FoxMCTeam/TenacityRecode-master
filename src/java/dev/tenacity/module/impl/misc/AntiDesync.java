@@ -1,8 +1,9 @@
 package dev.tenacity.module.impl.misc;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.network.PacketSendEvent;
-import com.cubk.event.impl.player.MotionEvent;
+import dev.tenacity.event.annotations.EventTarget;
+
+import dev.tenacity.event.impl.network.PacketEvent;
+import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.utils.server.PacketUtils;
@@ -18,7 +19,7 @@ public final class AntiDesync extends Module {
     }
 
     @EventTarget
-    public void onPacketSendEvent(PacketSendEvent event) {
+    public void onPacketEvent(PacketEvent event) {
         if (event.getPacket() instanceof C09PacketHeldItemChange) {
             slot = ((C09PacketHeldItemChange) event.getPacket()).getSlotId();
         }

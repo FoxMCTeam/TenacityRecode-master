@@ -1,21 +1,19 @@
 package dev.tenacity.module.impl.movement;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.network.PacketReceiveEvent;
-import com.cubk.event.impl.player.MotionEvent;
-import com.cubk.event.impl.player.MoveEvent;
-import com.cubk.event.impl.player.PlayerMoveUpdateEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.network.PacketEvent;
+import dev.tenacity.event.impl.player.MotionEvent;
+import dev.tenacity.event.impl.player.MoveEvent;
+import dev.tenacity.event.impl.player.PlayerMoveUpdateEvent;
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
-import dev.tenacity.module.impl.combat.KillAura;
 import dev.tenacity.module.impl.combat.TargetStrafe;
 import dev.tenacity.module.settings.impl.BooleanSetting;
 import dev.tenacity.module.settings.impl.ModeSetting;
 import dev.tenacity.module.settings.impl.NumberSetting;
 import dev.tenacity.ui.notifications.NotificationManager;
 import dev.tenacity.ui.notifications.NotificationType;
-import dev.tenacity.utils.client.addons.rise.component.RotationComponent;
 import dev.tenacity.utils.player.MovementUtils;
 import dev.tenacity.utils.server.PacketUtils;
 import dev.tenacity.utils.time.TimerUtil;
@@ -77,17 +75,17 @@ public final class Speed extends Module {
 
     @EventTarget
     public void onMotionEvent(MotionEvent e) {
-        this.setSuffix(mode.getMode());
+        this.setSuffix(mode.get());
         if (setTimer) {
-            mc.timer.timerSpeed = timer.getValue().floatValue();
+            mc.timer.timerSpeed = timer.get().floatValue();
         }
 
         double distX = e.getX() - mc.thePlayer.prevPosX, distZ = e.getZ() - mc.thePlayer.prevPosZ;
         lastDist = Math.hypot(distX, distZ);
 
-        switch (mode.getMode()) {
+        switch (mode.get()) {
             case "Watchdog":
-                switch (watchdogMode.getMode()) {
+                switch (watchdogMode.get()) {
                     case "Hop":
                     case "Dev":
                         if (e.isPre()) {
@@ -104,9 +102,9 @@ public final class Speed extends Module {
                         double hypotenuse = Math.sqrt(mc.thePlayer.getMotionX() * mc.thePlayer.getMotionX() + mc.thePlayer.getMotionZ() * mc.thePlayer.getMotionZ());
                         if (mc.thePlayer != null && mc.theWorld != null && !mc.thePlayer.isInWater() && !mc.thePlayer.isInLava() && !mc.thePlayer.isSpectator() && !e.isPre()) {
                             yaw = mc.thePlayer.rotationYaw;
-                            if (Client.INSTANCE.getModuleManager().getModule(Scaffold.class).isEnabled() || KillAura.target!=null){
-                                yaw = RotationComponent.rotations.getY();
-                            }
+                            //if (Client.INSTANCE.getModuleManager().getModule(Scaffold.class).get() || KillAura.target!=null){
+                            //    yaw = RotationComponent.rotations.getY();
+                            //}
                             if (mc.thePlayer.onGround) {
                                 doSlowHop = false;
                                 if (airTicks > 0) lowHopTicks = airTicks;
@@ -131,7 +129,7 @@ public final class Speed extends Module {
                                     speedJump = false;
 
                                     if (floated) floated = false;
-                                    canLowHop = !lagged && lowHopTicks >= 3 && allowLow /*&& !Client.getInstance().moduleManager.getModuleByClass(BlockFly.class).isEnabled()*/;
+                                    canLowHop = !lagged && lowHopTicks >= 3 && allowLow /*&& !Client.getInstance().moduleManager.getModuleByClass(BlockFly.class).get()*/;
                                 }
                             }
                             if (doSlowHop){
@@ -294,19 +292,19 @@ public final class Speed extends Module {
                 break;
             case "Vanilla":
                 if (MovementUtils.isMoving()) {
-                    MovementUtils.setSpeed(vanillaSpeed.getValue() / 4);
+                    MovementUtils.setSpeed(vanillaSpeed.get() / 4);
                 }
                 break;
             case "BHop":
                 if (MovementUtils.isMoving()) {
-                    MovementUtils.setSpeed(vanillaSpeed.getValue() / 4);
+                    MovementUtils.setSpeed(vanillaSpeed.get() / 4);
                     if (mc.thePlayer.onGround) {
                         mc.thePlayer.jump();
                     }
                 }
                 break;
             case "Verus":
-                switch (verusMode.getMode()) {
+                switch (verusMode.get()) {
                     case "Low":
                         if (e.isPre()) {
                             if (MovementUtils.isMoving()) {
@@ -342,7 +340,7 @@ public final class Speed extends Module {
                 }
                 break;
             case "Viper":
-                switch (viperMode.getMode()) {
+                switch (viperMode.get()) {
                     case "High":
                         if (mc.thePlayer.onGround) {
                             mc.thePlayer.motionY = 0.7;
@@ -372,13 +370,13 @@ public final class Speed extends Module {
     @EventTarget
     public void onMoveEvent(MoveEvent e) {
         if (mode.is("Watchdog")) {
-            switch (watchdogMode.getMode()) {
+            switch (watchdogMode.get()) {
                 case "Ground":
                     strafe = !strafe;
                     if (mc.thePlayer.onGround && MovementUtils.isMoving() && mc.theWorld.getBlockState(new BlockPos(mc.thePlayer.posX + e.getX(), mc.thePlayer.posY, mc.thePlayer.posZ + e.getZ())).getBlock() == Blocks.air && !mc.thePlayer.isCollidedHorizontally && !Step.isStepping) {
-                        if (strafe || groundSpeed.getValue() >= 1.6)
+                        if (strafe || groundSpeed.get() >= 1.6)
                             PacketUtils.sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX + e.getX(), mc.thePlayer.posY, mc.thePlayer.posZ + e.getZ(), true));
-                        e.setSpeed(MovementUtils.getBaseMoveSpeed() * groundSpeed.getValue());
+                        e.setSpeed(MovementUtils.getBaseMoveSpeed() * groundSpeed.get());
                         break;
                     }
                     break;
@@ -391,7 +389,7 @@ public final class Speed extends Module {
     public void onPlayerMoveUpdateEvent(PlayerMoveUpdateEvent e) {
         if (mode.is("Watchdog") && (watchdogMode.is("Hop") || watchdogMode.is("Dev")) && mc.thePlayer.fallDistance < 1 && !mc.thePlayer.isPotionActive(Potion.jump)) {
             if (MovementUtils.isMoving()) {
-                switch (watchdogMode.getMode()) {
+                switch (watchdogMode.get()) {
                     case "Hop":
                         if (mc.thePlayer.onGround)
                             speed = 1.5f;
@@ -424,8 +422,8 @@ public final class Speed extends Module {
     }
 
     @EventTarget
-    public void onPacketReceiveEvent(PacketReceiveEvent e) {
-        if (e.getPacket() instanceof S08PacketPlayerPosLook && autoDisable.isEnabled()) {
+    public void onPacketEvent(PacketEvent e) {
+        if (e.getPacket() instanceof S08PacketPlayerPosLook && autoDisable.get()) {
             NotificationManager.post(NotificationType.WARNING, "Flag Detector",
                     "Speed disabled due to " +
                             (mc.thePlayer == null || mc.thePlayer.ticksExisted < 5

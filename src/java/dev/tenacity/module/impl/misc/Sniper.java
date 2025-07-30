@@ -1,8 +1,8 @@
 package dev.tenacity.module.impl.misc;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.game.WorldEvent;
-import com.cubk.event.impl.player.MotionEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.game.WorldEvent;
+import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.ModeSetting;
@@ -57,7 +57,7 @@ public class Sniper extends Module {
                 if (netPlayer.getGameProfile().getName() == null) continue;
 
                 String name = netPlayer.getGameProfile().getName();
-                if (name.equalsIgnoreCase(username.getString())) {
+                if (name.equalsIgnoreCase(username.get())) {
                     NotificationManager.post(NotificationType.SUCCESS, "Success", "Found target!");
                     toggle();
                     return;
@@ -65,7 +65,7 @@ public class Sniper extends Module {
             }
 
             if (reset) {
-                Multithreading.schedule(() -> ChatUtil.send(getJoinCommand()), joinDelay.getValue().longValue(), TimeUnit.SECONDS);
+                Multithreading.schedule(() -> ChatUtil.send(getJoinCommand()), joinDelay.get().longValue(), TimeUnit.SECONDS);
                 reset = false;
             }
         }
@@ -73,20 +73,18 @@ public class Sniper extends Module {
 
     @EventTarget
     public void onWorldEvent(WorldEvent event) {
-        if (event instanceof WorldEvent.Load) {
-            reset = true;
-        }
+        reset = true;
     }
 
     private String getJoinCommand() {
-        switch (gameType.getMode()) {
+        switch (gameType.get()) {
             case "Skywars":
-                switch (skywarsMode.getMode()) {
+                switch (skywarsMode.get()) {
                     case "Solo":
-                        return "/play solo_" + skywarsType.getMode().toLowerCase();
+                        return "/play solo_" + skywarsType.get().toLowerCase();
 
                     case "Doubles":
-                        return "/play teams_" + skywarsType.getMode().toLowerCase();
+                        return "/play teams_" + skywarsType.get().toLowerCase();
 
                     case "Ranked":
                         return "/play ranked_normal";
@@ -94,7 +92,7 @@ public class Sniper extends Module {
                 break;
 
             case "Bedwars":
-                switch (bedwarsMode.getMode()) {
+                switch (bedwarsMode.get()) {
                     case "Solo":
                         return "/play bedwars_eight_one";
 

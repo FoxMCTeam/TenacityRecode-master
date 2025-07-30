@@ -2,9 +2,9 @@ package net.minecraft.entity;
 
 import dev.tenacity.Client;
 import dev.tenacity.module.impl.movement.Flight;
-import com.cubk.event.impl.player.PlayerMoveUpdateEvent;
-import com.cubk.event.impl.player.SafeWalkEvent;
-import com.cubk.event.impl.player.StepConfirmEvent;
+import dev.tenacity.event.impl.player.PlayerMoveUpdateEvent;
+import dev.tenacity.event.impl.player.SafeWalkEvent;
+import dev.tenacity.event.impl.player.StepConfirmEvent;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -2479,7 +2479,19 @@ public abstract class Entity implements ICommandSender {
     public Entity getCommandSenderEntity() {
         return this;
     }
+    public String getCommandSenderName() {
+        if (this.hasCustomName()) {
+            return this.getCustomNameTag();
+        } else {
+            String s = EntityList.getEntityString(this);
 
+            if (s == null) {
+                s = "generic";
+            }
+
+            return StatCollector.translateToLocal("entity." + s + ".name");
+        }
+    }
     /**
      * Returns true if the command sender should be sent feedback about executed commands
      */

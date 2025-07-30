@@ -42,10 +42,10 @@ public class NumberComponent extends SettingComponent<NumberSetting> {
             double increment = getSetting().getIncrement();
             switch (keyCode) {
                 case Keyboard.KEY_LEFT:
-                    getSetting().setValue(getSetting().getValue() - increment);
+                    getSetting().set(getSetting().get() - increment);
                     break;
                 case Keyboard.KEY_RIGHT:
-                    getSetting().setValue(getSetting().getValue() + increment);
+                    getSetting().set(getSetting().get() + increment);
                     break;
             }
         }
@@ -56,7 +56,7 @@ public class NumberComponent extends SettingComponent<NumberSetting> {
     public void drawScreen(int mouseX, int mouseY) {
         NumberSetting numberSetting = getSetting();
 
-        String value = String.valueOf(MathUtils.round(getSetting().getValue(), 2));
+        String value = String.valueOf(MathUtils.round(getSetting().get(), 2));
 
         value = value.contains(".") ? value.replaceAll("0*$", "").replaceAll("\\.$", "") : value;
 
@@ -91,12 +91,12 @@ public class NumberComponent extends SettingComponent<NumberSetting> {
                 ColorUtil.brighter(settingRectColor, .7f - (.2f * hoverAnimation.getOutput().floatValue())));
 
 
-        double currentValue = numberSetting.getValue();
+        double currentValue = numberSetting.get();
 
         if (dragging) {
             float percent = Math.min(1, Math.max(0, (mouseX - sliderX) / sliderWidth));
             double newValue = MathUtils.interpolate(numberSetting.getMinValue(), numberSetting.getMaxValue(), percent);
-            numberSetting.setValue(newValue);
+            numberSetting.set(newValue);
         }
 
         float widthPercentage = (float) (((currentValue) - numberSetting.getMinValue()) / (numberSetting.getMaxValue() - numberSetting.getMinValue()));

@@ -6,7 +6,7 @@ import java.util.function.Predicate;
 
 public class ParentAttribute<T extends Setting> {
 
-    public final static Predicate<BooleanSetting> BOOLEAN_CONDITION = BooleanSetting::isEnabled;
+    public final static Predicate<BooleanSetting> BOOLEAN_CONDITION = BooleanSetting::get;
 
     private final T parent;
     private final Predicate<T> condition;

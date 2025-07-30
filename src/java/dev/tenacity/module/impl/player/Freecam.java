@@ -1,9 +1,10 @@
 package dev.tenacity.module.impl.player;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.network.PacketSendEvent;
-import com.cubk.event.impl.player.BoundingBoxEvent;
-import com.cubk.event.impl.player.PushOutOfBlockEvent;
+import dev.tenacity.event.annotations.EventTarget;
+
+import dev.tenacity.event.impl.network.PacketEvent;
+import dev.tenacity.event.impl.player.BoundingBoxEvent;
+import dev.tenacity.event.impl.player.PushOutOfBlockEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import net.minecraft.network.play.client.C03PacketPlayer;
@@ -29,7 +30,7 @@ public final class Freecam extends Module {
     }
 
     @EventTarget
-    public void onPacketSendEvent(PacketSendEvent event) {
+    public void onPacketEvent(PacketEvent event) {
         if (event.getPacket() instanceof C03PacketPlayer) {
             event.cancel();
         }

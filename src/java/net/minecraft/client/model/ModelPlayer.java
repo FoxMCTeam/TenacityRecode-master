@@ -1,13 +1,10 @@
 package net.minecraft.client.model;
 
-import dev.tenacity.module.impl.render.CustomModel;
+import dev.tenacity.module.impl.mods.CustomModel;
 import dev.tenacity.utils.render.RenderUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
-
-import java.awt.*;
 
 public class ModelPlayer extends ModelBiped {
     public ModelRenderer bipedLeftArmwear;
@@ -133,7 +130,7 @@ public class ModelPlayer extends ModelBiped {
     public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         GlStateManager.pushMatrix();
         if (CustomModel.enabled) {
-            switch (CustomModel.model.getMode()) {
+            switch (CustomModel.model.get()) {
                 case "Among Us":
                     bipedHead.rotateAngleY = netHeadYaw * .017453292f;
                     bipedHead.rotateAngleX = headPitch * .017453292f;

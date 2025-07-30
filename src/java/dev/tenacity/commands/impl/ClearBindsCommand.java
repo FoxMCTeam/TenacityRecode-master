@@ -17,7 +17,7 @@ public class ClearBindsCommand extends Command {
         int count = 0;
         for (Module module : Client.INSTANCE.getModuleManager().getModules()) {
             KeybindSetting keybind = module.getKeybind();
-            if (keybind.getCode() != Keyboard.KEY_NONE) {
+            if (keybind.get() != Keyboard.KEY_NONE) {
                 keybind.setCode(Keyboard.KEY_NONE);
                 count++;
             }

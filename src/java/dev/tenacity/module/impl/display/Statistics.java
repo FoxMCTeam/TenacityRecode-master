@@ -1,9 +1,9 @@
 package dev.tenacity.module.impl.display;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.MotionEvent;
-import com.cubk.event.impl.render.Render2DEvent;
-import com.cubk.event.impl.render.ShaderEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.MotionEvent;
+import dev.tenacity.event.impl.render.Render2DEvent;
+import dev.tenacity.event.impl.render.ShaderEvent;
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -56,14 +56,11 @@ public class Statistics extends Module {
             diffMinutes = diff / (60 * 1000) % 60;
             diffHours = diff / (60 * 60 * 1000) % 24;
         }
-       /* String str = (int) diffSeconds + "s";
-        if (diffMinutes > 0) str = (int) diffMinutes + "m " + str;
-        if (diffHours > 0) str = (int) diffHours + "h " + str;*/
         return new int[]{(int) diffHours, (int) diffMinutes, (int) diffSeconds};
     }
 
     public static long getTimeDiff() {
-        return (endTime == -1 ? System.currentTimeMillis() : endTime) - startTime;
+        return (endTime == - 1 ? System.currentTimeMillis() : endTime) - startTime;
     }
 
     public static void reset() {
@@ -76,8 +73,8 @@ public class Statistics extends Module {
     @EventTarget
     public void onShaderEvent(ShaderEvent e) {
         float x = this.dragging.getX(), y = this.dragging.getY();
-        boolean seperated = motionGraph.isEnabled() && seprateMotionGraph.isEnabled();
-        if (e.getBloomOptions().getSetting("Statistics").isEnabled()) {
+        boolean seperated = motionGraph.get() && seprateMotionGraph.get();
+        if (e.getBloomOptions().getSetting("Statistics").get()) {
             RoundedUtil.drawGradientRound(x, y, width, height, 6, colorWheel.getColor1(), colorWheel.getColor4(), colorWheel.getColor2(), colorWheel.getColor3());
 
             if (seperated) {
@@ -100,8 +97,8 @@ public class Statistics extends Module {
     @EventTarget
     public void onRender2DEvent(Render2DEvent e) {
         float x = this.dragging.getX(), y = this.dragging.getY();
-        boolean moreHeight = motionGraph.isEnabled() && !seprateMotionGraph.isEnabled();
-        boolean seperated = motionGraph.isEnabled() && seprateMotionGraph.isEnabled();
+        boolean moreHeight = motionGraph.get() && !seprateMotionGraph.get();
+        boolean seperated = motionGraph.get() && seprateMotionGraph.get();
 
 
         motionDragging.setWidth(seperated ? width : 0);
@@ -177,7 +174,7 @@ public class Statistics extends Module {
         drawAnimatedPlaytime(playtimeX, circleY + ((radius + 10) / 2f - duckSansFont16.getHeight() / 2f), (radius + 10), playTimeActual);
 
 
-        if (motionGraph.isEnabled()) {
+        if (motionGraph.get()) {
             if (seperated) {
                 RoundedUtil.drawGradientRound(motionDragging.getX(), motionDragging.getY(),
                         motionDragging.getWidth(), motionDragging.getHeight(), 6,
@@ -206,8 +203,6 @@ public class Statistics extends Module {
     private void drawMotionGraph(float x, float y, float width, float height) {
         float textX = x + 5;
         duckSansBoldFont20.drawString("Speed", textX, y + 3, -1);
-        float underlineWidth = duckSansBoldFont20.getStringWidth("Speed");
-        //  RoundedUtil.drawRound(textX, y + 3 + duckSansBoldFont20.getHeight() + 2, underlineWidth - .5f, .9f, .25f, Color.white);
 
         double average = speeds.stream().collect(Collectors.averagingDouble(value -> value.doubleValue() * 50));
         average = Math.round(average * 100) / 100.0;
@@ -285,8 +280,9 @@ public class Statistics extends Module {
         circleShader.setUniformf("color", color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
         float wh = radius + 10;
         ScaledResolution sr = new ScaledResolution(mc);
-        circleShader.setUniformf("pos", (x + ((wh / 2f) - ((radius + borderThickness) / 2f))) * sr.getScaleFactor(),
-                (Minecraft.getMinecraft().displayHeight - ((radius + borderThickness) * sr.getScaleFactor())) - ((y + ((wh / 2f) - ((radius + borderThickness) / 2f))) * sr.getScaleFactor()));
+        float v = (wh / 2f) - ((radius + borderThickness) / 2f);
+        circleShader.setUniformf("pos", (x + v) * sr.getScaleFactor(),
+                (Minecraft.getMinecraft().displayHeight - ((radius + borderThickness) * sr.getScaleFactor())) - ((y + v) * sr.getScaleFactor()));
         ShaderUtil.drawQuads(x, y, wh, wh);
         circleShader.unload();
         GLUtil.endBlend();

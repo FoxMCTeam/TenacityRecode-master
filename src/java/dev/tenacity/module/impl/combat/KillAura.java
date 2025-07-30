@@ -1,13 +1,12 @@
 package dev.tenacity.module.impl.combat;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.AttackEvent;
-import com.cubk.event.impl.player.KeepSprintEvent;
-import com.cubk.event.impl.player.MotionEvent;
-import com.cubk.event.impl.render.Render3DEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.AttackEvent;
+import dev.tenacity.event.impl.player.KeepSprintEvent;
+import dev.tenacity.event.impl.player.MotionEvent;
+import dev.tenacity.event.impl.render.Render3DEvent;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
-import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_8to1_9.Protocol1_8To1_9;
 import dev.tenacity.Client;
@@ -15,6 +14,7 @@ import dev.tenacity.commands.impl.FriendCommand;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.display.HUDMod;
+import dev.tenacity.module.impl.display.SettingComponent;
 import dev.tenacity.module.impl.movement.Scaffold;
 import dev.tenacity.module.settings.impl.*;
 import dev.tenacity.utils.animations.Animation;
@@ -58,7 +58,6 @@ import java.util.List;
 public final class KillAura extends Module {
 
     public static final List<EntityLivingBase> targets = new ArrayList<>();
-    public static final ModeSetting movementFix = new ModeSetting("Movement fix Mode", "Traditional", "Off", "Normal", "Traditional", "Backwards Sprint");
     public static boolean attacking;
     public static boolean blocking;
     public static boolean wasBlocking;
@@ -87,7 +86,6 @@ public final class KillAura extends Module {
             new BooleanSetting("Keep Sprint", true),
             new BooleanSetting("Through Walls", true),
             new BooleanSetting("Allow Scaffold", false),
-            new BooleanSetting("Movement Fix", false),
             new BooleanSetting("Ray Cast", false));
     private final MultipleBoolSetting auraESP = new MultipleBoolSetting("Target ESP",
             new BooleanSetting("Circle", true),
@@ -114,15 +112,14 @@ public final class KillAura extends Module {
 
     public KillAura() {
         super("module.combat.killAura", Category.COMBAT, "Automatically attacks players");
-        autoblockMode.addParent(autoblock, a -> autoblock.isEnabled());
-        rotationMode.addParent(rotations, r -> rotations.isEnabled());
-        rotationSpeed.addParent(rotations, r -> rotations.isEnabled());
+        autoblockMode.addParent(autoblock, a -> autoblock.get());
+        rotationMode.addParent(rotations, r -> rotations.get());
+        rotationSpeed.addParent(rotations, r -> rotations.get());
         switchDelay.addParent(mode, m -> mode.is("Switch"));
         maxTargetAmount.addParent(mode, m -> mode.is("Multi"));
-        customColor.addParent(auraESP, r -> r.isEnabled("Custom Color"));
-        movementFix.addParent(addons, r -> r.isEnabled("Movement Fix"));
+        customColor.addParent(auraESP, r -> r.get("Custom Color"));
         this.addSettings(targetsSetting, mode, maxTargetAmount, switchDelay, minCPS, maxCPS, reach, autoblock, autoblockMode, swapPreBlock,
-                rotations, rotationMode, rotationSpeed, sortMode, addons, movementFix, auraESP, customColor);
+                rotations, rotationMode, rotationSpeed, sortMode, addons, auraESP, customColor);
     }
 
     @Override
@@ -140,26 +137,26 @@ public final class KillAura extends Module {
 
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
-        this.setSuffix(mode.getMode());
-        final double minRotationSpeed = rotationSpeed.getValue();
-        final double maxRotationSpeed = rotationSpeed.getValue();
+        this.setSuffix(mode.get());
+        final double minRotationSpeed = rotationSpeed.get();
+        final double maxRotationSpeed = rotationSpeed.get();
         final float rotationSpeed = (float) MathUtils.getRandom(minRotationSpeed, maxRotationSpeed);
-        if (minCPS.getValue() > maxCPS.getValue()) {
-            minCPS.setValue(minCPS.getValue() - 1);
+        if (minCPS.get() > maxCPS.get()) {
+            minCPS.set(minCPS.get() - 1);
         }
 
         // Gets all entities in specified range, sorts them using your specified sort mode, and adds them to target list
         sortTargets();
 
         if (event.isPre()) {
-            attacking = !targets.isEmpty() && (addons.getSetting("Allow Scaffold").isEnabled() || !Client.INSTANCE.isEnabled(Scaffold.class));
-            blocking = autoblock.isEnabled() && attacking && InventoryUtils.isHoldingSword();
+            attacking = !targets.isEmpty() && (addons.getSetting("Allow Scaffold").get() || !Client.INSTANCE.isEnabled(Scaffold.class));
+            blocking = autoblock.get() && attacking && InventoryUtils.isHoldingSword();
             if (attacking) {
                 target = targets.get(0);
 
-                if (rotations.isEnabled()) {
+                if (rotations.get()) {
                     float[] rotations = new float[]{0, 0};
-                    switch (rotationMode.getMode()) {
+                    switch (rotationMode.get()) {
                         case "Vanilla":
                             rotations = RotationUtils.getRotationsNeeded(target);
                             break;
@@ -182,7 +179,7 @@ public final class KillAura extends Module {
                             break;
                         case "TestA":
                             if (target != null) {
-                                Vector2f vector2f = dev.tenacity.utils.client.addons.rise.RotationUtils.calculate(target, true, reach.getValue().floatValue(), reach.getValue().floatValue(), true, true);
+                                Vector2f vector2f = dev.tenacity.utils.client.addons.rise.RotationUtils.calculate(target, true, reach.get().floatValue(), reach.get().floatValue(), true, true);
                                 rotations = new float[]{vector2f.x, vector2f.y};
                             }
                             break;
@@ -204,15 +201,15 @@ public final class KillAura extends Module {
                             break;
                     }
 
-                    RotationComponent.setRotations(new Vector2f(rotations[0], rotations[1]), rotationSpeed, MovementFix.values()[movementFix.modes.indexOf(movementFix.getMode())]);
+                    RotationComponent.setRotations(new Vector2f(rotations[0], rotations[1]), rotationSpeed, MovementFix.values()[SettingComponent.kAMovementFixMode.modes.indexOf(SettingComponent.kAMovementFixMode.get())]);
                 }
 
-                if (addons.getSetting("Ray Cast").isEnabled() && !RotationUtils.isMouseOver(event.getYaw(), event.getPitch(), target, reach.getValue().floatValue()))
+                if (addons.getSetting("Ray Cast").get() && !RotationUtils.isMouseOver(event.getYaw(), event.getPitch(), target, reach.get().floatValue()))
                     return;
 
                 if (attackTimer.hasTimeElapsed(cps, true)) {
-                    final int maxValue = (int) ((minCPS.getMaxValue() - maxCPS.getValue()) * 20);
-                    final int minValue = (int) ((minCPS.getMaxValue() - minCPS.getValue()) * 20);
+                    final int maxValue = (int) ((minCPS.getMaxValue() - maxCPS.get()) * 20);
+                    final int minValue = (int) ((minCPS.getMaxValue() - minCPS.get()) * 20);
                     cps = MathUtils.getRandomInRange(minValue, maxValue);
                     if (mode.is("Multi")) {
                         for (EntityLivingBase entityLivingBase : targets) {
@@ -240,7 +237,7 @@ public final class KillAura extends Module {
         }
 
         if (blocking) {
-            switch (autoblockMode.getMode()) {
+            switch (autoblockMode.get()) {
                 case "Watchdog":
                     for (int i = 0; i <= 8; i++) {
                         if (mc.thePlayer.inventory.getStackInSlot(i) != null) {
@@ -252,12 +249,12 @@ public final class KillAura extends Module {
                     }
                     mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
 
-                    if (addons.getSetting("Ray Cast").isEnabled() && !RotationUtils.isMouseOver(event.getYaw(), event.getPitch(), target, reach.getValue().floatValue()))
+                    if (addons.getSetting("Ray Cast").get() && !RotationUtils.isMouseOver(event.getYaw(), event.getPitch(), target, reach.get().floatValue()))
                         return;
 
                     if (attackTimer.hasTimeElapsed(cps, true)) {
-                        final int maxValue = (int) ((minCPS.getMaxValue() - maxCPS.getValue()) * 20);
-                        final int minValue = (int) ((minCPS.getMaxValue() - minCPS.getValue()) * 20);
+                        final int maxValue = (int) ((minCPS.getMaxValue() - maxCPS.get()) * 20);
+                        final int minValue = (int) ((minCPS.getMaxValue() - minCPS.get()) * 20);
                         cps = MathUtils.getRandomInRange(minValue, maxValue);
                         if (mode.is("Multi")) {
                             for (EntityLivingBase entityLivingBase : targets) {
@@ -312,12 +309,12 @@ public final class KillAura extends Module {
         targets.clear();
         for (Entity entity : mc.theWorld.getLoadedEntityList()) {
             if (entity instanceof EntityLivingBase entityLivingBase) {
-                if (mc.thePlayer.getDistanceToEntity(entity) <= reach.getValue() && isValid(entity) && mc.thePlayer != entityLivingBase && !FriendCommand.isFriend(entityLivingBase.getName())) {
+                if (mc.thePlayer.getDistanceToEntity(entity) <= reach.get() && isValid(entity) && mc.thePlayer != entityLivingBase && !FriendCommand.isFriend(entityLivingBase.getName())) {
                     targets.add(entityLivingBase);
                 }
             }
         }
-        switch (sortMode.getMode()) {
+        switch (sortMode.get()) {
             case "Range":
                 targets.sort(Comparator.comparingDouble(mc.thePlayer::getDistanceToEntity));
                 break;
@@ -334,27 +331,27 @@ public final class KillAura extends Module {
     }
 
     public boolean isValid(Entity entity) {
-        if (entity instanceof EntityPlayer && targetsSetting.getSetting("Players").isEnabled() && !entity.isInvisible() && mc.thePlayer.canEntityBeSeen(entity))
+        if (entity instanceof EntityPlayer && targetsSetting.getSetting("Players").get() && !entity.isInvisible() && mc.thePlayer.canEntityBeSeen(entity))
             return true;
 
-        if (entity instanceof EntityPlayer && targetsSetting.getSetting("Invisibles").isEnabled() && entity.isInvisible())
+        if (entity instanceof EntityPlayer && targetsSetting.getSetting("Invisibles").get() && entity.isInvisible())
             return true;
 
-        if (entity instanceof EntityPlayer && addons.getSetting("Through Walls").isEnabled() && !mc.thePlayer.canEntityBeSeen(entity))
+        if (entity instanceof EntityPlayer && addons.getSetting("Through Walls").get() && !mc.thePlayer.canEntityBeSeen(entity))
             return true;
 
-        if (entity instanceof EntityAnimal && targetsSetting.getSetting("Animals").isEnabled())
+        if (entity instanceof EntityAnimal && targetsSetting.getSetting("Animals").get())
             return true;
 
-        if (entity instanceof EntityMob && targetsSetting.getSetting("Mobs").isEnabled())
+        if (entity instanceof EntityMob && targetsSetting.getSetting("Mobs").get())
             return true;
 
-        return entity.isInvisible() && targetsSetting.getSetting("Invisibles").isEnabled();
+        return entity.isInvisible() && targetsSetting.getSetting("Invisibles").get();
     }
 
     @EventTarget
     public void onKeepSprintEvent(KeepSprintEvent event) {
-        if (addons.getSetting("Keep Sprint").isEnabled()) {
+        if (addons.getSetting("Keep Sprint").get()) {
             event.cancel();
         }
     }
@@ -372,20 +369,20 @@ public final class KillAura extends Module {
 
         Color color = HUDMod.getClientColors().getFirst();
 
-        if (auraESP.isEnabled("Custom Color")) {
-            color = customColor.getColor();
+        if (auraESP.get("Custom Color")) {
+            color = customColor.get();
         }
 
 
         if (auraESPTarget != null) {
-            if (auraESP.getSetting("Box").isEnabled()) {
+            if (auraESP.getSetting("Box").get()) {
                 RenderUtil.renderBoundingBox(auraESPTarget, color, auraESPAnim.getOutput().floatValue());
             }
-            if (auraESP.getSetting("Circle").isEnabled()) {
+            if (auraESP.getSetting("Circle").get()) {
                 RenderUtil.drawCircle(auraESPTarget, event.getTicks(), .75f, color.getRGB(), auraESPAnim.getOutput().floatValue());
             }
 
-            if (auraESP.getSetting("Tracer").isEnabled()) {
+            if (auraESP.getSetting("Tracer").get()) {
                 RenderUtil.drawTracerLine(auraESPTarget, 4f, Color.BLACK, auraESPAnim.getOutput().floatValue());
                 RenderUtil.drawTracerLine(auraESPTarget, 2.5f, color, auraESPAnim.getOutput().floatValue());
             }
@@ -396,7 +393,7 @@ public final class KillAura extends Module {
         if (KillAura.target != null) {
             // 计算射线追踪
             MovingObjectPosition hitObject = rayTrace(
-                    this.reach.getValue().floatValue(),
+                    this.reach.get().floatValue(),
                     mc.timer.renderPartialTicks,
                     new float[]{RotationComponent.rotations.getX(), RotationComponent.rotations.getY()}
             );

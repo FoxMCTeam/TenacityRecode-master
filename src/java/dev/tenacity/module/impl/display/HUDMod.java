@@ -1,11 +1,10 @@
 package dev.tenacity.module.impl.display;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.UpdateEvent;
-import com.cubk.event.impl.render.Render2DEvent;
-import com.cubk.event.impl.render.ShaderEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.render.Render2DEvent;
+import dev.tenacity.event.impl.render.ShaderEvent;
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import dev.tenacity.Client;
-import dev.tenacity.i18n.Locale;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.combat.KillAura;
@@ -18,6 +17,7 @@ import dev.tenacity.utils.animations.impl.DecelerateAnimation;
 import dev.tenacity.utils.font.AbstractFontRenderer;
 import dev.tenacity.utils.font.CustomFont;
 import dev.tenacity.utils.misc.RomanNumeralUtils;
+import dev.tenacity.utils.objects.GradientColorWheel;
 import dev.tenacity.utils.player.MovementUtils;
 import dev.tenacity.utils.render.*;
 import dev.tenacity.utils.server.PingerUtils;
@@ -45,8 +45,11 @@ public class HUDMod extends Module {
 
     public static final ColorSetting color1 = new ColorSetting("Color 1", new Color(0xffa028d4));
     public static final ColorSetting color2 = new ColorSetting("Color 2", new Color(0xff0008ff));
+    public static final GradientColorWheel colorWheel = new GradientColorWheel();
+    public static final BooleanSetting gradient = new BooleanSetting("Gradient Background", true);
+    public static final NumberSetting radius = new NumberSetting("Round Radius", 4, 10, 0, .1);
     public static final ModeSetting theme = Theme.getModeSetting("Theme Selection", "Lush");
-    public static final BooleanSetting customFont = new BooleanSetting("Custom Font", true);
+    public static final BooleanSetting customFont = SettingComponent.customFont;
     public static final MultipleBoolSetting hudCustomization = new MultipleBoolSetting("HUD Options",
             new BooleanSetting("Radial Gradients", true),
             new BooleanSetting("Potion HUD", true),
@@ -62,10 +65,17 @@ public class HUDMod extends Module {
             new BooleanSetting("Disable KillAura", true),
             new BooleanSetting("Disable InvManager", true),
             new BooleanSetting("Disable ChestStealer", true));
+
+    private static final MultipleBoolSetting exhibitionText = new MultipleBoolSetting("Tenabition Text",
+            new BooleanSetting("Protocol", true),
+            new BooleanSetting("Time", true),
+            new BooleanSetting("Ping", true),
+            new BooleanSetting("FPS", true));
+
     public static int offsetValue = 0;
     public static float xOffset = 0;
-    private final StringSetting clientName = new StringSetting("Client Name");
-    public static final ModeSetting language = new ModeSetting("Language Mode", "en_US", "en_US", "ru_RU", "zh_CN", "zh_HK", "de_DE", "fr_fR");
+    private final StringSetting clientName = SettingComponent.clientName;
+    public static final ModeSetting language = SettingComponent.language;
     private final ModeSetting watermarkMode = new ModeSetting("Watermark Mode", "Tenacity", "Tenacity", "Plain Text", "Neverlose", "Tenasense", "Tenabition", "Logo", "None");
     private final Animation fadeInText = new DecelerateAnimation(500, 1);
     private final Map<String, String> bottomLeftText = new LinkedHashMap<>();
@@ -77,12 +87,13 @@ public class HUDMod extends Module {
         super("module.display.HUD", Category.DISPLAY, "customizes the client's appearance");
         color1.addParent(theme, modeSetting -> modeSetting.is("Custom Theme"));
         color2.addParent(theme, modeSetting -> modeSetting.is("Custom Theme") && !color1.isRainbow());
-        this.addSettings(language, clientName, watermarkMode, theme, color1, color2, customFont, infoCustomization, hudCustomization, disableButtons);
+        exhibitionText.addParent(watermarkMode, sb -> sb.is("Tenabition"));
+        this.addSettings(radius, watermarkMode, theme, colorWheel.createModeSetting("Color Mode"), colorWheel.getColorSetting(), gradient, color1, color2, infoCustomization, hudCustomization, disableButtons, exhibitionText);
         if (!enabled) this.toggleSilent();
     }
 
     public static Pair<Color, Color> getClientColors() {
-        return Theme.getThemeColors(theme.getMode());
+        return Theme.getThemeColors(theme.get());
     }
 
     public static String getCurrentTimeStamp() {
@@ -90,7 +101,7 @@ public class HUDMod extends Module {
     }
 
     public static String get(String text) {
-        return hudCustomization.getSetting("Lowercase").isEnabled() ? text.toLowerCase() : text;
+        return hudCustomization.getSetting("Lowercase").get() ? text.toLowerCase() : text;
     }
 
     public static Color color(int tick) {
@@ -103,12 +114,12 @@ public class HUDMod extends Module {
     }
 
     public static boolean drawRadialGradients() {
-        return hudCustomization.getSetting("Radial Gradients").isEnabled();
+        return hudCustomization.getSetting("Radial Gradients").get();
     }
 
     public static void addButtons(List<GuiButton> buttonList) {
         for (ModuleButton mb : ModuleButton.values()) {
-            if (mb.getSetting().isEnabled()) {
+            if (mb.getSetting().get()) {
                 buttonList.add(mb.getButton());
             }
         }
@@ -139,19 +150,19 @@ public class HUDMod extends Module {
 
 
         if (e.isBloom()) {
-            boolean glow = e.getBloomOptions().getSetting("Watermark").isEnabled();
+            boolean glow = e.getBloomOptions().getSetting("Watermark").get();
             if (!glow) {
                 clientColors = Pair.of(Color.BLACK);
             }
 
-            if (!clientName.getString().equals("")) {
-                name = clientName.getString().replace("%time%", getCurrentTimeStamp());
+            if (!clientName.get().equals("")) {
+                name = clientName.get().replace("%time%", getCurrentTimeStamp());
             }
 
 
             String finalName = get(name);
             String intentInfo = Client.userName;
-            switch (watermarkMode.getMode()) {
+            switch (watermarkMode.get()) {
                 case "Logo":
                     float WH = 110 / 2f;
                     float textWidth = duckSansBoldFont32.getStringWidth(finalName);
@@ -188,7 +199,7 @@ public class HUDMod extends Module {
                     break;
                 case "Plain Text":
                     AbstractFontRenderer fr = mc.fontRendererObj;
-                    if (customFont.isEnabled()) {
+                    if (customFont.get()) {
                         fr = duckSansFont24;
                     }
                     AbstractFontRenderer finalFr = fr;
@@ -230,8 +241,8 @@ public class HUDMod extends Module {
             version = false;
         }
 
-        if (!clientName.getString().equals("")) {
-            name = clientName.getString().replace("%time%", getCurrentTimeStamp());
+        if (!clientName.get().equals("")) {
+            name = clientName.get().replace("%time%", getCurrentTimeStamp());
         }
 
         version = name.equalsIgnoreCase(Client.NAME);
@@ -239,7 +250,7 @@ public class HUDMod extends Module {
         String finalName = get(name);
         String intentInfo = Client.userName;
 
-        switch (watermarkMode.getMode()) {
+        switch (watermarkMode.get()) {
             case "Logo":
 
                 float WH = 110 / 2f;
@@ -305,7 +316,7 @@ public class HUDMod extends Module {
                 break;
             case "Plain Text":
                 AbstractFontRenderer fr = mc.fontRendererObj;
-                if (customFont.isEnabled()) {
+                if (customFont.get()) {
                     fr = duckSansBoldFont26;
                 }
                 AbstractFontRenderer finalFr = fr;
@@ -364,7 +375,21 @@ public class HUDMod extends Module {
                 break;
             case "Tenabition":
                 StringBuilder stringBuilder = new StringBuilder(name.replace("tenacity", "Tenabition")).insert(1, "§7");
-                stringBuilder.append(" [§fFPS: ").append(Minecraft.getDebugFPS()).append("§7]");
+                if (exhibitionText.get("Protocol")) {
+                    stringBuilder.append(" [§f").append(ViaLoadingBase.getInstance().getTargetVersion().getName()).append("§7]");
+                }
+
+                if (exhibitionText.get("Time")) {
+                    stringBuilder.append(" [§f").append(getCurrentTime()).append("§7]");
+                }
+
+                if (exhibitionText.get("FPS")) {
+                    stringBuilder.append(" [§f").append(Minecraft.getDebugFPS()).append(" FPS§7]");
+                }
+
+                if (exhibitionText.get("Ping")) {
+                    stringBuilder.append(" [§f").append(PingerUtils.getPing()).append("ms§7]");
+                }
                 RenderUtil.resetColor();
                 mc.fontRendererObj.drawStringWithShadow(stringBuilder.toString(), 4, 4, clientColors.getFirst().getRGB());
                 break;
@@ -382,13 +407,13 @@ public class HUDMod extends Module {
 
 
     private void drawBottomRight() {
-        AbstractFontRenderer fr = customFont.isEnabled() ? duckSansFont20 : mc.fontRendererObj;
+        AbstractFontRenderer fr = customFont.get() ? duckSansFont20 : mc.fontRendererObj;
         ScaledResolution sr = new ScaledResolution(mc);
         float yOffset = (float) (14.5 * GuiChat.openingAnimation.getOutput().floatValue());
 
-        boolean shadowInfo = infoCustomization.isEnabled("Info Shadow");
+        boolean shadowInfo = infoCustomization.get("Info Shadow");
 
-        if (hudCustomization.getSetting("Potion HUD").isEnabled()) {
+        if (hudCustomization.getSetting("Potion HUD").get()) {
             java.util.List<PotionEffect> potions = new ArrayList<>(mc.thePlayer.getActivePotionEffects());
             potions.sort(Comparator.comparingDouble(e -> -fr.getStringWidth(I18n.format(e.getEffectName()))));
 
@@ -398,16 +423,22 @@ public class HUDMod extends Module {
                 String name = I18n.format(potion.getName()) + (effect.getAmplifier() > 0 ? " " + RomanNumeralUtils.generate(effect.getAmplifier() + 1) : "");
                 Color c = new Color(potion.getLiquidColor());
                 String str = get(name + " §7[" + Potion.getDurationString(effect) + "]");
-                fr.drawString(str, sr.getScaledWidth() - fr.getStringWidth(str) - 2,
-                        -10 + sr.getScaledHeight() - fr.getHeight() + (7 - (10 * (count + 1))) - yOffset,
-                        new Color(c.getRed(), c.getGreen(), c.getBlue(), 255).getRGB(), shadowInfo);
+                if (shadowInfo) {
+                    fr.drawStringWithShadow(str, sr.getScaledWidth() - fr.getStringWidth(str) - 2,
+                            -10 + sr.getScaledHeight() - fr.getHeight() + (7 - (10 * (count + 1))) - yOffset,
+                            new Color(c.getRed(), c.getGreen(), c.getBlue(), 255).getRGB());
+                } else {
+                    fr.drawString(str, sr.getScaledWidth() - fr.getStringWidth(str) - 2,
+                            -10 + sr.getScaledHeight() - fr.getHeight() + (7 - (10 * (count + 1))) - yOffset,
+                            new Color(c.getRed(), c.getGreen(), c.getBlue(), 255).getRGB());
+                }
                 count++;
             }
 
             offsetValue = count * fr.getHeight();
         }
 
-        String text = Client.VERSION + " - " + (customFont.isEnabled() ? "" : "§l") + Client.RELEASE.getName() + "§r";
+        String text = Client.VERSION + " - " + (customFont.get() ? "" : "§l") + Client.RELEASE.getName() + "§r";
 
         text += " | " + Client.userName;
 
@@ -419,7 +450,7 @@ public class HUDMod extends Module {
         Pair<Color, Color> clientColors = getClientColors();
         String finalText = text;
 
-        float f = customFont.isEnabled() ? 0.5F : 1.0F;
+        float f = customFont.get() ? 0.5F : 1.0F;
         fr.drawString(finalText, x + f, y + f, 0xFF000000);
         GradientUtil.applyGradientHorizontal(x, y, fr.getStringWidth(text), 20, 1, clientColors.getFirst(), clientColors.getSecond(), () -> {
             RenderUtil.setAlphaLimit(0);
@@ -428,9 +459,9 @@ public class HUDMod extends Module {
     }
 
     private void drawInfo(Pair<Color, Color> clientColors) {
-        boolean shadowInfo = infoCustomization.isEnabled("Info Shadow");
-        boolean semiBold = infoCustomization.isEnabled("Semi-Bold Info");
-        boolean whiteInfo = infoCustomization.isEnabled("White Info");
+        boolean shadowInfo = infoCustomization.get("Info Shadow");
+        boolean semiBold = infoCustomization.get("Semi-Bold Info");
+        boolean whiteInfo = infoCustomization.get("White Info");
         String titleBold = semiBold ? "§l" : "";
         ScaledResolution sr = new ScaledResolution(mc);
 
@@ -439,7 +470,7 @@ public class HUDMod extends Module {
         bottomLeftText.put("Speed", String.valueOf(calculateBPS()));
         bottomLeftText.put("FPS", String.valueOf(Minecraft.getDebugFPS()));
 
-        if (infoCustomization.isEnabled("Show Ping")) {
+        if (infoCustomization.get("Show Ping")) {
             bottomLeftText.put("Ping", PingerUtils.getPing());
             GuiNewChat.chatPos = 17 - 7;
         } else {
@@ -449,7 +480,7 @@ public class HUDMod extends Module {
 
         //InfoStuff
         AbstractFontRenderer nameInfoFr = duckSansFont20;
-        if (!customFont.isEnabled()) {
+        if (!customFont.get()) {
             nameInfoFr = mc.fontRendererObj;
         }
 
@@ -461,9 +492,9 @@ public class HUDMod extends Module {
 
 
         float yOffset = (float) (14.5 * GuiChat.openingAnimation.getOutput().floatValue());
-        float f2 = customFont.isEnabled() ? 0.5F : 1.0F;
-        float f3 = customFont.isEnabled() ? 1 : 0.5F;
-        float yMovement = !customFont.isEnabled() ? -1 : 0;
+        float f2 = customFont.get() ? 0.5F : 1.0F;
+        float f3 = customFont.get() ? 1 : 0.5F;
+        float yMovement = !customFont.get() ? -1 : 0;
 
 
         if (whiteInfo) {
@@ -516,7 +547,7 @@ public class HUDMod extends Module {
     }
 
     private void drawArmor(ScaledResolution sr) {
-        if (hudCustomization.getSetting("Armor HUD").isEnabled()) {
+        if (hudCustomization.getSetting("Armor HUD").get()) {
             List<ItemStack> equipment = new ArrayList<>();
             boolean inWater = mc.thePlayer.isEntityAlive() && mc.thePlayer.isInsideOfMaterial(Material.water);
             int x = -94;
@@ -551,7 +582,12 @@ public class HUDMod extends Module {
             }
         }
     }
+    public static String getCurrentTime() {
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+        Date currentTime = new Date();
 
+        return timeFormat.format(currentTime);
+    }
     @Getter
     @AllArgsConstructor
     public enum ModuleButton {

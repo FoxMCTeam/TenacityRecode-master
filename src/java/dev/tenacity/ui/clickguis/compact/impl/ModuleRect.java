@@ -80,7 +80,7 @@ public class ModuleRect implements Screen {
 
         KeybindSetting keybindSetting = module.getKeybind();
 
-        float bindWidth = duckSansFont14.getStringWidth(Keyboard.getKeyName(keybindSetting.getCode())) + 4;
+        float bindWidth = duckSansFont14.getStringWidth(Keyboard.getKeyName(keybindSetting.get())) + 4;
 
         boolean hovered = HoveringUtil.isHovering(x + duckSansFont20.getStringWidth(Localization.get(module.getName())) + 13, y + 6, bindWidth, 8, mouseX, mouseY);
         boolean hoveringModule = HoveringUtil.isHovering(x, y, width, 20, mouseX, mouseY);
@@ -96,10 +96,10 @@ public class ModuleRect implements Screen {
 
         Color bindRect = new Color(64, 68, 75);
         Gui.drawRect2(x + duckSansFont20.getStringWidth(Localization.get(module.getName())) + 13, y + 6,
-                duckSansFont14.getStringWidth(Keyboard.getKeyName(keybindSetting.getCode())) + 4, 8,
+                duckSansFont14.getStringWidth(Keyboard.getKeyName(keybindSetting.get())) + 4, 8,
                 hovered ? bindRect.brighter().getRGB() : bindRect.getRGB());
 
-        duckSansFont14.drawCenteredString(Keyboard.getKeyName(keybindSetting.getCode()), x + duckSansFont20.getStringWidth(Localization.get(module.getName())) + 13 + bindWidth / 2f,
+        duckSansFont14.drawCenteredString(Keyboard.getKeyName(keybindSetting.get()), x + duckSansFont20.getStringWidth(Localization.get(module.getName())) + 13 + bindWidth / 2f,
                 y + 8, -1);
 
         Gui.drawRect2(x, y + 20, rectWidth, rectHeight, new Color(35, 35, 35).getRGB());
@@ -136,7 +136,7 @@ public class ModuleRect implements Screen {
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
-        float bindWidth = duckSansFont14.getStringWidth(Keyboard.getKeyName(module.getKeybind().getCode())) + 4;
+        float bindWidth = duckSansFont14.getStringWidth(Keyboard.getKeyName(module.getKeybind().get())) + 4;
         boolean hovered = HoveringUtil.isHovering(x + duckSansFont20.getStringWidth(Localization.get(module.getName())) + 13, y + 6, bindWidth, 8, mouseX, mouseY);
         if (!hovered && HoveringUtil.isHovering(x, y, rectWidth, 20, mouseX, mouseY)) {
             if (button == 0) {

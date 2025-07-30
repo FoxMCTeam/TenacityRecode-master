@@ -76,10 +76,10 @@ public class ModeComponent extends SettingComponent<ModeSetting> {
 
         duckSansFont14.drawString(modeSetting.name, boxX + 1, y + 3, textColor);
 
-        duckSansFont16.drawString(modeSetting.getMode(), boxX + 5, boxY + duckSansFont16.getMiddleOfBox(boxHeight), textColor);
+        duckSansFont16.drawString(modeSetting.get(), boxX + 5, boxY + duckSansFont16.getMiddleOfBox(boxHeight), textColor);
 
         if (themeSetting) {
-            MutablePair<Color, Color> themeColors = Theme.getThemeColors(modeSetting.getMode()).apply(MutablePair::of);
+            MutablePair<Color, Color> themeColors = Theme.getThemeColors(modeSetting.get()).apply(MutablePair::of);
 
             themeColors.computeFirst(color -> ColorUtil.applyOpacity(color, alpha));
             themeColors.computeSecond(color -> ColorUtil.applyOpacity(color, alpha));
@@ -88,9 +88,9 @@ public class ModeComponent extends SettingComponent<ModeSetting> {
             float width = 8;
             float middleOfRect = boxHeight / 2f - height / 2f;
             float spacing = 3;
-            RoundedUtil.drawRound(boxX + 7.5f + duckSansFont16.getStringWidth(modeSetting.getMode()), boxY + middleOfRect,
+            RoundedUtil.drawRound(boxX + 7.5f + duckSansFont16.getStringWidth(modeSetting.get()), boxY + middleOfRect,
                     width, height, 2.25f, themeColors.getFirst());
-            RoundedUtil.drawRound(boxX + 7.5f + duckSansFont16.getStringWidth(modeSetting.getMode()) + (spacing + width), boxY + middleOfRect,
+            RoundedUtil.drawRound(boxX + 7.5f + duckSansFont16.getStringWidth(modeSetting.get()) + (spacing + width), boxY + middleOfRect,
                     width, height, 2.25f, themeColors.getSecond());
         }
 
@@ -126,7 +126,7 @@ public class ModeComponent extends SettingComponent<ModeSetting> {
                     ColorUtil.applyOpacity(settingRectColor.brighter().brighter(), openAnim * selectionBox.getOutput().floatValue()));
 
             for (String mode : modeSetting.modes) {
-                if (mode.equals(modeSetting.getMode())) continue;
+                if (mode.equals(modeSetting.get())) continue;
                 boolean hoveringMode = HoveringUtil.isHovering(modeX, modeY + rectCount * rectHeight, boxWidth, rectHeight, mouseX, mouseY);
                 if (hoveringMode) {
                     this.hoveringMode = mode;
@@ -198,10 +198,10 @@ public class ModeComponent extends SettingComponent<ModeSetting> {
             float modeX = boxX - 1;
 
             for (String mode : modeSetting.modes) {
-                if (mode.equals(modeSetting.getMode())) continue;
+                if (mode.equals(modeSetting.get())) continue;
                 boolean hoveringMode = HoveringUtil.isHovering(modeX, modeY + rectCount * rectHeight, boxWidth, rectHeight, mouseX, mouseY);
                 if (isClickable((modeY + rectCount * rectHeight) + rectHeight) && hoveringMode && button == 0) {
-                    modeSetting.setCurrentMode(mode);
+                    modeSetting.set(mode);
                     opened = false;
                     return;
                 }

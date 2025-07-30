@@ -1,12 +1,12 @@
 package dev.tenacity.module.impl.movement;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.network.PacketReceiveEvent;
-import com.cubk.event.impl.network.PacketSendEvent;
-import com.cubk.event.impl.player.BoundingBoxEvent;
-import com.cubk.event.impl.player.MotionEvent;
-import com.cubk.event.impl.player.MoveEvent;
-import com.cubk.event.impl.player.UpdateEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.network.PacketEvent;
+
+import dev.tenacity.event.impl.player.BoundingBoxEvent;
+import dev.tenacity.event.impl.player.MotionEvent;
+import dev.tenacity.event.impl.player.MoveEvent;
+import dev.tenacity.event.impl.player.UpdateEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.combat.TargetStrafe;
@@ -91,10 +91,10 @@ public final class Flight extends Module {
 
     @EventTarget
     public void onMoveEvent(MoveEvent e) {
-        switch (mode.getMode()) {
+        switch (mode.get()) {
             case "Vanilla":
-                e.setSpeed(MovementUtils.isMoving() ? horizontalSpeed.getValue().floatValue() : 0);
-                TargetStrafe.strafe(e, horizontalSpeed.getValue().floatValue());
+                e.setSpeed(MovementUtils.isMoving() ? horizontalSpeed.get().floatValue() : 0);
+                TargetStrafe.strafe(e, horizontalSpeed.get().floatValue());
                 break;
             case "Watchdog":
                 e.setSpeed(0);
@@ -119,13 +119,13 @@ public final class Flight extends Module {
 
     @EventTarget
     public void onMotionEvent(MotionEvent e) {
-        this.setSuffix(mode.getMode());
-        if (viewBobbing.isEnabled()) {
+        this.setSuffix(mode.get());
+        if (viewBobbing.get()) {
             mc.thePlayer.cameraYaw = mc.thePlayer.cameraPitch = 0.08F;
         }
-        mc.timer.timerSpeed = timerAmount.getValue().floatValue();
+        mc.timer.timerSpeed = timerAmount.get().floatValue();
 
-        switch (mode.getMode()) {
+        switch (mode.get()) {
             case "Watchdog":
                 if (e.isPre()) {
                     mc.thePlayer.motionY = 0;
@@ -201,9 +201,9 @@ public final class Flight extends Module {
                 break;
             case "Vanilla":
                 if (TargetStrafe.canStrafe()) {
-                    mc.thePlayer.motionY = antiKick.isEnabled() ? -0.0625 : 0;
+                    mc.thePlayer.motionY = antiKick.get() ? -0.0625 : 0;
                 } else {
-                    mc.thePlayer.motionY = mc.gameSettings.keyBindJump.isKeyDown() ? verticalSpeed.getValue() : mc.gameSettings.keyBindSneak.isKeyDown() ? -verticalSpeed.getValue() : antiKick.isEnabled() ? -0.0625 : 0;
+                    mc.thePlayer.motionY = mc.gameSettings.keyBindJump.isKeyDown() ? verticalSpeed.get() : mc.gameSettings.keyBindSneak.isKeyDown() ? -verticalSpeed.get() : antiKick.get() ? -0.0625 : 0;
                 }
                 break;
             case "AirWalk":
@@ -266,20 +266,20 @@ public final class Flight extends Module {
                     stage++;
                     switch (stage) {
                         case 1:
-                            if (damage.isEnabled())
-                                DamageUtils.damage(DamageUtils.DamageType.valueOf(damageMode.getMode().toUpperCase()));
+                            if (damage.get())
+                                DamageUtils.damage(DamageUtils.DamageType.valueOf(damageMode.get().toUpperCase()));
                             break;
                     }
-                    mc.thePlayer.motionY = motionY.getValue();
-                    if (speed.isEnabled()) MovementUtils.setSpeed(speedAmount.getValue());
+                    mc.thePlayer.motionY = motionY.get();
+                    if (speed.get()) MovementUtils.setSpeed(speedAmount.get());
                 }
                 break;
             case "Packet":
                 if (e.isPre()) {
                     mc.thePlayer.motionY = 0;
-                    if (MovementUtils.isMoving() && mc.thePlayer.ticksExisted % teleportDelay.getValue().intValue() == 0) {
-                        final double x = e.getX() + -Math.sin(Math.toRadians(mc.thePlayer.rotationYaw)) * teleportLength.getValue().intValue();
-                        final double z = e.getZ() + Math.cos(Math.toRadians(mc.thePlayer.rotationYaw)) * teleportLength.getValue().intValue();
+                    if (MovementUtils.isMoving() && mc.thePlayer.ticksExisted % teleportDelay.get().intValue() == 0) {
+                        final double x = e.getX() + -Math.sin(Math.toRadians(mc.thePlayer.rotationYaw)) * teleportLength.get().intValue();
+                        final double z = e.getZ() + Math.cos(Math.toRadians(mc.thePlayer.rotationYaw)) * teleportLength.get().intValue();
                         PacketUtils.sendPacketNoEvent(new C03PacketPlayer.C04PacketPlayerPosition(x, mc.thePlayer.posY, z, false));
                         mc.thePlayer.setPosition(x, mc.thePlayer.posY, z);
                     }
@@ -288,21 +288,6 @@ public final class Flight extends Module {
         }
     }
 
-    @EventTarget
-    public void onUpdateEvent(UpdateEvent event) {
-    }
-
-    @EventTarget
-    public void onPacketSendEvent(PacketSendEvent event) {
-        if (mc.isSingleplayer() || mc.thePlayer == null) return;
-        if (mode.is("Slime") && stage > 7 && PacketUtils.isPacketValid(event.getPacket())) {
-            event.cancel();
-            packets.add(event.getPacket());
-        }
-        if (mode.is("Watchdog") && event.getPacket() instanceof C03PacketPlayer) {
-            event.cancel();
-        }
-    }
 
     @EventTarget
     public void onBoundingBoxEvent(BoundingBoxEvent event) {
@@ -313,10 +298,18 @@ public final class Flight extends Module {
     }
 
     @EventTarget
-    public void onPacketReceiveEvent(PacketReceiveEvent e) {
-        if (e.getPacket() instanceof S08PacketPlayerPosLook && !hasS08) {
-            S08PacketPlayerPosLook s08 = (S08PacketPlayerPosLook) e.getPacket();
+    public void onPacketEvent(PacketEvent e) {
+        if (e.getPacket() instanceof S08PacketPlayerPosLook s08 && !hasS08) {
             hasS08 = true;
+        }
+
+        if (mc.isSingleplayer() || mc.thePlayer == null) return;
+        if (mode.is("Slime") && stage > 7 && PacketUtils.isPacketValid(e.getPacket())) {
+            e.cancel();
+            packets.add(e.getPacket());
+        }
+        if (mode.is("Watchdog") && e.getPacket() instanceof C03PacketPlayer) {
+            e.cancel();
         }
     }
 

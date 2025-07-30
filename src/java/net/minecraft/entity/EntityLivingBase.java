@@ -4,8 +4,8 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Maps;
 import dev.tenacity.Client;
-import com.cubk.event.impl.player.JumpFixEvent;
-import com.cubk.event.impl.player.LivingDeathEvent;
+import dev.tenacity.event.impl.player.JumpFixEvent;
+import dev.tenacity.event.impl.player.LivingDeathEvent;
 import dev.tenacity.module.impl.render.Animations;
 import lombok.Getter;
 import net.minecraft.block.Block;
@@ -1204,7 +1204,7 @@ public abstract class EntityLivingBase extends Entity {
      * progress indicator. Takes dig speed enchantments into account.
      */
     private int getArmSwingAnimationEnd() {
-        return (Client.INSTANCE.getModuleManager().get(Animations.class).isEnabled() ? Animations.slowdown.getValue().intValue() : 1)
+        return (Client.INSTANCE.getModuleManager().get(Animations.class).isEnabled() ? Animations.slowdown.get().intValue() : 1)
                 * (this.isPotionActive(Potion.digSpeed)
                 ? 6 - (1 + this.getActivePotionEffect(Potion.digSpeed).getAmplifier())
                 : (this.isPotionActive(Potion.digSlowdown) ? 6 + (1 + this.getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2 : 6));

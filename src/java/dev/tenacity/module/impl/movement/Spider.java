@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.movement;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.MotionEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.ModeSetting;
@@ -17,10 +17,10 @@ public final class Spider extends Module {
 
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
-        setSuffix(mode.getMode());
+        setSuffix(mode.get());
         if (mc.thePlayer.isCollidedHorizontally) {
             if (!mc.thePlayer.onGround && mc.thePlayer.isCollidedVertically) return;
-            switch (mode.getMode()) {
+            switch (mode.get()) {
                 case "Vanilla":
                     mc.thePlayer.jump();
                     break;

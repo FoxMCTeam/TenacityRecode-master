@@ -55,7 +55,7 @@ public class SettingCommand extends Command {
                         if (setting instanceof ModeSetting modeSetting) {
                             for (String mode : modeSetting.modes) {
                                 if (mode.equalsIgnoreCase(value)) {
-                                    modeSetting.setCurrentMode(mode);
+                                    modeSetting.set(mode);
                                     setValue = true;
                                     break;
                                 }
@@ -74,16 +74,16 @@ public class SettingCommand extends Command {
                                 return;
                             }
 
-                            numberSetting.setValue(valueDouble);
-                            sendChatWithInfo(numberSetting.getValue() + " value");
+                            numberSetting.set(valueDouble);
+                            sendChatWithInfo(numberSetting.get() + " value");
 
                             settingName = settingName.replaceAll("_", " ");
-                            sendChatWithPrefix("Set " + Localization.get(module.getName()) + " module's " + settingName + " to " + numberSetting.getValue());
+                            sendChatWithPrefix("Set " + Localization.get(module.getName()) + " module's " + settingName + " to " + numberSetting.get());
                             break;
                         }
 
                         if (setting instanceof StringSetting stringSetting) {
-                            stringSetting.setString(value);
+                            stringSetting.set(value);
                             setValue = true;
                         }
 

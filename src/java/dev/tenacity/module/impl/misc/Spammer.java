@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.misc;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.MotionEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.BooleanSetting;
@@ -27,11 +27,11 @@ public final class Spammer extends Module {
 
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
-        String spammerText = text.getString();
+        String spammerText = text.get();
 
-        if (spammerText != null && delayTimer.hasTimeElapsed(settings.getSetting("Bypass").isEnabled() ? 2000 : delay.getValue().longValue())) {
+        if (spammerText != null && delayTimer.hasTimeElapsed(settings.getSetting("Bypass").get() ? 2000 : delay.get().longValue())) {
 
-            if (settings.getSetting("AntiSpam").isEnabled()) {
+            if (settings.getSetting("AntiSpam").get()) {
                 spammerText += " " + MathUtils.getRandomInRange(10, 100000);
             }
 

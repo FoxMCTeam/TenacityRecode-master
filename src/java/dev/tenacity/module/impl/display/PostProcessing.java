@@ -1,6 +1,6 @@
 package dev.tenacity.module.impl.display;
 
-import com.cubk.event.impl.render.ShaderEvent;
+import dev.tenacity.event.impl.render.ShaderEvent;
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -13,7 +13,6 @@ import dev.tenacity.utils.render.RenderUtil;
 import dev.tenacity.utils.render.blur.GaussianBlur;
 import dev.tenacity.utils.render.blur.KawaseBloom;
 import dev.tenacity.utils.render.blur.KawaseBlur;
-import dev.tenacity.utils.render.blur.MipmapKawaseBlur;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
@@ -36,7 +35,6 @@ public class PostProcessing extends Module {
     public final BooleanSetting blur = new BooleanSetting("Blur", true);
     private final NumberSetting iterations = new NumberSetting("Blur Iterations", 2, 8, 1, 1);
     private final NumberSetting offset = new NumberSetting("Blur Offset", 3, 10, 1, 1);
-    private static final NumberSetting mipmapLevel = new NumberSetting("Blur Mipmap Level", 2, 4, 0, 1);
     private final BooleanSetting bloom = new BooleanSetting("Bloom", true);
     private final NumberSetting shadowRadius = new NumberSetting("Bloom Iterations", 3, 8, 1, 1);
     private final NumberSetting shadowOffset = new NumberSetting("Bloom Offset", 1, 10, 1, 1);
@@ -47,20 +45,14 @@ public class PostProcessing extends Module {
         shadowRadius.addParent(bloom, ParentAttribute.BOOLEAN_CONDITION);
         shadowOffset.addParent(bloom, ParentAttribute.BOOLEAN_CONDITION);
         glowOptions.addParent(bloom, ParentAttribute.BOOLEAN_CONDITION);
-        addSettings(blur, iterations, offset, mipmapLevel, bloom, glowOptions, shadowRadius, shadowOffset);
+        addSettings(blur, iterations, offset, bloom, glowOptions, shadowRadius, shadowOffset);
     }
 
     public static void runBloom(Runnable runnable, boolean blur, boolean bloom, int bloomRadius) {
         if (blur) {
-            MipmapKawaseBlur.setMipmapLevel(mipmapLevel.getValue().intValue()); // 使用 1/4 尺寸
-
-            stencilFramebuffer = RenderUtil.createFrameBuffer(stencilFramebuffer);
-            stencilFramebuffer.framebufferClear();
-            stencilFramebuffer.bindFramebuffer(false);
+            GaussianBlur.startBlur();
             runnable.run();
-            stencilFramebuffer.unbindFramebuffer();
-
-            MipmapKawaseBlur.renderBlur(stencilFramebuffer.framebufferTexture, 2, 2);
+            GaussianBlur.endBlur(20, 2);
         }
 
         if (bloom) {
@@ -94,11 +86,9 @@ public class PostProcessing extends Module {
         RenderUtil.resetColor();
         mc.ingameGUI.getChatGUI().renderChatBox();
         RenderUtil.resetColor();
-        mc.ingameGUI.renderScoreboardBlur(sr);
-        RenderUtil.resetColor();
         NotificationsMod notificationsMod = Client.INSTANCE.getModuleManager().getModule(NotificationsMod.class);
         if (notificationsMod.isEnabled()) {
-            notificationsMod.renderEffects(glowOptions.getSetting("Notifications").isEnabled());
+            notificationsMod.renderEffects(glowOptions.getSetting("Notifications").get());
         }
 
         if (bloom) {
@@ -111,9 +101,7 @@ public class PostProcessing extends Module {
 
     public void blurScreen() {
         if (!enabled) return;
-        if (blur.isEnabled()) {
-            MipmapKawaseBlur.setMipmapLevel(mipmapLevel.getValue().intValue()); // 使用 1/4 尺寸
-
+        if (blur.get()) {
             stencilFramebuffer = RenderUtil.createFrameBuffer(stencilFramebuffer);
 
             stencilFramebuffer.framebufferClear();
@@ -123,12 +111,12 @@ public class PostProcessing extends Module {
             stencilFramebuffer.unbindFramebuffer();
 
 
-            MipmapKawaseBlur.renderBlur(stencilFramebuffer.framebufferTexture, iterations.getValue().intValue(), offset.getValue().intValue());
+            KawaseBlur.renderBlur(stencilFramebuffer.framebufferTexture, iterations.get().intValue(), offset.get().intValue());
 
         }
 
 
-        if (bloom.isEnabled()) {
+        if (bloom.get()) {
             stencilFramebuffer = RenderUtil.createFrameBuffer(stencilFramebuffer);
             stencilFramebuffer.framebufferClear();
             stencilFramebuffer.bindFramebuffer(false);
@@ -138,7 +126,7 @@ public class PostProcessing extends Module {
 
             stencilFramebuffer.unbindFramebuffer();
 
-            KawaseBloom.renderBlur(stencilFramebuffer.framebufferTexture, shadowRadius.getValue().intValue(), shadowOffset.getValue().intValue());
+            KawaseBloom.renderBlur(stencilFramebuffer.framebufferTexture, shadowRadius.get().intValue(), shadowOffset.get().intValue());
 
         }
     }

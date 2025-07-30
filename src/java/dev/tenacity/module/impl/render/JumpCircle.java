@@ -1,8 +1,8 @@
 package dev.tenacity.module.impl.render;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.MotionEvent;
-import com.cubk.event.impl.render.Render3DEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.MotionEvent;
+import dev.tenacity.event.impl.render.Render3DEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.display.HUDMod;
@@ -73,13 +73,13 @@ public class JumpCircle extends Module {
             this.y = (float) y;
             this.z = (float) z;
             this.fadeAnimation = new DecelerateAnimation(600, 1);
-            this.expandAnimation = new DecelerateAnimation(1000, radius.getValue());
+            this.expandAnimation = new DecelerateAnimation(1000, radius.get());
         }
 
 
         public void drawCircle() {
             Pair<Color, Color> colors = HUDMod.getClientColors();
-            if (expandAnimation.getOutput() > (radius.getValue() * .7f)) {
+            if (expandAnimation.getOutput() > (radius.get() * .7f)) {
                 fadeAnimation.setDirection(Direction.BACKWARDS);
             }
 

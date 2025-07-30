@@ -1,5 +1,6 @@
 package org.lwjglx;
 
+import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.system.Platform;
 import org.lwjglx.opengl.Display;
@@ -22,8 +23,7 @@ public class Sys {
     public static String getVersion() {
         //NMSL
         //3.3.4+7
-        return "3.3.4-snapshot";
-        //return Version.getVersion();
+        return Version.getVersion();
     }
 
     /**

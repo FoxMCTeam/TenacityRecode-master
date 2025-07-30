@@ -93,8 +93,9 @@ public enum Theme {//嘿嘿
     ATLAS_B("Atlas B", rgb(254, 172, 94), rgb(199, 121, 208)),
     ATLAS_C("Atlas C", rgb(199, 121, 208), rgb(75, 192, 200)),
     //Custom
-    CUSTOM_THEME("Custom Theme", HUDMod.color1.getColor(), HUDMod.color2.getColor());
+    CUSTOM_THEME("Custom Theme", HUDMod.color1.get(), HUDMod.color2.get());
 
+    @Getter
     private static final Map<String, Theme> themeMap = new HashMap<>();
 
     private final String name;
@@ -132,14 +133,14 @@ public enum Theme {//嘿嘿
     }
 
     public static Theme getCurrentTheme() {
-        return Theme.get(HUDMod.theme.getMode());
+        return Theme.get(HUDMod.theme.get());
     }
 
     public Pair<Color, Color> getColors() {
         if (this.equals(Theme.CUSTOM_THEME)) {
             if (HUDMod.color1.isRainbow()) {
-                return Pair.of(HUDMod.color1.getColor(), HUDMod.color1.getAltColor());
-            } else return Pair.of(HUDMod.color1.getColor(), HUDMod.color2.getColor());
+                return Pair.of(HUDMod.color1.get(), HUDMod.color1.getAltColor());
+            } else return Pair.of(HUDMod.color1.get(), HUDMod.color2.get());
         } else return colors;
     }
 }

@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.movement;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.MotionEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -19,12 +19,12 @@ public class Sprint extends Module {
 
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
-        if (Client.INSTANCE.getModuleManager().get(Scaffold.class).isEnabled() && (!Scaffold.sprint.isEnabled() || Scaffold.isDownwards())) {
+        if (Client.INSTANCE.getModuleManager().get(Scaffold.class).isEnabled() && (!Scaffold.sprint.get() || Scaffold.isDownwards())) {
             mc.gameSettings.keyBindSprint.pressed = false;
             mc.thePlayer.setSprinting(false);
             return;
         }
-        if (omniSprint.isEnabled()) {
+        if (omniSprint.get()) {
             mc.thePlayer.setSprinting(true);
         } else {
             if (mc.thePlayer.isUsingItem()) {

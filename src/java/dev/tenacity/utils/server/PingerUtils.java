@@ -1,7 +1,7 @@
 package dev.tenacity.utils.server;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.game.TickEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.game.TickEvent;
 import dev.tenacity.Client;
 import dev.tenacity.utils.Utils;
 import lombok.Getter;
@@ -46,7 +46,7 @@ public class PingerUtils implements Utils {
                 }
             }
         }
-        return latency == 0 ? "?" : String.valueOf(latency);
+        return latency == 0 ? "0" : String.valueOf(latency);
     }
 
     @EventTarget

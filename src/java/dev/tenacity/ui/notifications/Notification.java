@@ -4,7 +4,7 @@ import dev.tenacity.Client;
 import dev.tenacity.module.impl.display.PostProcessing;
 import dev.tenacity.utils.Utils;
 import dev.tenacity.utils.animations.Animation;
-import dev.tenacity.utils.animations.impl.DecelerateAnimation;
+import dev.tenacity.utils.animations.impl.*;
 import dev.tenacity.utils.font.CustomFont;
 import dev.tenacity.utils.font.FontUtil;
 import dev.tenacity.utils.render.ColorUtil;
@@ -35,7 +35,7 @@ public class Notification implements Utils {
         this.time = (long) (time * 1000);
         timerUtil = new TimerUtil();
         this.notificationType = type;
-        animation = new DecelerateAnimation(250, 1);
+        animation = new SmoothStepAnimation(250, 1);
     }
 
 
@@ -68,6 +68,16 @@ public class Notification implements Utils {
         RoundedUtil.drawRound(x, y, width, height, 4, color);
     }
 
+    public void drawExhiModern(float x, float y, float width, float height) {
+        RoundedUtil.drawRound(x, y, width, height, 2, new Color(0.1F, 0.1F, 0.1F,.75f));
+        float percentage = Math.min((timerUtil.getTime() / getTime()), 1);
+        RoundedUtil.drawRound(x + (width * percentage), y + height - 1, width - (width * percentage), 1, 2, getNotificationType().getColor());
+        FontUtil.iconFont40.drawString(getNotificationType().getIcon(), x + 3, (y + FontUtil.iconFont40.getMiddleOfBox(height) + 1), getNotificationType().getColor());
+
+        CustomFont tahomaFont18 = tahomaFont.size(18);
+        tahomaFont18.drawString(getTitle(), x + 7 + FontUtil.iconFont40.getStringWidth(getNotificationType().getIcon()), y + 4, Color.WHITE);
+        tahomaFont.size(14).drawString(getDescription(), x + 7 + FontUtil.iconFont40.getStringWidth(getNotificationType().getIcon()), y + 8.5f + tahomaFont18.getHeight(), Color.WHITE);
+    }
 
     public void drawExhi(float x, float y, float width, float height) {
         boolean lowerAlpha = Client.INSTANCE.getModuleManager().getModule(PostProcessing.class).isEnabled();
@@ -79,6 +89,11 @@ public class Notification implements Utils {
         CustomFont tahomaFont18 = tahomaFont.size(18);
         tahomaFont18.drawString(getTitle(), x + 7 + FontUtil.iconFont40.getStringWidth(getNotificationType().getIcon()), y + 4, Color.WHITE);
         tahomaFont.size(14).drawString(getDescription(), x + 7 + FontUtil.iconFont40.getStringWidth(getNotificationType().getIcon()), y + 8.5f + tahomaFont18.getHeight(), Color.WHITE);
+    }
+
+    public void blurExhiModern(float x, float y, float width, float height) {
+        RoundedUtil.drawRound(x, y, width, height, 2, Color.BLACK);
+        RenderUtil.resetColor();
     }
 
     public void blurExhi(float x, float y, float width, float height) {

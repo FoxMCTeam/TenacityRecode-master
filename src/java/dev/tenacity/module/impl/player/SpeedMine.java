@@ -1,8 +1,9 @@
 package dev.tenacity.module.impl.player;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.network.PacketSendEvent;
-import com.cubk.event.impl.player.MotionEvent;
+import dev.tenacity.event.annotations.EventTarget;
+
+import dev.tenacity.event.impl.network.PacketEvent;
+import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.NumberSetting;
@@ -35,7 +36,7 @@ public class SpeedMine extends Module {
                 if (blockState == null) return;
 
                 try {
-                    damage += blockState.getBlock().getPlayerRelativeBlockHardness(mc.thePlayer) * speed.getValue();
+                    damage += blockState.getBlock().getPlayerRelativeBlockHardness(mc.thePlayer) * speed.get();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     return;
@@ -57,7 +58,7 @@ public class SpeedMine extends Module {
     }
 
     @EventTarget
-    public void onPacketSendEvent(PacketSendEvent e) {
+    public void onPacketEvent(PacketEvent e) {
         if (e.getPacket() instanceof C07PacketPlayerDigging packet) {
             if (packet.getStatus() == C07PacketPlayerDigging.Action.START_DESTROY_BLOCK) {
                 boost = true;

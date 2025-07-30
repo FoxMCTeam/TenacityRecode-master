@@ -123,7 +123,7 @@ public class CompactClickgui extends GuiScreen {
 
         typing = modulePanel.typing || (Client.INSTANCE.getSideGui().isFocused() && Client.INSTANCE.getSideGui().isTyping()) || Client.INSTANCE.getSearchBar().isTyping();
 
-        if (ClickGUIMod.walk.isEnabled() && !typing) {
+        if (ClickGUIMod.walk.get() && !typing) {
             InventoryMove.updateStates();
         }
 

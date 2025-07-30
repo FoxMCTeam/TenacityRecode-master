@@ -69,7 +69,7 @@ public class LayerCape implements LayerRenderer<AbstractClientPlayer> {
 
     private boolean renderClientCape(AbstractClientPlayer entitylivingbaseIn, float partialTicks) {
         Session session = Minecraft.getMinecraft().getSession();
-        if ((HUDMod.hudCustomization.getSetting("Render Cape").isEnabled() && session != null && entitylivingbaseIn.getName().equals(session.getUsername()))) {
+        if ((HUDMod.hudCustomization.getSetting("Render Cape").get() && session != null && entitylivingbaseIn.getName().equals(session.getUsername()))) {
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             this.playerRenderer.bindTexture(cape);
             GlStateManager.pushMatrix();

@@ -1,9 +1,9 @@
 package dev.tenacity.module.impl.player;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.game.WorldEvent;
-import com.cubk.event.impl.player.MotionEvent;
-import com.cubk.event.impl.render.Render2DEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.game.WorldEvent;
+import dev.tenacity.event.impl.player.MotionEvent;
+import dev.tenacity.event.impl.render.Render2DEvent;
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -61,7 +61,7 @@ public class ChestStealer extends Module {
         if (Client.INSTANCE.isEnabled(ChestStealer.class) && mc.currentScreen instanceof GuiChest) {
             ContainerChest chest = (ContainerChest) mc.thePlayer.openContainer;
             IInventory chestInv = chest.getLowerChestInventory();
-            return !titleCheck.isEnabled() || (chestInv instanceof ContainerLocalMenu && ((ContainerLocalMenu) chestInv).realChest);
+            return !titleCheck.get() || (chestInv instanceof ContainerLocalMenu && ((ContainerLocalMenu) chestInv).realChest);
         }
         return false;
     }
@@ -69,10 +69,10 @@ public class ChestStealer extends Module {
     @EventTarget
     public void onMotionEvent(MotionEvent e) {
         if (e.isPre()) {
-            setSuffix(smart.isEnabled() ? "Smart" : null);
+            setSuffix(smart.get() ? "Smart" : null);
             if (invManager == null) invManager = Client.INSTANCE.getModuleManager().getModule(InvManager.class);
-            if (aura.isEnabled()) {
-                final int radius = auraRange.getValue().intValue();
+            if (aura.get()) {
+                final int radius = auraRange.get().intValue();
                 for (int x = -radius; x < radius; x++) {
                     for (int y = -radius; y < radius; y++) {
                         for (int z = -radius; z < radius; z++) {
@@ -92,27 +92,27 @@ public class ChestStealer extends Module {
             }
             if (mc.thePlayer.openContainer instanceof ContainerChest chest) {
                 IInventory chestInv = chest.getLowerChestInventory();
-                if (titleCheck.isEnabled() && (!(chestInv instanceof ContainerLocalMenu) || !((ContainerLocalMenu) chestInv).realChest))
+                if (titleCheck.get() && (!(chestInv instanceof ContainerLocalMenu) || !((ContainerLocalMenu) chestInv).realChest))
                     return;
                 clear = true;
 
                 List<Integer> slots = new ArrayList<>();
                 for (int i = 0; i < chestInv.getSizeInventory(); i++) {
                     ItemStack is = chestInv.getStackInSlot(i);
-                    if (is != null && (!smart.isEnabled() || !(invManager.isBadItem(is, -1, true) || items.contains(is.getItem())))) {
+                    if (is != null && (!smart.get() || !(invManager.isBadItem(is, -1, true) || items.contains(is.getItem())))) {
                         slots.add(i);
                     }
                 }
 
-                if (reverse.isEnabled()) {
+                if (reverse.get()) {
                     Collections.reverse(slots);
                 }
 
                 slots.forEach(s -> {
                     ItemStack is = chestInv.getStackInSlot(s);
                     Item item = is != null ? is.getItem() : null;
-                    if (item != null && !items.contains(item) && (delay.getValue() == 0 || timer.hasTimeElapsed(delay.getValue().longValue(), true))) {
-                        if (smart.isEnabled() && !(item instanceof ItemBlock)) {
+                    if (item != null && !items.contains(item) && (delay.get() == 0 || timer.hasTimeElapsed(delay.get().longValue(), true))) {
+                        if (smart.get() && !(item instanceof ItemBlock)) {
                             items.add(is.getItem());
                         }
                         mc.playerController.windowClick(chest.windowId, s, 0, 1, mc.thePlayer);
@@ -135,9 +135,9 @@ public class ChestStealer extends Module {
 
     @EventTarget
     public void onRender2DEvent(Render2DEvent event) {
-        if (stealingIndicator.isEnabled() && stealing) {
+        if (stealingIndicator.get() && stealing) {
             ScaledResolution sr = new ScaledResolution(mc);
-            AbstractFontRenderer fr = HUDMod.customFont.isEnabled() ? duckSansFont20 : mc.fontRendererObj;
+            AbstractFontRenderer fr = HUDMod.customFont.get() ? duckSansFont20 : mc.fontRendererObj;
             fr.drawStringWithShadow("§lStealing...", sr.getScaledWidth() / 2.0F - fr.getStringWidth("§lStealing...") / 2.0F, sr.getScaledHeight() / 2.0F + 10, HUDMod.getClientColors().getFirst());
         }
     }
@@ -159,9 +159,9 @@ public class ChestStealer extends Module {
 
     @EventTarget
     public void onWorldEvent(WorldEvent event) {
-        if (event instanceof WorldEvent.Load) {
-            openedChests.clear();
-        }
+
+        openedChests.clear();
+
     }
 
 }

@@ -1,10 +1,10 @@
 package dev.tenacity.module.impl.render;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.render.Render2DEvent;
-import com.cubk.event.impl.render.Render3DEvent;
-import com.cubk.event.impl.render.RenderModelEvent;
-import com.cubk.event.impl.render.ShaderEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.render.Render2DEvent;
+import dev.tenacity.event.impl.render.Render3DEvent;
+import dev.tenacity.event.impl.render.RenderModelEvent;
+import dev.tenacity.event.impl.render.ShaderEvent;
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -89,12 +89,12 @@ public class EntityEffects extends Module {
 
     @EventTarget
     public void onShaderEvent(ShaderEvent e) {
-        if (e.isBloom() ? bloom.isEnabled() : blur.isEnabled()) {
+        if (e.isBloom() ? bloom.get() : blur.get()) {
             RenderUtil.setAlphaLimit(0);
             RenderUtil.resetColor();
             GLUtil.startBlend();
 
-            if (e.isBloom() && blackBloom.isEnabled()) {
+            if (e.isBloom() && blackBloom.get()) {
                 RenderUtil.color(Color.BLACK.getRGB());
             }
 
@@ -115,17 +115,17 @@ public class EntityEffects extends Module {
         if (entity.isDead || entity.isInvisible()) {
             return false;
         }
-        if (validEntities.getSetting("Players").isEnabled() && entity instanceof EntityPlayer) {
+        if (validEntities.getSetting("Players").get() && entity instanceof EntityPlayer) {
             if (entity == mc.thePlayer) {
                 return mc.gameSettings.thirdPersonView != 0;
             }
             return !entity.getDisplayName().getUnformattedText().contains("[NPC");
         }
-        if (validEntities.getSetting("Animals").isEnabled() && entity instanceof EntityAnimal) {
+        if (validEntities.getSetting("Animals").get() && entity instanceof EntityAnimal) {
             return true;
         }
 
-        return validEntities.getSetting("mobs").isEnabled() && entity instanceof EntityMob;
+        return validEntities.getSetting("mobs").get() && entity instanceof EntityMob;
     }
 
 }

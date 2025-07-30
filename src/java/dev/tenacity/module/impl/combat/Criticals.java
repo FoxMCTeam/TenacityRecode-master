@@ -1,8 +1,8 @@
 package dev.tenacity.module.impl.combat;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.network.PacketSendEvent;
-import com.cubk.event.impl.player.MotionEvent;
+import dev.tenacity.event.annotations.EventTarget;
+
+import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -37,17 +37,13 @@ public final class Criticals extends Module {
     }
 
     @EventTarget
-    public void onPacketSendEvent(PacketSendEvent e) {
-    }
-
-    @EventTarget
     public void onMotionEvent(MotionEvent e) {
-        this.setSuffix(mode.getMode());
-        switch (mode.getMode()) {
+        this.setSuffix(mode.get());
+        switch (mode.get()) {
             case "Watchdog":
                 if (watchdogMode.is("Packet")) {
                     if (KillAura.attacking && e.isOnGround() && !Step.isStepping) {
-                        if (KillAura.target != null && KillAura.target.hurtTime >= delay.getValue().intValue()) {
+                        if (KillAura.target != null && KillAura.target.hurtTime >= delay.get().intValue()) {
                             for (double offset : new double[]{0.06f, 0.01f}) {
                                 mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + offset + (Math.random() * 0.001), mc.thePlayer.posZ, false));
                             }
@@ -69,7 +65,7 @@ public final class Criticals extends Module {
                 break;
             case "Packet":
                 if (mc.objectMouseOver.entityHit != null && mc.thePlayer.onGround) {
-                    if (mc.objectMouseOver.entityHit.hurtResistantTime > delay.getValue().intValue()) {
+                    if (mc.objectMouseOver.entityHit.hurtResistantTime > delay.get().intValue()) {
                         for (double offset : new double[]{0.006253453, 0.002253453, 0.001253453}) {
                             mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + offset, mc.thePlayer.posZ, false));
                         }
@@ -78,7 +74,7 @@ public final class Criticals extends Module {
                 break;
             case "Dev":
                 if (mc.objectMouseOver.entityHit != null && mc.thePlayer.onGround) {
-                    if (mc.objectMouseOver.entityHit.hurtResistantTime > delay.getValue().intValue()) {
+                    if (mc.objectMouseOver.entityHit.hurtResistantTime > delay.get().intValue()) {
                         for (double offset : new double[]{0.06253453, 0.02253453, 0.001253453, 0.0001135346}) {
                             mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + offset, mc.thePlayer.posZ, false));
                             PacketUtils.sendPacketNoEvent(new C18PacketSpectate(UUID.randomUUID()));

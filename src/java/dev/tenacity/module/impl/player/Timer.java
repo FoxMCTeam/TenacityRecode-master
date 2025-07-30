@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.player;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.MotionEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.NumberSetting;
@@ -18,7 +18,7 @@ public final class Timer extends Module {
 
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
-        mc.timer.timerSpeed = amount.getValue().floatValue();
+        mc.timer.timerSpeed = amount.get().floatValue();
     }
 
     @Override

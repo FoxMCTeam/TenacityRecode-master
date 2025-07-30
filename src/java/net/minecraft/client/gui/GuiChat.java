@@ -176,7 +176,7 @@ public class GuiChat extends GuiScreen {
         Gui.drawRect2(2, this.height - (14 * openingAnimation.getOutput().floatValue()), this.width - 4, 12, Integer.MIN_VALUE);
 
         AbstractFontRenderer abstractFontRenderer = this.mc2.fontRendererObj;
-        if (HUDMod.customFont.isEnabled()) {
+        if (HUDMod.customFont.get()) {
             abstractFontRenderer = FontUtil.duckSansFont20;
         }
         inputField.font = abstractFontRenderer;

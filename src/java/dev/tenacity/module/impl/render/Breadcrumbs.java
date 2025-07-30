@@ -1,8 +1,8 @@
 package dev.tenacity.module.impl.render;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.MotionEvent;
-import com.cubk.event.impl.render.Render3DEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.MotionEvent;
+import dev.tenacity.event.impl.render.Render3DEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.display.HUDMod;
@@ -39,7 +39,7 @@ public final class Breadcrumbs extends Module {
     public Breadcrumbs() {
         super("module.render.Breadcrumbs", Category.RENDER, "shows where you've walked");
         color.addParent(colorMode, modeSetting -> modeSetting.is("Custom"));
-        seeThroughWalls.addParent(mode, mode -> mode.getMode().equals("Rise"));
+        seeThroughWalls.addParent(mode, mode -> mode.get().equals("Rise"));
         addSettings(mode, particleAmount, seeThroughWalls, colorMode, color);
     }
 
@@ -50,7 +50,7 @@ public final class Breadcrumbs extends Module {
                 path.add(new Vec3(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ));
             }
 
-            while (path.size() > particleAmount.getValue()) {
+            while (path.size() > particleAmount.get()) {
                 path.remove(0);
             }
         }
@@ -60,11 +60,11 @@ public final class Breadcrumbs extends Module {
     public void onRender3DEvent(Render3DEvent event) {
         int i = 0;
 
-        Pair<Color, Color> colors = colorMode.is("Custom") ? Pair.of(color.getColor(), color.getAltColor()) : HUDMod.getClientColors();
+        Pair<Color, Color> colors = colorMode.is("Custom") ? Pair.of(color.get(), color.getAltColor()) : HUDMod.getClientColors();
 
-        switch (mode.getMode()) {
+        switch (mode.get()) {
             case "Rise":
-                if (seeThroughWalls.isEnabled()) {
+                if (seeThroughWalls.get()) {
                     GlStateManager.disableDepth();
                 }
                 GL11.glEnable(GL11.GL_BLEND);
@@ -138,7 +138,7 @@ public final class Breadcrumbs extends Module {
                 GL11.glDisable(GL11.GL_LINE_SMOOTH);
                 GL11.glEnable(GL11.GL_TEXTURE_2D);
                 GL11.glDisable(GL11.GL_BLEND);
-                if (seeThroughWalls.isEnabled()) {
+                if (seeThroughWalls.get()) {
                     GlStateManager.enableDepth();
                 }
 

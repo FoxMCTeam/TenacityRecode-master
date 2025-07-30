@@ -1,7 +1,7 @@
 package net.minecraft.client.renderer.tileentity;
 
 import dev.tenacity.Client;
-import com.cubk.event.impl.render.RenderChestEvent;
+import dev.tenacity.event.impl.render.RenderChestEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.client.model.ModelChest;

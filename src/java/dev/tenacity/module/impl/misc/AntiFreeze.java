@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.misc;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.network.PacketReceiveEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.network.PacketEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.ModeSetting;
@@ -17,7 +17,7 @@ public final class AntiFreeze extends Module {
     }
 
     @EventTarget
-    public void onPacketReceiveEvent(PacketReceiveEvent event) {
+    public void onPacketEvent(PacketEvent event) {
         if (event.getPacket() instanceof S2DPacketOpenWindow
                 && ((S2DPacketOpenWindow) event.getPacket()).getWindowTitle().getUnformattedText().contains("frozen")) {
             event.cancel();

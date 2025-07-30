@@ -42,8 +42,7 @@ public class ViaBackwardsPlatformImpl implements ViaBackwardsPlatform {
     }
 
     @Override
-    public void disable() {
-    }
+    public void disable() {}
 
     @Override
     public File getDataFolder() {

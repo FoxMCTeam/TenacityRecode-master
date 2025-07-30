@@ -1,12 +1,12 @@
 package dev.tenacity.utils.client.addons.api;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.game.TickEvent;
-import com.cubk.event.impl.game.WorldEvent;
-import com.cubk.event.impl.network.PacketReceiveEvent;
-import com.cubk.event.impl.network.PacketSendEvent;
-import com.cubk.event.impl.player.*;
-import com.cubk.event.impl.render.*;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.game.TickEvent;
+import dev.tenacity.event.impl.game.WorldEvent;
+import dev.tenacity.event.impl.network.PacketEvent;
+
+import dev.tenacity.event.impl.player.*;
+import dev.tenacity.event.impl.render.*;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.ui.notifications.NotificationManager;
@@ -108,18 +108,17 @@ public class ScriptModule extends Module {
 
     @EventTarget
     public void onWorldEvent(WorldEvent event) {
-        if (event instanceof WorldEvent.Load) {
-            if (eventMap.containsKey("worldLoad")) {
-                try {
-                    eventMap.get("worldLoad").call(null, event);
-                } catch (Exception e) {
-                    ChatUtil.scriptError(this, "in worldLoad event");
-                    ChatUtil.print(false, e.getMessage());
-                    eventMap.remove("worldLoad");
-                    NotificationManager.post(NotificationType.WARNING, "\"" + getName() + "\" Script", "WorldLoad event unloaded", 7);
-                }
+        if (eventMap.containsKey("worldLoad")) {
+            try {
+                eventMap.get("worldLoad").call(null, event);
+            } catch (Exception e) {
+                ChatUtil.scriptError(this, "in worldLoad event");
+                ChatUtil.print(false, e.getMessage());
+                eventMap.remove("worldLoad");
+                NotificationManager.post(NotificationType.WARNING, "\"" + getName() + "\" Script", "WorldLoad event unloaded", 7);
             }
         }
+
     }
 
     @EventTarget
@@ -181,21 +180,7 @@ public class ScriptModule extends Module {
     }
 
     @EventTarget
-    public void onPacketSendEvent(PacketSendEvent event) {
-        if (eventMap.containsKey("packetSend")) {
-            try {
-                eventMap.get("packetSend").call(null, event);
-            } catch (Exception e) {
-                ChatUtil.scriptError(this, "in packetSend event");
-                ChatUtil.print(false, e.getMessage());
-                eventMap.remove("packetSend");
-                NotificationManager.post(NotificationType.WARNING, "\"" + getName() + "\" Script", "PacketSend event unloaded", 7);
-            }
-        }
-    }
-
-    @EventTarget
-    public void onPacketReceiveEvent(PacketReceiveEvent event) {
+    public void onPacketEvent(PacketEvent event) {
         if (eventMap.containsKey("packetReceive")) {
             try {
                 eventMap.get("packetReceive").call(null, event);
@@ -204,6 +189,17 @@ public class ScriptModule extends Module {
                 ChatUtil.print(false, e.getMessage());
                 eventMap.remove("packetReceive");
                 NotificationManager.post(NotificationType.WARNING, "\"" + getName() + "\" Script", "PacketReceive event unloaded", 7);
+            }
+        }
+
+        if (eventMap.containsKey("packetSend")) {
+            try {
+                eventMap.get("packetSend").call(null, event);
+            } catch (Exception e) {
+                ChatUtil.scriptError(this, "in packetSend event");
+                ChatUtil.print(false, e.getMessage());
+                eventMap.remove("packetSend");
+                NotificationManager.post(NotificationType.WARNING, "\"" + getName() + "\" Script", "PacketSend event unloaded", 7);
             }
         }
     }

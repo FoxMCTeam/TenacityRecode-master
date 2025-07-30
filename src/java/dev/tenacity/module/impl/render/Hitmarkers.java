@@ -1,9 +1,9 @@
 package dev.tenacity.module.impl.render;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.AttackEvent;
-import com.cubk.event.impl.player.MotionEvent;
-import com.cubk.event.impl.render.Render2DEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.AttackEvent;
+import dev.tenacity.event.impl.player.MotionEvent;
+import dev.tenacity.event.impl.render.Render2DEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.display.HUDMod;
@@ -60,7 +60,7 @@ public class Hitmarkers extends Module {
         }
 
 
-        Color color = this.color.getColor();
+        Color color = this.color.get();
 
         if (colorMode.is("Sync")) {
             color = HUDMod.getClientColors().getFirst();
@@ -68,30 +68,30 @@ public class Hitmarkers extends Module {
 
         color = ColorUtil.applyOpacity(color, animation.getOutput().floatValue());
 
-        if (outline.isEnabled()) {
+        if (outline.get()) {
             float outlineThickness = 1;
-            drawRotatedCrosshair(spacing.getValue().floatValue() - .25f, thickness.getValue().floatValue() + outlineThickness,
-                    length.getValue().floatValue() + .5f, ColorUtil.applyOpacity(Color.BLACK, animation.getOutput().floatValue()).getRGB());
+            drawRotatedCrosshair(spacing.get().floatValue() - .25f, thickness.get().floatValue() + outlineThickness,
+                    length.get().floatValue() + .5f, ColorUtil.applyOpacity(Color.BLACK, animation.getOutput().floatValue()).getRGB());
         }
 
-        drawRotatedCrosshair(spacing.getValue().floatValue(), thickness.getValue().floatValue(), length.getValue().floatValue(), color.getRGB());
+        drawRotatedCrosshair(spacing.get().floatValue(), thickness.get().floatValue(), length.get().floatValue(), color.getRGB());
     }
 
     @EventTarget
     public void onAttackEvent(AttackEvent e) {
         animation.setDirection(Direction.FORWARDS);
-        if (playSound.isEnabled()) {
+        if (playSound.get()) {
             lastAttackedEntity = e.getTargetEntity();
         }
     }
 
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
-        if (event.isPre() && playSound.isEnabled() && lastAttackedEntity != null && lastAttackedEntity.hurtResistantTime == 19) {
+        if (event.isPre() && playSound.get() && lastAttackedEntity != null && lastAttackedEntity.hurtResistantTime == 19) {
             if (mc.thePlayer.getDistanceToEntity(lastAttackedEntity) < 10) {
-                switch (sound.getMode()) {
+                switch (sound.get()) {
                     case "Skeet":
-                        SoundUtils.playSound(skeet, volume.getValue().floatValue());
+                        SoundUtils.playSound(skeet, volume.get().floatValue());
                         break;
                 }
             }

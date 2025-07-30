@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.misc;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.network.PacketReceiveEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.network.PacketEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.BooleanSetting;
@@ -21,10 +21,10 @@ public final class NoRotate extends Module {
     }
 
     @EventTarget
-    public void onPacketReceiveEvent(PacketReceiveEvent e) {
+    public void onPacketEvent(PacketEvent e) {
         if (mc.thePlayer == null) return;
         if (e.getPacket() instanceof S08PacketPlayerPosLook packet) {
-            switch (mode.getMode()) {
+            switch (mode.get()) {
                 case "Normal":
                     packet.setYaw(mc.thePlayer.rotationYaw);
                     packet.setPitch(mc.thePlayer.rotationPitch);
@@ -34,7 +34,7 @@ public final class NoRotate extends Module {
                     break;
             }
 
-            if (fakeUpdate.isEnabled()) {
+            if (fakeUpdate.get()) {
                 PacketUtils.sendPacketNoEvent(new C03PacketPlayer.C06PacketPlayerPosLook(
                         mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ,
                         packet.getYaw(), packet.getPitch(), mc.thePlayer.onGround));

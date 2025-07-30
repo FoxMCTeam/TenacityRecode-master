@@ -97,7 +97,7 @@ public class DropdownClickGUI extends GuiScreen {
 
 
         //  Gui.drawRect2(0,0, width, height, ColorUtil.applyOpacity(0, Tenacity.INSTANCE.getSearchBar().getFocusAnimation().getOutput().floatValue() * .25f));
-        if (ClickGUIMod.walk.isEnabled() && !binding) {
+        if (ClickGUIMod.walk.get() && !binding) {
             InventoryMove.updateStates();
         }
 
@@ -107,7 +107,7 @@ public class DropdownClickGUI extends GuiScreen {
             return;
         }
 
-        gradient = Theme.getCurrentTheme().isGradient() || ClickGUIMod.gradient.isEnabled();
+        gradient = Theme.getCurrentTheme().isGradient() || ClickGUIMod.gradient.get();
 
 
         boolean focusedConfigGui = Client.INSTANCE.getSideGui().isFocused() || Client.INSTANCE.getSearchBar().isTyping();
@@ -166,7 +166,7 @@ public class DropdownClickGUI extends GuiScreen {
 
     @Override
     public void onGuiClosed() {
-        if (ClickGUIMod.rescale.isEnabled()) {
+        if (ClickGUIMod.rescale.get()) {
             mc.gameSettings.guiScale = ClickGUIMod.prevGuiScale;
         }
     }

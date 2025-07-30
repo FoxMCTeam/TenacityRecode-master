@@ -1,10 +1,10 @@
 package dev.tenacity.module.impl.render;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.game.WorldEvent;
-import com.cubk.event.impl.render.Render2DEvent;
-import com.cubk.event.impl.render.RenderChestEvent;
-import com.cubk.event.impl.render.RenderModelEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.game.WorldEvent;
+import dev.tenacity.event.impl.render.Render2DEvent;
+import dev.tenacity.event.impl.render.RenderChestEvent;
+import dev.tenacity.event.impl.render.RenderModelEvent;
 import dev.tenacity.Client;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
@@ -77,10 +77,10 @@ public class GlowESP extends Module {
 
     public GlowESP() {
         super("module.render.GlowESP", Category.RENDER, "ESP that glows on players");
-        playerColor.addParent(colorMode, modeSetting -> modeSetting.is("Custom") && validEntities.getSetting("Players").isEnabled());
-        animalColor.addParent(colorMode, modeSetting -> modeSetting.is("Custom") && validEntities.getSetting("Animals").isEnabled());
-        mobColor.addParent(colorMode, modeSetting -> modeSetting.is("Custom") && validEntities.getSetting("Mobs").isEnabled());
-        chestColor.addParent(colorMode, modeSetting -> modeSetting.is("Custom") && validEntities.getSetting("Chests").isEnabled());
+        playerColor.addParent(colorMode, modeSetting -> modeSetting.is("Custom") && validEntities.getSetting("Players").get());
+        animalColor.addParent(colorMode, modeSetting -> modeSetting.is("Custom") && validEntities.getSetting("Animals").get());
+        mobColor.addParent(colorMode, modeSetting -> modeSetting.is("Custom") && validEntities.getSetting("Mobs").get());
+        chestColor.addParent(colorMode, modeSetting -> modeSetting.is("Custom") && validEntities.getSetting("Chests").get());
 
         radius.addParent(kawaseGlow, ParentAttribute.BOOLEAN_CONDITION.negate());
         iterationsSetting.addParent(kawaseGlow, ParentAttribute.BOOLEAN_CONDITION);
@@ -123,7 +123,7 @@ public class GlowESP extends Module {
 
     @EventTarget
     public void onRenderChestEvent(RenderChestEvent e) {
-        if (validEntities.getSetting("Chests").isEnabled() && framebuffer != null) {
+        if (validEntities.getSetting("Chests").get() && framebuffer != null) {
             framebuffer.bindFramebuffer(false);
             chamsShader.init();
             chamsShader.setUniformi("textureIn", 0);
@@ -172,7 +172,7 @@ public class GlowESP extends Module {
         collectEntities();
 
         ScaledResolution sr = new ScaledResolution(mc);
-        if (framebuffer != null && outlineFrameBuffer != null && (validEntities.getSetting("Chests").isEnabled() || entities.size() > 0)) {
+        if (framebuffer != null && outlineFrameBuffer != null && (validEntities.getSetting("Chests").get() || entities.size() > 0)) {
             RenderUtil.setAlphaLimit(0);
             GLUtil.startBlend();
 
@@ -199,8 +199,8 @@ public class GlowESP extends Module {
             outlineFrameBuffer.unbindFramebuffer();
 
 
-            if (kawaseGlow.isEnabled()) {
-                int offset = offsetSetting.getValue().intValue();
+            if (kawaseGlow.get()) {
+                int offset = offsetSetting.get().intValue();
                 int iterations = 3;
 
                 if (framebufferList.isEmpty() || currentIterations != iterations || (framebuffer.framebufferWidth != mc.displayWidth || framebuffer.framebufferHeight != mc.displayHeight)) {
@@ -230,9 +230,9 @@ public class GlowESP extends Module {
                 kawaseGlowShader2.init();
                 kawaseGlowShader2.setUniformf("offset", offset, offset);
                 kawaseGlowShader2.setUniformi("inTexture", 0);
-                kawaseGlowShader2.setUniformi("check", seperate.isEnabled() ? 1 : 0);
+                kawaseGlowShader2.setUniformi("check", seperate.get() ? 1 : 0);
                 kawaseGlowShader2.setUniformf("lastPass", 1);
-                kawaseGlowShader2.setUniformf("exposure", exposure.getValue().floatValue() * fadeIn.getOutput().floatValue());
+                kawaseGlowShader2.setUniformf("exposure", exposure.get().floatValue() * fadeIn.getOutput().floatValue());
                 kawaseGlowShader2.setUniformi("textureToCheck", 16);
                 kawaseGlowShader2.setUniformf("halfpixel", 1.0f / lastBuffer.framebufferWidth, 1.0f / lastBuffer.framebufferHeight);
                 kawaseGlowShader2.setUniformf("iResolution", lastBuffer.framebufferWidth, lastBuffer.framebufferHeight);
@@ -279,7 +279,7 @@ public class GlowESP extends Module {
                 GL11.glClearColor(0, 0, 0, 0);
                 glowShader.init();
                 setupGlowUniforms(0, 1f);
-                if (seperate.isEnabled()) {
+                if (seperate.get()) {
                     GL13.glActiveTexture(GL13.GL_TEXTURE16);
                     RenderUtil.bindTexture(framebuffer.framebufferTexture);
                 }
@@ -324,18 +324,18 @@ public class GlowESP extends Module {
 
     public void setupGlowUniforms(float dir1, float dir2) {
         glowShader.setUniformi("texture", 0);
-        if (seperate.isEnabled()) {
+        if (seperate.get()) {
             glowShader.setUniformi("textureToCheck", 16);
         }
-        glowShader.setUniformf("radius", radius.getValue().floatValue());
+        glowShader.setUniformf("radius", radius.get().floatValue());
         glowShader.setUniformf("texelSize", 1.0f / mc.displayWidth, 1.0f / mc.displayHeight);
         glowShader.setUniformf("direction", dir1, dir2);
-        glowShader.setUniformf("exposure", exposure.getValue().floatValue() * fadeIn.getOutput().floatValue());
-        glowShader.setUniformi("avoidTexture", seperate.isEnabled() ? 1 : 0);
+        glowShader.setUniformf("exposure", exposure.get().floatValue() * fadeIn.getOutput().floatValue());
+        glowShader.setUniformi("avoidTexture", seperate.get() ? 1 : 0);
 
         final FloatBuffer buffer = BufferUtils.createFloatBuffer(256);
-        for (int i = 1; i <= radius.getValue().floatValue(); i++) {
-            buffer.put(MathUtils.calculateGaussianValue(i, radius.getValue().floatValue() / 2));
+        for (int i = 1; i <= radius.get().floatValue(); i++) {
+            buffer.put(MathUtils.calculateGaussianValue(i, radius.get().floatValue() / 2));
         }
         buffer.rewind();
 
@@ -345,7 +345,7 @@ public class GlowESP extends Module {
 
     public void setupOutlineUniforms(float dir1, float dir2) {
         outlineShader.setUniformi("textureIn", 0);
-        float iterations = kawaseGlow.isEnabled() ? (iterationsSetting.getValue().floatValue() * 2f) : radius.getValue().floatValue() / 1.5f;
+        float iterations = kawaseGlow.get() ? (iterationsSetting.get().floatValue() * 2f) : radius.get().floatValue() / 1.5f;
         outlineShader.setUniformf("radius", iterations);
         outlineShader.setUniformf("texelSize", 1.0f / mc.displayWidth, 1.0f / mc.displayHeight);
         outlineShader.setUniformf("direction", dir1, dir2);
@@ -354,19 +354,19 @@ public class GlowESP extends Module {
 
     private Color getColor(Object entity) {
         Color color = Color.WHITE;
-        switch (colorMode.getMode()) {
+        switch (colorMode.get()) {
             case "Custom":
                 if (entity instanceof EntityPlayer) {
-                    color = playerColor.getColor();
+                    color = playerColor.get();
                 }
                 if (entity instanceof EntityMob) {
-                    color = mobColor.getColor();
+                    color = mobColor.get();
                 }
                 if (entity instanceof EntityAnimal) {
-                    color = animalColor.getColor();
+                    color = animalColor.get();
                 }
                 if (entity instanceof TileEntityChest) {
-                    color = chestColor.getColor();
+                    color = chestColor.get();
                 }
                 break;
             case "Sync":
@@ -390,7 +390,7 @@ public class GlowESP extends Module {
         if (entity instanceof EntityLivingBase entityLivingBase) {
             if (entityLivingBase.hurtTime > 0) {
                 //We use a the first part of the sine wave to make the color more red as the entity gets hurt and animate it back to normal
-                color = ColorUtil.interpolateColorC(color, hurtTimeColor.getColor(), (float) Math.sin(entityLivingBase.hurtTime * (18 * Math.PI / 180)));
+                color = ColorUtil.interpolateColorC(color, hurtTimeColor.get(), (float) Math.sin(entityLivingBase.hurtTime * (18 * Math.PI / 180)));
             }
         }
 
@@ -402,15 +402,15 @@ public class GlowESP extends Module {
         for (Entity entity : mc.theWorld.getLoadedEntityList()) {
             if (!ESPUtil.isInView(entity)) continue;
             if (entity == mc.thePlayer && mc.gameSettings.thirdPersonView == 0) continue;
-            if (entity instanceof EntityAnimal && validEntities.getSetting("animals").isEnabled()) {
+            if (entity instanceof EntityAnimal && validEntities.getSetting("animals").get()) {
                 entities.add(entity);
             }
 
-            if (entity instanceof EntityPlayer && validEntities.getSetting("players").isEnabled()) {
+            if (entity instanceof EntityPlayer && validEntities.getSetting("players").get()) {
                 entities.add(entity);
             }
 
-            if (entity instanceof EntityMob && validEntities.getSetting("mobs").isEnabled()) {
+            if (entity instanceof EntityMob && validEntities.getSetting("mobs").get()) {
                 entities.add(entity);
             }
         }

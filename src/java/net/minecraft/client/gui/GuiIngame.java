@@ -1,7 +1,7 @@
 package net.minecraft.client.gui;
 
-import com.cubk.event.impl.render.PreRenderEvent;
-import com.cubk.event.impl.render.Render2DEvent;
+import dev.tenacity.event.impl.render.PreRenderEvent;
+import dev.tenacity.event.impl.render.Render2DEvent;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import dev.tenacity.Client;
@@ -353,7 +353,7 @@ public class GuiIngame extends Gui implements Utils {
 
         ScoreObjective scoreobjective1 = scoreobjective != null ? scoreobjective : scoreboard.getObjectiveInDisplaySlot(1);
 
-        if (scoreobjective1 != null && Client.INSTANCE.isEnabled(ScoreboardMod.class)) {
+        if (scoreobjective1 != null) {
             this.renderScoreboard(scoreobjective1, scaledresolution);
         }
 
@@ -529,68 +529,9 @@ public class GuiIngame extends Gui implements Utils {
     }
 
 
-    public void renderScoreboardBlur(ScaledResolution scaledRes) {
-        Scoreboard scoreboardOBJ = this.mc.theWorld.getScoreboard();
-        ScoreObjective scoreobjective = null;
-        ScorePlayerTeam scoreplayerteamObj = scoreboardOBJ.getPlayersTeam(this.mc.thePlayer.getName());
-
-        if (scoreplayerteamObj != null) {
-            int i1 = scoreplayerteamObj.getChatFormat().getColorIndex();
-
-            if (i1 >= 0) {
-                scoreobjective = scoreboardOBJ.getObjectiveInDisplaySlot(3 + i1);
-            }
-        }
-        ScoreObjective objective = scoreobjective != null ? scoreobjective : scoreboardOBJ.getObjectiveInDisplaySlot(1);
-        if (objective != null && Client.INSTANCE.isEnabled(ScoreboardMod.class)) {
-
-            Scoreboard scoreboard = objective.getScoreboard();
-            Collection<Score> collection = scoreboard.getSortedScores(objective);
-            List<Score> list = Lists.newArrayList(Iterables.filter(collection, p_apply_1_ -> p_apply_1_.getPlayerName() != null && !p_apply_1_.getPlayerName().startsWith("#")));
-
-            if (list.size() > 15) {
-                collection = Lists.newArrayList(Iterables.skip(list, collection.size() - 15));
-            } else {
-                collection = list;
-            }
-
-            float i = this.getScoreboardFontRenderer().getStringWidth(objective.getDisplayName());
-
-            for (Score score : collection) {
-                ScorePlayerTeam scoreplayerteam = scoreboard.getPlayersTeam(score.getPlayerName());
-                String s = ScorePlayerTeam.formatPlayerName(scoreplayerteam, score.getPlayerName()) + ": " + EnumChatFormatting.RED + score.getScorePoints();
-                i = Math.max(i, this.getScoreboardFontRenderer().getStringWidth(s));
-            }
-
-            int i1 = collection.size() * this.getScoreboardFontRenderer().getHeight();
-            int j1 = scaledRes.getScaledHeight() / 2 + i1 / 3 + ScoreboardMod.yOffset.getValue().intValue();
-            int k1 = 3;
-            float l1 = scaledRes.getScaledWidth() - i - k1;
-            int j = 0;
-
-            for (Score score1 : collection) {
-                ++j;
-                ScorePlayerTeam scoreplayerteam1 = scoreboard.getPlayersTeam(score1.getPlayerName());
-                String s1 = ScorePlayerTeam.formatPlayerName(scoreplayerteam1, score1.getPlayerName());
-                int k = j1 - j * this.getScoreboardFontRenderer().getHeight();
-                int l = scaledRes.getScaledWidth() - k1 + 2;
-                drawRect(l1 - 2, k, l, k + this.getScoreboardFontRenderer().getHeight(), Color.BLACK.getRGB());
-
-                // Line text
-                //   this.getFontRenderer().drawString(s1, l1, k, -1, ScoreboardMod.textShadow.isEnabled());
-
-
-                if (j == collection.size()) {
-                    String s3 = objective.getDisplayName();
-                    drawRect(l1 - 2, k - this.getScoreboardFontRenderer().getHeight() - 1, l, k - 1, Color.BLACK.getRGB());
-                    drawRect(l1 - 2, k - 1, l, k, Color.BLACK.getRGB());
-                    // this.getFontRenderer().drawString(s3, l1 + i / 2.0F - this.getFontRenderer().getStringWidth(s3) / 2.0F, k - this.getFontRenderer().getHeight(), -1, ScoreboardMod.textShadow.isEnabled());
-                }
-            }
-        }
-    }
-
     public void renderScoreboard(ScoreObjective objective, ScaledResolution scaledRes) {
+        ScoreboardMod module = Client.INSTANCE.getModuleManager().getModule(ScoreboardMod.class);
+        if (module.isEnabled()) return;
         Scoreboard scoreboard = objective.getScoreboard();
         Collection<Score> collection = scoreboard.getSortedScores(objective);
         List<Score> list = Lists.newArrayList(Iterables.filter(collection, p_apply_1_ -> p_apply_1_.getPlayerName() != null && !p_apply_1_.getPlayerName().startsWith("#")));
@@ -610,7 +551,7 @@ public class GuiIngame extends Gui implements Utils {
         }
 
         int i1 = collection.size() * this.getScoreboardFontRenderer().getHeight();
-        int j1 = scaledRes.getScaledHeight() / 2 + i1 / 3 + ScoreboardMod.yOffset.getValue().intValue();
+        int j1 = scaledRes.getScaledHeight() / 2 + i1 / 3;
         float l1 = scaledRes.getScaledWidth() - i - 3;
         int j = 0;
 
@@ -625,20 +566,14 @@ public class GuiIngame extends Gui implements Utils {
             drawRect(l1 - 2, k, l, k + this.getScoreboardFontRenderer().getHeight(), color.getRGB());
 
             // Line text
-            this.getScoreboardFontRenderer().drawString(s1, l1, k, -1, ScoreboardMod.textShadow.isEnabled());
-
-            // Line number
-            if (ScoreboardMod.redNumbers.isEnabled()) {
-                String s2 = EnumChatFormatting.RED + "" + score1.getScorePoints();
-                this.getScoreboardFontRenderer().drawString(s2, l - this.getScoreboardFontRenderer().getStringWidth(s2), k, -1, ScoreboardMod.textShadow.isEnabled());
-            }
+            this.getScoreboardFontRenderer().drawString(s1, l1, k, -1, true);
 
             if (j == collection.size()) {
                 String s3 = objective.getDisplayName();
-                drawRect(l1 - 2, k - this.getScoreboardFontRenderer().getHeight() - 1, l, k - 1, color.getRGB());
+                drawRect(l1 - 2, k - this.getScoreboardFontRenderer().getHeight() - 1, l, k - 1,color.getRGB());
                 GLUtil.startBlend();
                 drawRect(l1 - 2, k - 1, l, k, color.getRGB());
-                this.getScoreboardFontRenderer().drawString(s3, l1 + i / 2.0F - this.getScoreboardFontRenderer().getStringWidth(s3) / 2.0F, k - this.getScoreboardFontRenderer().getHeight(), -1, ScoreboardMod.textShadow.isEnabled());
+                this.getScoreboardFontRenderer().drawString(s3, l1 + i / 2.0F - this.getScoreboardFontRenderer().getStringWidth(s3) / 2.0F, k - this.getScoreboardFontRenderer().getHeight(), -1, true);
             }
         }
     }
@@ -1099,7 +1034,7 @@ public class GuiIngame extends Gui implements Utils {
     }
 
     public AbstractFontRenderer getScoreboardFontRenderer() {
-        return ScoreboardMod.customFont.isEnabled() ? duckSansFont20 : this.mc.fontRendererObj;
+        return this.mc.fontRendererObj;
     }
 
     public GuiSpectator getSpectatorGui() {

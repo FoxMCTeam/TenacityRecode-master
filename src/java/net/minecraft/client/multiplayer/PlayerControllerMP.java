@@ -1,10 +1,10 @@
 package net.minecraft.client.multiplayer;
 
-import com.cubk.event.impl.player.SyncCurrentItemEvent;
+import dev.tenacity.event.impl.player.SyncCurrentItemEvent;
 import dev.tenacity.Client;
 import dev.tenacity.module.impl.combat.KillAura;
 import dev.tenacity.module.impl.movement.Flight;
-import com.cubk.event.impl.player.AttackEvent;
+import dev.tenacity.event.impl.player.AttackEvent;
 import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

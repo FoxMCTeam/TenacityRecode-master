@@ -4,7 +4,6 @@ import com.google.common.collect.Sets;
 import dev.tenacity.module.impl.movement.InventoryMove;
 import dev.tenacity.module.impl.player.ChestStealer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -107,14 +106,14 @@ public abstract class GuiContainer extends GuiScreen {
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         if (ChestStealer.canSteal()) {
-            if (ChestStealer.silent.isEnabled()) {
+            if (ChestStealer.silent.get()) {
                 ChestStealer.stealing = true;
                 InventoryMove.updateStates();
                 mc.inGameHasFocus = true;
                 mc.mouseHelper.grabMouseCursor();
                 mc.currentScreen = null;
                 return;
-            } else if (ChestStealer.freeLook.isEnabled()) {
+            } else if (ChestStealer.freeLook.get()) {
                 mc.inGameHasFocus = true;
                 mc.mouseHelper.grabMouseCursor();
             }
@@ -573,7 +572,7 @@ public abstract class GuiContainer extends GuiScreen {
     /**
      * Returns if the passed mouse position is over the specified slot. Args : slot, mouseX, mouseY
      */
-    private boolean isMouseOverSlot(Slot slotIn, int mouseX, int mouseY) {
+    public boolean isMouseOverSlot(Slot slotIn, int mouseX, int mouseY) {
         return this.isPointInRegion(slotIn.xDisplayPosition, slotIn.yDisplayPosition, 16, 16, mouseX, mouseY);
     }
 

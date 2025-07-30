@@ -146,9 +146,9 @@ public class ConfigManager {
                                     if (setting instanceof ModeSetting ms) {
                                         String value = String.valueOf(cfgSetting.value);
                                         if (ms.modes.contains(value)) {
-                                            ms.setCurrentMode(value);
+                                            ms.set(value);
                                         } else {
-                                            ms.setCurrentMode(ms.modes.get(0));
+                                            ms.set(ms.modes.get(0));
                                             Client.LOGGER.info(String.format("The value of setting %s in module %s was reset", ms.name, Localization.get(module.getName())));
                                         }
                                     }
@@ -160,7 +160,7 @@ public class ConfigManager {
                                             value = ss.getDefaultValue();
                                             Client.LOGGER.info(String.format("The value of setting %s in module %s was reset", ss.name, Localization.get(module.getName())));
                                         }
-                                        ss.setValue(value);
+                                        ss.set(value);
                                     }
                                     if (setting instanceof MultipleBoolSetting mbs) {
                                         LinkedTreeMap<String, Boolean> boolMap = (LinkedTreeMap<String, Boolean>) cfgSetting.value;
@@ -190,7 +190,7 @@ public class ConfigManager {
                                     if (setting instanceof StringSetting) {
                                         String value = String.valueOf(cfgSetting.value);
                                         if (value != null) {
-                                            ((StringSetting) setting).setString(value);
+                                            ((StringSetting) setting).set(value);
                                         }
                                     }
                                 }

@@ -132,7 +132,7 @@ public class ModuleRect extends Component {
                     new Color(128, 134, 141, (int) (255 * hover)).getRGB(), descWidth, 3);
         } else if (binding == module) {
             duckSansFont18.drawString(
-                    "Currently bound to " + Keyboard.getKeyName(module.getKeybind().getCode()),
+                    "Currently bound to " + Keyboard.getKeyName(module.getKeybind().get()),
                     xStart, yVal, new Color(128, 134, 141).getRGB());
         }
 

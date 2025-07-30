@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.combat;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.MotionEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.settings.impl.ModeSetting;
@@ -27,8 +27,8 @@ public final class FastBow extends Module {
     @EventTarget
     public void onMotionEvent(MotionEvent event) {
         if (mc.thePlayer.getCurrentEquippedItem() == null) return;
-        if (delayTimer.hasTimeElapsed(shotDelay.getValue().longValue() * 250L)) {
-            switch (mode.getMode()) {
+        if (delayTimer.hasTimeElapsed(shotDelay.get().longValue() * 250L)) {
+            switch (mode.get()) {
                 case "Vanilla":
                     if (Mouse.isButtonDown(1) && mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemBow) {
                         for (int i = 0; i < 20; ++i) {

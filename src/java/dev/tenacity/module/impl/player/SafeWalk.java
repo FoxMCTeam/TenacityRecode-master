@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.player;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.SafeWalkEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.SafeWalkEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 

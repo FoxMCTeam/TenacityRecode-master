@@ -33,13 +33,13 @@ public class StringComponent extends SettingComponent<StringSetting> {
         float boxHeight = height - 16;
 
         if (!setDefaultText) {
-            textField.setText(getSetting().getString());
+            textField.setText(getSetting().get());
             textField.setCursorPositionZero();
             setDefaultText = true;
         }
 
 
-        getSetting().setString(textField.getText());
+        getSetting().set(textField.getText());
 
 
         textField.setBackgroundText("Type here...");

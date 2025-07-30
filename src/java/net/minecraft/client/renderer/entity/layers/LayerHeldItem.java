@@ -1,10 +1,9 @@
 package net.minecraft.client.renderer.entity.layers;
 
-import dev.tenacity.module.impl.render.CustomModel;
+import dev.tenacity.module.impl.mods.CustomModel;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;

@@ -1,7 +1,7 @@
 package dev.tenacity.module.impl.player;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.MotionEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.MotionEvent;
 import dev.tenacity.module.Category;
 import dev.tenacity.module.Module;
 import dev.tenacity.module.impl.combat.KillAura;
@@ -58,7 +58,7 @@ public class AutoTool extends Module {
     }
 
     private void switchSword() {
-        if (!autoSword.isEnabled()) return;
+        if (!autoSword.get()) return;
         float damage = 1;
         int bestItem = -1;
         for (int i = 0; i < 9; i++) {

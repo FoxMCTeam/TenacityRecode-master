@@ -1,8 +1,8 @@
 package dev.tenacity.utils.client.addons.rise.component;
 
-import com.cubk.event.annotations.EventTarget;
-import com.cubk.event.impl.player.MotionEvent;
-import com.cubk.event.impl.player.SyncCurrentItemEvent;
+import dev.tenacity.event.annotations.EventTarget;
+import dev.tenacity.event.impl.player.MotionEvent;
+import dev.tenacity.event.impl.player.SyncCurrentItemEvent;
 import dev.tenacity.utils.Utils;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;

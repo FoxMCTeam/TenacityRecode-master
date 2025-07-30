@@ -2,13 +2,16 @@ package net.minecraft.client.renderer.entity;
 
 import com.google.common.collect.Lists;
 import dev.tenacity.Client;
-import dev.tenacity.module.impl.render.CustomModel;
+import dev.tenacity.module.impl.mods.CustomModel;
+import dev.tenacity.module.impl.mods.SkinLayers3D;
 import dev.tenacity.module.impl.render.ESP2D;
 import dev.tenacity.module.impl.display.TargetHUDMod;
-import com.cubk.event.impl.render.NametagRenderEvent;
-import com.cubk.event.impl.render.RenderModelEvent;
-import com.cubk.event.impl.render.RendererLivingEntityEvent;
+import dev.tenacity.event.impl.render.NametagRenderEvent;
+import dev.tenacity.event.impl.render.RenderModelEvent;
+import dev.tenacity.event.impl.render.RendererLivingEntityEvent;
+import dev.tenacity.utils.client.addons.skinlayers.accessor.PlayerEntityModelAccessor;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.IFontRenderer;
 import net.minecraft.client.model.ModelBase;
@@ -103,7 +106,7 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
      * Renders the desired {@code T} type Entity.
      */
     public void doRender(T entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        RendererLivingEntityEvent event = new RendererLivingEntityEvent(entity, this, partialTicks, x, y, z);
+        RendererLivingEntityEvent event = new RendererLivingEntityEvent(entity, this, partialTicks, entityYaw, x, y, z);
         Client.INSTANCE.getEventManager().call(event);
         if (event.isCancelled()) return;
 
@@ -332,6 +335,30 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
                 GlStateManager.alphaFunc(516, 0.1F);
                 GlStateManager.popMatrix();
                 GlStateManager.depthMask(true);
+            }
+        }
+        if (Client.INSTANCE.getModuleManager().getModule(SkinLayers3D.class).isEnabled()) {
+            if(!(this instanceof PlayerEntityModelAccessor)) {
+                return;
+            }
+            if (flag || flag1) {
+                PlayerEntityModelAccessor playerRenderer = (PlayerEntityModelAccessor) this;
+                if (flag1) {
+                    GlStateManager.pushMatrix();
+                    GlStateManager.color(1.0F, 1.0F, 1.0F, 0.15F);
+                    GlStateManager.depthMask(false);
+                    GlStateManager.enableBlend();
+                    GlStateManager.blendFunc(770, 771);
+                    GlStateManager.alphaFunc(516, 0.003921569F);
+                }
+                playerRenderer.getHeadLayer().doRenderLayer((AbstractClientPlayer) entitylivingbaseIn, x, 0f, y, z, entityYaw, entityPitch, scaleFactor);
+                playerRenderer.getBodyLayer().doRenderLayer((AbstractClientPlayer) entitylivingbaseIn, x, 0f, y, z, entityYaw, entityPitch, scaleFactor);
+                if (flag1) {
+                    GlStateManager.disableBlend();
+                    GlStateManager.alphaFunc(516, 0.1F);
+                    GlStateManager.popMatrix();
+                    GlStateManager.depthMask(true);
+                }
             }
         }
     }
@@ -620,7 +647,7 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
                     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
                     GlStateManager.popMatrix();
                 } else {
-                    boolean flag = esp2D.isEnabled() && esp2D.boxEsp.isEnabled();
+                    boolean flag = esp2D.isEnabled() && esp2D.boxEsp.get();
                     this.renderOffsetLivingLabel(entity, x, y - ((entity.isChild() ? (double) (entity.height / 2.0F) : 0.0D) - (flag ? .25f : 0)), z, s, 0.02666667F, d0);
                 }
             }
