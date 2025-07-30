@@ -1,5 +1,6 @@
 package net.minecraft.network.play.client;
 
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
@@ -40,9 +41,17 @@ public class C08PacketPlayerBlockPlacement implements Packet<INetHandlerPlayServ
         this.position = buf.readBlockPos();
         this.placedBlockDirection = buf.readUnsignedByte();
         this.stack = buf.readItemStackFromBuffer();
-        this.facingX = (float) buf.readUnsignedByte() / 16.0F;
-        this.facingY = (float) buf.readUnsignedByte() / 16.0F;
-        this.facingZ = (float) buf.readUnsignedByte() / 16.0F;
+
+
+        if (ViaLoadingBase.getInstance().getTargetVersion().getVersion() > 47) {
+            this.facingX = buf.readUnsignedByte();
+            this.facingY = buf.readUnsignedByte();
+            this.facingZ = buf.readUnsignedByte();
+        } else {
+            this.facingX = buf.readUnsignedByte() / 16.0F;
+            this.facingY = buf.readUnsignedByte() / 16.0F;
+            this.facingZ = buf.readUnsignedByte() / 16.0F;
+        }
     }
 
     /**
@@ -52,10 +61,17 @@ public class C08PacketPlayerBlockPlacement implements Packet<INetHandlerPlayServ
         buf.writeBlockPos(this.position);
         buf.writeByte(this.placedBlockDirection);
         buf.writeItemStackToBuffer(this.stack);
-        buf.writeByte((int) (this.facingX * 16.0F));
-        buf.writeByte((int) (this.facingY * 16.0F));
-        buf.writeByte((int) (this.facingZ * 16.0F));
+        if (ViaLoadingBase.getInstance().getTargetVersion().getVersion() > 47) {
+            buf.writeByte((int)(this.facingX));
+            buf.writeByte((int)(this.facingY));
+            buf.writeByte((int)(this.facingZ));
+        } else {
+            buf.writeByte((int)(this.facingX * 16.0F));
+            buf.writeByte((int)(this.facingY * 16.0F));
+            buf.writeByte((int)(this.facingZ * 16.0F));
+        }
     }
+
 
     /**
      * Passes this Packet on to the NetHandler for processing.

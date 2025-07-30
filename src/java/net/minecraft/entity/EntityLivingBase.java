@@ -3,6 +3,8 @@ package net.minecraft.entity;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Maps;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import dev.tenacity.Client;
 import dev.tenacity.event.impl.player.JumpFixEvent;
 import dev.tenacity.event.impl.player.LivingDeathEvent;
@@ -1748,15 +1750,23 @@ public abstract class EntityLivingBase extends Entity {
             this.motionZ *= 0.98D;
         }
 
-        if (Math.abs(this.motionX) < 0.005D) {
+        double movementThreshold = 0.005D;
+        if (ViaLoadingBase.getInstance().getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            movementThreshold = 0.003;
+        }
+
+        if (Math.abs(this.motionX) < movementThreshold)
+        {
             this.motionX = 0.0D;
         }
 
-        if (Math.abs(this.motionY) < 0.005D) {
+        if (Math.abs(this.motionY) < movementThreshold)
+        {
             this.motionY = 0.0D;
         }
 
-        if (Math.abs(this.motionZ) < 0.005D) {
+        if (Math.abs(this.motionZ) < movementThreshold)
+        {
             this.motionZ = 0.0D;
         }
 

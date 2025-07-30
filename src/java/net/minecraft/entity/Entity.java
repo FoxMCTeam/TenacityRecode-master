@@ -1,5 +1,7 @@
 package net.minecraft.entity;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import dev.tenacity.Client;
 import dev.tenacity.module.impl.movement.Flight;
 import dev.tenacity.event.impl.player.PlayerMoveUpdateEvent;
@@ -1854,7 +1856,11 @@ public abstract class Entity implements ICommandSender {
         }
     }
 
-    public float getCollisionBorderSize() {
+    public float getCollisionBorderSize()
+    {
+        if (ViaLoadingBase.getInstance().getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            return 0F;
+        }
         return 0.1F;
     }
 

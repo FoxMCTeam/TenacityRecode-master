@@ -1,5 +1,7 @@
 package net.minecraft.client.renderer;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import dev.tenacity.event.impl.render.ZoomFovEvent;
 import com.google.common.base.Predicates;
 import com.google.gson.JsonSyntaxException;
@@ -486,9 +488,13 @@ public class EntityRenderer implements IResourceManagerReloadListener {
                 }
             }
 
-            if (this.pointedEntity != null && flag && vec3.distanceTo(vec33) > reachDistance) {
+            if (ViaLoadingBase.getInstance().getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+                reachDistance = 2.9D;
+            }
+
+            if (vec33 != null && this.pointedEntity != null && flag && vec3.distanceTo(vec33) > reachDistance) {
                 this.pointedEntity = null;
-                this.mc.objectMouseOver = new MovingObjectPosition(MovingObjectPosition.MovingObjectType.MISS, vec33, null, new BlockPos(vec33));
+                this.mc.objectMouseOver = new MovingObjectPosition(MovingObjectPosition.MovingObjectType.MISS, vec33, (EnumFacing) null, new BlockPos(vec33));
             }
 
             if (this.pointedEntity != null && (d2 < d1 || this.mc.objectMouseOver == null)) {
