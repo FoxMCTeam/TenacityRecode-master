@@ -94,7 +94,6 @@ public class FontUtil implements Utils {
 
     @Getter
     public enum FontType {
-        ICONFONT("iconfont", 44, 60),
         DUCKSANS("duckSans", "duckSans-bold", "duckSans-thin", 12, 14, 16, 18, 20, 22, 24, 26, 28, 32, 40, 80),
         TAHOMA("tahoma", "tahoma-bold", 10, 12, 14, 16, 18, 27),
         RUBIK("rubik", "rubik-bold", 13, 18),

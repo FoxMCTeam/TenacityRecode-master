@@ -23,7 +23,6 @@ public interface Utils {
             iconFont = FontUtil.FontType.ICON,
             neverloseFont = FontUtil.FontType.NEVERLOSE,
             tahomaFont = FontUtil.FontType.TAHOMA,
-            iconfontFont = FontUtil.FontType.ICONFONT,
             rubikFont = FontUtil.FontType.RUBIK;
 
 

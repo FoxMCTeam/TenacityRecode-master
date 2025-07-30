@@ -21,7 +21,6 @@ import de.florianmichael.viamcp.ViaMCP;
 import dev.tenacity.utils.objects.Dragging;
 import dev.tenacity.utils.objects.HTTPUtil;
 import dev.tenacity.utils.packet.BlinkComponent;
-import dev.tenacity.utils.render.DynamicIslandManager;
 import dev.tenacity.utils.render.Theme;
 import dev.tenacity.utils.render.WallpaperEngine;
 import dev.tenacity.utils.server.PingerUtils;
@@ -67,7 +66,6 @@ public class Client implements Utils {
     private GuiAltManager altManager;
     private CommandHandler commandHandler;
     private PingerUtils pingerUtils;
-    private DynamicIslandManager dynamicIslandManager;
     private SkinLayersMod skinLayersMod;
     private Locale locale = Locale.EN_US;
     public boolean loaded = false;
@@ -80,7 +78,6 @@ public class Client implements Utils {
         executorService.execute(() -> INSTANCE.getEventManager().register(new BackgroundProcess()));
         executorService.execute(() -> INSTANCE.getEventManager().register(new RotationComponent()));
         executorService.execute(() -> INSTANCE.getEventManager().register(new RenderSlotComponent()));
-        executorService.execute(() -> INSTANCE.getEventManager().register(new DynamicIslandManager()));
         executorService.execute(() -> INSTANCE.getEventManager().register(new BlinkComponent()));
 
         ConfigManager.defaultConfig = new File(Minecraft.getMinecraft().mcDataDir + "/Tenacity/Config.json");
@@ -122,7 +119,6 @@ public class Client implements Utils {
     }
 
     public void intiVars() {
-        INSTANCE.setDynamicIslandManager(new DynamicIslandManager());
         INSTANCE.setModuleManager(new ModuleManager());
         INSTANCE.setPingerUtils(new PingerUtils());
         INSTANCE.setConfigManager(new ConfigManager());
