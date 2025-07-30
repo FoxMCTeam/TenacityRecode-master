@@ -99,7 +99,6 @@ public class Module implements Utils {
     public void toggle() {
         toggleSilent();
         if (NotificationsMod.toggleNotifications.get()) {
-            Client.INSTANCE.getDynamicIslandManager().addContent(this);
             String titleToggle = Localization.get("module.toggle.title");
             String descriptionToggleOn = Localization.get(this.getName(), Locale.EN_US) + " was " + "§aenabled\r";
             String descriptionToggleOff = Localization.get(this.getName(), Locale.EN_US) + " was " + "§cdisabled\r";
